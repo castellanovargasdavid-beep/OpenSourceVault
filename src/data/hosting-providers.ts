@@ -4,6 +4,7 @@ export interface HostingProvider {
   id: string;
   name: string;
   logo: "digitalocean" | "hetzner" | "railway";
+  domain: string;
   tagline: string;
   startingPrice: string;
   freeCredit?: string;
@@ -18,6 +19,7 @@ export const hostingProviders: HostingProvider[] = [
     id: "digitalocean",
     name: "DigitalOcean",
     logo: "digitalocean",
+    domain: "digitalocean.com",
     tagline: "VPS simples y predecibles con la mejor documentación del mercado",
     startingPrice: "desde $4/mes",
     freeCredit: "$200 de crédito gratis por 60 días",
@@ -35,6 +37,7 @@ export const hostingProviders: HostingProvider[] = [
     id: "hetzner",
     name: "Hetzner Cloud",
     logo: "hetzner",
+    domain: "hetzner.com",
     tagline: "La mejor relación precio/rendimiento en servidores cloud europeos",
     startingPrice: "desde €3.79/mes",
     bestFor: "Máximo rendimiento por euro, datacenters en la UE",
@@ -51,6 +54,7 @@ export const hostingProviders: HostingProvider[] = [
     id: "railway",
     name: "Railway",
     logo: "railway",
+    domain: "railway.app",
     tagline: "Despliega directo desde tu docker-compose o repo de GitHub en minutos",
     startingPrice: "plan Hobby desde $5/mes",
     bestFor: "Desplegar sin gestionar servidores ni Docker manualmente",

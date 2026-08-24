@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Flame } from "lucide-react";
 import { getFeaturedTools } from "@/data/tools";
 import { ToolCard } from "@/components/site/tool-card";
 
@@ -7,16 +8,22 @@ export function FeaturedTools() {
   if (featured.length === 0) return null;
 
   return (
-    <section id="destacadas" className="bg-slate-50 py-16">
+    <section
+      id="destacadas"
+      className="bg-gradient-to-b from-white via-violet-50/40 to-white py-16"
+    >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-10 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
           <div>
-            <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">
-              Herramientas destacadas de la semana
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-orange-100 px-3 py-1 text-xs font-medium text-orange-700">
+              <Flame size={14} /> Destacadas de la semana
+            </span>
+            <h2 className="mt-3 text-2xl font-bold text-slate-900 sm:text-3xl">
+              Las alternativas más sólidas para desplegar hoy
             </h2>
             <p className="mt-2 max-w-xl text-slate-600">
-              Las alternativas open source más sólidas para desplegar hoy mismo, con guía y
-              docker-compose incluidos.
+              Elegidas por madurez del proyecto, comunidad activa y facilidad de despliegue con
+              Docker.
             </p>
           </div>
           <Link

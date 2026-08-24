@@ -4,7 +4,10 @@ import { notFound } from "next/navigation";
 import { categories, getCategoryBySlug } from "@/data/categories";
 import { getToolsByCategory } from "@/data/tools";
 import { ToolCard } from "@/components/site/tool-card";
+import { categoryColors } from "@/lib/category-colors";
+import { categoryIconMap } from "@/lib/category-icons";
 import { siteConfig } from "@/lib/site-config";
+import { cn } from "@/lib/utils";
 
 interface PageProps {
   params: Promise<{ category: string }>;
@@ -37,6 +40,8 @@ export default async function CategoryPage({ params }: PageProps) {
   if (!category) notFound();
 
   const categoryTools = getToolsByCategory(category.id);
+  const palette = categoryColors[category.id];
+  const Icon = categoryIconMap[category.icon];
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
@@ -49,6 +54,9 @@ export default async function CategoryPage({ params }: PageProps) {
       </nav>
 
       <header className="mb-10 max-w-2xl">
+        <span className={cn("mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl", palette.iconBg, palette.iconText)}>
+          <Icon size={24} />
+        </span>
         <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
           {category.label}
         </h1>

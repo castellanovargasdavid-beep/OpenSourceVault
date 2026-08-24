@@ -1,16 +1,10 @@
 import Link from "next/link";
-import { LayoutGrid, BarChart3, Terminal, Users, Sparkles, Database, type LucideIcon } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { categories } from "@/data/categories";
 import { tools } from "@/data/tools";
-
-const iconMap: Record<string, LucideIcon> = {
-  "layout-grid": LayoutGrid,
-  "bar-chart-3": BarChart3,
-  terminal: Terminal,
-  users: Users,
-  sparkles: Sparkles,
-  database: Database,
-};
+import { categoryColors } from "@/lib/category-colors";
+import { categoryIconMap } from "@/lib/category-icons";
+import { cn } from "@/lib/utils";
 
 export function CategoryGrid() {
   return (
@@ -24,24 +18,45 @@ export function CategoryGrid() {
       </div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {categories.map((category) => {
-          const Icon = iconMap[category.icon];
+          const Icon = categoryIconMap[category.icon];
           const count = tools.filter((t) => t.category === category.id).length;
+          const palette = categoryColors[category.id];
           return (
             <Link
               key={category.id}
               href={`/categoria/${category.slug}`}
-              className="group flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-6 transition-all hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-md"
+              className={cn(
+                "group relative flex flex-col gap-3 overflow-hidden rounded-xl border bg-white p-6 transition-all hover:-translate-y-0.5 hover:shadow-lg",
+                palette.border,
+                palette.borderHover
+              )}
             >
-              <div className="flex items-center justify-between">
-                <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 group-hover:bg-emerald-100">
-                  <Icon size={20} />
+              <div
+                className={cn(
+                  "pointer-events-none absolute -right-8 -top-8 h-28 w-28 rounded-full opacity-0 blur-2xl transition-opacity duration-300 group-hover:opacity-100 bg-gradient-to-br",
+                  palette.gradient
+                )}
+              />
+              <div className="relative flex items-center justify-between">
+                <span className={cn("flex h-11 w-11 items-center justify-center rounded-lg", palette.iconBg, palette.iconText)}>
+                  <Icon size={22} />
                 </span>
-                <span className="text-xs font-medium text-slate-400">{count} herramientas</span>
+                <span className={cn("rounded-full px-2 py-0.5 text-xs font-medium", palette.badge)}>
+                  {count} herramientas
+                </span>
               </div>
-              <div>
+              <div className="relative">
                 <p className="font-semibold text-slate-900">{category.label}</p>
                 <p className="mt-1 text-sm text-slate-500">{category.description}</p>
               </div>
+              <span
+                className={cn(
+                  "relative mt-1 inline-flex items-center gap-1 text-sm font-medium opacity-0 transition-opacity duration-200 group-hover:opacity-100",
+                  palette.text
+                )}
+              >
+                Explorar <ArrowRight size={14} />
+              </span>
             </Link>
           );
         })}

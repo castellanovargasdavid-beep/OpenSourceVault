@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Check, ExternalLink } from "lucide-react";
 import { hostingProviders } from "@/data/hosting-providers";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardDescription } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
+import { LogoImage } from "@/components/site/logo-image";
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/lib/site-config";
 
@@ -28,10 +29,14 @@ export default function HostingDealsPage() {
 
       <div className="grid gap-6 lg:grid-cols-3">
         {hostingProviders.map((provider) => (
-          <Card key={provider.id} className="flex flex-col">
+          <Card key={provider.id} className="flex flex-col overflow-hidden">
+            <div className="h-1.5 bg-gradient-to-r from-emerald-500 via-teal-500 to-blue-500" />
             <CardHeader>
-              <CardTitle>{provider.name}</CardTitle>
-              <CardDescription>{provider.tagline}</CardDescription>
+              <div className="flex items-center gap-3">
+                <LogoImage domain={provider.domain} label={provider.name} size={40} fallbackGradient="from-emerald-500 to-blue-600" />
+                <p className="text-lg font-semibold text-slate-900">{provider.name}</p>
+              </div>
+              <CardDescription className="pt-1">{provider.tagline}</CardDescription>
             </CardHeader>
             <CardContent className="flex flex-1 flex-col gap-4">
               <div>
@@ -79,7 +84,10 @@ export default function HostingDealsPage() {
           <tbody className="divide-y divide-slate-100">
             {hostingProviders.map((provider) => (
               <tr key={provider.id}>
-                <td className="px-4 py-3 font-medium text-slate-900">{provider.name}</td>
+                <td className="flex items-center gap-2 px-4 py-3 font-medium text-slate-900">
+                  <LogoImage domain={provider.domain} label={provider.name} size={20} fallbackGradient="from-emerald-500 to-blue-600" />
+                  {provider.name}
+                </td>
                 <td className="px-4 py-3 text-slate-600">{provider.startingPrice}</td>
                 <td className="px-4 py-3 text-slate-600">{provider.freeCredit ?? "—"}</td>
                 <td className="px-4 py-3 text-slate-600">{provider.bestFor}</td>

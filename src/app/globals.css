@@ -9,6 +9,41 @@ html {
 }
 
 body {
-  background-color: #ffffff;
+  background-color: #fefdfb;
   color: #0f172a;
+}
+
+@keyframes blob-float {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(4%, -6%) scale(1.08);
+  }
+  66% {
+    transform: translate(-3%, 4%) scale(0.95);
+  }
+}
+
+.animate-blob {
+  animation: blob-float 16s ease-in-out infinite;
+}
+
+.animate-blob-delayed {
+  animation: blob-float 20s ease-in-out infinite;
+  animation-delay: -7s;
+}
+
+.animate-blob-slow {
+  animation: blob-float 24s ease-in-out infinite;
+  animation-delay: -13s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-blob,
+  .animate-blob-delayed,
+  .animate-blob-slow {
+    animation: none;
+  }
 }

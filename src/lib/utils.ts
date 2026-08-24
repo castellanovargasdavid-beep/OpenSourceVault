@@ -21,3 +21,11 @@ export function formatStars(count?: number): string {
   }
   return `${count}`;
 }
+
+export function getHostname(url: string): string | undefined {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return undefined;
+  }
+}

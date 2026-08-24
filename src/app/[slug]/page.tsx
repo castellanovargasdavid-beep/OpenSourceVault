@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { getAllSaasSlugs, getSaasAlternatives } from "@/lib/alternatives";
 import { ToolCard } from "@/components/site/tool-card";
 import { JsonLd } from "@/components/site/json-ld";
+import { LogoImage } from "@/components/site/logo-image";
+import { getSaasDomain } from "@/lib/saas-domains";
 import { siteConfig } from "@/lib/site-config";
 
 const ALTERNATIVA_PREFIX = "alternativa-a-";
@@ -79,6 +81,18 @@ export default async function AlternativaPage({ params }: PageProps) {
       </nav>
 
       <header className="mb-10 max-w-3xl">
+        <div className="mb-4 flex items-center gap-3">
+          <LogoImage
+            domain={getSaasDomain(group.saasName)}
+            label={group.saasName}
+            size={48}
+            fallbackGradient="from-slate-400 to-slate-500"
+            className="rounded-xl grayscale"
+          />
+          <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700">
+            {group.tools.length} {group.tools.length === 1 ? "alternativa verificada" : "alternativas verificadas"}
+          </span>
+        </div>
         <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
           Las mejores alternativas Open Source a {group.saasName} en {siteConfig.year}
         </h1>

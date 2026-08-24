@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Star, GitFork, ExternalLink, Check, X } from "lucide-react";
+import { Star, GitFork, ExternalLink, Check, X, ArrowRight } from "lucide-react";
 import { tools, getToolBySlug } from "@/data/tools";
 import { getCategoryMeta } from "@/data/categories";
 import { Badge } from "@/components/ui/badge";
@@ -9,8 +9,11 @@ import { buttonVariants } from "@/components/ui/button";
 import { AffiliateHostingWidget } from "@/components/site/affiliate-hosting-widget";
 import { DockerComposeBlock } from "@/components/site/docker-compose-block";
 import { JsonLd } from "@/components/site/json-ld";
+import { LogoImage } from "@/components/site/logo-image";
+import { getSaasDomain } from "@/lib/saas-domains";
+import { categoryColors } from "@/lib/category-colors";
 import { siteConfig } from "@/lib/site-config";
-import { slugify, cn, formatStars } from "@/lib/utils";
+import { slugify, cn, formatStars, getHostname } from "@/lib/utils";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -45,6 +48,7 @@ export default async function ToolPage({ params }: PageProps) {
   if (!tool) notFound();
 
   const category = getCategoryMeta(tool.category);
+  const palette = categoryColors[tool.category];
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
@@ -75,8 +79,25 @@ export default async function ToolPage({ params }: PageProps) {
       </nav>
 
       <header className="mb-10">
+        <div className="mb-5 flex items-center gap-3">
+          <LogoImage
+            domain={getHostname(tool.websiteUrl)}
+            label={tool.name}
+            size={56}
+            fallbackGradient={palette.gradient}
+            className="rounded-xl"
+          />
+          <ArrowRight size={20} className="shrink-0 text-slate-300" />
+          <LogoImage
+            domain={getSaasDomain(tool.replaces[0])}
+            label={tool.replaces[0]}
+            size={56}
+            fallbackGradient="from-slate-300 to-slate-400"
+            className="rounded-xl grayscale"
+          />
+        </div>
         <div className="mb-3 flex flex-wrap items-center gap-2">
-          <Badge>{category.label}</Badge>
+          <Badge className={palette.badge}>{category.label}</Badge>
           {tool.tags.map((tag) => (
             <Badge key={tag} variant="secondary">
               {tag}
@@ -121,7 +142,7 @@ export default async function ToolPage({ params }: PageProps) {
         <div className="space-y-10 lg:col-span-2">
           <section>
             <h2 className="mb-4 text-xl font-semibold text-slate-900">Ficha técnica</h2>
-            <dl className="grid grid-cols-2 gap-4 rounded-xl border border-slate-200 p-6 sm:grid-cols-3">
+            <dl className={cn("grid grid-cols-2 gap-4 rounded-xl border p-6 sm:grid-cols-3", palette.soft, palette.border)}>
               <div>
                 <dt className="text-xs uppercase tracking-wide text-slate-400">Licencia</dt>
                 <dd className="mt-1 font-medium text-slate-900">{tool.license}</dd>
@@ -178,8 +199,8 @@ export default async function ToolPage({ params }: PageProps) {
                   ))}
                 </ul>
               </div>
-              <div className="rounded-xl border border-slate-200 bg-slate-50 p-5">
-                <p className="mb-3 flex items-center gap-1.5 text-sm font-semibold text-slate-700">
+              <div className="rounded-xl border border-amber-200 bg-amber-50 p-5">
+                <p className="mb-3 flex items-center gap-1.5 text-sm font-semibold text-amber-800">
                   <X size={16} /> A tener en cuenta
                 </p>
                 <ul className="space-y-2">
@@ -210,7 +231,7 @@ export default async function ToolPage({ params }: PageProps) {
         <aside className="space-y-6 lg:sticky lg:top-24 lg:self-start">
           <AffiliateHostingWidget tool={tool} />
 
-          <div className="rounded-xl border border-slate-200 p-6">
+          <div className={cn("rounded-xl border p-6", palette.soft, palette.border)}>
             <p className="mb-3 text-sm font-semibold text-slate-900">Otras alternativas a lo mismo</p>
             <div className="flex flex-col gap-2">
               {tool.replaces.map((saas) => (
