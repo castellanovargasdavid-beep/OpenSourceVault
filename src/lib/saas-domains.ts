@@ -68,6 +68,18 @@ export const saasDomains: Record<string, string> = {
   "Bolt.new": "bolt.new",
   "Google Photos": "photos.google.com",
   "Google Search": "google.com",
+  Shopify: "shopify.com",
+  BigCommerce: "bigcommerce.com",
+  "Shopify Plus": "shopify.com",
+  Magento: "adobe.com",
+  Zoom: "zoom.us",
+  "Google Meet": "meet.google.com",
+  Skype: "skype.com",
+  "Twilio Video": "twilio.com",
+  "1Password": "1password.com",
+  LastPass: "lastpass.com",
+  "1Password Business": "1password.com",
+  "LastPass Teams": "lastpass.com",
 };
 
 export function getSaasDomain(name: string): string | undefined {

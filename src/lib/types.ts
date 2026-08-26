@@ -4,7 +4,10 @@ export type ToolCategory =
   | "DevTools"
   | "CRM"
   | "AI"
-  | "Storage";
+  | "Storage"
+  | "Ecommerce"
+  | "VideoConferencing"
+  | "PasswordManagers";
 
 export type ToolTag = "docker-ready" | "1-click-deploy" | "permissive-license";
 

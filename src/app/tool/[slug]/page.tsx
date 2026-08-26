@@ -12,6 +12,7 @@ import { JsonLd } from "@/components/site/json-ld";
 import { LogoImage } from "@/components/site/logo-image";
 import { getSaasDomain } from "@/lib/saas-domains";
 import { categoryColors } from "@/lib/category-colors";
+import { getComparisonsForTool } from "@/lib/comparisons";
 import { siteConfig } from "@/lib/site-config";
 import { slugify, cn, formatStars, getHostname } from "@/lib/utils";
 
@@ -49,6 +50,7 @@ export default async function ToolPage({ params }: PageProps) {
 
   const category = getCategoryMeta(tool.category);
   const palette = categoryColors[tool.category];
+  const comparisons = getComparisonsForTool(tool.slug).slice(0, 5);
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
@@ -222,7 +224,10 @@ export default async function ToolPage({ params }: PageProps) {
               Copia este <code className="rounded bg-slate-100 px-1.5 py-0.5">docker-compose.yml</code>,
               ajusta las contraseñas de ejemplo y ejecuta{" "}
               <code className="rounded bg-slate-100 px-1.5 py-0.5">docker compose up -d</code> en tu
-              servidor.
+              servidor.{" "}
+              <Link href="/guias/desplegar-con-docker" className="font-medium text-emerald-700 hover:underline">
+                Ver la guía completa paso a paso →
+              </Link>
             </p>
             <DockerComposeBlock code={tool.dockerCompose} />
           </section>
@@ -246,6 +251,27 @@ export default async function ToolPage({ params }: PageProps) {
               ))}
             </div>
           </div>
+
+          {comparisons.length > 0 && (
+            <div className="rounded-xl border border-slate-200 p-6">
+              <p className="mb-3 text-sm font-semibold text-slate-900">Comparativas cara a cara</p>
+              <div className="flex flex-col gap-2">
+                {comparisons.map((comparison) => {
+                  const other = comparison.toolA.slug === tool.slug ? comparison.toolB : comparison.toolA;
+                  return (
+                    <Link
+                      key={comparison.pairSlug}
+                      href={`/comparar/${comparison.pairSlug}`}
+                      className={cn(buttonVariants({ variant: "outline", size: "sm" }), "justify-between")}
+                    >
+                      {tool.name} vs {other.name}
+                      <ExternalLink size={14} />
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </aside>
       </div>
     </div>

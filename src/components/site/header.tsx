@@ -4,6 +4,7 @@ import { siteConfig } from "@/lib/site-config";
 
 const navLinks = [
   { href: "/#categorias", label: "Categorías" },
+  { href: "/guias/desplegar-con-docker", label: "Guía de despliegue" },
   { href: "/hosting-deals", label: "Hosting & Descuentos" },
   { href: "/#destacadas", label: "Destacadas" },
 ];

@@ -11,7 +11,10 @@ export interface CategoryMeta {
     | "terminal"
     | "users"
     | "sparkles"
-    | "database";
+    | "database"
+    | "shopping-cart"
+    | "video"
+    | "key-round";
 }
 
 export const categories: CategoryMeta[] = [
@@ -59,6 +62,27 @@ export const categories: CategoryMeta[] = [
     label: "Almacenamiento",
     description: "Guarda archivos y datos en tu propia infraestructura.",
     icon: "database",
+  },
+  {
+    id: "Ecommerce",
+    slug: "ecommerce",
+    label: "E-commerce",
+    description: "Monta tu tienda online sin comisiones por venta ni cuotas mensuales.",
+    icon: "shopping-cart",
+  },
+  {
+    id: "VideoConferencing",
+    slug: "videoconferencia",
+    label: "Videoconferencia",
+    description: "Videollamadas y webinars sin límite de minutos ni participantes.",
+    icon: "video",
+  },
+  {
+    id: "PasswordManagers",
+    slug: "gestores-de-contrasenas",
+    label: "Gestores de Contraseñas",
+    description: "Guarda las contraseñas de tu equipo bajo tu propia infraestructura.",
+    icon: "key-round",
   },
 ];
 

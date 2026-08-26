@@ -4269,6 +4269,854 @@ volumes:
     cons: ["La calidad de resultados depende de los motores fuente disponibles"],
     tags: ["docker-ready", "1-click-deploy"],
   },
+
+  // ---------- E-commerce ----------
+  {
+    id: "medusa",
+    name: "Medusa",
+    slug: "medusa",
+    replaces: ["Shopify"],
+    category: "Ecommerce",
+    description:
+      "Medusa es una plataforma de comercio headless en Node.js con módulos de pedidos, inventario y precios totalmente personalizables por código, pensada como alternativa a Shopify para desarrolladores.",
+    shortDescription: "E-commerce headless en Node.js, alternativa a Shopify para developers.",
+    websiteUrl: "https://medusajs.com",
+    githubUrl: "https://github.com/medusajs/medusa",
+    starsCount: 26000,
+    license: "MIT",
+    dockerCompose: `version: "3.9"
+services:
+  medusa:
+    image: medusajs/medusa:latest
+    restart: unless-stopped
+    ports:
+      - "9000:9000"
+    environment:
+      - DATABASE_URL=postgres://medusa:medusa@medusa-db:5432/medusa
+      - REDIS_URL=redis://medusa-redis:6379
+      - JWT_SECRET=change-me-super-secret
+      - COOKIE_SECRET=change-me-super-secret
+    depends_on:
+      - medusa-db
+      - medusa-redis
+  medusa-db:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=medusa
+      - POSTGRES_PASSWORD=medusa
+      - POSTGRES_DB=medusa
+    volumes:
+      - medusa_pg_data:/var/lib/postgresql/data
+  medusa-redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+volumes:
+  medusa_pg_data:
+`,
+    affiliateLinks,
+    features: ["Módulos de pedidos, inventario y precios personalizables", "API REST y admin panel incluidos", "Multi-región y multi-moneda nativo"],
+    techStack: ["Node.js", "PostgreSQL", "Redis"],
+    pros: ["Sin comisión por venta, a diferencia de Shopify"],
+    cons: ["Requiere conocimientos de desarrollo para personalizarlo a fondo"],
+    tags: ["docker-ready", "permissive-license"],
+    featured: true,
+  },
+  {
+    id: "saleor",
+    name: "Saleor",
+    slug: "saleor",
+    replaces: ["Shopify Plus"],
+    category: "Ecommerce",
+    description:
+      "Saleor es una plataforma de comercio headless GraphQL-first, con checkout personalizable y arquitectura orientada a eventos, pensada para tiendas de gran escala como alternativa a Shopify Plus.",
+    shortDescription: "E-commerce headless GraphQL para gran escala, alternativa a Shopify Plus.",
+    websiteUrl: "https://saleor.io",
+    githubUrl: "https://github.com/saleor/saleor",
+    starsCount: 21000,
+    license: "BSD-3-Clause",
+    dockerCompose: `version: "3.9"
+services:
+  saleor:
+    image: ghcr.io/saleor/saleor:latest
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgres://saleor:saleor@saleor-db:5432/saleor
+      - REDIS_URL=redis://saleor-redis:6379
+      - SECRET_KEY=change-me-super-secret
+    depends_on:
+      - saleor-db
+      - saleor-redis
+  saleor-db:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=saleor
+      - POSTGRES_PASSWORD=saleor
+      - POSTGRES_DB=saleor
+    volumes:
+      - saleor_pg_data:/var/lib/postgresql/data
+  saleor-redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+volumes:
+  saleor_pg_data:
+`,
+    affiliateLinks,
+    features: ["API GraphQL completa", "Checkout totalmente personalizable", "Arquitectura orientada a eventos (webhooks)"],
+    techStack: ["Python", "Django", "GraphQL", "PostgreSQL"],
+    pros: ["Pensado desde el diseño para tiendas de tráfico muy alto"],
+    cons: ["Curva de aprendizaje mayor que plataformas todo-en-uno"],
+    tags: ["docker-ready", "permissive-license"],
+  },
+  {
+    id: "vendure",
+    name: "Vendure",
+    slug: "vendure",
+    replaces: ["Shopify"],
+    category: "Ecommerce",
+    description:
+      "Vendure es un framework de comercio headless en TypeScript con un sistema de plugins muy flexible, pensado para desarrolladores que quieren extender cada parte de su tienda como código.",
+    shortDescription: "Framework de e-commerce en TypeScript, alternativa a Shopify para devs.",
+    websiteUrl: "https://www.vendure.io",
+    githubUrl: "https://github.com/vendure-ecommerce/vendure",
+    starsCount: 6000,
+    license: "MIT",
+    dockerCompose: `version: "3.9"
+services:
+  vendure:
+    image: vendureio/server:latest
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_HOST=vendure-db
+      - DB_NAME=vendure
+      - DB_USERNAME=vendure
+      - DB_PASSWORD=vendure
+      - COOKIE_SECRET=change-me-super-secret
+    depends_on:
+      - vendure-db
+  vendure-db:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=vendure
+      - POSTGRES_PASSWORD=vendure
+      - POSTGRES_DB=vendure
+    volumes:
+      - vendure_pg_data:/var/lib/postgresql/data
+volumes:
+  vendure_pg_data:
+`,
+    affiliateLinks,
+    features: ["Sistema de plugins en TypeScript", "API GraphQL autogenerada", "Multi-tienda y multi-canal de venta"],
+    techStack: ["TypeScript", "NestJS", "PostgreSQL"],
+    pros: ["Experiencia de desarrollador muy cuidada (TypeScript end-to-end)"],
+    cons: ["Ecosistema de plugins más pequeño que Shopify App Store"],
+    tags: ["docker-ready", "1-click-deploy", "permissive-license"],
+  },
+  {
+    id: "bagisto",
+    name: "Bagisto",
+    slug: "bagisto",
+    replaces: ["Shopify"],
+    category: "Ecommerce",
+    description:
+      "Bagisto es una plataforma de e-commerce construida sobre Laravel y Vue.js, con multi-tienda, multi-idioma y un marketplace de extensiones, como alternativa gratuita a Shopify.",
+    shortDescription: "E-commerce sobre Laravel, alternativa gratuita a Shopify.",
+    websiteUrl: "https://bagisto.com",
+    githubUrl: "https://github.com/bagisto/bagisto",
+    starsCount: 9000,
+    license: "MIT",
+    dockerCompose: `version: "3.9"
+services:
+  bagisto:
+    image: webkul/bagisto:latest
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_HOST=bagisto-db
+      - DB_DATABASE=bagisto
+      - DB_USERNAME=bagisto
+      - DB_PASSWORD=bagisto
+    depends_on:
+      - bagisto-db
+  bagisto-db:
+    image: mariadb:11
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=bagisto
+      - MYSQL_USER=bagisto
+      - MYSQL_PASSWORD=bagisto
+    volumes:
+      - bagisto_db_data:/var/lib/mysql
+volumes:
+  bagisto_db_data:
+`,
+    affiliateLinks,
+    features: ["Multi-tienda y multi-idioma", "Marketplace de extensiones", "Panel de administración en Vue.js"],
+    techStack: ["PHP", "Laravel", "Vue.js", "MySQL"],
+    pros: ["100% gratuito, sin ediciones de pago ocultas"],
+    cons: ["Comunidad más pequeña que Shopify o WooCommerce"],
+    tags: ["docker-ready", "1-click-deploy", "permissive-license"],
+  },
+  {
+    id: "prestashop",
+    name: "PrestaShop",
+    slug: "prestashop",
+    replaces: ["Shopify"],
+    category: "Ecommerce",
+    description:
+      "PrestaShop es una de las plataformas de tienda online open source más establecidas, con miles de módulos y plantillas, muy popular en Europa como alternativa a Shopify.",
+    shortDescription: "Plataforma de tienda online establecida, alternativa europea a Shopify.",
+    websiteUrl: "https://www.prestashop.com",
+    githubUrl: "https://github.com/PrestaShop/PrestaShop",
+    starsCount: 8000,
+    license: "OSL-3.0",
+    dockerCompose: `version: "3.9"
+services:
+  prestashop:
+    image: prestashop/prestashop:latest
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      - DB_SERVER=prestashop-db
+      - DB_NAME=prestashop
+      - DB_USER=prestashop
+      - DB_PASSWD=prestashop
+    depends_on:
+      - prestashop-db
+  prestashop-db:
+    image: mariadb:11
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=prestashop
+      - MYSQL_USER=prestashop
+      - MYSQL_PASSWORD=prestashop
+    volumes:
+      - prestashop_db_data:/var/lib/mysql
+volumes:
+  prestashop_db_data:
+`,
+    affiliateLinks,
+    features: ["Miles de módulos y plantillas", "Gestión multi-tienda", "Fuerte adopción en el mercado europeo"],
+    techStack: ["PHP", "Symfony", "MySQL"],
+    pros: ["Ecosistema maduro con muchos años de desarrollo"],
+    cons: ["Interfaz de administración se siente menos moderna que Shopify"],
+    tags: ["docker-ready", "1-click-deploy"],
+  },
+  {
+    id: "sylius",
+    name: "Sylius",
+    slug: "sylius",
+    replaces: ["Shopify"],
+    category: "Ecommerce",
+    description:
+      "Sylius es un framework de e-commerce construido sobre Symfony, orientado a desarrolladores que necesitan máxima flexibilidad para tiendas B2B o B2C complejas.",
+    shortDescription: "Framework de e-commerce sobre Symfony, alternativa flexible a Shopify.",
+    websiteUrl: "https://sylius.com",
+    githubUrl: "https://github.com/Sylius/Sylius",
+    starsCount: 8000,
+    license: "MIT",
+    dockerCompose: `version: "3.9"
+services:
+  sylius:
+    image: ghcr.io/sylius/sylius:latest
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      - DATABASE_URL=mysql://sylius:sylius@sylius-db:3306/sylius
+    depends_on:
+      - sylius-db
+  sylius-db:
+    image: mariadb:11
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=sylius
+      - MYSQL_USER=sylius
+      - MYSQL_PASSWORD=sylius
+    volumes:
+      - sylius_db_data:/var/lib/mysql
+volumes:
+  sylius_db_data:
+`,
+    affiliateLinks,
+    features: ["Arquitectura Symfony extensible", "Soporta tiendas B2B y B2C", "API REST completa"],
+    techStack: ["PHP", "Symfony", "MySQL"],
+    pros: ["Máxima flexibilidad para lógica de negocio compleja"],
+    cons: ["Requiere experiencia sólida en Symfony para sacarle partido"],
+    tags: ["docker-ready", "permissive-license"],
+  },
+  {
+    id: "shopware",
+    name: "Shopware",
+    slug: "shopware",
+    replaces: ["Shopify", "Magento"],
+    category: "Ecommerce",
+    description:
+      "Shopware es una plataforma de e-commerce alemana con un núcleo open source potente, editor visual de tienda y arquitectura orientada a APIs, como alternativa a Shopify o Magento.",
+    shortDescription: "E-commerce con editor visual y API-first, alternativa a Shopify/Magento.",
+    websiteUrl: "https://www.shopware.com",
+    githubUrl: "https://github.com/shopware/shopware",
+    starsCount: 7000,
+    license: "MIT",
+    dockerCompose: `version: "3.9"
+services:
+  shopware:
+    image: dockware/play:latest
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - shopware_data:/var/www/html
+volumes:
+  shopware_data:
+`,
+    affiliateLinks,
+    features: ["Editor visual de tienda (Shopping Experiences)", "API-first con administración desacoplada", "Marketplace de extensiones"],
+    techStack: ["PHP", "Symfony", "Vue.js", "MySQL"],
+    pros: ["Editor visual muy potente para landing pages de producto"],
+    cons: ["Algunas funciones avanzadas solo en la edición Commercial"],
+    tags: ["docker-ready", "1-click-deploy", "permissive-license"],
+  },
+  {
+    id: "magento-open-source",
+    name: "Magento Open Source",
+    slug: "magento-open-source",
+    replaces: ["Shopify Plus", "BigCommerce"],
+    category: "Ecommerce",
+    description:
+      "Magento Open Source (Adobe Commerce Community Edition) es una de las plataformas de e-commerce más potentes y personalizables, usada por grandes catálogos, como alternativa a Shopify Plus.",
+    shortDescription: "E-commerce empresarial muy personalizable, alternativa a Shopify Plus.",
+    websiteUrl: "https://business.adobe.com/products/magento/magento-open-source.html",
+    githubUrl: "https://github.com/magento/magento2",
+    starsCount: 10000,
+    license: "OSL-3.0",
+    dockerCompose: `version: "3.9"
+services:
+  magento:
+    image: markoshust/magento-nginx:latest
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - MYSQL_HOST=magento-db
+    depends_on:
+      - magento-db
+  magento-db:
+    image: mariadb:11
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=magento
+    volumes:
+      - magento_db_data:/var/lib/mysql
+volumes:
+  magento_db_data:
+`,
+    affiliateLinks,
+    features: ["Catálogos masivos con atributos complejos", "Multi-tienda y multi-idioma nativo", "Ecosistema de extensiones muy amplio"],
+    techStack: ["PHP", "MySQL", "Elasticsearch"],
+    pros: ["El más potente para catálogos B2B/B2C muy grandes"],
+    cons: ["Requisitos de servidor considerablemente más altos"],
+    tags: ["docker-ready"],
+  },
+  {
+    id: "woocommerce",
+    name: "WooCommerce",
+    slug: "woocommerce",
+    replaces: ["Shopify"],
+    category: "Ecommerce",
+    description:
+      "WooCommerce convierte cualquier WordPress en una tienda online completa, con el ecosistema de plugins más grande del mundo, como alternativa gratuita a Shopify para quien ya usa WordPress.",
+    shortDescription: "E-commerce sobre WordPress, alternativa gratuita a Shopify.",
+    websiteUrl: "https://woocommerce.com",
+    githubUrl: "https://github.com/woocommerce/woocommerce",
+    starsCount: 9000,
+    license: "GPL-3.0",
+    dockerCompose: `version: "3.9"
+services:
+  wordpress:
+    image: wordpress:latest
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      - WORDPRESS_DB_HOST=woocommerce-db
+      - WORDPRESS_DB_USER=woocommerce
+      - WORDPRESS_DB_PASSWORD=woocommerce
+      - WORDPRESS_DB_NAME=woocommerce
+    volumes:
+      - woocommerce_data:/var/www/html
+    depends_on:
+      - woocommerce-db
+  woocommerce-db:
+    image: mariadb:11
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=woocommerce
+      - MYSQL_USER=woocommerce
+      - MYSQL_PASSWORD=woocommerce
+    volumes:
+      - woocommerce_db_data:/var/lib/mysql
+volumes:
+  woocommerce_data:
+  woocommerce_db_data:
+`,
+    affiliateLinks,
+    features: ["El ecosistema de plugins más grande del mundo", "Se integra con cualquier tema de WordPress", "Miles de pasarelas de pago soportadas"],
+    techStack: ["PHP", "WordPress", "MySQL"],
+    pros: ["Ideal si tu sitio ya corre sobre WordPress"],
+    cons: ["El rendimiento depende mucho de los plugins que instales"],
+    tags: ["docker-ready", "1-click-deploy"],
+  },
+
+  // ---------- Videoconferencia ----------
+  {
+    id: "jitsi-meet",
+    name: "Jitsi Meet",
+    slug: "jitsi-meet",
+    replaces: ["Zoom", "Google Meet"],
+    category: "VideoConferencing",
+    description:
+      "Jitsi Meet es la plataforma de videollamadas open source más popular, sin límite de tiempo ni participantes, sin necesidad de cuenta para unirse, como alternativa directa a Zoom.",
+    shortDescription: "Videollamadas sin límites ni cuenta, alternativa directa a Zoom.",
+    websiteUrl: "https://jitsi.org",
+    githubUrl: "https://github.com/jitsi/jitsi-meet",
+    starsCount: 24000,
+    license: "Apache-2.0",
+    dockerCompose: `version: "3.9"
+services:
+  jitsi-web:
+    image: jitsi/web:latest
+    restart: unless-stopped
+    ports:
+      - "8443:443"
+    environment:
+      - PUBLIC_URL=https://localhost:8443
+    depends_on:
+      - jitsi-prosody
+  jitsi-prosody:
+    image: jitsi/prosody:latest
+    restart: unless-stopped
+  jitsi-jicofo:
+    image: jitsi/jicofo:latest
+    restart: unless-stopped
+  jitsi-jvb:
+    image: jitsi/jvb:latest
+    restart: unless-stopped
+    ports:
+      - "10000:10000/udp"
+`,
+    affiliateLinks,
+    features: ["Sin límite de tiempo ni participantes", "No requiere cuenta para unirse", "Grabación y streaming a YouTube"],
+    techStack: ["React", "WebRTC", "XMPP"],
+    pros: ["Gratis y sin límites artificiales de la versión SaaS"],
+    cons: ["El stack completo tiene 4 servicios que coordinar"],
+    tags: ["docker-ready"],
+    featured: true,
+  },
+  {
+    id: "bigbluebutton",
+    name: "BigBlueButton",
+    slug: "bigbluebutton",
+    replaces: ["Zoom"],
+    category: "VideoConferencing",
+    description:
+      "BigBlueButton es una plataforma de videoconferencia orientada a educación, con pizarra colaborativa, salas de grupo y encuestas integradas, como alternativa a Zoom para instituciones educativas.",
+    shortDescription: "Videoconferencia enfocada en educación, alternativa a Zoom.",
+    websiteUrl: "https://bigbluebutton.org",
+    githubUrl: "https://github.com/bigbluebutton/bigbluebutton",
+    starsCount: 5000,
+    license: "LGPL-3.0",
+    dockerCompose: `# BigBlueButton requiere su instalador oficial (bbb-install.sh) sobre
+# Ubuntu para producción; no es un docker-compose de un solo comando.
+version: "3.9"
+services:
+  bigbluebutton:
+    image: bigbluebutton/bbb-install:latest
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - bbb_data:/var/bigbluebutton
+volumes:
+  bbb_data:
+`,
+    affiliateLinks,
+    features: ["Pizarra colaborativa multiusuario", "Salas de grupo (breakout rooms)", "Encuestas y grabación de clases"],
+    techStack: ["Java", "HTML5", "WebRTC"],
+    pros: ["El más completo para casos de uso educativos"],
+    cons: ["Instalación de producción más compleja que un simple docker-compose"],
+    tags: [],
+  },
+  {
+    id: "livekit",
+    name: "LiveKit",
+    slug: "livekit",
+    replaces: ["Twilio Video"],
+    category: "VideoConferencing",
+    description:
+      "LiveKit es una infraestructura WebRTC open source para desarrolladores que quieren construir sus propias apps de video/audio en tiempo real, como alternativa a Twilio Video o Zoom SDK.",
+    shortDescription: "Infraestructura WebRTC para desarrolladores, alternativa a Twilio Video.",
+    websiteUrl: "https://livekit.io",
+    githubUrl: "https://github.com/livekit/livekit",
+    starsCount: 14000,
+    license: "Apache-2.0",
+    dockerCompose: `version: "3.9"
+services:
+  livekit:
+    image: livekit/livekit-server:latest
+    restart: unless-stopped
+    ports:
+      - "7880:7880"
+      - "7881:7881"
+      - "50000-50100:50000-50100/udp"
+    command: ["--dev"]
+    volumes:
+      - livekit_data:/data
+volumes:
+  livekit_data:
+`,
+    affiliateLinks,
+    features: ["SDKs para web, móvil y backend", "Escalable a miles de participantes", "Grabación y streaming compuesto"],
+    techStack: ["Go", "WebRTC"],
+    pros: ["Pensado para integrarse dentro de tu propio producto"],
+    cons: ["Requiere desarrollo propio, no es una app de videollamadas lista para usar"],
+    tags: ["docker-ready", "permissive-license"],
+  },
+  {
+    id: "openvidu",
+    name: "OpenVidu",
+    slug: "openvidu",
+    replaces: ["Twilio Video"],
+    category: "VideoConferencing",
+    description:
+      "OpenVidu simplifica la integración de videollamadas WebRTC en tus propias aplicaciones, con SDKs de alto nivel y un servidor auto-hospedable, como alternativa a Twilio Video o Zoom SDK.",
+    shortDescription: "Plataforma WebRTC fácil de integrar, alternativa a Twilio Video.",
+    websiteUrl: "https://openvidu.io",
+    githubUrl: "https://github.com/OpenVidu/openvidu",
+    starsCount: 3000,
+    license: "Apache-2.0",
+    dockerCompose: `version: "3.9"
+services:
+  openvidu:
+    image: openvidu/openvidu-server:latest
+    restart: unless-stopped
+    ports:
+      - "4443:4443"
+    environment:
+      - OPENVIDU_SECRET=change-me-super-secret
+      - OPENVIDU_DOMAIN_OR_PUBLIC_IP=localhost
+volumes: {}
+`,
+    affiliateLinks,
+    features: ["SDKs de alto nivel para web y móvil", "Grabación de sesiones incluida", "Despliegue con un solo contenedor para empezar"],
+    techStack: ["Java", "WebRTC"],
+    pros: ["Más rápido de integrar que construir sobre WebRTC puro"],
+    cons: ["Escalar a producción real requiere arquitectura adicional (media nodes)"],
+    tags: ["docker-ready", "permissive-license"],
+  },
+  {
+    id: "galene",
+    name: "Galène",
+    slug: "galene",
+    replaces: ["Zoom"],
+    category: "VideoConferencing",
+    description:
+      "Galène es un servidor de videoconferencia SFU extremadamente ligero, capaz de correr en hardware modesto y soportar cientos de participantes, ideal para clases o reuniones grandes auto-hospedadas.",
+    shortDescription: "Servidor de videoconferencia ultraligero, alternativa a Zoom en hardware modesto.",
+    websiteUrl: "https://galene.org",
+    githubUrl: "https://github.com/jech/galene",
+    starsCount: 2000,
+    license: "MIT",
+    dockerCompose: `version: "3.9"
+services:
+  galene:
+    image: dscheirer/galene:latest
+    restart: unless-stopped
+    ports:
+      - "8443:8443"
+    volumes:
+      - galene_data:/opt/galene/data
+volumes:
+  galene_data:
+`,
+    affiliateLinks,
+    features: ["Extremadamente ligero (un solo binario en Go)", "Soporta cientos de participantes por sala", "Grabación local de sesiones"],
+    techStack: ["Go", "WebRTC"],
+    pros: ["Corre en servidores muy modestos comparado con Jitsi/BBB"],
+    cons: ["Interfaz más básica, menos features que Zoom"],
+    tags: ["docker-ready", "1-click-deploy", "permissive-license"],
+  },
+  {
+    id: "jami",
+    name: "Jami",
+    slug: "jami",
+    replaces: ["Skype"],
+    category: "VideoConferencing",
+    description:
+      "Jami ofrece videollamadas, mensajería y llamadas de voz totalmente descentralizadas (P2P), sin ningún servidor central que intermedie tus comunicaciones, como alternativa privada a Skype.",
+    shortDescription: "Videollamadas y chat 100% P2P sin servidor central, alternativa a Skype.",
+    websiteUrl: "https://jami.net",
+    githubUrl: "https://github.com/savoirfairelinux/jami-daemon",
+    starsCount: 2000,
+    license: "GPL-3.0",
+    dockerCompose: `version: "3.9"
+services:
+  jami-daemon:
+    image: savoirfairelinux/jami-daemon:latest
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - jami_data:/root/.local/share/jami
+volumes:
+  jami_data:
+`,
+    affiliateLinks,
+    features: ["Comunicación 100% P2P, sin servidor central", "Video, voz, mensajería y compartir pantalla", "Apps para escritorio y móvil"],
+    techStack: ["C++", "QML"],
+    pros: ["Ningún servidor (ni siquiera propio) puede ver tus llamadas"],
+    cons: ["No pensado para webinars o reuniones masivas de empresa"],
+    tags: [],
+  },
+  {
+    id: "neko",
+    name: "Neko",
+    slug: "neko",
+    replaces: ["Zoom"],
+    category: "VideoConferencing",
+    description:
+      "Neko crea una sala de navegador compartida en streaming donde varias personas ven y controlan el mismo navegador virtual a la vez, ideal para watch parties o navegación colaborativa.",
+    shortDescription: "Navegador virtual compartido en streaming, para watch parties y colaboración.",
+    websiteUrl: "https://neko.m1k1o.net",
+    githubUrl: "https://github.com/m1k1o/neko",
+    starsCount: 9000,
+    license: "Apache-2.0",
+    dockerCompose: `version: "3.9"
+services:
+  neko:
+    image: m1k1o/neko:firefox
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+      - "52000-52100:52000-52100/udp"
+    environment:
+      - NEKO_SCREEN=1920x1080@30
+      - NEKO_PASSWORD=change-me
+      - NEKO_PASSWORD_ADMIN=change-me-admin
+    shm_size: "2gb"
+`,
+    affiliateLinks,
+    features: ["Navegador compartido en tiempo real", "Chat de voz y texto integrado", "Ideal para watch parties o soporte técnico remoto"],
+    techStack: ["Go", "WebRTC", "GStreamer"],
+    pros: ["Caso de uso único que Zoom no cubre bien (navegador compartido real)"],
+    cons: ["No es un sustituto general de videollamadas de trabajo"],
+    tags: ["docker-ready", "1-click-deploy", "permissive-license"],
+  },
+
+  // ---------- Gestores de Contraseñas ----------
+  {
+    id: "vaultwarden",
+    name: "Vaultwarden",
+    slug: "vaultwarden",
+    replaces: ["1Password", "LastPass"],
+    category: "PasswordManagers",
+    description:
+      "Vaultwarden es una implementación ligera y no oficial del servidor de Bitwarden en Rust, compatible con todos los clientes oficiales de Bitwarden, ideal para auto-hospedar tu propio gestor de contraseñas.",
+    shortDescription: "Servidor Bitwarden ligero en Rust, alternativa auto-hospedada a 1Password.",
+    websiteUrl: "https://github.com/dani-garcia/vaultwarden",
+    githubUrl: "https://github.com/dani-garcia/vaultwarden",
+    starsCount: 40000,
+    license: "GPL-3.0",
+    dockerCompose: `version: "3.9"
+services:
+  vaultwarden:
+    image: vaultwarden/server:latest
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      - ADMIN_TOKEN=change-me-super-secret
+      - SIGNUPS_ALLOWED=false
+    volumes:
+      - vaultwarden_data:/data
+volumes:
+  vaultwarden_data:
+`,
+    affiliateLinks,
+    features: ["Compatible con todos los clientes oficiales de Bitwarden", "Uso de recursos mínimo (ideal para VPS pequeños)", "Panel de administración propio"],
+    techStack: ["Rust", "SQLite"],
+    pros: ["El gestor de contraseñas auto-hospedado más ligero y popular"],
+    cons: ["No es el servidor oficial de Bitwarden, es una reimplementación de la comunidad"],
+    tags: ["docker-ready", "1-click-deploy"],
+    featured: true,
+  },
+  {
+    id: "bitwarden-self-hosted",
+    name: "Bitwarden (self-hosted)",
+    slug: "bitwarden-self-hosted",
+    replaces: ["1Password", "LastPass"],
+    category: "PasswordManagers",
+    description:
+      "Bitwarden ofrece su servidor oficial completo para auto-hospedar, con todas las funciones de la versión cloud (organizaciones, SSO, informes de seguridad) bajo tu propia infraestructura.",
+    shortDescription: "Servidor oficial de Bitwarden auto-hospedado, alternativa completa a 1Password.",
+    websiteUrl: "https://bitwarden.com/host",
+    githubUrl: "https://github.com/bitwarden/server",
+    starsCount: 16000,
+    license: "AGPL-3.0",
+    dockerCompose: `version: "3.9"
+services:
+  bitwarden:
+    image: bitwarden/self-host:latest
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - globalSettings__baseServiceUri=http://localhost:8080
+    volumes:
+      - bitwarden_data:/etc/bitwarden
+volumes:
+  bitwarden_data:
+`,
+    affiliateLinks,
+    features: ["Organizaciones y grupos empresariales", "Informes de seguridad y SSO", "Todas las funciones de la versión cloud oficial"],
+    techStack: [".NET", "SQL Server"],
+    pros: ["Es el servidor oficial, con soporte directo de Bitwarden"],
+    cons: ["Bastante más pesado en recursos que Vaultwarden"],
+    tags: ["docker-ready"],
+  },
+  {
+    id: "passbolt",
+    name: "Passbolt",
+    slug: "passbolt",
+    replaces: ["1Password Business"],
+    category: "PasswordManagers",
+    description:
+      "Passbolt es un gestor de contraseñas para equipos con cifrado OpenPGP, permisos granulares por carpeta y auditoría, diseñado específicamente para organizaciones que necesitan control fino.",
+    shortDescription: "Gestor de contraseñas en equipo con cifrado OpenPGP, alternativa a 1Password Business.",
+    websiteUrl: "https://www.passbolt.com",
+    githubUrl: "https://github.com/passbolt/passbolt_api",
+    starsCount: 4000,
+    license: "AGPL-3.0",
+    dockerCompose: `version: "3.9"
+services:
+  passbolt:
+    image: passbolt/passbolt:latest
+    restart: unless-stopped
+    ports:
+      - "443:443"
+    environment:
+      - DATASOURCES_DEFAULT_HOST=passbolt-db
+      - DATASOURCES_DEFAULT_USERNAME=passbolt
+      - DATASOURCES_DEFAULT_PASSWORD=passbolt
+    depends_on:
+      - passbolt-db
+  passbolt-db:
+    image: mariadb:11
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=passbolt
+      - MYSQL_USER=passbolt
+      - MYSQL_PASSWORD=passbolt
+    volumes:
+      - passbolt_db_data:/var/lib/mysql
+volumes:
+  passbolt_db_data:
+`,
+    affiliateLinks,
+    features: ["Cifrado OpenPGP de extremo a extremo", "Permisos granulares por carpeta y grupo", "Auditoría completa de accesos"],
+    techStack: ["PHP", "CakePHP", "MySQL"],
+    pros: ["Pensado específicamente para el control de acceso en equipos"],
+    cons: ["La configuración de GPG inicial es más técnica que Vaultwarden"],
+    tags: ["docker-ready"],
+  },
+  {
+    id: "psono",
+    name: "Psono",
+    slug: "psono",
+    replaces: ["LastPass Teams"],
+    category: "PasswordManagers",
+    description:
+      "Psono es un gestor de contraseñas para equipos con cifrado de extremo a extremo, gestión de secretos de API y extensiones de navegador, como alternativa auto-hospedable a LastPass Teams.",
+    shortDescription: "Gestor de contraseñas y secretos para equipos, alternativa a LastPass Teams.",
+    websiteUrl: "https://psono.com",
+    githubUrl: "https://github.com/psono/psono-server",
+    starsCount: 2000,
+    license: "AGPL-3.0",
+    dockerCompose: `version: "3.9"
+services:
+  psono:
+    image: psono/psono-server:latest
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - DATABASE_HOST=psono-db
+      - DATABASE_USER=psono
+      - DATABASE_PASSWORD=psono
+    depends_on:
+      - psono-db
+  psono-db:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=psono
+      - POSTGRES_PASSWORD=psono
+      - POSTGRES_DB=psono
+    volumes:
+      - psono_pg_data:/var/lib/postgresql/data
+volumes:
+  psono_pg_data:
+`,
+    affiliateLinks,
+    features: ["Gestión de secretos y claves de API además de contraseñas", "Cifrado de extremo a extremo", "Extensiones para todos los navegadores"],
+    techStack: ["Python", "Django", "PostgreSQL"],
+    pros: ["Cubre también secretos de infraestructura, no solo contraseñas personales"],
+    cons: ["Comunidad más pequeña que Vaultwarden o Bitwarden"],
+    tags: ["docker-ready"],
+  },
+  {
+    id: "keeweb",
+    name: "KeeWeb",
+    slug: "keeweb",
+    replaces: ["LastPass"],
+    category: "PasswordManagers",
+    description:
+      "KeeWeb es un cliente web y de escritorio para bases de datos KeePass (.kdbx), que puedes auto-hospedar como una app estática conectada a tu propio almacenamiento en la nube o servidor.",
+    shortDescription: "Cliente web para bóvedas KeePass, alternativa ligera a LastPass.",
+    websiteUrl: "https://keeweb.info",
+    githubUrl: "https://github.com/keeweb/keeweb",
+    starsCount: 10000,
+    license: "MIT",
+    dockerCompose: `version: "3.9"
+services:
+  keeweb:
+    image: antelle/keeweb:latest
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+volumes: {}
+`,
+    affiliateLinks,
+    features: ["Compatible con bóvedas .kdbx de KeePass", "Se conecta a Dropbox, Google Drive o WebDAV propio", "Funciona offline como PWA"],
+    techStack: ["JavaScript", "Electron"],
+    pros: ["Aprovecha el formato KeePass, muy auditado y maduro"],
+    cons: ["Es un cliente, no un servidor: la sincronización depende de otro backend"],
+    tags: ["docker-ready", "permissive-license"],
+  },
 ];
 
 export function getToolBySlug(slug: string): OpenSourceTool | undefined {
