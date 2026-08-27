@@ -14,7 +14,6 @@ import { getSaasDomain } from "@/lib/saas-domains";
 import { categoryColors } from "@/lib/category-colors";
 import { getComparisonsForTool } from "@/lib/comparisons";
 import { getGithubStats, formatRelativeDate } from "@/lib/github-stats";
-import { getMigrationGuidesForTool } from "@/data/migration-guides";
 import { siteConfig } from "@/lib/site-config";
 import { slugify, cn, formatStars, getHostname } from "@/lib/utils";
 
@@ -55,7 +54,8 @@ export default async function ToolPage({ params }: PageProps) {
   const category = getCategoryMeta(tool.category);
   const palette = categoryColors[tool.category];
   const comparisons = getComparisonsForTool(tool.slug).slice(0, 5);
-  const migrationGuides = getMigrationGuidesForTool(tool.slug);
+  const migrationFromSaas = tool.replaces[0];
+  const migrationGuideHref = `/guias/migrar/${slugify(migrationFromSaas)}/${tool.slug}`;
   const liveStats = await getGithubStats(tool.githubUrl);
 
   return (
@@ -271,23 +271,16 @@ export default async function ToolPage({ params }: PageProps) {
             </div>
           </div>
 
-          {migrationGuides.length > 0 && (
-            <div className="rounded-xl border border-slate-200 p-6">
-              <p className="mb-3 text-sm font-semibold text-slate-900">Guías de migración</p>
-              <div className="flex flex-col gap-2">
-                {migrationGuides.map((guide) => (
-                  <Link
-                    key={guide.path}
-                    href={guide.path}
-                    className={cn(buttonVariants({ variant: "outline", size: "sm" }), "justify-between")}
-                  >
-                    {guide.title}
-                    <ExternalLink size={14} />
-                  </Link>
-                ))}
-              </div>
-            </div>
-          )}
+          <div className="rounded-xl border border-slate-200 p-6">
+            <p className="mb-3 text-sm font-semibold text-slate-900">Guía de migración</p>
+            <Link
+              href={migrationGuideHref}
+              className={cn(buttonVariants({ variant: "outline", size: "sm" }), "w-full justify-between")}
+            >
+              Cómo migrar de {migrationFromSaas} a {tool.name}
+              <ExternalLink size={14} />
+            </Link>
+          </div>
 
           {comparisons.length > 0 && (
             <div className="rounded-xl border border-slate-200 p-6">

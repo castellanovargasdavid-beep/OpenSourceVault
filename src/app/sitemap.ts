@@ -4,6 +4,7 @@ import { categories } from "@/data/categories";
 import { getAllSaasSlugs } from "@/lib/alternatives";
 import { getAllComparisonSlugs } from "@/lib/comparisons";
 import { siteConfig } from "@/lib/site-config";
+import { slugify } from "@/lib/utils";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes: MetadataRoute.Sitemap = [
@@ -11,7 +12,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${siteConfig.url}/hosting-deals`, changeFrequency: "monthly", priority: 0.7 },
     { url: `${siteConfig.url}/guias/desplegar-con-docker`, changeFrequency: "monthly", priority: 0.7 },
     { url: `${siteConfig.url}/calculadora-ahorro`, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${siteConfig.url}/guias/migrar-de-airtable-a-baserow`, changeFrequency: "monthly", priority: 0.6 },
   ];
 
   const categoryRoutes: MetadataRoute.Sitemap = categories.map((category) => ({
@@ -38,11 +38,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
+  const migrationGuideRoutes: MetadataRoute.Sitemap = tools.map((tool) => ({
+    url: `${siteConfig.url}/guias/migrar/${slugify(tool.replaces[0])}/${tool.slug}`,
+    changeFrequency: "monthly",
+    priority: 0.6,
+  }));
+
   return [
     ...staticRoutes,
     ...categoryRoutes,
     ...toolRoutes,
     ...alternativeRoutes,
     ...comparisonRoutes,
+    ...migrationGuideRoutes,
   ];
 }
