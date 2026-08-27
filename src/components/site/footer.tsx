@@ -29,6 +29,11 @@ export function Footer() {
           <p className="text-sm font-semibold text-slate-900">Recursos</p>
           <ul className="mt-3 space-y-2">
             <li>
+              <Link href="/calculadora-ahorro" className="text-sm text-slate-500 hover:text-emerald-700">
+                Calculadora de ahorro
+              </Link>
+            </li>
+            <li>
               <Link href="/guias/desplegar-con-docker" className="text-sm text-slate-500 hover:text-emerald-700">
                 Guía de despliegue
               </Link>

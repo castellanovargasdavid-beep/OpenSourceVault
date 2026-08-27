@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Star, GitFork, ArrowRight } from "lucide-react";
+import { Star, GitFork, ArrowRight, BadgeCheck } from "lucide-react";
 import type { OpenSourceTool } from "@/lib/types";
 import { getCategoryMeta } from "@/data/categories";
 import { Badge } from "@/components/ui/badge";
@@ -20,7 +20,12 @@ export function ToolCard({ tool }: { tool: OpenSourceTool }) {
   const palette = categoryColors[tool.category];
 
   return (
-    <Card className={cn("group flex h-full flex-col transition-all hover:-translate-y-0.5 hover:shadow-lg", palette.borderHover)}>
+    <Card className={cn("group relative flex h-full flex-col transition-all hover:-translate-y-0.5 hover:shadow-lg", palette.borderHover)}>
+      {tool.sponsored && (
+        <span className="absolute -top-2.5 right-4 inline-flex items-center gap-1 rounded-full bg-slate-900 px-2.5 py-1 text-[10px] font-medium text-white shadow-sm">
+          <BadgeCheck size={11} /> Patrocinado
+        </span>
+      )}
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between gap-2">
           <div className="flex items-start gap-3">

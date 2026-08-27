@@ -10,6 +10,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: siteConfig.url, changeFrequency: "weekly", priority: 1 },
     { url: `${siteConfig.url}/hosting-deals`, changeFrequency: "monthly", priority: 0.7 },
     { url: `${siteConfig.url}/guias/desplegar-con-docker`, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${siteConfig.url}/calculadora-ahorro`, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${siteConfig.url}/guias/migrar-de-airtable-a-baserow`, changeFrequency: "monthly", priority: 0.6 },
   ];
 
   const categoryRoutes: MetadataRoute.Sitemap = categories.map((category) => ({

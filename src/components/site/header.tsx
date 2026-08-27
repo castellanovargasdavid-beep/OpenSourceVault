@@ -4,9 +4,9 @@ import { siteConfig } from "@/lib/site-config";
 
 const navLinks = [
   { href: "/#categorias", label: "Categorías" },
+  { href: "/calculadora-ahorro", label: "Calculadora de ahorro" },
   { href: "/guias/desplegar-con-docker", label: "Guía de despliegue" },
-  { href: "/hosting-deals", label: "Hosting & Descuentos" },
-  { href: "/#destacadas", label: "Destacadas" },
+  { href: "/hosting-deals", label: "Hosting" },
 ];
 
 export function Header() {
@@ -19,7 +19,7 @@ export function Header() {
           </span>
           <span>{siteConfig.name}</span>
         </Link>
-        <nav className="hidden items-center gap-6 md:flex">
+        <nav className="hidden items-center gap-5 lg:flex">
           {navLinks.map((link) => (
             <Link
               key={link.href}

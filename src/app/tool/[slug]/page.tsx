@@ -13,12 +13,16 @@ import { LogoImage } from "@/components/site/logo-image";
 import { getSaasDomain } from "@/lib/saas-domains";
 import { categoryColors } from "@/lib/category-colors";
 import { getComparisonsForTool } from "@/lib/comparisons";
+import { getGithubStats, formatRelativeDate } from "@/lib/github-stats";
+import { getMigrationGuidesForTool } from "@/data/migration-guides";
 import { siteConfig } from "@/lib/site-config";
 import { slugify, cn, formatStars, getHostname } from "@/lib/utils";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
+
+export const revalidate = 86400;
 
 export function generateStaticParams() {
   return tools.map((tool) => ({ slug: tool.slug }));
@@ -51,6 +55,8 @@ export default async function ToolPage({ params }: PageProps) {
   const category = getCategoryMeta(tool.category);
   const palette = categoryColors[tool.category];
   const comparisons = getComparisonsForTool(tool.slug).slice(0, 5);
+  const migrationGuides = getMigrationGuidesForTool(tool.slug);
+  const liveStats = await getGithubStats(tool.githubUrl);
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
@@ -115,11 +121,24 @@ export default async function ToolPage({ params }: PageProps) {
           <span className="inline-flex items-center gap-1.5">
             <GitFork size={16} /> Licencia {tool.license}
           </span>
-          {tool.starsCount && (
-            <span className="inline-flex items-center gap-1.5">
-              <Star size={16} className="text-amber-500" /> ~{formatStars(tool.starsCount)} estrellas
-              (estimado)
-            </span>
+          {liveStats ? (
+            <>
+              <span className="inline-flex items-center gap-1.5">
+                <Star size={16} className="text-amber-500" /> {formatStars(liveStats.stars)}{" "}
+                estrellas
+                <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-1.5 py-0.5 text-[10px] font-medium text-emerald-700">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> en vivo
+                </span>
+              </span>
+              <span>Actualizado {formatRelativeDate(liveStats.updatedAt)}</span>
+            </>
+          ) : (
+            tool.starsCount && (
+              <span className="inline-flex items-center gap-1.5">
+                <Star size={16} className="text-amber-500" /> ~{formatStars(tool.starsCount)}{" "}
+                estrellas (estimado)
+              </span>
+            )
           )}
           <a
             href={tool.websiteUrl}
@@ -251,6 +270,24 @@ export default async function ToolPage({ params }: PageProps) {
               ))}
             </div>
           </div>
+
+          {migrationGuides.length > 0 && (
+            <div className="rounded-xl border border-slate-200 p-6">
+              <p className="mb-3 text-sm font-semibold text-slate-900">Guías de migración</p>
+              <div className="flex flex-col gap-2">
+                {migrationGuides.map((guide) => (
+                  <Link
+                    key={guide.path}
+                    href={guide.path}
+                    className={cn(buttonVariants({ variant: "outline", size: "sm" }), "justify-between")}
+                  >
+                    {guide.title}
+                    <ExternalLink size={14} />
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
 
           {comparisons.length > 0 && (
             <div className="rounded-xl border border-slate-200 p-6">

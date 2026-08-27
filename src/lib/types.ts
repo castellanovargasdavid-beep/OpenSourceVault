@@ -36,4 +36,10 @@ export interface OpenSourceTool {
   cons: string[];
   tags: ToolTag[];
   featured?: boolean;
+  /**
+   * Marca un listado como patrocinado (listing pagado por el propio
+   * proyecto open-core). Ningún valor actual lo usa todavía — queda listo
+   * para activarlo cuando haya un acuerdo real con un sponsor.
+   */
+  sponsored?: boolean;
 }
