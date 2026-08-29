@@ -58,9 +58,22 @@ export function Footer({ locale = "es" }: { locale?: Locale }) {
         </div>
       </div>
       <div className="border-t border-slate-200 py-6">
-        <p className="mx-auto max-w-7xl px-4 text-xs text-slate-400 sm:px-6 lg:px-8">
-          © {siteConfig.year} {siteConfig.name}. {t.footer.disclosure}
-        </p>
+        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+          <p className="text-xs text-slate-400">
+            © {siteConfig.year} {siteConfig.name}. {t.footer.disclosure}
+          </p>
+          <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-400">
+            <Link href={localeHref("/privacy", locale)} className="hover:text-emerald-700">
+              {t.footer.privacidad}
+            </Link>
+            <Link href={localeHref("/terms", locale)} className="hover:text-emerald-700">
+              {t.footer.terminos}
+            </Link>
+            <Link href={localeHref("/affiliate-disclosure", locale)} className="hover:text-emerald-700">
+              {t.footer.divulgacionAfiliados}
+            </Link>
+          </div>
+        </div>
       </div>
     </footer>
   );

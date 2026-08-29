@@ -18,6 +18,9 @@ const en: Dictionary = {
     hostingDescuentos: "Hosting & Deals",
     herramientasDestacadas: "Featured tools",
     disclosure: "Some hosting links are affiliate links: we may earn a commission at no extra cost to you.",
+    privacidad: "Privacy",
+    terminos: "Terms of use",
+    divulgacionAfiliados: "Affiliate disclosure",
   },
   hero: {
     badge: (count: number) => `+${count} vetted open source alternatives`,

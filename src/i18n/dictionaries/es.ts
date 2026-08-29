@@ -16,6 +16,9 @@ const es = {
     hostingDescuentos: "Hosting & Descuentos",
     herramientasDestacadas: "Herramientas destacadas",
     disclosure: "Algunos enlaces de hosting son de afiliado: podemos recibir una comisión sin coste extra para ti.",
+    privacidad: "Privacidad",
+    terminos: "Términos de uso",
+    divulgacionAfiliados: "Divulgación de afiliados",
   },
   hero: {
     badge: (count: number) => `+${count} alternativas open source auditadas`,
