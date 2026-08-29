@@ -265,6 +265,7 @@ volumes:
     shortDescription: "Analítica web sin cookies, alternativa a Google Analytics.",
     websiteUrl: "https://plausible.io",
     githubUrl: "https://github.com/plausible/analytics",
+    demoUrl: "https://plausible.io/plausible.io",
     starsCount: 21000,
     license: "AGPL-3.0",
     dockerCompose: `version: "3.9"
@@ -1772,6 +1773,7 @@ volumes:
     shortDescription: "Dashboards y BI sobre tus bases de datos, alternativa a Looker/Tableau.",
     websiteUrl: "https://www.metabase.com",
     githubUrl: "https://github.com/metabase/metabase",
+    demoUrl: "https://demo.metabase.com",
     starsCount: 38000,
     license: "AGPL-3.0",
     dockerCompose: `version: "3.9"
@@ -2798,6 +2800,7 @@ volumes:
     shortDescription: "Dashboards de observabilidad, alternativa auto-hospedada a Datadog.",
     websiteUrl: "https://grafana.com",
     githubUrl: "https://github.com/grafana/grafana",
+    demoUrl: "https://play.grafana.org",
     starsCount: 66000,
     license: "AGPL-3.0",
     dockerCompose: `version: "3.9"

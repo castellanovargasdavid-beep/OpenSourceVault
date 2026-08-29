@@ -22,6 +22,8 @@ export interface OpenSourceTool {
   shortDescription: string;
   websiteUrl: string;
   githubUrl: string;
+  /** URL de una demo pública oficial (sin necesidad de instalar ni crear cuenta), si existe */
+  demoUrl?: string;
   starsCount?: number;
   license: string;
   dockerCompose: string;

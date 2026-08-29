@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Star, GitFork, ExternalLink, Check, X, ArrowRight } from "lucide-react";
+import { Star, GitFork, ExternalLink, Check, X, ArrowRight, PlayCircle } from "lucide-react";
 import { tools, getToolBySlug } from "@/data/tools";
 import { getCategoryMeta } from "@/data/categories";
 import { Badge } from "@/components/ui/badge";
@@ -10,10 +10,12 @@ import { AffiliateHostingWidget } from "@/components/site/affiliate-hosting-widg
 import { DockerComposeBlock } from "@/components/site/docker-compose-block";
 import { JsonLd } from "@/components/site/json-ld";
 import { LogoImage } from "@/components/site/logo-image";
+import { ToolPreviewImage } from "@/components/site/tool-preview-image";
 import { getSaasDomain } from "@/lib/saas-domains";
 import { categoryColors } from "@/lib/category-colors";
 import { getComparisonsForTool } from "@/lib/comparisons";
 import { getGithubStats, formatRelativeDate } from "@/lib/github-stats";
+import { getOgImageUrl } from "@/lib/og-image";
 import { siteConfig } from "@/lib/site-config";
 import { slugify, cn, formatStars, getHostname } from "@/lib/utils";
 
@@ -57,6 +59,7 @@ export default async function ToolPage({ params }: PageProps) {
   const migrationFromSaas = tool.replaces[0];
   const migrationGuideHref = `/guias/migrar/${slugify(migrationFromSaas)}/${tool.slug}`;
   const liveStats = await getGithubStats(tool.githubUrl);
+  const ogImageUrl = await getOgImageUrl(tool.websiteUrl);
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
@@ -148,6 +151,16 @@ export default async function ToolPage({ params }: PageProps) {
           >
             Sitio web <ExternalLink size={14} />
           </a>
+          {tool.demoUrl && (
+            <a
+              href={tool.demoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cn(buttonVariants({ variant: "secondary", size: "sm" }), "gap-1.5")}
+            >
+              <PlayCircle size={14} /> Probar Demo
+            </a>
+          )}
           <a
             href={tool.githubUrl}
             target="_blank"
@@ -188,6 +201,16 @@ export default async function ToolPage({ params }: PageProps) {
               </div>
             </dl>
           </section>
+
+          {ogImageUrl && (
+            <section>
+              <h2 className="mb-4 text-xl font-semibold text-slate-900">Vista previa</h2>
+              <ToolPreviewImage src={ogImageUrl} alt={`Vista previa de la interfaz de ${tool.name}`} />
+              <p className="mt-2 text-xs text-slate-400">
+                Imagen pública proporcionada por {tool.name} en su propio sitio web.
+              </p>
+            </section>
+          )}
 
           <section>
             <h2 className="mb-4 text-xl font-semibold text-slate-900">
