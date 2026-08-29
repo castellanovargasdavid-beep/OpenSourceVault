@@ -1,4 +1,4 @@
-# OpenSourceVault
+# AltFreeStack
 
 Plataforma que recopila las mejores alternativas de código abierto y auto-hospedables frente al software SaaS más popular (Notion, Slack, Airtable, Google Analytics, Salesforce...), con ficha técnica, `docker-compose.yml` listo para copiar y monetización mediante enlaces de afiliado de hosting (DigitalOcean, Hetzner, Railway).
 
@@ -53,7 +53,7 @@ cp .env.example .env.local
 
 | Variable | Para qué sirve | Si no se define |
 |---|---|---|
-| `NEXT_PUBLIC_SITE_URL` | Metadata SEO, Open Graph, canonical URLs, sitemap.xml | Usa `https://opensourcevault.dev` |
+| `NEXT_PUBLIC_SITE_URL` | Metadata SEO, Open Graph, canonical URLs, sitemap.xml | Usa `https://altfreestack.com` |
 | `NEXT_PUBLIC_AFFILIATE_DIGITALOCEAN` | Enlace de afiliado en los botones "Desplegar en DigitalOcean" | El botón apunta a `#` |
 | `NEXT_PUBLIC_AFFILIATE_HETZNER` | Enlace de afiliado de Hetzner | El botón apunta a `#` |
 | `NEXT_PUBLIC_AFFILIATE_RAILWAY` | Enlace de afiliado de Railway | El botón apunta a `#` |

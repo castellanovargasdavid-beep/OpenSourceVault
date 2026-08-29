@@ -122,7 +122,7 @@ const es = {
     tableFreeCredit: "Crédito gratis",
     tableBestFor: "Mejor para",
     disclosure:
-      "Divulgación: algunos de los enlaces anteriores son enlaces de afiliado. Si te registras a través de ellos, podemos recibir una comisión sin coste adicional para ti. Esto nos ayuda a mantener OpenSourceVault gratuito.",
+      "Divulgación: algunos de los enlaces anteriores son enlaces de afiliado. Si te registras a través de ellos, podemos recibir una comisión sin coste adicional para ti. Esto nos ayuda a mantener AltFreeStack gratuito.",
   },
   savingsCalcPage: {
     metaTitle: "Calculadora: ¿Cuánto ahorras auto-hospedando en vez de pagar SaaS?",

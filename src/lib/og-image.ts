@@ -13,7 +13,7 @@ export async function getOgImageUrl(websiteUrl: string): Promise<string | null> 
   try {
     const res = await fetch(websiteUrl, {
       headers: {
-        "User-Agent": "Mozilla/5.0 (compatible; OpenSourceVaultBot/1.0; +https://opensourcevault.dev)",
+        "User-Agent": "Mozilla/5.0 (compatible; AltFreeStackBot/1.0; +https://altfreestack.com)",
       },
       next: { revalidate: 604800 }, // 7 días: el og:image de una web cambia poco
       signal: AbortSignal.timeout(4000),

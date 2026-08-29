@@ -124,7 +124,7 @@ const en: Dictionary = {
     tableFreeCredit: "Free credit",
     tableBestFor: "Best for",
     disclosure:
-      "Disclosure: some of the links above are affiliate links. If you sign up through them, we may earn a commission at no extra cost to you. This helps us keep OpenSourceVault free.",
+      "Disclosure: some of the links above are affiliate links. If you sign up through them, we may earn a commission at no extra cost to you. This helps us keep AltFreeStack free.",
   },
   savingsCalcPage: {
     metaTitle: "Calculator: How much do you save self-hosting instead of paying for SaaS?",
