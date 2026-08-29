@@ -1,29 +1,34 @@
 import Link from "next/link";
 import { Star, GitFork, ArrowRight, BadgeCheck } from "lucide-react";
 import type { OpenSourceTool } from "@/lib/types";
-import { getCategoryMeta } from "@/data/categories";
+import { getCategoryMetaLocalized } from "@/data/categories";
+import { getLocalizedTool } from "@/data/tools";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { LogoImage } from "@/components/site/logo-image";
 import { getSaasDomain } from "@/lib/saas-domains";
 import { categoryColors } from "@/lib/category-colors";
 import { cn, formatStars, getHostname } from "@/lib/utils";
+import { getDictionary } from "@/i18n/get-dictionary";
+import { localeHref } from "@/lib/locale-href";
+import type { Locale } from "@/i18n/config";
 
-const tagLabels: Record<string, string> = {
-  "docker-ready": "Docker Ready",
-  "1-click-deploy": "1-Click Deploy",
-  "permissive-license": "Licencia Permisiva",
-};
-
-export function ToolCard({ tool }: { tool: OpenSourceTool }) {
-  const category = getCategoryMeta(tool.category);
+export function ToolCard({ tool: rawTool, locale = "es" }: { tool: OpenSourceTool; locale?: Locale }) {
+  const tool = getLocalizedTool(rawTool, locale);
+  const t = getDictionary(locale);
+  const tagLabels: Record<string, string> = {
+    "docker-ready": t.toolCard.tagDockerReady,
+    "1-click-deploy": t.toolCard.tagOneClick,
+    "permissive-license": t.toolCard.tagPermissive,
+  };
+  const category = getCategoryMetaLocalized(tool.category, locale);
   const palette = categoryColors[tool.category];
 
   return (
     <Card className={cn("group relative flex h-full flex-col transition-all hover:-translate-y-0.5 hover:shadow-lg", palette.borderHover)}>
       {tool.sponsored && (
         <span className="absolute -top-2.5 right-4 inline-flex items-center gap-1 rounded-full bg-slate-900 px-2.5 py-1 text-[10px] font-medium text-white shadow-sm">
-          <BadgeCheck size={11} /> Patrocinado
+          <BadgeCheck size={11} /> {t.toolCard.sponsored}
         </span>
       )}
       <CardHeader className="pb-3">
@@ -36,7 +41,7 @@ export function ToolCard({ tool }: { tool: OpenSourceTool }) {
               fallbackGradient={palette.gradient}
             />
             <div>
-              <Link href={`/tool/${tool.slug}`} className="font-semibold text-slate-900 hover:text-emerald-700">
+              <Link href={localeHref(`/tool/${tool.slug}`, locale)} className="font-semibold text-slate-900 hover:text-emerald-700">
                 {tool.name}
               </Link>
               <div className="mt-1 flex items-center gap-1.5">
@@ -52,7 +57,9 @@ export function ToolCard({ tool }: { tool: OpenSourceTool }) {
                     />
                   ))}
                 </div>
-                <p className="text-xs text-slate-500">Alternativa a {tool.replaces.join(", ")}</p>
+                <p className="text-xs text-slate-500">
+                  {t.toolCard.alternativeTo} {tool.replaces.join(", ")}
+                </p>
               </div>
             </div>
           </div>
@@ -82,13 +89,13 @@ export function ToolCard({ tool }: { tool: OpenSourceTool }) {
         </div>
 
         <Link
-          href={`/tool/${tool.slug}`}
+          href={localeHref(`/tool/${tool.slug}`, locale)}
           className={cn(
             "mt-auto inline-flex items-center justify-center gap-1.5 rounded-lg bg-gradient-to-r px-4 py-2 text-sm font-medium text-white shadow-sm transition-opacity hover:opacity-90",
             palette.gradient
           )}
         >
-          Ver ficha y guía de despliegue
+          {t.toolCard.cta}
           <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
         </Link>
       </CardContent>

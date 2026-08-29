@@ -1,5 +1,7 @@
 import type { OpenSourceTool } from "@/lib/types";
 import { affiliateLinks } from "@/lib/site-config";
+import { toolsEn } from "./tools.en";
+import type { Locale } from "@/i18n/config";
 
 export const tools: OpenSourceTool[] = [
   {
@@ -5132,4 +5134,11 @@ export function getToolsByCategory(category: string) {
 
 export function getFeaturedTools() {
   return tools.filter((t) => t.featured);
+}
+
+export function getLocalizedTool(tool: OpenSourceTool, locale: Locale): OpenSourceTool {
+  if (locale !== "en") return tool;
+  const translation = toolsEn[tool.id];
+  if (!translation) return tool;
+  return { ...tool, ...translation };
 }

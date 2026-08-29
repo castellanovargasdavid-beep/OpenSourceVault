@@ -5,6 +5,8 @@ import { LogoImage } from "@/components/site/logo-image";
 import { tools } from "@/data/tools";
 import { categories } from "@/data/categories";
 import { getSaasDomain } from "@/lib/saas-domains";
+import { getDictionary } from "@/i18n/get-dictionary";
+import type { Locale } from "@/i18n/config";
 
 const showcaseSaas = [
   "Notion",
@@ -17,7 +19,8 @@ const showcaseSaas = [
   "Zapier",
 ];
 
-export function Hero() {
+export function Hero({ locale = "es" }: { locale?: Locale }) {
+  const t = getDictionary(locale);
   const totalSaas = new Set(tools.flatMap((t) => t.replaces)).size;
 
   return (
@@ -30,25 +33,21 @@ export function Hero() {
 
       <div className="mx-auto max-w-4xl px-4 py-20 text-center sm:px-6 lg:px-8">
         <span className="inline-flex items-center rounded-full border border-emerald-200 bg-emerald-100 px-3 py-1 text-xs font-medium text-emerald-800">
-          +{tools.length} alternativas open source auditadas
+          {t.hero.badge(tools.length)}
         </span>
         <h1 className="mt-6 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
-          Deja de pagar por{" "}
+          {t.hero.titlePrefix}{" "}
           <RotatingExamples
             examples={showcaseSaas}
             className="bg-gradient-to-r from-emerald-600 via-teal-600 to-blue-600 bg-clip-text text-transparent"
           />
           .
           <br />
-          Auto-hospeda lo que ya usas.
+          {t.hero.titleSuffix}
         </h1>
-        <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-600">
-          Encuentra la mejor alternativa de código abierto a Notion, Slack, Airtable, Google
-          Analytics y decenas de herramientas más — con licencia, docker-compose y guía de
-          despliegue incluidos.
-        </p>
+        <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-600">{t.hero.subtitle}</p>
         <div className="mx-auto mt-10 max-w-2xl">
-          <SearchBar />
+          <SearchBar locale={locale} />
         </div>
 
         <div className="mx-auto mt-10 flex max-w-xl flex-wrap items-center justify-center gap-x-10 gap-y-4">
@@ -56,30 +55,28 @@ export function Hero() {
             <p className="text-2xl font-bold text-slate-900">
               <AnimatedCounter value={tools.length} suffix="+" />
             </p>
-            <p className="text-xs text-slate-500">herramientas</p>
+            <p className="text-xs text-slate-500">{t.hero.statTools}</p>
           </div>
           <div>
             <p className="text-2xl font-bold text-slate-900">
               <AnimatedCounter value={totalSaas} suffix="+" />
             </p>
-            <p className="text-xs text-slate-500">SaaS cubiertos</p>
+            <p className="text-xs text-slate-500">{t.hero.statSaas}</p>
           </div>
           <div>
             <p className="text-2xl font-bold text-slate-900">
               <AnimatedCounter value={categories.length} />
             </p>
-            <p className="text-xs text-slate-500">categorías</p>
+            <p className="text-xs text-slate-500">{t.hero.statCategories}</p>
           </div>
           <div>
             <p className="text-2xl font-bold text-emerald-600">$0</p>
-            <p className="text-xs text-slate-500">costo de licencia</p>
+            <p className="text-xs text-slate-500">{t.hero.statLicenseCost}</p>
           </div>
         </div>
 
         <div className="mt-14">
-          <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
-            Sustituye herramientas como
-          </p>
+          <p className="text-xs font-medium uppercase tracking-wide text-slate-400">{t.hero.replacesLabel}</p>
           <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
             {showcaseSaas.map((name) => (
               <span

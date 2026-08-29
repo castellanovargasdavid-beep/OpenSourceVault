@@ -1,4 +1,5 @@
 import type { ToolCategory } from "@/lib/types";
+import { categoriesEn } from "./categories.en";
 
 export interface CategoryMeta {
   id: ToolCategory;
@@ -92,4 +93,12 @@ export function getCategoryMeta(id: ToolCategory): CategoryMeta {
 
 export function getCategoryBySlug(slug: string): CategoryMeta | undefined {
   return categories.find((c) => c.slug === slug);
+}
+
+export function getCategoryMetaLocalized(id: ToolCategory, locale: "es" | "en"): CategoryMeta {
+  const meta = getCategoryMeta(id);
+  if (locale === "en") {
+    return { ...meta, ...categoriesEn[id] };
+  }
+  return meta;
 }

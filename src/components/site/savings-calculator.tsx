@@ -3,22 +3,29 @@
 import * as React from "react";
 import Link from "next/link";
 import { ArrowRight, TrendingDown } from "lucide-react";
-import { saasPricing } from "@/data/saas-pricing";
-import { hostingProviders } from "@/data/hosting-providers";
+import { saasPricing, getSaasPricingLocalized } from "@/data/saas-pricing";
+import { getHostingProvidersLocalized } from "@/data/hosting-providers";
 import { slugify, cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
+import { getDictionary } from "@/i18n/get-dictionary";
+import { localeHref } from "@/lib/locale-href";
+import type { Locale } from "@/i18n/config";
 
-const formatUsd = (value: number) =>
-  new Intl.NumberFormat("es-ES", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(
-    value
-  );
+const formatUsd = (value: number, locale: Locale) =>
+  new Intl.NumberFormat(locale === "en" ? "en-US" : "es-ES", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 0,
+  }).format(value);
 
-export function SavingsCalculator() {
+export function SavingsCalculator({ locale = "es" }: { locale?: Locale }) {
+  const t = getDictionary(locale);
+  const hostingProviders = getHostingProvidersLocalized(locale);
   const [saasName, setSaasName] = React.useState(saasPricing[0].saasName);
   const [seats, setSeats] = React.useState(10);
   const [providerId, setProviderId] = React.useState(hostingProviders[0].id);
 
-  const saas = saasPricing.find((s) => s.saasName === saasName)!;
+  const saas = getSaasPricingLocalized(saasName, locale)!;
   const provider = hostingProviders.find((p) => p.id === providerId)!;
 
   const saasAnnualCost = saas.pricePerSeatUsd * seats * 12;
@@ -31,7 +38,7 @@ export function SavingsCalculator() {
       <div className="grid gap-6 sm:grid-cols-3">
         <div>
           <label className="mb-1.5 block text-sm font-medium text-slate-700">
-            Herramienta SaaS
+            {t.savingsCalculator.saasLabel}
           </label>
           <select
             value={saasName}
@@ -49,7 +56,7 @@ export function SavingsCalculator() {
 
         <div>
           <label className="mb-1.5 block text-sm font-medium text-slate-700">
-            Número de usuarios/asientos
+            {t.savingsCalculator.seatsLabel}
           </label>
           <input
             type="number"
@@ -63,7 +70,7 @@ export function SavingsCalculator() {
 
         <div>
           <label className="mb-1.5 block text-sm font-medium text-slate-700">
-            Proveedor de hosting
+            {t.savingsCalculator.providerLabel}
           </label>
           <select
             value={providerId}
@@ -82,44 +89,40 @@ export function SavingsCalculator() {
       <div className="mt-8 grid gap-4 sm:grid-cols-3">
         <div className="rounded-xl border border-slate-200 bg-slate-50 p-5 text-center">
           <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
-            {saasName} al año
+            {t.savingsCalculator.perYear(saasName)}
           </p>
-          <p className="mt-1 text-2xl font-bold text-slate-900">{formatUsd(saasAnnualCost)}</p>
+          <p className="mt-1 text-2xl font-bold text-slate-900">{formatUsd(saasAnnualCost, locale)}</p>
           <p className="mt-1 text-xs text-slate-400">
-            {seats} {seats === 1 ? "asiento" : "asientos"} × {formatUsd(saas.pricePerSeatUsd)}/mes
+            {seats} {t.savingsCalculator.seatsUnit(seats)} × {formatUsd(saas.pricePerSeatUsd, locale)}/{t.savingsCalculator.perMonth}
           </p>
         </div>
         <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-5 text-center">
           <p className="text-xs font-medium uppercase tracking-wide text-emerald-700">
-            Auto-hospedado al año
+            {t.savingsCalculator.selfHostedPerYear}
           </p>
           <p className="mt-1 text-2xl font-bold text-emerald-700">
-            {formatUsd(selfHostAnnualCost)}
+            {formatUsd(selfHostAnnualCost, locale)}
           </p>
-          <p className="mt-1 text-xs text-emerald-600">
-            1 servidor en {provider.name}, usuarios ilimitados
-          </p>
+          <p className="mt-1 text-xs text-emerald-600">{t.savingsCalculator.selfHostedNote(provider.name)}</p>
         </div>
         <div className="rounded-xl border border-slate-900 bg-slate-900 p-5 text-center text-white">
           <p className="flex items-center justify-center gap-1 text-xs font-medium uppercase tracking-wide text-emerald-400">
-            <TrendingDown size={14} /> Ahorro estimado
+            <TrendingDown size={14} /> {t.savingsCalculator.estimatedSavings}
           </p>
-          <p className="mt-1 text-2xl font-bold">{formatUsd(savings)}</p>
-          <p className="mt-1 text-xs text-slate-300">{savingsPercent}% menos al año</p>
+          <p className="mt-1 text-2xl font-bold">{formatUsd(savings, locale)}</p>
+          <p className="mt-1 text-xs text-slate-300">{t.savingsCalculator.lessPerYear(savingsPercent)}</p>
         </div>
       </div>
 
       <p className="mt-4 text-xs text-slate-400">
-        Precios de lista aproximados y orientativos ({saas.billingNote.toLowerCase()}); verifica el
-        precio vigente en la web oficial de {saasName}. No incluye el tiempo que dediques tú (o
-        alguien de tu equipo) al mantenimiento del servidor.
+        {t.savingsCalculator.disclaimer(saas.billingNote.toLowerCase(), saasName)}
       </p>
 
       <Link
-        href={`/alternativa-a-${slugify(saasName)}`}
+        href={localeHref(`/alternativa-a-${slugify(saasName)}`, locale)}
         className={cn(buttonVariants({ size: "lg" }), "mt-6 w-full justify-center gap-1.5 sm:w-auto")}
       >
-        Ver alternativas open source a {saasName} <ArrowRight size={16} />
+        {t.savingsCalculator.cta(saasName)} <ArrowRight size={16} />
       </Link>
     </div>
   );

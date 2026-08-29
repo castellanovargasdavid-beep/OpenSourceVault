@@ -1,4 +1,5 @@
 import { affiliateLinks } from "@/lib/site-config";
+import { hostingProvidersEn } from "./hosting-providers.en";
 
 export interface HostingProvider {
   id: string;
@@ -73,3 +74,10 @@ export const hostingProviders: HostingProvider[] = [
     ctaLabel: "Desplegar en Railway",
   },
 ];
+
+export function getHostingProvidersLocalized(locale: "es" | "en"): HostingProvider[] {
+  if (locale === "en") {
+    return hostingProviders.map((p) => ({ ...p, ...hostingProvidersEn[p.id] }));
+  }
+  return hostingProviders;
+}

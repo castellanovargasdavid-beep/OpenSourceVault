@@ -7,49 +7,78 @@ import { siteConfig } from "@/lib/site-config";
 import { slugify } from "@/lib/utils";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes: MetadataRoute.Sitemap = [
-    { url: siteConfig.url, changeFrequency: "weekly", priority: 1 },
-    { url: `${siteConfig.url}/hosting-deals`, changeFrequency: "monthly", priority: 0.7 },
-    { url: `${siteConfig.url}/guias/desplegar-con-docker`, changeFrequency: "monthly", priority: 0.7 },
-    { url: `${siteConfig.url}/calculadora-ahorro`, changeFrequency: "monthly", priority: 0.8 },
+  function entry(
+    path: string,
+    changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"],
+    priority: number
+  ): MetadataRoute.Sitemap[number] {
+    const esUrl = `${siteConfig.url}${path}`;
+    const enUrl = `${siteConfig.url}/en${path === "/" ? "" : path}`;
+    return {
+      url: esUrl,
+      changeFrequency,
+      priority,
+      alternates: { languages: { es: esUrl, en: enUrl } },
+    };
+  }
+
+  function entryEn(
+    path: string,
+    changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"],
+    priority: number
+  ): MetadataRoute.Sitemap[number] {
+    const esUrl = `${siteConfig.url}${path}`;
+    const enUrl = `${siteConfig.url}/en${path === "/" ? "" : path}`;
+    return {
+      url: enUrl,
+      changeFrequency,
+      priority,
+      alternates: { languages: { es: esUrl, en: enUrl } },
+    };
+  }
+
+  const staticPaths: [string, MetadataRoute.Sitemap[number]["changeFrequency"], number][] = [
+    ["/", "weekly", 1],
+    ["/hosting-deals", "monthly", 0.7],
+    ["/guias/desplegar-con-docker", "monthly", 0.7],
+    ["/calculadora-ahorro", "monthly", 0.8],
   ];
 
-  const categoryRoutes: MetadataRoute.Sitemap = categories.map((category) => ({
-    url: `${siteConfig.url}/categoria/${category.slug}`,
-    changeFrequency: "weekly",
-    priority: 0.6,
-  }));
+  const categoryPaths: [string, MetadataRoute.Sitemap[number]["changeFrequency"], number][] = categories.map(
+    (category) => [`/categoria/${category.slug}`, "weekly", 0.6]
+  );
 
-  const toolRoutes: MetadataRoute.Sitemap = tools.map((tool) => ({
-    url: `${siteConfig.url}/tool/${tool.slug}`,
-    changeFrequency: "monthly",
-    priority: 0.8,
-  }));
+  const toolPaths: [string, MetadataRoute.Sitemap[number]["changeFrequency"], number][] = tools.map((tool) => [
+    `/tool/${tool.slug}`,
+    "monthly",
+    0.8,
+  ]);
 
-  const alternativeRoutes: MetadataRoute.Sitemap = getAllSaasSlugs().map((slug) => ({
-    url: `${siteConfig.url}/alternativa-a-${slug}`,
-    changeFrequency: "monthly",
-    priority: 0.9,
-  }));
+  const alternativePaths: [string, MetadataRoute.Sitemap[number]["changeFrequency"], number][] = getAllSaasSlugs().map(
+    (slug) => [`/alternativa-a-${slug}`, "monthly", 0.9]
+  );
 
-  const comparisonRoutes: MetadataRoute.Sitemap = getAllComparisonSlugs().map((pair) => ({
-    url: `${siteConfig.url}/comparar/${pair}`,
-    changeFrequency: "monthly",
-    priority: 0.7,
-  }));
+  const comparisonPaths: [string, MetadataRoute.Sitemap[number]["changeFrequency"], number][] = getAllComparisonSlugs().map(
+    (pair) => [`/comparar/${pair}`, "monthly", 0.7]
+  );
 
-  const migrationGuideRoutes: MetadataRoute.Sitemap = tools.map((tool) => ({
-    url: `${siteConfig.url}/guias/migrar/${slugify(tool.replaces[0])}/${tool.slug}`,
-    changeFrequency: "monthly",
-    priority: 0.6,
-  }));
+  const migrationGuidePaths: [string, MetadataRoute.Sitemap[number]["changeFrequency"], number][] = tools.map((tool) => [
+    `/guias/migrar/${slugify(tool.replaces[0])}/${tool.slug}`,
+    "monthly",
+    0.6,
+  ]);
+
+  const allPaths = [
+    ...staticPaths,
+    ...categoryPaths,
+    ...toolPaths,
+    ...alternativePaths,
+    ...comparisonPaths,
+    ...migrationGuidePaths,
+  ];
 
   return [
-    ...staticRoutes,
-    ...categoryRoutes,
-    ...toolRoutes,
-    ...alternativeRoutes,
-    ...comparisonRoutes,
-    ...migrationGuideRoutes,
+    ...allPaths.map(([path, freq, priority]) => entry(path, freq, priority)),
+    ...allPaths.map(([path, freq, priority]) => entryEn(path, freq, priority)),
   ];
 }

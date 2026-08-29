@@ -28,3 +28,27 @@ export const saasPricing: SaasPricingEntry[] = [
 export function getSaasPricing(name: string): SaasPricingEntry | undefined {
   return saasPricing.find((s) => s.saasName === name);
 }
+
+const billingNoteEn: Record<string, string> = {
+  Notion: "Business plan, billed annually",
+  Slack: "Pro plan, billed annually",
+  Airtable: "Team plan, billed annually",
+  Salesforce: "Starter plan",
+  HubSpot: "Starter plan (Marketing/CRM)",
+  Zendesk: "Support Team plan, billed annually",
+  Calendly: "Standard plan",
+  Intercom: "Essential plan",
+  "1Password": "Business plan",
+  Jira: "Standard plan",
+  Trello: "Standard plan",
+  Asana: "Starter plan, billed annually",
+};
+
+export function getSaasPricingLocalized(name: string, locale: "es" | "en"): SaasPricingEntry | undefined {
+  const entry = getSaasPricing(name);
+  if (!entry) return entry;
+  if (locale === "en" && billingNoteEn[name]) {
+    return { ...entry, billingNote: billingNoteEn[name] };
+  }
+  return entry;
+}

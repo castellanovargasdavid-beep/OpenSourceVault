@@ -1,3 +1,5 @@
+import { patternsEn } from "./migration-patterns.en";
+
 export type MigrationPatternId =
   | "notes-docs"
   | "team-chat"
@@ -468,6 +470,16 @@ export function getMigrationPatternId(saasName: string): MigrationPatternId {
 }
 
 export function getMigrationPatternContent(id: MigrationPatternId): MigrationPatternContent {
+  return patterns[id];
+}
+
+export function getMigrationPatternContentLocalized(
+  id: MigrationPatternId,
+  locale: "es" | "en"
+): MigrationPatternContent {
+  if (locale === "en") {
+    return patternsEn[id];
+  }
   return patterns[id];
 }
 

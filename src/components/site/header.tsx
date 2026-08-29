@@ -1,19 +1,24 @@
 import Link from "next/link";
 import { Boxes } from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
+import { getDictionary } from "@/i18n/get-dictionary";
+import { localeHref } from "@/lib/locale-href";
+import type { Locale } from "@/i18n/config";
+import { LanguageSwitcher } from "@/components/site/language-switcher";
 
-const navLinks = [
-  { href: "/#categorias", label: "Categorías" },
-  { href: "/calculadora-ahorro", label: "Calculadora de ahorro" },
-  { href: "/guias/desplegar-con-docker", label: "Guía de despliegue" },
-  { href: "/hosting-deals", label: "Hosting" },
-];
+export function Header({ locale = "es" }: { locale?: Locale }) {
+  const t = getDictionary(locale);
+  const navLinks = [
+    { href: localeHref("/#categorias", locale), label: t.header.categorias },
+    { href: localeHref("/calculadora-ahorro", locale), label: t.header.calculadora },
+    { href: localeHref("/guias/desplegar-con-docker", locale), label: t.header.guiaDespliegue },
+    { href: localeHref("/hosting-deals", locale), label: t.header.hosting },
+  ];
 
-export function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/80 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-2 font-semibold text-slate-900">
+        <Link href={localeHref("/", locale)} className="flex items-center gap-2 font-semibold text-slate-900">
           <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-sm">
             <Boxes size={18} />
           </span>
@@ -30,12 +35,15 @@ export function Header() {
             </Link>
           ))}
         </nav>
-        <Link
-          href="/hosting-deals"
-          className="inline-flex h-9 items-center rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 px-4 text-sm font-medium text-white shadow-sm transition-opacity hover:opacity-90"
-        >
-          Ver ofertas de hosting
-        </Link>
+        <div className="flex items-center gap-3">
+          <LanguageSwitcher locale={locale} />
+          <Link
+            href={localeHref("/hosting-deals", locale)}
+            className="hidden h-9 items-center rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 px-4 text-sm font-medium text-white shadow-sm transition-opacity hover:opacity-90 sm:inline-flex"
+          >
+            {t.header.verOfertas}
+          </Link>
+        </div>
       </div>
     </header>
   );

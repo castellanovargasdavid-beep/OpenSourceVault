@@ -3,6 +3,8 @@
 import * as React from "react";
 import { Check, Copy, Wand2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { getDictionary } from "@/i18n/get-dictionary";
+import type { Locale } from "@/i18n/config";
 
 function generateSecret(length = 32): string {
   const bytes = new Uint8Array(length);
@@ -21,7 +23,8 @@ function randomizeSecrets(code: string): string {
   });
 }
 
-export function DockerComposeBlock({ code }: { code: string }) {
+export function DockerComposeBlock({ code, locale = "es" }: { code: string; locale?: Locale }) {
+  const t = getDictionary(locale);
   const [displayCode, setDisplayCode] = React.useState(code);
   const [copied, setCopied] = React.useState(false);
   const [randomized, setRandomized] = React.useState(false);
@@ -63,7 +66,7 @@ export function DockerComposeBlock({ code }: { code: string }) {
               className="gap-1.5 text-slate-300 hover:bg-slate-800 hover:text-white"
             >
               <Wand2 size={14} />
-              {randomized ? "Regenerar secretos" : "Generar secretos seguros"}
+              {randomized ? t.dockerBlock.regenerate : t.dockerBlock.generate}
             </Button>
           )}
           <Button
@@ -73,7 +76,7 @@ export function DockerComposeBlock({ code }: { code: string }) {
             className="gap-1.5 text-slate-300 hover:bg-slate-800 hover:text-white"
           >
             {copied ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
-            {copied ? "Copiado" : "Copiar"}
+            {copied ? t.dockerBlock.copied : t.dockerBlock.copy}
           </Button>
         </div>
       </div>
@@ -82,8 +85,7 @@ export function DockerComposeBlock({ code }: { code: string }) {
       </pre>
       {randomized && (
         <p className="border-t border-emerald-900/50 bg-emerald-950/40 px-4 py-2 text-xs text-emerald-300">
-          Contraseñas generadas al azar en tu navegador — no se envían a ningún servidor. Guárdalas
-          en un lugar seguro antes de copiar.
+          {t.dockerBlock.randomizedNote}
         </p>
       )}
     </div>

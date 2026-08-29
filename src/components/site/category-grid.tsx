@@ -1,30 +1,35 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { categories } from "@/data/categories";
+import { categoriesEn } from "@/data/categories.en";
 import { tools } from "@/data/tools";
 import { categoryColors } from "@/lib/category-colors";
 import { categoryIconMap } from "@/lib/category-icons";
 import { cn } from "@/lib/utils";
+import { getDictionary } from "@/i18n/get-dictionary";
+import { localeHref } from "@/lib/locale-href";
+import type { Locale } from "@/i18n/config";
 
-export function CategoryGrid() {
+export function CategoryGrid({ locale = "es" }: { locale?: Locale }) {
+  const t = getDictionary(locale);
+
   return (
     <section id="categorias" className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
       <div className="mb-10 max-w-2xl">
-        <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">Explora por categoría</h2>
-        <p className="mt-2 text-slate-600">
-          Desde bases de datos y CRM hasta IA: encuentra el reemplazo open source exacto que
-          necesita tu stack.
-        </p>
+        <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">{t.categoryGrid.title}</h2>
+        <p className="mt-2 text-slate-600">{t.categoryGrid.subtitle}</p>
       </div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {categories.map((category) => {
           const Icon = categoryIconMap[category.icon];
-          const count = tools.filter((t) => t.category === category.id).length;
+          const count = tools.filter((tl) => tl.category === category.id).length;
           const palette = categoryColors[category.id];
+          const label = locale === "en" ? categoriesEn[category.id].label : category.label;
+          const description = locale === "en" ? categoriesEn[category.id].description : category.description;
           return (
             <Link
               key={category.id}
-              href={`/categoria/${category.slug}`}
+              href={localeHref(`/categoria/${category.slug}`, locale)}
               className={cn(
                 "group relative flex flex-col gap-3 overflow-hidden rounded-xl border bg-white p-6 transition-all hover:-translate-y-0.5 hover:shadow-lg",
                 palette.border,
@@ -42,12 +47,12 @@ export function CategoryGrid() {
                   <Icon size={22} />
                 </span>
                 <span className={cn("rounded-full px-2 py-0.5 text-xs font-medium", palette.badge)}>
-                  {count} herramientas
+                  {t.categoryGrid.toolCount(count)}
                 </span>
               </div>
               <div className="relative">
-                <p className="font-semibold text-slate-900">{category.label}</p>
-                <p className="mt-1 text-sm text-slate-500">{category.description}</p>
+                <p className="font-semibold text-slate-900">{label}</p>
+                <p className="mt-1 text-sm text-slate-500">{description}</p>
               </div>
               <span
                 className={cn(
@@ -55,7 +60,7 @@ export function CategoryGrid() {
                   palette.text
                 )}
               >
-                Explorar <ArrowRight size={14} />
+                {t.categoryGrid.explore} <ArrowRight size={14} />
               </span>
             </Link>
           );

@@ -5,8 +5,11 @@ import { useRouter } from "next/navigation";
 import { Search, ArrowRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { tools } from "@/data/tools";
-import { getCategoryMeta } from "@/data/categories";
+import { getCategoryMetaLocalized } from "@/data/categories";
 import { cn } from "@/lib/utils";
+import { getDictionary } from "@/i18n/get-dictionary";
+import { localeHref } from "@/lib/locale-href";
+import type { Locale } from "@/i18n/config";
 
 interface Match {
   slug: string;
@@ -15,7 +18,7 @@ interface Match {
   categoryLabel: string;
 }
 
-function findMatches(query: string): Match[] {
+function findMatches(query: string, locale: Locale): Match[] {
   const q = query.trim().toLowerCase();
   if (!q) return [];
 
@@ -30,7 +33,7 @@ function findMatches(query: string): Match[] {
         slug: tool.slug,
         name: tool.name,
         matchedReplaces: !nameMatch ? replacesMatch : undefined,
-        categoryLabel: getCategoryMeta(tool.category).label,
+        categoryLabel: getCategoryMetaLocalized(tool.category, locale).label,
       });
     }
 
@@ -40,11 +43,12 @@ function findMatches(query: string): Match[] {
   return results;
 }
 
-export function SearchBar({ className }: { className?: string }) {
+export function SearchBar({ className, locale = "es" }: { className?: string; locale?: Locale }) {
+  const t = getDictionary(locale);
   const router = useRouter();
   const [query, setQuery] = React.useState("");
   const [open, setOpen] = React.useState(false);
-  const matches = React.useMemo(() => findMatches(query), [query]);
+  const matches = React.useMemo(() => findMatches(query, locale), [query, locale]);
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
@@ -59,7 +63,7 @@ export function SearchBar({ className }: { className?: string }) {
 
   function goToTool(slug: string) {
     setOpen(false);
-    router.push(`/tool/${slug}`);
+    router.push(localeHref(`/tool/${slug}`, locale));
   }
 
   function handleSubmit(event: React.FormEvent) {
@@ -81,15 +85,15 @@ export function SearchBar({ className }: { className?: string }) {
               setOpen(true);
             }}
             onFocus={() => setOpen(true)}
-            placeholder="¿A qué herramienta SaaS buscas alternativa? (Ej. Notion, Analytics, Slack)"
+            placeholder={t.searchBar.placeholder}
             className="h-14 rounded-xl pl-12 pr-32 text-base shadow-lg"
-            aria-label="Buscar alternativa open source"
+            aria-label={t.searchBar.ariaLabel}
           />
           <button
             type="submit"
             className="absolute right-2 top-1/2 inline-flex h-10 -translate-y-1/2 items-center gap-1.5 rounded-lg bg-emerald-600 px-4 text-sm font-medium text-white transition-colors hover:bg-emerald-500"
           >
-            Buscar
+            {t.searchBar.button}
             <ArrowRight size={16} />
           </button>
         </div>
@@ -108,7 +112,7 @@ export function SearchBar({ className }: { className?: string }) {
                     <span>
                       <span className="font-medium text-slate-900">{match.name}</span>
                       {match.matchedReplaces && (
-                        <span className="text-slate-500"> · alternativa a {match.matchedReplaces}</span>
+                        <span className="text-slate-500"> · {t.searchBar.alternativeTo} {match.matchedReplaces}</span>
                       )}
                     </span>
                     <span className="shrink-0 text-xs text-slate-400">{match.categoryLabel}</span>
@@ -117,9 +121,7 @@ export function SearchBar({ className }: { className?: string }) {
               ))}
             </ul>
           ) : (
-            <p className="px-4 py-3 text-sm text-slate-500">
-              No encontramos coincidencias todavía. Prueba con otra herramienta SaaS.
-            </p>
+            <p className="px-4 py-3 text-sm text-slate-500">{t.searchBar.noMatches}</p>
           )}
         </div>
       )}

@@ -2,8 +2,12 @@ import Link from "next/link";
 import { Flame } from "lucide-react";
 import { getFeaturedTools } from "@/data/tools";
 import { ToolCard } from "@/components/site/tool-card";
+import { getDictionary } from "@/i18n/get-dictionary";
+import { localeHref } from "@/lib/locale-href";
+import type { Locale } from "@/i18n/config";
 
-export function FeaturedTools() {
+export function FeaturedTools({ locale = "es" }: { locale?: Locale }) {
+  const t = getDictionary(locale);
   const featured = getFeaturedTools();
   if (featured.length === 0) return null;
 
@@ -16,26 +20,21 @@ export function FeaturedTools() {
         <div className="mb-10 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
           <div>
             <span className="inline-flex items-center gap-1.5 rounded-full bg-orange-100 px-3 py-1 text-xs font-medium text-orange-700">
-              <Flame size={14} /> Destacadas de la semana
+              <Flame size={14} /> {t.featuredTools.badge}
             </span>
-            <h2 className="mt-3 text-2xl font-bold text-slate-900 sm:text-3xl">
-              Las alternativas más sólidas para desplegar hoy
-            </h2>
-            <p className="mt-2 max-w-xl text-slate-600">
-              Elegidas por madurez del proyecto, comunidad activa y facilidad de despliegue con
-              Docker.
-            </p>
+            <h2 className="mt-3 text-2xl font-bold text-slate-900 sm:text-3xl">{t.featuredTools.title}</h2>
+            <p className="mt-2 max-w-xl text-slate-600">{t.featuredTools.subtitle}</p>
           </div>
           <Link
-            href="#explorador"
+            href={localeHref("/#explorador", locale)}
             className="text-sm font-medium text-emerald-700 hover:text-emerald-800"
           >
-            Ver todo el catálogo →
+            {t.featuredTools.viewAll}
           </Link>
         </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {featured.map((tool) => (
-            <ToolCard key={tool.id} tool={tool} />
+            <ToolCard key={tool.id} tool={tool} locale={locale} />
           ))}
         </div>
       </div>
