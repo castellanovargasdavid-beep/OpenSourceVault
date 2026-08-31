@@ -67,8 +67,8 @@ export default function AffiliateDisclosurePage() {
           <h2 className="mb-2 text-xl font-semibold text-slate-900">Contacto</h2>
           <p>
             Si tienes dudas sobre esta divulgación, escríbenos a{" "}
-            <a href="mailto:hola@altfreestack.com" className="font-medium text-emerald-700 hover:underline">
-              hola@altfreestack.com
+            <a href="mailto:lecastvarg@gmail.com" className="font-medium text-emerald-700 hover:underline">
+              lecastvarg@gmail.com
             </a>
             .
           </p>

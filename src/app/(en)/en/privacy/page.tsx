@@ -85,8 +85,8 @@ export default function PrivacyPageEn() {
           <h2 className="mb-2 text-xl font-semibold text-slate-900">7. Contact</h2>
           <p>
             For any question about this policy, email us at{" "}
-            <a href="mailto:hola@altfreestack.com" className="font-medium text-emerald-700 hover:underline">
-              hola@altfreestack.com
+            <a href="mailto:lecastvarg@gmail.com" className="font-medium text-emerald-700 hover:underline">
+              lecastvarg@gmail.com
             </a>
             .
           </p>
