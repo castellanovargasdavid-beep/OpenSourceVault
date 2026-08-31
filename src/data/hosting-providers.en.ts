@@ -21,17 +21,17 @@ export const hostingProvidersEn: Record<string, HostingProviderTranslation> = {
     ],
     ctaLabel: "Get $200 in free credit",
   },
-  hetzner: {
-    tagline: "The best price/performance ratio in European cloud servers",
-    startingPrice: "from €3.79/mo",
-    bestFor: "Maximum performance per euro, EU datacenters",
+  vultr: {
+    tagline: "High-performance cloud servers across 32 datacenters worldwide",
+    startingPrice: "from $6/mo",
+    bestFor: "Picking the region closest to your users, with predictable pricing",
     features: [
-      "Very affordable dedicated and shared vCPUs",
-      "Private network and load balancers included",
-      "Automatic snapshots and backups",
-      "Datacenters in Germany, Finland and the US",
+      "Cloud Compute from 1 vCPU / 1GB RAM",
+      "Marketplace with 1-Click Apps for Docker",
+      "Block storage and load balancers",
+      "32 datacenters across 6 continents",
     ],
-    ctaLabel: "Deploy on Hetzner",
+    ctaLabel: "Deploy on Vultr",
   },
   railway: {
     tagline: "Deploy straight from your docker-compose or GitHub repo in minutes",

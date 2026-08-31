@@ -76,7 +76,7 @@ const es = {
     subtitleSuffix: "de abajo en cualquiera de estos proveedores auto-hospedados.",
     digitalOcean: "Desplegar en DigitalOcean",
     digitalOceanCredit: "$200 de crédito gratis",
-    hetzner: "Desplegar en Hetzner",
+    vultr: "Desplegar en Vultr",
     railway: "Desplegar en Railway",
     disclaimer: "Enlaces de afiliado: si compras a través de ellos podemos recibir una comisión sin coste extra para ti.",
   },
@@ -114,7 +114,7 @@ const es = {
   hostingDeals: {
     metaTitle: "Hosting & Descuentos para Auto-hospedar tus Herramientas",
     metaDescription:
-      "Compara DigitalOcean, Hetzner y Railway para auto-hospedar tus alternativas open source favoritas, con créditos y descuentos exclusivos.",
+      "Compara DigitalOcean, Vultr y Railway para auto-hospedar tus alternativas open source favoritas, con créditos y descuentos exclusivos.",
     title: "Hosting & Descuentos",
     subtitle:
       "Estos son los proveedores de VPS que recomendamos para auto-hospedar cualquier herramienta del catálogo. Todos soportan Docker y Docker Compose sin fricción.",

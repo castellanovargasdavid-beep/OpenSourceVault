@@ -34,7 +34,7 @@ export default function AffiliateDisclosurePageEn() {
           <p>We currently participate in the affiliate programs of:</p>
           <ul className="mt-2 list-disc space-y-1 pl-5">
             <li>DigitalOcean</li>
-            <li>Hetzner</li>
+            <li>Vultr</li>
             <li>Railway</li>
           </ul>
         </section>
@@ -42,7 +42,7 @@ export default function AffiliateDisclosurePageEn() {
         <section>
           <h2 className="mb-2 text-xl font-semibold text-slate-900">How to spot an affiliate link</h2>
           <p>
-            The &quot;Deploy on DigitalOcean / Hetzner / Railway&quot; buttons shown on every tool profile and
+            The &quot;Deploy on DigitalOcean / Vultr / Railway&quot; buttons shown on every tool profile and
             on the{" "}
             <Link href="/en/hosting-deals" className="font-medium text-emerald-700 hover:underline">
               Hosting &amp; Deals

@@ -17,6 +17,6 @@ export const siteConfig = {
  */
 export const affiliateLinks = {
   digitalOceanUrl: process.env.NEXT_PUBLIC_AFFILIATE_DIGITALOCEAN || "https://m.do.co/c/9f6e4c18c93c",
-  hetznerUrl: process.env.NEXT_PUBLIC_AFFILIATE_HETZNER || "#",
-  railwayUrl: process.env.NEXT_PUBLIC_AFFILIATE_RAILWAY || "#",
+  vultrUrl: process.env.NEXT_PUBLIC_AFFILIATE_VULTR || "https://www.vultr.com/?ref=9920581",
+  railwayUrl: process.env.NEXT_PUBLIC_AFFILIATE_RAILWAY || "https://railway.com?referralCode=jwbw2U",
 };

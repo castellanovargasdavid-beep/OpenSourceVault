@@ -29,7 +29,7 @@ export interface OpenSourceTool {
   dockerCompose: string;
   affiliateLinks: {
     digitalOceanUrl: string;
-    hetznerUrl: string;
+    vultrUrl: string;
     railwayUrl: string;
   };
   features: string[];

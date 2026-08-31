@@ -45,7 +45,7 @@ export default function PrivacyPage() {
         <section>
           <h2 className="mb-2 text-xl font-semibold text-slate-900">3. Enlaces de afiliado y sitios de terceros</h2>
           <p>
-            Algunos enlaces de este sitio (hacia proveedores de hosting como DigitalOcean, Hetzner o
+            Algunos enlaces de este sitio (hacia proveedores de hosting como DigitalOcean, Vultr o
             Railway, o hacia los sitios web y repositorios de las herramientas listadas) son enlaces de
             afiliado o simplemente enlaces externos. Al hacer clic en ellos sales de {siteConfig.name} y
             quedas sujeto a la política de privacidad y las cookies del sitio de destino, que no

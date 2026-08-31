@@ -78,7 +78,7 @@ const en: Dictionary = {
     subtitleSuffix: "below on any of these self-hosting providers.",
     digitalOcean: "Deploy on DigitalOcean",
     digitalOceanCredit: "$200 in free credit",
-    hetzner: "Deploy on Hetzner",
+    vultr: "Deploy on Vultr",
     railway: "Deploy on Railway",
     disclaimer: "Affiliate links: if you sign up through them we may earn a commission at no extra cost to you.",
   },
@@ -116,7 +116,7 @@ const en: Dictionary = {
   hostingDeals: {
     metaTitle: "Hosting & Deals to Self-Host Your Tools",
     metaDescription:
-      "Compare DigitalOcean, Hetzner and Railway to self-host your favorite open source alternatives, with exclusive credits and discounts.",
+      "Compare DigitalOcean, Vultr and Railway to self-host your favorite open source alternatives, with exclusive credits and discounts.",
     title: "Hosting & Deals",
     subtitle:
       "These are the VPS providers we recommend for self-hosting any tool in the catalog. All of them support Docker and Docker Compose without friction.",

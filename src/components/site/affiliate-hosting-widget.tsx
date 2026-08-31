@@ -33,13 +33,13 @@ export function AffiliateHostingWidget({ tool, locale = "es" }: { tool: OpenSour
           <span className="pl-6 text-xs font-normal opacity-90">{t.affiliateWidget.digitalOceanCredit}</span>
         </a>
         <a
-          href={tool.affiliateLinks.hetznerUrl}
+          href={tool.affiliateLinks.vultrUrl}
           target="_blank"
           rel="noopener noreferrer sponsored"
-          className={cn(buttonVariants({ size: "lg" }), "w-full justify-start gap-2 bg-red-600 hover:bg-red-500")}
+          className={cn(buttonVariants({ size: "lg" }), "w-full justify-start gap-2 bg-blue-600 hover:bg-blue-500")}
         >
-          <LogoImage domain="hetzner.com" label="Hetzner" size={18} className="rounded" fallbackGradient="from-red-500 to-red-600" />
-          {t.affiliateWidget.hetzner}
+          <LogoImage domain="vultr.com" label="Vultr" size={18} className="rounded" fallbackGradient="from-blue-500 to-blue-600" />
+          {t.affiliateWidget.vultr}
         </a>
         <a
           href={tool.affiliateLinks.railwayUrl}

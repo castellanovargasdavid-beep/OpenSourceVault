@@ -4,7 +4,7 @@ import { hostingProvidersEn } from "./hosting-providers.en";
 export interface HostingProvider {
   id: string;
   name: string;
-  logo: "digitalocean" | "hetzner" | "railway";
+  logo: "digitalocean" | "vultr" | "railway";
   domain: string;
   tagline: string;
   startingPrice: string;
@@ -38,22 +38,22 @@ export const hostingProviders: HostingProvider[] = [
     ctaLabel: "Obtener $200 de crédito gratis",
   },
   {
-    id: "hetzner",
-    name: "Hetzner Cloud",
-    logo: "hetzner",
-    domain: "hetzner.com",
-    tagline: "La mejor relación precio/rendimiento en servidores cloud europeos",
-    startingPrice: "desde €3.79/mes",
-    monthlyUsdApprox: 4.1,
-    bestFor: "Máximo rendimiento por euro, datacenters en la UE",
+    id: "vultr",
+    name: "Vultr",
+    logo: "vultr",
+    domain: "vultr.com",
+    tagline: "Servidores cloud de alto rendimiento en 32 datacenters por todo el mundo",
+    startingPrice: "desde $6/mes",
+    monthlyUsdApprox: 6,
+    bestFor: "Elegir la región más cercana a tus usuarios, con precios predecibles",
     features: [
-      "vCPUs dedicadas y compartidas muy económicas",
-      "Red privada y balanceadores de carga incluidos",
-      "Snapshots y backups automáticos",
-      "Datacenters en Alemania, Finlandia y EE.UU.",
+      "Cloud Compute desde 1 vCPU / 1GB RAM",
+      "Marketplace con 1-Click Apps para Docker",
+      "Bloques de almacenamiento y balanceadores de carga",
+      "32 datacenters en 6 continentes",
     ],
-    affiliateUrl: affiliateLinks.hetznerUrl,
-    ctaLabel: "Desplegar en Hetzner",
+    affiliateUrl: affiliateLinks.vultrUrl,
+    ctaLabel: "Desplegar en Vultr",
   },
   {
     id: "railway",

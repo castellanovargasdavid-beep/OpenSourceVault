@@ -34,7 +34,7 @@ export default function AffiliateDisclosurePage() {
           <p>Actualmente participamos en los programas de afiliados de:</p>
           <ul className="mt-2 list-disc space-y-1 pl-5">
             <li>DigitalOcean</li>
-            <li>Hetzner</li>
+            <li>Vultr</li>
             <li>Railway</li>
           </ul>
         </section>
@@ -42,7 +42,7 @@ export default function AffiliateDisclosurePage() {
         <section>
           <h2 className="mb-2 text-xl font-semibold text-slate-900">Cómo identificar un enlace de afiliado</h2>
           <p>
-            Los botones de &quot;Desplegar en DigitalOcean / Hetzner / Railway&quot; que aparecen en la ficha de
+            Los botones de &quot;Desplegar en DigitalOcean / Vultr / Railway&quot; que aparecen en la ficha de
             cada herramienta y en la página de{" "}
             <Link href="/hosting-deals" className="font-medium text-emerald-700 hover:underline">
               Hosting &amp; Descuentos
