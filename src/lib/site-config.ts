@@ -16,7 +16,7 @@ export const siteConfig = {
  * por falta de configuración en Vercel.
  */
 export const affiliateLinks = {
-  digitalOceanUrl: process.env.NEXT_PUBLIC_AFFILIATE_DIGITALOCEAN || "#",
+  digitalOceanUrl: process.env.NEXT_PUBLIC_AFFILIATE_DIGITALOCEAN || "https://m.do.co/c/9f6e4c18c93c",
   hetznerUrl: process.env.NEXT_PUBLIC_AFFILIATE_HETZNER || "#",
   railwayUrl: process.env.NEXT_PUBLIC_AFFILIATE_RAILWAY || "#",
 };
