@@ -5145,7 +5145,7 @@ volumes: {}
     shortDescription: "SSO y gestión de identidad open source, alternativa a Auth0/Okta.",
     websiteUrl: "https://www.keycloak.org",
     githubUrl: "https://github.com/keycloak/keycloak",
-    starsCount: 24000,
+    starsCount: 36500,
     license: "Apache-2.0",
     dockerCompose: `services:
   keycloak:
@@ -5176,7 +5176,7 @@ volumes: {}
     shortDescription: "Plataforma de identidad flexible, alternativa moderna a Okta/Auth0.",
     websiteUrl: "https://goauthentik.io",
     githubUrl: "https://github.com/goauthentik/authentik",
-    starsCount: 15000,
+    starsCount: 25300,
     license: "MIT",
     dockerCompose: `services:
   postgresql:
@@ -5221,7 +5221,7 @@ volumes:
     shortDescription: "Suite de identidad API-first, alternativa a Auth0/Cognito.",
     websiteUrl: "https://www.ory.sh",
     githubUrl: "https://github.com/ory/kratos",
-    starsCount: 10000,
+    starsCount: 13900,
     license: "Apache-2.0",
     dockerCompose: `services:
   kratos:
@@ -5260,8 +5260,8 @@ volumes:
     shortDescription: "Identidad multi-tenant todo-en-uno, alternativa a Auth0/Okta.",
     websiteUrl: "https://zitadel.com",
     githubUrl: "https://github.com/zitadel/zitadel",
-    starsCount: 8000,
-    license: "Apache-2.0",
+    starsCount: 14900,
+    license: "AGPL-3.0 (con excepciones Apache-2.0/MIT en algunos directorios)",
     dockerCompose: `services:
   zitadel:
     image: ghcr.io/zitadel/zitadel:latest
@@ -5280,8 +5280,8 @@ volumes:
     features: ["Multi-tenancy nativo (organizaciones)", "SSO, MFA y gestión de proyectos por org", "API gRPC y REST completas"],
     techStack: ["Go", "PostgreSQL"],
     pros: ["Pensado desde cero para SaaS multi-cliente"],
-    cons: ["Documentación más escueta que Keycloak en casos avanzados"],
-    tags: ["docker-ready", "permissive-license"],
+    cons: ["Documentación más escueta que Keycloak en casos avanzados", "Licencia AGPL-3.0: revisa implicaciones si ofreces el servicio a terceros"],
+    tags: ["docker-ready"],
     status: "coming_soon",
   },
   {
@@ -5295,7 +5295,7 @@ volumes:
     shortDescription: "Autenticación con SDKs listos para integrar, alternativa a Auth0/Clerk.",
     websiteUrl: "https://supertokens.com",
     githubUrl: "https://github.com/supertokens/supertokens-core",
-    starsCount: 7000,
+    starsCount: 15300,
     license: "Apache-2.0",
     dockerCompose: `services:
   supertokens:
@@ -5330,7 +5330,7 @@ volumes:
     shortDescription: "Identidad moderna y fácil de usar, alternativa auto-hospedada a Clerk/Auth0.",
     websiteUrl: "https://logto.io",
     githubUrl: "https://github.com/logto-io/logto",
-    starsCount: 9000,
+    starsCount: 14500,
     license: "MPL-2.0",
     dockerCompose: `services:
   logto:
@@ -5368,7 +5368,7 @@ volumes:
     shortDescription: "PaaS auto-hospedado con experiencia tipo Vercel, alternativa gratuita.",
     websiteUrl: "https://coolify.io",
     githubUrl: "https://github.com/coollabsio/coolify",
-    starsCount: 35000,
+    starsCount: 61300,
     license: "Apache-2.0",
     dockerCompose: `# Coolify se instala oficialmente con un script (no un docker-compose.yml
 # simple), porque despliega y gestiona su propia infraestructura de
@@ -5394,7 +5394,7 @@ curl -fsSL https://cdn.coollabs.io/coolify/install.sh | bash
     shortDescription: "PaaS ligero sobre Docker Swarm, alternativa sencilla a Heroku.",
     websiteUrl: "https://caprover.com",
     githubUrl: "https://github.com/caprover/caprover",
-    starsCount: 13000,
+    starsCount: 15200,
     license: "Apache-2.0",
     dockerCompose: `services:
   captain:
@@ -5428,7 +5428,7 @@ volumes:
     shortDescription: "Mini-Heroku de código abierto, despliega con git push.",
     websiteUrl: "https://dokku.com",
     githubUrl: "https://github.com/dokku/dokku",
-    starsCount: 30000,
+    starsCount: 32100,
     license: "MIT",
     dockerCompose: `# Dokku se instala con su script oficial de bootstrap directamente sobre
 # el servidor (gestiona el Docker del host), no mediante un
@@ -5455,7 +5455,7 @@ sudo DOKKU_TAG=v0.35.15 bash bootstrap.sh
     shortDescription: "Panel tipo Synology DSM para tu propio servidor, con App Store de un clic.",
     websiteUrl: "https://casaos.io",
     githubUrl: "https://github.com/IceWhaleTech/CasaOS",
-    starsCount: 19000,
+    starsCount: 37200,
     license: "Apache-2.0",
     dockerCompose: `# CasaOS se instala con su script oficial directamente sobre el servidor
 # (es un panel para gestionar Docker/tu NAS, no una app dentro de Docker):
@@ -5482,7 +5482,7 @@ curl -fsSL https://get.casaos.io | sudo bash
     shortDescription: "Rastreo de errores en producción, la versión oficial auto-hospedada.",
     websiteUrl: "https://sentry.io",
     githubUrl: "https://github.com/getsentry/self-hosted",
-    starsCount: 40000,
+    starsCount: 9500,
     license: "FSL-1.1 (pasa a Apache-2.0 a los 2 años)",
     dockerCompose: `# Sentry self-hosted se instala clonando su repo oficial y ejecutando
 # install.sh, que genera un docker-compose.yml completo (Postgres, Redis,
@@ -5555,7 +5555,7 @@ cd self-hosted && ./install.sh
     shortDescription: "Métricas + trazas + logs unificados, alternativa a Datadog/New Relic.",
     websiteUrl: "https://signoz.io",
     githubUrl: "https://github.com/SigNoz/signoz",
-    starsCount: 20000,
+    starsCount: 32000,
     license: "MIT",
     dockerCompose: `# SigNoz recomienda su script oficial (levanta ClickHouse, el
 # query-service y el frontend juntos con la configuración correcta):
@@ -5581,7 +5581,7 @@ cd signoz/deploy && ./install.sh
     shortDescription: "Monitor de servidores ultraligero, un solo binario, alternativa mínima a Datadog.",
     websiteUrl: "https://beszel.dev",
     githubUrl: "https://github.com/henrygd/beszel",
-    starsCount: 5000,
+    starsCount: 25000,
     license: "MIT",
     dockerCompose: `services:
   beszel:
@@ -5614,7 +5614,7 @@ volumes:
     shortDescription: "Constructor low-code de apps internas, alternativa a Retool.",
     websiteUrl: "https://budibase.com",
     githubUrl: "https://github.com/Budibase/budibase",
-    starsCount: 22000,
+    starsCount: 28200,
     license: "GPL-3.0",
     dockerCompose: `services:
   budibase:
@@ -5649,7 +5649,7 @@ volumes:
     shortDescription: "Editor low-code para paneles internos, alternativa directa a Retool.",
     websiteUrl: "https://www.appsmith.com",
     githubUrl: "https://github.com/appsmithorg/appsmith",
-    starsCount: 35000,
+    starsCount: 40800,
     license: "Apache-2.0",
     dockerCompose: `services:
   appsmith:
@@ -5681,7 +5681,7 @@ volumes:
     shortDescription: "Navaja suiza de PDFs auto-hospedada, alternativa a Smallpdf/Adobe Acrobat.",
     websiteUrl: "https://www.stirlingpdf.com",
     githubUrl: "https://github.com/Stirling-Tools/Stirling-PDF",
-    starsCount: 15000,
+    starsCount: 91100,
     license: "MIT",
     dockerCompose: `services:
   stirling-pdf:
@@ -5714,7 +5714,7 @@ volumes:
     websiteUrl: "https://forgejo.org",
     githubUrl: "https://codeberg.org/forgejo/forgejo",
     starsCount: 6000,
-    license: "MIT",
+    license: "GPL-3.0-or-later",
     dockerCompose: `services:
   forgejo:
     image: codeberg.org/forgejo/forgejo:latest
@@ -5733,8 +5733,8 @@ volumes:
     features: ["Forgejo Actions, compatible con sintaxis de GitHub Actions", "Muy ligero, un solo binario", "Gobernanza 100% comunitaria, sin empresa detrás"],
     techStack: ["Go", "SQLite/PostgreSQL"],
     pros: ["Alternativa a Gitea para quien prefiere un proyecto sin respaldo corporativo"],
-    cons: ["Comunidad y ecosistema de plugins más pequeños que GitLab"],
-    tags: ["docker-ready", "permissive-license"],
+    cons: ["Comunidad y ecosistema de plugins más pequeños que GitLab", "Recientemente pasó de MIT a GPL-3.0+ (agosto 2024): revisa las implicaciones si distribuyes una versión modificada"],
+    tags: ["docker-ready"],
     status: "coming_soon",
   },
   {
@@ -5748,7 +5748,7 @@ volumes:
     shortDescription: "Gestión de secretos y variables de entorno, alternativa simple a Vault/Doppler.",
     websiteUrl: "https://infisical.com",
     githubUrl: "https://github.com/Infisical/infisical",
-    starsCount: 16000,
+    starsCount: 29100,
     license: "MIT",
     dockerCompose: `services:
   infisical:
@@ -5790,7 +5790,7 @@ volumes:
     shortDescription: "Acortador de enlaces con analíticas, alternativa open source a Bitly.",
     websiteUrl: "https://dub.co",
     githubUrl: "https://github.com/dubinc/dub",
-    starsCount: 18000,
+    starsCount: 24600,
     license: "AGPL-3.0",
     dockerCompose: `# Dub es una app Next.js pensada principalmente para su nube gestionada;
 # auto-hospedarla implica clonar el repo y configurar Postgres + Redis
@@ -5817,7 +5817,7 @@ cd dub && pnpm install && pnpm build
     shortDescription: "Encuestas y formularios con targeting in-app, alternativa a Typeform.",
     websiteUrl: "https://formbricks.com",
     githubUrl: "https://github.com/formbricks/formbricks",
-    starsCount: 8000,
+    starsCount: 12900,
     license: "AGPL-3.0",
     dockerCompose: `services:
   formbricks:
@@ -5853,7 +5853,7 @@ cd dub && pnpm install && pnpm build
     shortDescription: "Blog y newsletter de pago, alternativa open source y madura a Substack.",
     websiteUrl: "https://ghost.org",
     githubUrl: "https://github.com/TryGhost/Ghost",
-    starsCount: 46000,
+    starsCount: 55100,
     license: "MIT",
     dockerCompose: `services:
   ghost:

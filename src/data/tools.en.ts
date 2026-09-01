@@ -1077,7 +1077,7 @@ export const toolsEn: Record<string, ToolTranslation> = {
     shortDescription: "All-in-one multi-tenant identity, an alternative to Auth0/Okta.",
     features: ["Native multi-tenancy (organizations)", "SSO, MFA and per-org project management", "Full gRPC and REST APIs"],
     pros: ["Built from the ground up for multi-tenant SaaS"],
-    cons: ["Documentation is thinner than Keycloak's for advanced cases"],
+    cons: ["Documentation is thinner than Keycloak's for advanced cases", "AGPL-3.0 license: check the implications if you offer it as a service to others"],
   },
   supertokens: {
     description:
@@ -1189,7 +1189,7 @@ export const toolsEn: Record<string, ToolTranslation> = {
     shortDescription: "Gitea's community fork, a lightweight Git forge with 100% open governance.",
     features: ["Forgejo Actions, compatible with GitHub Actions syntax", "Very lightweight, a single binary", "100% community governance, no company behind it"],
     pros: ["An alternative to Gitea for those who prefer a project with no corporate backing"],
-    cons: ["Smaller community and plugin ecosystem than GitLab"],
+    cons: ["Smaller community and plugin ecosystem than GitLab", "Recently moved from MIT to GPL-3.0+ (August 2024): check the implications if you distribute a modified version"],
   },
   infisical: {
     description:
