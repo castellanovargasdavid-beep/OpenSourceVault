@@ -126,7 +126,7 @@ export function ComparisonPageContent({ comparison, locale }: { comparison: Tool
             </tr>
           </tbody>
         </table>
-        {popularity && <p className="mt-3 text-xs text-slate-400">{t.comparisonPage.popularityNote(popularity)}</p>}
+        {popularity && <p className="mt-3 text-xs text-slate-600">{t.comparisonPage.popularityNote(popularity)}</p>}
       </section>
 
       <section className="mb-10 grid gap-6 sm:grid-cols-2">

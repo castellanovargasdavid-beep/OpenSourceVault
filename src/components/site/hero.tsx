@@ -25,7 +25,7 @@ export function Hero({ locale = "es" }: { locale?: Locale }) {
 
   return (
     <section className="relative overflow-hidden border-b border-slate-200">
-      <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
         <div className="animate-blob absolute -top-32 -left-24 h-96 w-96 rounded-full bg-emerald-300/40 blur-3xl" />
         <div className="animate-blob-delayed absolute -top-16 right-0 h-80 w-80 rounded-full bg-violet-300/35 blur-3xl" />
         <div className="animate-blob-slow absolute bottom-0 left-1/3 h-96 w-96 rounded-full bg-blue-200/40 blur-3xl" />
@@ -76,7 +76,7 @@ export function Hero({ locale = "es" }: { locale?: Locale }) {
         </div>
 
         <div className="mt-14">
-          <p className="text-xs font-medium uppercase tracking-wide text-slate-400">{t.hero.replacesLabel}</p>
+          <p className="text-xs font-medium uppercase tracking-wide text-slate-600">{t.hero.replacesLabel}</p>
           <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
             {showcaseSaas.map((name) => (
               <span

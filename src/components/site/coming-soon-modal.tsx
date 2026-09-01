@@ -111,7 +111,7 @@ export function ComingSoonModal({
           {voted ? t.comingSoon.voteButtonDone : t.comingSoon.voteButton}
         </Button>
 
-        <div className="my-4 flex items-center gap-3 text-xs uppercase tracking-wide text-slate-400">
+        <div className="my-4 flex items-center gap-3 text-xs uppercase tracking-wide text-slate-600">
           <span className="h-px flex-1 bg-slate-200" />
           {t.comingSoon.orDivider}
           <span className="h-px flex-1 bg-slate-200" />
@@ -144,7 +144,7 @@ export function ComingSoonModal({
           </form>
         )}
 
-        <p className="mt-4 text-xs text-slate-400">{t.comingSoon.disclaimer}</p>
+        <p className="mt-4 text-xs text-slate-600">{t.comingSoon.disclaimer}</p>
       </div>
     </div>,
     document.body

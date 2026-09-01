@@ -51,7 +51,7 @@ export function AffiliateHostingWidget({ tool, locale = "es" }: { tool: OpenSour
           {t.affiliateWidget.railway}
         </a>
       </div>
-      <p className="mt-4 text-xs text-slate-400">{t.affiliateWidget.disclaimer}</p>
+      <p className="mt-4 text-xs text-slate-600">{t.affiliateWidget.disclaimer}</p>
     </div>
   );
 }

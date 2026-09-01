@@ -115,7 +115,7 @@ export function SearchBar({ className, locale = "es" }: { className?: string; lo
                         <span className="text-slate-600"> · {t.searchBar.alternativeTo} {match.matchedReplaces}</span>
                       )}
                     </span>
-                    <span className="shrink-0 text-xs text-slate-400">{match.categoryLabel}</span>
+                    <span className="shrink-0 text-xs text-slate-600">{match.categoryLabel}</span>
                   </button>
                 </li>
               ))}

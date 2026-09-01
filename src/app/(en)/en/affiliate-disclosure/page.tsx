@@ -16,7 +16,7 @@ export default function AffiliateDisclosurePageEn() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
       <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">Affiliate Disclosure</h1>
-      <p className="mt-3 text-sm text-slate-400">Last updated: {siteConfig.year}</p>
+      <p className="mt-3 text-sm text-slate-600">Last updated: {siteConfig.year}</p>
 
       <div className="mt-8 space-y-8 text-slate-600">
         <section>

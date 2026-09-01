@@ -86,7 +86,7 @@ export function HostingDealsContent({ locale = "es" }: { locale?: Locale }) {
         </table>
       </section>
 
-      <p className="mt-8 text-xs text-slate-400">{t.hostingDeals.disclosure}</p>
+      <p className="mt-8 text-xs text-slate-600">{t.hostingDeals.disclosure}</p>
     </div>
   );
 }

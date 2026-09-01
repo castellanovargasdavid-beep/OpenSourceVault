@@ -147,19 +147,19 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
             <h2 className="mb-4 text-xl font-semibold text-slate-900">{t.toolPage.fichaTecnica}</h2>
             <dl className={cn("grid grid-cols-2 gap-4 rounded-xl border p-6 sm:grid-cols-3", palette.soft, palette.border)}>
               <div>
-                <dt className="text-xs uppercase tracking-wide text-slate-400">{t.toolPage.fieldLicense}</dt>
+                <dt className="text-xs uppercase tracking-wide text-slate-600">{t.toolPage.fieldLicense}</dt>
                 <dd className="mt-1 font-medium text-slate-900">{tool.license}</dd>
               </div>
               <div>
-                <dt className="text-xs uppercase tracking-wide text-slate-400">{t.toolPage.fieldCategory}</dt>
+                <dt className="text-xs uppercase tracking-wide text-slate-600">{t.toolPage.fieldCategory}</dt>
                 <dd className="mt-1 font-medium text-slate-900">{category.label}</dd>
               </div>
               <div>
-                <dt className="text-xs uppercase tracking-wide text-slate-400">{t.toolPage.fieldReplaces}</dt>
+                <dt className="text-xs uppercase tracking-wide text-slate-600">{t.toolPage.fieldReplaces}</dt>
                 <dd className="mt-1 font-medium text-slate-900">{tool.replaces.join(", ")}</dd>
               </div>
               <div className="col-span-2 sm:col-span-3">
-                <dt className="text-xs uppercase tracking-wide text-slate-400">{t.toolPage.fieldStack}</dt>
+                <dt className="text-xs uppercase tracking-wide text-slate-600">{t.toolPage.fieldStack}</dt>
                 <dd className="mt-1 flex flex-wrap gap-1.5">
                   {tool.techStack.map((tech) => (
                     <Badge key={tech} variant="outline">
@@ -175,7 +175,7 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
             <section>
               <h2 className="mb-4 text-xl font-semibold text-slate-900">{t.toolPage.preview}</h2>
               <ToolPreviewImage src={ogImageUrl} alt={`${tool.name} interface preview`} />
-              <p className="mt-2 text-xs text-slate-400">{t.toolPage.previewCaption(tool.name)}</p>
+              <p className="mt-2 text-xs text-slate-600">{t.toolPage.previewCaption(tool.name)}</p>
             </section>
           )}
 

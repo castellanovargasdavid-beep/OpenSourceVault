@@ -51,7 +51,7 @@ export function SavingsCalculator({ locale = "es" }: { locale?: Locale }) {
               </option>
             ))}
           </select>
-          <p className="mt-1 text-xs text-slate-400">{saas.billingNote}</p>
+          <p className="mt-1 text-xs text-slate-600">{saas.billingNote}</p>
         </div>
 
         <div>
@@ -88,11 +88,11 @@ export function SavingsCalculator({ locale = "es" }: { locale?: Locale }) {
 
       <div className="mt-8 grid gap-4 sm:grid-cols-3">
         <div className="rounded-xl border border-slate-200 bg-slate-50 p-5 text-center">
-          <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
+          <p className="text-xs font-medium uppercase tracking-wide text-slate-600">
             {t.savingsCalculator.perYear(saasName)}
           </p>
           <p className="mt-1 text-2xl font-bold text-slate-900">{formatUsd(saasAnnualCost, locale)}</p>
-          <p className="mt-1 text-xs text-slate-400">
+          <p className="mt-1 text-xs text-slate-600">
             {seats} {t.savingsCalculator.seatsUnit(seats)} × {formatUsd(saas.pricePerSeatUsd, locale)}/{t.savingsCalculator.perMonth}
           </p>
         </div>
@@ -114,7 +114,7 @@ export function SavingsCalculator({ locale = "es" }: { locale?: Locale }) {
         </div>
       </div>
 
-      <p className="mt-4 text-xs text-slate-400">
+      <p className="mt-4 text-xs text-slate-600">
         {t.savingsCalculator.disclaimer(saas.billingNote.toLowerCase(), saasName)}
       </p>
 

@@ -101,7 +101,7 @@ export function MigrationGuideContent({
         </Link>
       </div>
 
-      <p className="mt-6 flex items-center gap-1.5 text-xs text-slate-400">
+      <p className="mt-6 flex items-center gap-1.5 text-xs text-slate-600">
         <Clock size={12} /> {t.migrationGuidePage.footerNote(fromName)}
       </p>
     </div>

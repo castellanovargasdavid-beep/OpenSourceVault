@@ -27,7 +27,7 @@ export const categoryColors: Record<ToolCategory, CategoryPalette> = {
     borderHover: "hover:border-violet-300",
     iconBg: "bg-violet-100",
     iconText: "text-violet-600",
-    badge: "bg-violet-100 text-violet-700",
+    badge: "bg-violet-100 text-violet-800",
     gradient: "from-violet-500 to-purple-600",
   },
   Analytics: {
@@ -37,7 +37,7 @@ export const categoryColors: Record<ToolCategory, CategoryPalette> = {
     borderHover: "hover:border-blue-300",
     iconBg: "bg-blue-100",
     iconText: "text-blue-600",
-    badge: "bg-blue-100 text-blue-700",
+    badge: "bg-blue-100 text-blue-800",
     gradient: "from-blue-500 to-cyan-500",
   },
   DevTools: {
@@ -47,7 +47,7 @@ export const categoryColors: Record<ToolCategory, CategoryPalette> = {
     borderHover: "hover:border-amber-300",
     iconBg: "bg-amber-100",
     iconText: "text-amber-600",
-    badge: "bg-amber-100 text-amber-700",
+    badge: "bg-amber-100 text-amber-800",
     gradient: "from-amber-500 to-orange-600",
   },
   CRM: {
@@ -57,7 +57,7 @@ export const categoryColors: Record<ToolCategory, CategoryPalette> = {
     borderHover: "hover:border-rose-300",
     iconBg: "bg-rose-100",
     iconText: "text-rose-600",
-    badge: "bg-rose-100 text-rose-700",
+    badge: "bg-rose-100 text-rose-800",
     gradient: "from-rose-500 to-pink-600",
   },
   AI: {
@@ -67,7 +67,7 @@ export const categoryColors: Record<ToolCategory, CategoryPalette> = {
     borderHover: "hover:border-fuchsia-300",
     iconBg: "bg-fuchsia-100",
     iconText: "text-fuchsia-600",
-    badge: "bg-fuchsia-100 text-fuchsia-700",
+    badge: "bg-fuchsia-100 text-fuchsia-800",
     gradient: "from-fuchsia-500 to-purple-600",
   },
   Storage: {
@@ -77,7 +77,7 @@ export const categoryColors: Record<ToolCategory, CategoryPalette> = {
     borderHover: "hover:border-teal-300",
     iconBg: "bg-teal-100",
     iconText: "text-teal-600",
-    badge: "bg-teal-100 text-teal-700",
+    badge: "bg-teal-100 text-teal-800",
     gradient: "from-teal-500 to-emerald-600",
   },
   Ecommerce: {
@@ -87,7 +87,7 @@ export const categoryColors: Record<ToolCategory, CategoryPalette> = {
     borderHover: "hover:border-orange-300",
     iconBg: "bg-orange-100",
     iconText: "text-orange-600",
-    badge: "bg-orange-100 text-orange-700",
+    badge: "bg-orange-100 text-orange-800",
     gradient: "from-orange-500 to-red-500",
   },
   VideoConferencing: {
@@ -97,7 +97,7 @@ export const categoryColors: Record<ToolCategory, CategoryPalette> = {
     borderHover: "hover:border-cyan-300",
     iconBg: "bg-cyan-100",
     iconText: "text-cyan-600",
-    badge: "bg-cyan-100 text-cyan-700",
+    badge: "bg-cyan-100 text-cyan-800",
     gradient: "from-cyan-500 to-blue-600",
   },
   PasswordManagers: {
@@ -107,7 +107,7 @@ export const categoryColors: Record<ToolCategory, CategoryPalette> = {
     borderHover: "hover:border-indigo-300",
     iconBg: "bg-indigo-100",
     iconText: "text-indigo-600",
-    badge: "bg-indigo-100 text-indigo-700",
+    badge: "bg-indigo-100 text-indigo-800",
     gradient: "from-indigo-500 to-slate-700",
   },
   AuthIdentity: {
@@ -117,7 +117,7 @@ export const categoryColors: Record<ToolCategory, CategoryPalette> = {
     borderHover: "hover:border-sky-300",
     iconBg: "bg-sky-100",
     iconText: "text-sky-600",
-    badge: "bg-sky-100 text-sky-700",
+    badge: "bg-sky-100 text-sky-800",
     gradient: "from-sky-500 to-blue-700",
   },
   CloudPaas: {
@@ -127,7 +127,7 @@ export const categoryColors: Record<ToolCategory, CategoryPalette> = {
     borderHover: "hover:border-lime-300",
     iconBg: "bg-lime-100",
     iconText: "text-lime-700",
-    badge: "bg-lime-100 text-lime-700",
+    badge: "bg-lime-100 text-lime-800",
     gradient: "from-lime-500 to-green-600",
   },
   MonitoringLogs: {
@@ -137,7 +137,7 @@ export const categoryColors: Record<ToolCategory, CategoryPalette> = {
     borderHover: "hover:border-red-300",
     iconBg: "bg-red-100",
     iconText: "text-red-600",
-    badge: "bg-red-100 text-red-700",
+    badge: "bg-red-100 text-red-800",
     gradient: "from-red-500 to-rose-700",
   },
   MarketingForms: {
@@ -147,7 +147,7 @@ export const categoryColors: Record<ToolCategory, CategoryPalette> = {
     borderHover: "hover:border-pink-300",
     iconBg: "bg-pink-100",
     iconText: "text-pink-600",
-    badge: "bg-pink-100 text-pink-700",
+    badge: "bg-pink-100 text-pink-800",
     gradient: "from-pink-500 to-fuchsia-600",
   },
 };
