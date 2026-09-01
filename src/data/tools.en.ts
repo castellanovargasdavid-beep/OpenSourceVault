@@ -1045,4 +1045,182 @@ export const toolsEn: Record<string, ToolTranslation> = {
     pros: ["Builds on the KeePass format, very mature and well-audited"],
     cons: ["It's a client, not a server: sync depends on another backend"],
   },
+
+  // ---------- Coming soon batch ----------
+  keycloak: {
+    description:
+      "Keycloak is the most established open source identity and access solution: SSO, LDAP/AD federation, social login and role management for any app or API.",
+    shortDescription: "Open source SSO and identity management, an alternative to Auth0/Okta.",
+    features: ["SSO and LDAP/Active Directory federation", "Social login (Google, GitHub...)", "Granular role and permission management"],
+    pros: ["The most mature and battle-tested option in enterprise environments"],
+    cons: ["Higher memory usage than lighter alternatives"],
+  },
+  authentik: {
+    description:
+      "Authentik is a modern, flexible identity platform with visually customizable authentication flows and native support for SSO, MFA and an application proxy.",
+    shortDescription: "Flexible identity platform, a modern alternative to Okta/Auth0.",
+    features: ["Visual authentication flow editor", "Application proxy with no code changes", "MFA and conditional access policies"],
+    pros: ["A much more modern interface than the open source competition"],
+    cons: ["Requires Postgres and Redis in addition to the server itself"],
+  },
+  ory: {
+    description:
+      "Ory is a composable identity suite (Kratos for users, Hydra for OAuth2/OIDC) designed API-first, for developers who want full control over the flow.",
+    shortDescription: "API-first identity suite, an alternative to Auth0/Cognito.",
+    features: ["100% API-first, no imposed UI", "Kratos (users) + Hydra (OAuth2/OIDC) separately", "Scales horizontally with a stateless app"],
+    pros: ["Maximum flexibility to build your own login frontend"],
+    cons: ["Steeper learning curve since it ships with no ready-made UI"],
+  },
+  zitadel: {
+    description:
+      "Zitadel is an all-in-one identity platform with native multi-tenancy, built for B2B SaaS that need to isolate each customer's identity without deploying one instance per customer.",
+    shortDescription: "All-in-one multi-tenant identity, an alternative to Auth0/Okta.",
+    features: ["Native multi-tenancy (organizations)", "SSO, MFA and per-org project management", "Full gRPC and REST APIs"],
+    pros: ["Built from the ground up for multi-tenant SaaS"],
+    cons: ["Documentation is thinner than Keycloak's for advanced cases"],
+  },
+  supertokens: {
+    description:
+      "SuperTokens offers per-language/framework SDKs and a lightweight session server, built to integrate in minutes into existing apps without rewriting the login flow.",
+    shortDescription: "Authentication with ready-to-integrate SDKs, an alternative to Auth0/Clerk.",
+    features: ["Official SDKs for React, Next.js, Node, Python...", "Secure session management by default", "Social and passwordless login included"],
+    pros: ["Very fast integration thanks to the SDKs"],
+    cons: ["Less flexible than Ory/Keycloak for very custom flows"],
+  },
+  logto: {
+    description:
+      "Logto is a modern identity alternative with a polished admin console, built for small teams who want something as simple as Clerk but self-hosted.",
+    shortDescription: "Modern, easy-to-use identity, a self-hosted alternative to Clerk/Auth0.",
+    features: ["Very polished admin console", "Multi-tenant and organizations included", "Social login and brand customization"],
+    pros: ["The closest experience to a polished SaaS product"],
+    cons: ["Smaller community than Keycloak or Authentik"],
+  },
+  coolify: {
+    description:
+      "Coolify is a self-hosted deployment platform that replicates the Vercel/Heroku experience: connect your Git repo and deploy apps, databases and services with one click.",
+    shortDescription: "Self-hosted PaaS with a Vercel-like experience, a free alternative.",
+    features: ["One-click deploy from Git (like Vercel)", "One-click managed databases", "Manage multiple servers from one dashboard"],
+    pros: ["The most polished open source alternative to Vercel/Heroku"],
+    cons: ["Installs across the whole server, doesn't fit into a single-app docker-compose"],
+  },
+  caprover: {
+    description:
+      "CapRover is a lightweight PaaS on top of Docker Swarm with its own web dashboard, one-click apps from its marketplace and automatic HTTPS — built for modest VPS.",
+    shortDescription: "Lightweight PaaS on Docker Swarm, a simple alternative to Heroku.",
+    features: ["One-click app marketplace", "Automatic HTTPS via Let's Encrypt", "Own web dashboard, light on resources"],
+    pros: ["Very lightweight, runs fine on a 1-2GB RAM VPS"],
+    cons: ["Fewer advanced features than Coolify"],
+  },
+  dokku: {
+    description:
+      "Dokku is the original 'mini-Heroku': a single-command-line PaaS that uses buildpacks or Dockerfiles and deploys with a simple `git push`.",
+    shortDescription: "Open source mini-Heroku, deploy with git push.",
+    features: ["Deploy with git push, just like Heroku", "Supports buildpacks and Dockerfiles", "Hundreds of community plugins"],
+    pros: ["The simplest and most minimal of the whole PaaS group"],
+    cons: ["No official web dashboard (third-party plugins exist)"],
+  },
+  casaos: {
+    description:
+      "CasaOS turns any Linux server (or Raspberry Pi) into a personal NAS/dashboard with a Synology DSM-style interface, with an App Store to install self-hosted apps in one click.",
+    shortDescription: "A Synology DSM-style dashboard for your own server, with a one-click App Store.",
+    features: ["One-click App Store with dozens of self-hosted apps", "Built-in web file manager", "Built for Raspberry Pi and mini-PCs"],
+    pros: ["The easiest way to turn a Pi into a personal NAS"],
+    cons: ["Built more for home use than for production"],
+  },
+  "sentry-self-hosted": {
+    description:
+      "The self-hosted version of Sentry itself: error and performance tracking in production with smart exception grouping, for all major languages.",
+    shortDescription: "Production error tracking, the official self-hosted version.",
+    features: ["Smart grouping of repeated errors", "Performance monitoring traces", "Official SDKs for all major languages"],
+    pros: ["It's the original product, with no feature cuts"],
+    cons: ["Heavy stack: needs plenty of RAM and several services"],
+  },
+  glitchtip: {
+    description:
+      "GlitchTip is compatible with the Sentry SDK but with a much lighter backend — you just change the DSN URL, no app code changes needed.",
+    shortDescription: "Compatible with the Sentry SDK but much lighter to self-host.",
+    features: ["Compatible with the Sentry SDK with no changes", "Much lighter than Sentry self-hosted", "Email/Slack notifications"],
+    pros: ["The ideal balance between lightweight and Sentry-compatible"],
+    cons: ["Fewer advanced features than Sentry (no full performance tracing)"],
+  },
+  signoz: {
+    description:
+      "SigNoz unifies metrics, traces and logs in a single OpenTelemetry-based platform, as a direct replacement for Datadog/New Relic with your own data.",
+    shortDescription: "Unified metrics + traces + logs, an alternative to Datadog/New Relic.",
+    features: ["100% built on OpenTelemetry (open standard)", "Metrics, traces and logs in one dashboard", "Configurable alerts"],
+    pros: ["The OpenTelemetry standard avoids locking you into a proprietary SDK"],
+    cons: ["ClickHouse adds operational complexity"],
+  },
+  beszel: {
+    description:
+      "Beszel is an ultra-lightweight infrastructure monitor (a single binary) to see CPU, RAM, disk and network across all your servers in a simple dashboard, without a full stack's complexity.",
+    shortDescription: "Ultra-lightweight server monitor, a single binary, a minimal alternative to Datadog.",
+    features: ["Single binary/container, no dependencies", "Lightweight agents per monitored server", "CPU/RAM/disk/network usage history"],
+    pros: ["The fastest setup of the whole monitoring group"],
+    cons: ["No application error tracking, infrastructure only"],
+  },
+  budibase: {
+    description:
+      "Budibase is a low-code platform for building internal dashboards and CRUD apps on top of your own data sources (Postgres, MongoDB, APIs), with drag-and-drop components.",
+    shortDescription: "Low-code builder for internal apps, an alternative to Retool.",
+    features: ["Drag-and-drop visual editor", "Connects Postgres, MongoDB, MySQL, REST APIs", "Zapier-style automations included"],
+    pros: ["Very fast for prototyping internal dashboards"],
+    cons: ["GPL-3.0 license, check the implications if you redistribute it modified"],
+  },
+  appsmith: {
+    description:
+      "Appsmith is another low-code platform for internal dashboards, with an editor very similar to Retool: drag components, connect any database or API and write JS where needed.",
+    shortDescription: "Low-code editor for internal dashboards, a direct alternative to Retool.",
+    features: ["Visual editor very similar to Retool", "Embedded JS in any field", "Connects more than 25 different data sources"],
+    pros: ["The gentlest learning curve if you already know Retool"],
+    cons: ["Needs a fair amount of RAM on small instances"],
+  },
+  "stirling-pdf": {
+    description:
+      "Stirling PDF is a self-hosted Swiss army knife for PDFs: merge, split, compress, sign, convert and OCR, all from a web interface without uploading your documents to a third party.",
+    shortDescription: "Self-hosted PDF Swiss army knife, an alternative to Smallpdf/Adobe Acrobat.",
+    features: ["Over 50 different PDF operations", "Built-in OCR (Tesseract)", "Digital signing and password protection"],
+    pros: ["Your documents never leave your own server"],
+    cons: ["The interface is functional but less polished than commercial tools"],
+  },
+  forgejo: {
+    description:
+      "Forgejo is Gitea's community fork focused on open, non-commercial governance: Git repositories, issues, PRs and built-in CI/CD (Forgejo Actions) in one lightweight binary.",
+    shortDescription: "Gitea's community fork, a lightweight Git forge with 100% open governance.",
+    features: ["Forgejo Actions, compatible with GitHub Actions syntax", "Very lightweight, a single binary", "100% community governance, no company behind it"],
+    pros: ["An alternative to Gitea for those who prefer a project with no corporate backing"],
+    cons: ["Smaller community and plugin ecosystem than GitLab"],
+  },
+  infisical: {
+    description:
+      "Infisical centralizes and encrypts environment variables and secrets across all your projects, with a CLI, SDKs and native CI/CD integration — built to be much simpler than Vault.",
+    shortDescription: "Secrets and environment variable management, a simple alternative to Vault/Doppler.",
+    features: ["CLI to inject secrets into any process", "Native CI/CD integration (GitHub Actions, etc.)", "Secret version history and rollback"],
+    pros: ["Much faster to get running than HashiCorp Vault"],
+    cons: ["Fewer advanced PKI/certificate features than Vault"],
+  },
+  "dub-co": {
+    description:
+      "Dub is a modern short-link platform with detailed click analytics, built as an open source, self-hostable alternative to Bitly.",
+    shortDescription: "Link shortener with analytics, an open source alternative to Bitly.",
+    features: ["Real-time click analytics", "Your own custom domains", "API to generate links programmatically"],
+    pros: ["The most modern interface and analytics of the open source shorteners"],
+    cons: ["Self-hosting it takes more work than a simple docker-compose"],
+  },
+  formbricks: {
+    description:
+      "Formbricks combines surveys and embedded forms with in-app user targeting, as an open source alternative to Typeform built especially for product/UX research.",
+    shortDescription: "Surveys and forms with in-app targeting, an alternative to Typeform.",
+    features: ["In-app surveys targeted by user segment", "Forms embeddable on any site", "Templates for NPS, PMF and more"],
+    pros: ["Built specifically for product research, not just generic forms"],
+    cons: ["AGPL-3.0 license: check the implications if you offer it as a service to others"],
+  },
+  ghost: {
+    description:
+      "Ghost is a publishing and paid-newsletter platform with a modern editor, built-in memberships and payments — the most established open source alternative to Substack.",
+    shortDescription: "Blog and paid newsletter, a mature open source alternative to Substack.",
+    features: ["Built-in paid memberships and subscriptions", "Modern, Notion-like editor", "Native email newsletters"],
+    pros: ["The most mature and production-proven tool in this whole batch"],
+    cons: ["MySQL as a dependency adds some weight compared to SQLite-based options"],
+  },
 };

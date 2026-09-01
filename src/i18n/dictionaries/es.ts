@@ -62,6 +62,20 @@ const es = {
     noMatches: "No encontramos coincidencias todavía. Prueba con otra herramienta SaaS.",
     ariaLabel: "Buscar alternativa open source",
   },
+  comingSoon: {
+    badge: "Próximamente",
+    modalTitle: (name: string) => `Estamos preparando la ficha técnica y la guía Docker de ${name}`,
+    modalBody: "¿Quieres que la prioricemos?",
+    voteButton: "Votar para priorizarla",
+    voteButtonDone: "¡Voto registrado!",
+    orDivider: "o",
+    emailLabel: "Avísame cuando esté lista",
+    emailPlaceholder: "tu@email.com",
+    emailButton: "Avisarme",
+    emailButtonDone: "Te avisaremos por email",
+    close: "Cerrar",
+    disclaimer: "No hace falta cuenta ni contraseña — solo usamos tu email para avisarte de esta herramienta.",
+  },
   toolCard: {
     tagDockerReady: "Docker Ready",
     tagOneClick: "1-Click Deploy",
@@ -69,6 +83,7 @@ const es = {
     sponsored: "Patrocinado",
     alternativeTo: "Alternativa a",
     cta: "Ver ficha y guía de despliegue",
+    comingSoonCta: "Quiero esta ficha",
   },
   affiliateWidget: {
     title: (name: string) => `Despliega ${name} en minutos`,

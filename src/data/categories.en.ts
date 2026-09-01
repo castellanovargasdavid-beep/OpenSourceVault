@@ -42,4 +42,20 @@ export const categoriesEn: Record<ToolCategory, CategoryTranslation> = {
     label: "Password Managers",
     description: "Keep your team's passwords on your own infrastructure.",
   },
+  AuthIdentity: {
+    label: "Auth & Identity",
+    description: "Single sign-on, SSO and identity management without relying on Auth0 or Okta.",
+  },
+  CloudPaas: {
+    label: "Deployment, PaaS & Hosting",
+    description: "Platforms to deploy your own apps without relying on Vercel or Heroku.",
+  },
+  MonitoringLogs: {
+    label: "Monitoring, Logs & Errors",
+    description: "Track errors, metrics and production logs without paying per seat.",
+  },
+  MarketingForms: {
+    label: "Marketing, Forms & Emailing",
+    description: "Surveys, forms, newsletters and short links with your own data.",
+  },
 };

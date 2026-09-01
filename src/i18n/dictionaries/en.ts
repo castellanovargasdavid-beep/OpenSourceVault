@@ -64,6 +64,20 @@ const en: Dictionary = {
     noMatches: "No matches yet. Try another SaaS tool.",
     ariaLabel: "Search open source alternative",
   },
+  comingSoon: {
+    badge: "Coming Soon",
+    modalTitle: (name: string) => `We're preparing the technical profile and Docker guide for ${name}`,
+    modalBody: "Want us to prioritize it?",
+    voteButton: "Vote to prioritize it",
+    voteButtonDone: "Vote recorded!",
+    orDivider: "or",
+    emailLabel: "Notify me when it's ready",
+    emailPlaceholder: "you@email.com",
+    emailButton: "Notify me",
+    emailButtonDone: "We'll email you when it's ready",
+    close: "Close",
+    disclaimer: "No account or password needed — we only use your email to notify you about this tool.",
+  },
   toolCard: {
     tagDockerReady: "Docker Ready",
     tagOneClick: "1-Click Deploy",
@@ -71,6 +85,7 @@ const en: Dictionary = {
     sponsored: "Sponsored",
     alternativeTo: "Alternative to",
     cta: "View profile and deployment guide",
+    comingSoonCta: "I want this one",
   },
   affiliateWidget: {
     title: (name: string) => `Deploy ${name} in minutes`,

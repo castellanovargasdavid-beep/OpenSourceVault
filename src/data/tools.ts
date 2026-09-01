@@ -1,9 +1,19 @@
 import type { OpenSourceTool } from "@/lib/types";
+import { isPublished } from "@/lib/types";
 import { affiliateLinks } from "@/lib/site-config";
 import { toolsEn } from "./tools.en";
 import type { Locale } from "@/i18n/config";
 
-export const tools: OpenSourceTool[] = [
+/**
+ * Catálogo completo: las 121 herramientas publicadas originales, más el lote
+ * "coming_soon" añadido al final. `tools` (más abajo) es SIEMPRE el filtro
+ * publicado-solamente que consume el resto del sitio (rutas, sitemap,
+ * comparativas, guías de migración, buscador) — así ninguna herramienta sin
+ * publicar puede colarse en una URL indexable solo por olvidar un filtro en
+ * algún sitio nuevo. Los listados de catálogo/categoría que SÍ deben mostrar
+ * tarjetas "Próximamente" importan `allTools` explícitamente en su lugar.
+ */
+export const allTools: OpenSourceTool[] = [
   {
     id: "appflowy",
     name: "AppFlowy",
@@ -5122,7 +5132,758 @@ volumes: {}
     cons: ["Es un cliente, no un servidor: la sincronización depende de otro backend"],
     tags: ["docker-ready", "permissive-license"],
   },
+
+  // ---------- Autenticación e Identidad (coming_soon) ----------
+  {
+    id: "keycloak",
+    name: "Keycloak",
+    slug: "keycloak",
+    replaces: ["Auth0", "Okta"],
+    category: "AuthIdentity",
+    description:
+      "Keycloak es la solución de identidad y acceso open source más establecida: SSO, federación LDAP/AD, login social y gestión de roles para cualquier app o API.",
+    shortDescription: "SSO y gestión de identidad open source, alternativa a Auth0/Okta.",
+    websiteUrl: "https://www.keycloak.org",
+    githubUrl: "https://github.com/keycloak/keycloak",
+    starsCount: 24000,
+    license: "Apache-2.0",
+    dockerCompose: `services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    command: start-dev
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: change-me-super-secret
+    ports:
+      - "8080:8080"
+`,
+    affiliateLinks,
+    features: ["SSO y federación LDAP/Active Directory", "Login social (Google, GitHub...)", "Gestión de roles y permisos granular"],
+    techStack: ["Java", "Quarkus"],
+    pros: ["El más maduro y probado en entornos empresariales"],
+    cons: ["Consumo de memoria alto comparado con alternativas más ligeras"],
+    tags: ["docker-ready", "permissive-license"],
+    status: "coming_soon",
+  },
+  {
+    id: "authentik",
+    name: "Authentik",
+    slug: "authentik",
+    replaces: ["Okta", "Auth0"],
+    category: "AuthIdentity",
+    description:
+      "Authentik es una plataforma de identidad moderna y flexible, con flujos de autenticación personalizables visualmente y soporte nativo para SSO, MFA y proxy de aplicaciones.",
+    shortDescription: "Plataforma de identidad flexible, alternativa moderna a Okta/Auth0.",
+    websiteUrl: "https://goauthentik.io",
+    githubUrl: "https://github.com/goauthentik/authentik",
+    starsCount: 15000,
+    license: "MIT",
+    dockerCompose: `services:
+  postgresql:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_PASSWORD: change-me
+      POSTGRES_USER: authentik
+      POSTGRES_DB: authentik
+    volumes:
+      - database:/var/lib/postgresql/data
+  redis:
+    image: redis:alpine
+  server:
+    image: ghcr.io/goauthentik/server:latest
+    command: server
+    environment:
+      AUTHENTIK_SECRET_KEY: change-me-super-secret
+      AUTHENTIK_REDIS__HOST: redis
+      AUTHENTIK_POSTGRESQL__HOST: postgresql
+      AUTHENTIK_POSTGRESQL__PASSWORD: change-me
+    ports:
+      - "9000:9000"
+volumes:
+  database: {}
+`,
+    affiliateLinks,
+    features: ["Editor visual de flujos de autenticación", "Proxy de aplicaciones sin cambiar código", "MFA y políticas de acceso condicional"],
+    techStack: ["Python", "Go", "PostgreSQL"],
+    pros: ["Interfaz mucho más moderna que la competencia open source"],
+    cons: ["Requiere Postgres y Redis además del propio servidor"],
+    tags: ["docker-ready", "permissive-license"],
+    status: "coming_soon",
+  },
+  {
+    id: "ory",
+    name: "Ory",
+    slug: "ory",
+    replaces: ["Auth0", "Cognito"],
+    category: "AuthIdentity",
+    description:
+      "Ory es una suite de identidad componible (Kratos para usuarios, Hydra para OAuth2/OIDC) diseñada API-first, pensada para desarrolladores que quieren control total del flujo.",
+    shortDescription: "Suite de identidad API-first, alternativa a Auth0/Cognito.",
+    websiteUrl: "https://www.ory.sh",
+    githubUrl: "https://github.com/ory/kratos",
+    starsCount: 10000,
+    license: "Apache-2.0",
+    dockerCompose: `services:
+  kratos:
+    image: oryd/kratos:latest
+    command: serve -c /etc/config/kratos/kratos.yml --dev
+    environment:
+      DSN: postgres://kratos:change-me@postgres:5432/kratos?sslmode=disable
+    ports:
+      - "4433:4433"
+      - "4434:4434"
+    volumes:
+      - ./kratos-config:/etc/config/kratos
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: kratos
+      POSTGRES_PASSWORD: change-me
+      POSTGRES_DB: kratos
+`,
+    affiliateLinks,
+    features: ["100% API-first, sin UI impuesta", "Kratos (usuarios) + Hydra (OAuth2/OIDC) por separado", "Escala horizontalmente sin estado en la app"],
+    techStack: ["Go", "PostgreSQL"],
+    pros: ["Máxima flexibilidad para construir tu propio frontend de login"],
+    cons: ["Curva de aprendizaje más alta al no traer UI lista"],
+    tags: ["docker-ready", "permissive-license"],
+    status: "coming_soon",
+  },
+  {
+    id: "zitadel",
+    name: "Zitadel",
+    slug: "zitadel",
+    replaces: ["Auth0", "Okta"],
+    category: "AuthIdentity",
+    description:
+      "Zitadel es una plataforma de identidad todo-en-uno con multi-tenancy nativo, pensada para SaaS B2B que necesitan aislar la identidad de cada cliente sin desplegar una instancia por cliente.",
+    shortDescription: "Identidad multi-tenant todo-en-uno, alternativa a Auth0/Okta.",
+    websiteUrl: "https://zitadel.com",
+    githubUrl: "https://github.com/zitadel/zitadel",
+    starsCount: 8000,
+    license: "Apache-2.0",
+    dockerCompose: `services:
+  zitadel:
+    image: ghcr.io/zitadel/zitadel:latest
+    command: start-from-init --masterkey "change-me-32-char-master-key!!" --tlsMode disabled
+    environment:
+      ZITADEL_DATABASE_POSTGRES_HOST: db
+      ZITADEL_DATABASE_POSTGRES_PASSWORD: change-me
+    ports:
+      - "8080:8080"
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_PASSWORD: change-me
+`,
+    affiliateLinks,
+    features: ["Multi-tenancy nativo (organizaciones)", "SSO, MFA y gestión de proyectos por org", "API gRPC y REST completas"],
+    techStack: ["Go", "PostgreSQL"],
+    pros: ["Pensado desde cero para SaaS multi-cliente"],
+    cons: ["Documentación más escueta que Keycloak en casos avanzados"],
+    tags: ["docker-ready", "permissive-license"],
+    status: "coming_soon",
+  },
+  {
+    id: "supertokens",
+    name: "SuperTokens",
+    slug: "supertokens",
+    replaces: ["Auth0", "Clerk"],
+    category: "AuthIdentity",
+    description:
+      "SuperTokens ofrece SDKs por lenguaje/framework y un servidor de sesiones ligero, pensado para integrarse en minutos en apps ya existentes sin reescribir el flujo de login.",
+    shortDescription: "Autenticación con SDKs listos para integrar, alternativa a Auth0/Clerk.",
+    websiteUrl: "https://supertokens.com",
+    githubUrl: "https://github.com/supertokens/supertokens-core",
+    starsCount: 7000,
+    license: "Apache-2.0",
+    dockerCompose: `services:
+  supertokens:
+    image: registry.supertokens.io/supertokens/supertokens-postgresql:latest
+    environment:
+      POSTGRESQL_CONNECTION_URI: "postgresql://supertokens:change-me@db:5432/supertokens"
+    ports:
+      - "3567:3567"
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: supertokens
+      POSTGRES_PASSWORD: change-me
+      POSTGRES_DB: supertokens
+`,
+    affiliateLinks,
+    features: ["SDKs oficiales para React, Next.js, Node, Python...", "Gestión de sesiones segura por defecto", "Login social y passwordless incluidos"],
+    techStack: ["Java", "PostgreSQL"],
+    pros: ["Integración muy rápida gracias a los SDKs"],
+    cons: ["Menos flexible que Ory/Keycloak para flujos muy custom"],
+    tags: ["docker-ready", "permissive-license"],
+    status: "coming_soon",
+  },
+  {
+    id: "logto",
+    name: "Logto",
+    slug: "logto",
+    replaces: ["Auth0", "Clerk"],
+    category: "AuthIdentity",
+    description:
+      "Logto es una alternativa de identidad moderna con panel de administración cuidado, pensada para equipos pequeños que quieren algo tan simple de usar como Clerk pero auto-hospedado.",
+    shortDescription: "Identidad moderna y fácil de usar, alternativa auto-hospedada a Clerk/Auth0.",
+    websiteUrl: "https://logto.io",
+    githubUrl: "https://github.com/logto-io/logto",
+    starsCount: 9000,
+    license: "MPL-2.0",
+    dockerCompose: `services:
+  logto:
+    image: svhd/logto:latest
+    entrypoint: ["sh", "-c", "npm run cli db seed -- --swe && npm start"]
+    environment:
+      TRUST_PROXY_HEADER: "1"
+      DB_URL: "postgres://postgres:change-me@db:5432/logto"
+    ports:
+      - "3001:3001"
+      - "3002:3002"
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_PASSWORD: change-me
+`,
+    affiliateLinks,
+    features: ["Panel de administración muy cuidado", "Multi-tenant y organizaciones incluidas", "Login social y personalización de marca"],
+    techStack: ["Node.js", "PostgreSQL"],
+    pros: ["La experiencia de uso más cercana a un producto SaaS pulido"],
+    cons: ["Comunidad más pequeña que Keycloak o Authentik"],
+    tags: ["docker-ready"],
+    status: "coming_soon",
+  },
+
+  // ---------- Despliegue, PaaS & Hosting (coming_soon) ----------
+  {
+    id: "coolify",
+    name: "Coolify",
+    slug: "coolify",
+    replaces: ["Vercel", "Netlify", "Heroku"],
+    category: "CloudPaas",
+    description:
+      "Coolify es una plataforma de despliegue auto-hospedada que replica la experiencia de Vercel/Heroku: conecta tu repo de Git y despliega apps, bases de datos y servicios con un clic.",
+    shortDescription: "PaaS auto-hospedado con experiencia tipo Vercel, alternativa gratuita.",
+    websiteUrl: "https://coolify.io",
+    githubUrl: "https://github.com/coollabsio/coolify",
+    starsCount: 35000,
+    license: "Apache-2.0",
+    dockerCompose: `# Coolify se instala oficialmente con un script (no un docker-compose.yml
+# simple), porque despliega y gestiona su propia infraestructura de
+# contenedores sobre tu servidor:
+curl -fsSL https://cdn.coollabs.io/coolify/install.sh | bash
+`,
+    affiliateLinks,
+    features: ["Deploy desde Git con un clic (como Vercel)", "Bases de datos gestionadas con un clic", "Gestiona múltiples servidores desde un panel"],
+    techStack: ["PHP", "Laravel", "Docker"],
+    pros: ["La alternativa open source más pulida a Vercel/Heroku"],
+    cons: ["Se instala sobre el servidor completo, no encaja en un docker-compose de una sola app"],
+    tags: [],
+    status: "coming_soon",
+  },
+  {
+    id: "caprover",
+    name: "CapRover",
+    slug: "caprover",
+    replaces: ["Heroku", "Render"],
+    category: "CloudPaas",
+    description:
+      "CapRover es un PaaS ligero sobre Docker Swarm con panel web propio, apps de un clic desde su marketplace y HTTPS automático — pensado para VPS modestos.",
+    shortDescription: "PaaS ligero sobre Docker Swarm, alternativa sencilla a Heroku.",
+    websiteUrl: "https://caprover.com",
+    githubUrl: "https://github.com/caprover/caprover",
+    starsCount: 13000,
+    license: "Apache-2.0",
+    dockerCompose: `services:
+  captain:
+    image: caprover/caprover:latest
+    ports:
+      - "80:80"
+      - "443:443"
+      - "3000:3000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - captain-data:/captain
+volumes:
+  captain-data: {}
+`,
+    affiliateLinks,
+    features: ["Marketplace de apps de un clic", "HTTPS automático vía Let's Encrypt", "Panel web propio, ligero en recursos"],
+    techStack: ["Node.js", "Docker Swarm"],
+    pros: ["Muy ligero, funciona bien en un VPS de 1-2GB de RAM"],
+    cons: ["Menos funcionalidades avanzadas que Coolify"],
+    tags: ["docker-ready", "permissive-license"],
+    status: "coming_soon",
+  },
+  {
+    id: "dokku",
+    name: "Dokku",
+    slug: "dokku",
+    replaces: ["Heroku"],
+    category: "CloudPaas",
+    description:
+      "Dokku es el 'mini-Heroku' original: un PaaS de una sola línea de comandos que usa buildpacks o Dockerfiles y despliega con un simple `git push`.",
+    shortDescription: "Mini-Heroku de código abierto, despliega con git push.",
+    websiteUrl: "https://dokku.com",
+    githubUrl: "https://github.com/dokku/dokku",
+    starsCount: 30000,
+    license: "MIT",
+    dockerCompose: `# Dokku se instala con su script oficial de bootstrap directamente sobre
+# el servidor (gestiona el Docker del host), no mediante un
+# docker-compose.yml:
+wget -NP . https://dokku.com/install/v0.35.15/bootstrap.sh
+sudo DOKKU_TAG=v0.35.15 bash bootstrap.sh
+`,
+    affiliateLinks,
+    features: ["Despliegue con git push, igual que Heroku", "Soporta buildpacks y Dockerfiles", "Cientos de plugins de la comunidad"],
+    techStack: ["Bash", "Docker"],
+    pros: ["El más simple y minimalista de todo el grupo PaaS"],
+    cons: ["Sin panel web oficial (existen plugins de terceros)"],
+    tags: ["permissive-license"],
+    status: "coming_soon",
+  },
+  {
+    id: "casaos",
+    name: "CasaOS",
+    slug: "casaos",
+    replaces: ["Synology DSM"],
+    category: "CloudPaas",
+    description:
+      "CasaOS convierte cualquier servidor Linux (o Raspberry Pi) en un NAS/panel personal con interfaz tipo Synology DSM, con una App Store para instalar apps auto-hospedadas con un clic.",
+    shortDescription: "Panel tipo Synology DSM para tu propio servidor, con App Store de un clic.",
+    websiteUrl: "https://casaos.io",
+    githubUrl: "https://github.com/IceWhaleTech/CasaOS",
+    starsCount: 19000,
+    license: "Apache-2.0",
+    dockerCompose: `# CasaOS se instala con su script oficial directamente sobre el servidor
+# (es un panel para gestionar Docker/tu NAS, no una app dentro de Docker):
+curl -fsSL https://get.casaos.io | sudo bash
+`,
+    affiliateLinks,
+    features: ["App Store de un clic con decenas de apps self-hosted", "Gestor de archivos web integrado", "Pensado para Raspberry Pi y mini-PCs"],
+    techStack: ["Go", "Vue.js"],
+    pros: ["La forma más sencilla de convertir un Pi en un NAS personal"],
+    cons: ["Menos pensado para producción que para uso doméstico"],
+    tags: [],
+    status: "coming_soon",
+  },
+
+  // ---------- Monitoreo, Logs & Errores (coming_soon) ----------
+  {
+    id: "sentry-self-hosted",
+    name: "Sentry (self-hosted)",
+    slug: "sentry-self-hosted",
+    replaces: ["Bugsnag", "Datadog"],
+    category: "MonitoringLogs",
+    description:
+      "La versión auto-hospedada del propio Sentry: rastreo de errores y performance en producción con agrupación inteligente de excepciones, para todos los lenguajes principales.",
+    shortDescription: "Rastreo de errores en producción, la versión oficial auto-hospedada.",
+    websiteUrl: "https://sentry.io",
+    githubUrl: "https://github.com/getsentry/self-hosted",
+    starsCount: 40000,
+    license: "FSL-1.1 (pasa a Apache-2.0 a los 2 años)",
+    dockerCompose: `# Sentry self-hosted se instala clonando su repo oficial y ejecutando
+# install.sh, que genera un docker-compose.yml completo (Postgres, Redis,
+# Kafka, ClickHouse...):
+git clone https://github.com/getsentry/self-hosted.git
+cd self-hosted && ./install.sh
+`,
+    affiliateLinks,
+    features: ["Agrupación inteligente de errores repetidos", "Trazas de rendimiento (performance monitoring)", "SDKs oficiales para todos los lenguajes principales"],
+    techStack: ["Python", "ClickHouse", "Kafka"],
+    pros: ["Es el producto original, sin recortes de funciones"],
+    cons: ["Stack pesado: requiere bastante RAM y varios servicios"],
+    tags: ["docker-ready"],
+    status: "coming_soon",
+  },
+  {
+    id: "glitchtip",
+    name: "GlitchTip",
+    slug: "glitchtip",
+    replaces: ["Sentry"],
+    category: "MonitoringLogs",
+    description:
+      "GlitchTip es compatible con el SDK de Sentry pero con un backend mucho más ligero — cambias la URL del DSN y listo, sin tocar código de tu app.",
+    shortDescription: "Compatible con el SDK de Sentry pero mucho más ligero de auto-hospedar.",
+    websiteUrl: "https://glitchtip.com",
+    githubUrl: "https://gitlab.com/glitchtip/glitchtip-backend",
+    starsCount: 2500,
+    license: "MIT",
+    dockerCompose: `services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_PASSWORD: change-me
+      POSTGRES_DB: glitchtip
+  redis:
+    image: redis:alpine
+  web:
+    image: glitchtip/glitchtip:latest
+    environment:
+      DATABASE_URL: "postgres://postgres:change-me@postgres:5432/glitchtip"
+      SECRET_KEY: "change-me-super-secret"
+      REDIS_URL: "redis://redis:6379/0"
+      EMAIL_URL: "consolemail://"
+    ports:
+      - "8000:8000"
+  worker:
+    image: glitchtip/glitchtip:latest
+    command: ./bin/run-celery-with-beat.sh
+    environment:
+      DATABASE_URL: "postgres://postgres:change-me@postgres:5432/glitchtip"
+      SECRET_KEY: "change-me-super-secret"
+      REDIS_URL: "redis://redis:6379/0"
+`,
+    affiliateLinks,
+    features: ["Compatible con el SDK de Sentry sin cambios", "Mucho más ligero que Sentry self-hosted", "Notificaciones por email/Slack"],
+    techStack: ["Django", "PostgreSQL", "Celery"],
+    pros: ["El equilibrio ideal entre ligero y compatible con Sentry"],
+    cons: ["Menos funciones avanzadas que Sentry (sin performance tracing completo)"],
+    tags: ["docker-ready", "permissive-license"],
+    status: "coming_soon",
+  },
+  {
+    id: "signoz",
+    name: "SigNoz",
+    slug: "signoz",
+    replaces: ["Datadog", "New Relic"],
+    category: "MonitoringLogs",
+    description:
+      "SigNoz unifica métricas, trazas y logs en una sola plataforma basada en OpenTelemetry, como reemplazo directo de Datadog/New Relic con tus propios datos.",
+    shortDescription: "Métricas + trazas + logs unificados, alternativa a Datadog/New Relic.",
+    websiteUrl: "https://signoz.io",
+    githubUrl: "https://github.com/SigNoz/signoz",
+    starsCount: 20000,
+    license: "MIT",
+    dockerCompose: `# SigNoz recomienda su script oficial (levanta ClickHouse, el
+# query-service y el frontend juntos con la configuración correcta):
+git clone -b main https://github.com/SigNoz/signoz.git
+cd signoz/deploy && ./install.sh
+`,
+    affiliateLinks,
+    features: ["Basado 100% en OpenTelemetry (estándar abierto)", "Métricas, trazas y logs en un solo panel", "Alertas configurables"],
+    techStack: ["Go", "ClickHouse", "OpenTelemetry"],
+    pros: ["Estándar OpenTelemetry evita atarte a un SDK propietario"],
+    cons: ["ClickHouse añade complejidad operativa"],
+    tags: ["permissive-license"],
+    status: "coming_soon",
+  },
+  {
+    id: "beszel",
+    name: "Beszel",
+    slug: "beszel",
+    replaces: ["Datadog", "New Relic"],
+    category: "MonitoringLogs",
+    description:
+      "Beszel es un monitor de infraestructura ligerísimo (un solo binario) para ver CPU, RAM, disco y red de todos tus servidores en un panel simple, sin la complejidad de un stack completo.",
+    shortDescription: "Monitor de servidores ultraligero, un solo binario, alternativa mínima a Datadog.",
+    websiteUrl: "https://beszel.dev",
+    githubUrl: "https://github.com/henrygd/beszel",
+    starsCount: 5000,
+    license: "MIT",
+    dockerCompose: `services:
+  beszel:
+    image: henrygd/beszel:latest
+    ports:
+      - "8090:8090"
+    volumes:
+      - beszel_data:/beszel_data
+volumes:
+  beszel_data: {}
+`,
+    affiliateLinks,
+    features: ["Un solo binario/contenedor, sin dependencias", "Agentes ligeros por servidor monitorizado", "Historial de uso de CPU/RAM/disco/red"],
+    techStack: ["Go", "SQLite"],
+    pros: ["El setup más rápido de todo el grupo de monitoreo"],
+    cons: ["No hace rastreo de errores de aplicación, solo infraestructura"],
+    tags: ["docker-ready", "permissive-license"],
+    status: "coming_soon",
+  },
+
+  // ---------- Herramientas Dev adicionales (coming_soon) ----------
+  {
+    id: "budibase",
+    name: "Budibase",
+    slug: "budibase",
+    replaces: ["Retool", "Airtable"],
+    category: "DevTools",
+    description:
+      "Budibase es una plataforma low-code para construir paneles internos y apps CRUD sobre tus propias fuentes de datos (Postgres, MongoDB, APIs), con componentes arrastrar-y-soltar.",
+    shortDescription: "Constructor low-code de apps internas, alternativa a Retool.",
+    websiteUrl: "https://budibase.com",
+    githubUrl: "https://github.com/Budibase/budibase",
+    starsCount: 22000,
+    license: "GPL-3.0",
+    dockerCompose: `services:
+  budibase:
+    image: budibase/budibase:latest
+    environment:
+      BUDIBASE_ADMIN_USER_EMAIL: admin@example.com
+      BUDIBASE_ADMIN_USER_PASSWORD: change-me-super-secret
+      JWT_SECRET: change-me
+    ports:
+      - "10000:80"
+    volumes:
+      - budibase_data:/data
+volumes:
+  budibase_data: {}
+`,
+    affiliateLinks,
+    features: ["Editor visual drag-and-drop", "Conecta Postgres, MongoDB, MySQL, APIs REST", "Automatizaciones tipo Zapier incluidas"],
+    techStack: ["Node.js", "Svelte", "CouchDB"],
+    pros: ["Muy rápido para prototipar paneles internos"],
+    cons: ["Licencia GPL-3.0, revisa implicaciones si lo redistribuyes modificado"],
+    tags: ["docker-ready"],
+    status: "coming_soon",
+  },
+  {
+    id: "appsmith",
+    name: "Appsmith",
+    slug: "appsmith",
+    replaces: ["Retool", "PowerApps"],
+    category: "DevTools",
+    description:
+      "Appsmith es otra plataforma low-code para paneles internos, con un editor muy similar a Retool: arrastra componentes, conecta cualquier base de datos o API y escribe JS donde haga falta.",
+    shortDescription: "Editor low-code para paneles internos, alternativa directa a Retool.",
+    websiteUrl: "https://www.appsmith.com",
+    githubUrl: "https://github.com/appsmithorg/appsmith",
+    starsCount: 35000,
+    license: "Apache-2.0",
+    dockerCompose: `services:
+  appsmith:
+    image: appsmith/appsmith-ce:latest
+    ports:
+      - "8080:80"
+      - "8443:443"
+    volumes:
+      - appsmith_data:/appsmith-stacks
+volumes:
+  appsmith_data: {}
+`,
+    affiliateLinks,
+    features: ["Editor visual muy similar a Retool", "JS embebido en cualquier campo", "Conecta más de 25 fuentes de datos distintas"],
+    techStack: ["Java", "React", "MongoDB"],
+    pros: ["La curva de aprendizaje más suave si ya conoces Retool"],
+    cons: ["Requiere bastante RAM en instancias pequeñas"],
+    tags: ["docker-ready", "permissive-license"],
+    status: "coming_soon",
+  },
+  {
+    id: "stirling-pdf",
+    name: "Stirling PDF",
+    slug: "stirling-pdf",
+    replaces: ["Adobe Acrobat", "Smallpdf"],
+    category: "DevTools",
+    description:
+      "Stirling PDF es una navaja suiza para PDFs auto-hospedada: fusionar, dividir, comprimir, firmar, convertir y OCR, todo desde una interfaz web sin subir tus documentos a terceros.",
+    shortDescription: "Navaja suiza de PDFs auto-hospedada, alternativa a Smallpdf/Adobe Acrobat.",
+    websiteUrl: "https://www.stirlingpdf.com",
+    githubUrl: "https://github.com/Stirling-Tools/Stirling-PDF",
+    starsCount: 15000,
+    license: "MIT",
+    dockerCompose: `services:
+  stirling-pdf:
+    image: stirlingtools/stirling-pdf:latest
+    ports:
+      - "8080:8080"
+    environment:
+      DOCKER_ENABLE_SECURITY: "false"
+    volumes:
+      - ./trainingData:/usr/share/tessdata
+      - ./extraConfigs:/configs
+`,
+    affiliateLinks,
+    features: ["Más de 50 operaciones sobre PDF distintas", "OCR integrado (Tesseract)", "Firma digital y protección con contraseña"],
+    techStack: ["Java", "Spring Boot"],
+    pros: ["Tus documentos nunca salen de tu propio servidor"],
+    cons: ["La interfaz es funcional pero menos pulida que herramientas comerciales"],
+    tags: ["docker-ready", "permissive-license"],
+    status: "coming_soon",
+  },
+  {
+    id: "forgejo",
+    name: "Forgejo",
+    slug: "forgejo",
+    replaces: ["GitHub", "GitLab"],
+    category: "DevTools",
+    description:
+      "Forgejo es el fork comunitario de Gitea centrado en gobernanza abierta sin fines comerciales: repositorios Git, issues, PRs y CI/CD integrado (Forgejo Actions) en un solo binario ligero.",
+    shortDescription: "Fork comunitario de Gitea, foja Git ligera con gobernanza 100% abierta.",
+    websiteUrl: "https://forgejo.org",
+    githubUrl: "https://codeberg.org/forgejo/forgejo",
+    starsCount: 6000,
+    license: "MIT",
+    dockerCompose: `services:
+  forgejo:
+    image: codeberg.org/forgejo/forgejo:latest
+    environment:
+      USER_UID: 1000
+      USER_GID: 1000
+    ports:
+      - "3000:3000"
+      - "222:22"
+    volumes:
+      - forgejo_data:/data
+volumes:
+  forgejo_data: {}
+`,
+    affiliateLinks,
+    features: ["Forgejo Actions, compatible con sintaxis de GitHub Actions", "Muy ligero, un solo binario", "Gobernanza 100% comunitaria, sin empresa detrás"],
+    techStack: ["Go", "SQLite/PostgreSQL"],
+    pros: ["Alternativa a Gitea para quien prefiere un proyecto sin respaldo corporativo"],
+    cons: ["Comunidad y ecosistema de plugins más pequeños que GitLab"],
+    tags: ["docker-ready", "permissive-license"],
+    status: "coming_soon",
+  },
+  {
+    id: "infisical",
+    name: "Infisical",
+    slug: "infisical",
+    replaces: ["HashiCorp Vault", "Doppler"],
+    category: "DevTools",
+    description:
+      "Infisical centraliza y cifra las variables de entorno y secretos de todos tus proyectos, con CLI, SDKs e integración nativa en CI/CD — pensado para ser mucho más simple que Vault.",
+    shortDescription: "Gestión de secretos y variables de entorno, alternativa simple a Vault/Doppler.",
+    websiteUrl: "https://infisical.com",
+    githubUrl: "https://github.com/Infisical/infisical",
+    starsCount: 16000,
+    license: "MIT",
+    dockerCompose: `services:
+  infisical:
+    image: infisical/infisical:latest
+    environment:
+      ENCRYPTION_KEY: change-me-32-char-key
+      AUTH_SECRET: change-me-super-secret
+      DB_CONNECTION_URI: "postgres://infisical:change-me@db:5432/infisical"
+      REDIS_URL: "redis://redis:6379"
+    ports:
+      - "8080:8080"
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: infisical
+      POSTGRES_PASSWORD: change-me
+      POSTGRES_DB: infisical
+  redis:
+    image: redis:alpine
+`,
+    affiliateLinks,
+    features: ["CLI para inyectar secretos en cualquier proceso", "Integración nativa con CI/CD (GitHub Actions, etc.)", "Historial de versiones y rollback de secretos"],
+    techStack: ["Node.js", "PostgreSQL", "Redis"],
+    pros: ["Mucho más rápido de poner en marcha que HashiCorp Vault"],
+    cons: ["Menos funciones avanzadas de PKI/certificados que Vault"],
+    tags: ["docker-ready", "permissive-license"],
+    status: "coming_soon",
+  },
+
+  // ---------- Marketing, Formularios & Emailing (coming_soon) ----------
+  {
+    id: "dub-co",
+    name: "Dub",
+    slug: "dub",
+    replaces: ["Bitly"],
+    category: "MarketingForms",
+    description:
+      "Dub es una plataforma de enlaces cortos moderna con analíticas detalladas de clics, pensada como alternativa open source y auto-hospedable a Bitly.",
+    shortDescription: "Acortador de enlaces con analíticas, alternativa open source a Bitly.",
+    websiteUrl: "https://dub.co",
+    githubUrl: "https://github.com/dubinc/dub",
+    starsCount: 18000,
+    license: "AGPL-3.0",
+    dockerCompose: `# Dub es una app Next.js pensada principalmente para su nube gestionada;
+# auto-hospedarla implica clonar el repo y configurar Postgres + Redis
+# manualmente (no publican todavía una imagen Docker oficial única):
+git clone https://github.com/dubinc/dub.git
+cd dub && pnpm install && pnpm build
+`,
+    affiliateLinks,
+    features: ["Analíticas de clics en tiempo real", "Dominios personalizados propios", "API para generar enlaces programáticamente"],
+    techStack: ["Next.js", "PostgreSQL", "Redis"],
+    pros: ["La interfaz y analíticas más modernas del grupo de acortadores open source"],
+    cons: ["Auto-hospedarlo es más laborioso que un simple docker-compose"],
+    tags: [],
+    status: "coming_soon",
+  },
+  {
+    id: "formbricks",
+    name: "Formbricks",
+    slug: "formbricks",
+    replaces: ["Typeform"],
+    category: "MarketingForms",
+    description:
+      "Formbricks combina encuestas y formularios embebidos con targeting de usuarios in-app, como alternativa open source a Typeform pensada especialmente para producto/UX research.",
+    shortDescription: "Encuestas y formularios con targeting in-app, alternativa a Typeform.",
+    websiteUrl: "https://formbricks.com",
+    githubUrl: "https://github.com/formbricks/formbricks",
+    starsCount: 8000,
+    license: "AGPL-3.0",
+    dockerCompose: `services:
+  formbricks:
+    image: formbricks/formbricks:latest
+    environment:
+      DATABASE_URL: "postgresql://postgres:change-me@postgres:5432/formbricks"
+      NEXTAUTH_SECRET: change-me-super-secret
+      ENCRYPTION_KEY: change-me
+    ports:
+      - "3000:3000"
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_PASSWORD: change-me
+      POSTGRES_DB: formbricks
+`,
+    affiliateLinks,
+    features: ["Encuestas in-app dirigidas por segmento de usuario", "Formularios embebibles en cualquier web", "Plantillas para NPS, PMF y más"],
+    techStack: ["Next.js", "PostgreSQL"],
+    pros: ["Pensado específicamente para research de producto, no solo formularios genéricos"],
+    cons: ["Licencia AGPL-3.0: revisa implicaciones si ofreces el servicio a terceros"],
+    tags: ["docker-ready"],
+    status: "coming_soon",
+  },
+  {
+    id: "ghost",
+    name: "Ghost",
+    slug: "ghost",
+    replaces: ["Substack", "Medium"],
+    category: "MarketingForms",
+    description:
+      "Ghost es una plataforma de publicación y newsletters de pago con editor moderno, membresías y pagos integrados — la alternativa open source más establecida a Substack.",
+    shortDescription: "Blog y newsletter de pago, alternativa open source y madura a Substack.",
+    websiteUrl: "https://ghost.org",
+    githubUrl: "https://github.com/TryGhost/Ghost",
+    starsCount: 46000,
+    license: "MIT",
+    dockerCompose: `services:
+  ghost:
+    image: ghost:5-alpine
+    environment:
+      database__client: mysql
+      database__connection__host: db
+      database__connection__user: root
+      database__connection__password: change-me
+      database__connection__database: ghost
+      url: http://localhost:2368
+    ports:
+      - "2368:2368"
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: change-me
+      MYSQL_DATABASE: ghost
+`,
+    affiliateLinks,
+    features: ["Membresías y suscripciones de pago integradas", "Editor moderno tipo Notion", "Newsletters por email nativas"],
+    techStack: ["Node.js", "MySQL"],
+    pros: ["El más maduro y usado en producción de todo este lote"],
+    cons: ["MySQL como dependencia añade algo de peso frente a opciones SQLite"],
+    tags: ["docker-ready", "permissive-license"],
+    status: "coming_soon",
+  },
 ];
+
+export const tools: OpenSourceTool[] = allTools.filter(isPublished);
 
 export function getToolBySlug(slug: string): OpenSourceTool | undefined {
   return tools.find((t) => t.slug === slug);
@@ -5132,8 +5893,17 @@ export function getToolsByCategory(category: string) {
   return tools.filter((t) => t.category === category);
 }
 
+/** Incluye herramientas "coming_soon"/"scheduled" — solo para listados de catálogo/categoría, nunca para rutas o el sitemap. */
+export function getToolsByCategoryAll(category: string) {
+  return allTools.filter((t) => t.category === category);
+}
+
 export function getFeaturedTools() {
   return tools.filter((t) => t.featured);
+}
+
+export function getComingSoonTools() {
+  return allTools.filter((t) => !isPublished(t));
 }
 
 export function getLocalizedTool(tool: OpenSourceTool, locale: Locale): OpenSourceTool {

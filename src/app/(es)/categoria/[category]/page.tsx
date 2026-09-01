@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { categories, getCategoryBySlug } from "@/data/categories";
-import { getToolsByCategory } from "@/data/tools";
+import { getToolsByCategoryAll } from "@/data/tools";
 import { siteConfig } from "@/lib/site-config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { CategoryPageContent } from "@/components/pages/category-page-content";
@@ -40,6 +40,6 @@ export default async function CategoryPage({ params }: PageProps) {
   const category = getCategoryBySlug(categorySlug);
   if (!category) notFound();
 
-  const categoryTools = getToolsByCategory(category.id);
+  const categoryTools = getToolsByCategoryAll(category.id);
   return <CategoryPageContent category={category} categoryTools={categoryTools} locale="es" />;
 }

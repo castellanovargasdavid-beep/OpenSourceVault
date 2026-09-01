@@ -15,7 +15,11 @@ export interface CategoryMeta {
     | "database"
     | "shopping-cart"
     | "video"
-    | "key-round";
+    | "key-round"
+    | "shield-check"
+    | "cloud"
+    | "activity"
+    | "megaphone";
 }
 
 export const categories: CategoryMeta[] = [
@@ -84,6 +88,34 @@ export const categories: CategoryMeta[] = [
     label: "Gestores de Contraseñas",
     description: "Guarda las contraseñas de tu equipo bajo tu propia infraestructura.",
     icon: "key-round",
+  },
+  {
+    id: "AuthIdentity",
+    slug: "autenticacion-e-identidad",
+    label: "Autenticación e Identidad",
+    description: "Login único, SSO y gestión de identidad sin depender de Auth0 u Okta.",
+    icon: "shield-check",
+  },
+  {
+    id: "CloudPaas",
+    slug: "despliegue-paas-hosting",
+    label: "Despliegue, PaaS & Hosting",
+    description: "Plataformas para desplegar tus propias apps sin depender de Vercel o Heroku.",
+    icon: "cloud",
+  },
+  {
+    id: "MonitoringLogs",
+    slug: "monitoreo-logs-errores",
+    label: "Monitoreo, Logs & Errores",
+    description: "Rastrea errores, métricas y logs de producción sin pagar por asiento.",
+    icon: "activity",
+  },
+  {
+    id: "MarketingForms",
+    slug: "marketing-formularios-email",
+    label: "Marketing, Formularios & Emailing",
+    description: "Encuestas, formularios, newsletters y enlaces cortos con tus propios datos.",
+    icon: "megaphone",
   },
 ];
 

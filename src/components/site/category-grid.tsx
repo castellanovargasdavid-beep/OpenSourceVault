@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { categories } from "@/data/categories";
 import { categoriesEn } from "@/data/categories.en";
-import { tools } from "@/data/tools";
+import { allTools } from "@/data/tools";
 import { categoryColors } from "@/lib/category-colors";
 import { categoryIconMap } from "@/lib/category-icons";
 import { cn } from "@/lib/utils";
@@ -22,7 +22,7 @@ export function CategoryGrid({ locale = "es" }: { locale?: Locale }) {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {categories.map((category) => {
           const Icon = categoryIconMap[category.icon];
-          const count = tools.filter((tl) => tl.category === category.id).length;
+          const count = allTools.filter((tl) => tl.category === category.id).length;
           const palette = categoryColors[category.id];
           const label = locale === "en" ? categoriesEn[category.id].label : category.label;
           const description = locale === "en" ? categoriesEn[category.id].description : category.description;

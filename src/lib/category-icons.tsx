@@ -8,6 +8,10 @@ import {
   ShoppingCart,
   Video,
   KeyRound,
+  ShieldCheck,
+  Cloud,
+  Activity,
+  Megaphone,
   type LucideIcon,
 } from "lucide-react";
 
@@ -21,4 +25,8 @@ export const categoryIconMap: Record<string, LucideIcon> = {
   "shopping-cart": ShoppingCart,
   video: Video,
   "key-round": KeyRound,
+  "shield-check": ShieldCheck,
+  cloud: Cloud,
+  activity: Activity,
+  megaphone: Megaphone,
 };

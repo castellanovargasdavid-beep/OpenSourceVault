@@ -10,6 +10,10 @@ interface PageProps {
 }
 
 export const revalidate = 86400;
+/** `tools` ya es la lista publicada-solamente (ver src/data/tools.ts) —
+ * esto además impide que Next intente SSR bajo demanda cualquier slug
+ * "coming_soon"/"scheduled" que alguien adivine directamente en la URL. */
+export const dynamicParams = false;
 
 export function generateStaticParams() {
   return tools.map((tool) => ({ slug: tool.slug }));

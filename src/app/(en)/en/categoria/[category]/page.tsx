@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { categories, getCategoryBySlug, getCategoryMetaLocalized } from "@/data/categories";
-import { getToolsByCategory } from "@/data/tools";
+import { getToolsByCategoryAll } from "@/data/tools";
 import { siteConfig } from "@/lib/site-config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { CategoryPageContent } from "@/components/pages/category-page-content";
@@ -42,6 +42,6 @@ export default async function CategoryPageEn({ params }: PageProps) {
   if (!category) notFound();
 
   const localized = getCategoryMetaLocalized(category.id, "en");
-  const categoryTools = getToolsByCategory(category.id);
+  const categoryTools = getToolsByCategoryAll(category.id);
   return <CategoryPageContent category={localized} categoryTools={categoryTools} locale="en" />;
 }

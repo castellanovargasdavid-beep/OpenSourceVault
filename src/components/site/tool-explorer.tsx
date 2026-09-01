@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Search, X } from "lucide-react";
-import { tools } from "@/data/tools";
+import { allTools } from "@/data/tools";
 import { categories } from "@/data/categories";
 import { categoriesEn } from "@/data/categories.en";
 import { Input } from "@/components/ui/input";
@@ -39,7 +39,7 @@ export function ToolExplorer({ locale = "es" }: { locale?: Locale }) {
 
   const filtered = React.useMemo(() => {
     const q = query.trim().toLowerCase();
-    return tools.filter((tool) => {
+    return allTools.filter((tool) => {
       const matchesQuery =
         !q ||
         tool.name.toLowerCase().includes(q) ||

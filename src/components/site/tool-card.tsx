@@ -1,11 +1,16 @@
+"use client";
+
+import * as React from "react";
 import Link from "next/link";
-import { Star, GitFork, ArrowRight, BadgeCheck } from "lucide-react";
+import { Star, GitFork, ArrowRight, BadgeCheck, Clock } from "lucide-react";
 import type { OpenSourceTool } from "@/lib/types";
+import { isPublished } from "@/lib/types";
 import { getCategoryMetaLocalized } from "@/data/categories";
 import { getLocalizedTool } from "@/data/tools";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { LogoImage } from "@/components/site/logo-image";
+import { ComingSoonModal } from "@/components/site/coming-soon-modal";
 import { getSaasDomain } from "@/lib/saas-domains";
 import { categoryColors } from "@/lib/category-colors";
 import { cn, formatStars, getHostname } from "@/lib/utils";
@@ -16,6 +21,7 @@ import type { Locale } from "@/i18n/config";
 export function ToolCard({ tool: rawTool, locale = "es" }: { tool: OpenSourceTool; locale?: Locale }) {
   const tool = getLocalizedTool(rawTool, locale);
   const t = getDictionary(locale);
+  const [modalOpen, setModalOpen] = React.useState(false);
   const tagLabels: Record<string, string> = {
     "docker-ready": t.toolCard.tagDockerReady,
     "1-click-deploy": t.toolCard.tagOneClick,
@@ -23,12 +29,23 @@ export function ToolCard({ tool: rawTool, locale = "es" }: { tool: OpenSourceToo
   };
   const category = getCategoryMetaLocalized(tool.category, locale);
   const palette = categoryColors[tool.category];
+  const published = isPublished(tool);
 
   return (
-    <Card className={cn("group relative flex h-full flex-col transition-all hover:-translate-y-0.5 hover:shadow-lg", palette.borderHover)}>
+    <Card
+      className={cn(
+        "group relative flex h-full flex-col transition-all",
+        published ? cn("hover:-translate-y-0.5 hover:shadow-lg", palette.borderHover) : "opacity-80"
+      )}
+    >
       {tool.sponsored && (
         <span className="absolute -top-2.5 right-4 inline-flex items-center gap-1 rounded-full bg-slate-900 px-2.5 py-1 text-[10px] font-medium text-white shadow-sm">
           <BadgeCheck size={11} /> {t.toolCard.sponsored}
+        </span>
+      )}
+      {!published && (
+        <span className="absolute -top-2.5 right-4 inline-flex items-center gap-1 rounded-full bg-slate-500 px-2.5 py-1 text-[10px] font-medium text-white shadow-sm">
+          <Clock size={11} /> {t.comingSoon.badge}
         </span>
       )}
       <CardHeader className="pb-3">
@@ -39,11 +56,22 @@ export function ToolCard({ tool: rawTool, locale = "es" }: { tool: OpenSourceToo
               label={tool.name}
               size={36}
               fallbackGradient={palette.gradient}
+              className={cn(!published && "grayscale")}
             />
             <div>
-              <Link href={localeHref(`/tool/${tool.slug}`, locale)} className="font-semibold text-slate-900 hover:text-emerald-700">
-                {tool.name}
-              </Link>
+              {published ? (
+                <Link href={localeHref(`/tool/${tool.slug}`, locale)} className="font-semibold text-slate-900 hover:text-emerald-700">
+                  {tool.name}
+                </Link>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setModalOpen(true)}
+                  className="font-semibold text-slate-900 hover:text-emerald-700"
+                >
+                  {tool.name}
+                </button>
+              )}
               <div className="mt-1 flex items-center gap-1.5">
                 <div className="flex -space-x-1.5">
                   {tool.replaces.slice(0, 3).map((saas) => (
@@ -88,17 +116,30 @@ export function ToolCard({ tool: rawTool, locale = "es" }: { tool: OpenSourceToo
           ))}
         </div>
 
-        <Link
-          href={localeHref(`/tool/${tool.slug}`, locale)}
-          className={cn(
-            "mt-auto inline-flex items-center justify-center gap-1.5 rounded-lg bg-gradient-to-r px-4 py-2 text-sm font-medium text-white shadow-sm transition-opacity hover:opacity-90",
-            palette.gradient
-          )}
-        >
-          {t.toolCard.cta}
-          <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
-        </Link>
+        {published ? (
+          <Link
+            href={localeHref(`/tool/${tool.slug}`, locale)}
+            className={cn(
+              "mt-auto inline-flex items-center justify-center gap-1.5 rounded-lg bg-gradient-to-r px-4 py-2 text-sm font-medium text-white shadow-sm transition-opacity hover:opacity-90",
+              palette.gradient
+            )}
+          >
+            {t.toolCard.cta}
+            <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
+          </Link>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setModalOpen(true)}
+            className="mt-auto inline-flex items-center justify-center gap-1.5 rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50"
+          >
+            {t.toolCard.comingSoonCta}
+            <Clock size={15} />
+          </button>
+        )}
       </CardContent>
+
+      {modalOpen && <ComingSoonModal tool={tool} locale={locale} onClose={() => setModalOpen(false)} />}
     </Card>
   );
 }
