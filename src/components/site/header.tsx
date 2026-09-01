@@ -13,6 +13,7 @@ export function Header({ locale = "es" }: { locale?: Locale }) {
     { href: localeHref("/calculadora-ahorro", locale), label: t.header.calculadora },
     { href: localeHref("/guias/desplegar-con-docker", locale), label: t.header.guiaDespliegue },
     { href: localeHref("/hosting-deals", locale), label: t.header.hosting },
+    { href: localeHref("/promote", locale), label: t.header.promote },
   ];
 
   return (

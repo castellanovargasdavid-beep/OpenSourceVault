@@ -7,6 +7,7 @@ const es = {
     guiaDespliegue: "Guía de despliegue",
     hosting: "Hosting",
     verOfertas: "Ver ofertas de hosting",
+    promote: "Promociona tu herramienta",
   },
   footer: {
     categorias: "Categorías",
@@ -15,6 +16,7 @@ const es = {
     guiaDespliegue: "Guía de despliegue",
     hostingDescuentos: "Hosting & Descuentos",
     herramientasDestacadas: "Herramientas destacadas",
+    promote: "Promociona tu herramienta",
     disclosure: "Algunos enlaces de hosting son de afiliado: podemos recibir una comisión sin coste extra para ti.",
     privacidad: "Privacidad",
     terminos: "Términos de uso",
@@ -238,6 +240,82 @@ const es = {
     ctaSubtitle: "Ficha completa con licencia, stack técnico y docker-compose listo para copiar.",
     ctaButton: (tool: string) => `Ver ficha de ${tool}`,
     footerNote: (from: string) => `Los pasos son una guía general orientativa — el menú exacto de exportación puede variar según el plan y la versión de ${from}.`,
+  },
+  promotePage: {
+    metaTitle: "Promociona tu herramienta en AltFreeStack",
+    metaDescription:
+      "Llega a personas que ya están comparando alternativas open source y self-hosted. Badge Featured, posición top en tu categoría y un backlink SEO desde $49/mes.",
+    badge: "Para fundadores y mantenedores",
+    title: "Pon tu herramienta delante de quien ya está buscando una alternativa",
+    subtitle:
+      "AltFreeStack recibe visitas de personas comparando activamente alternativas open source y auto-hospedables a herramientas como Notion, Auth0, Sentry o Vercel. Un espacio patrocinado te pone justo donde están decidiendo.",
+    valuePropsTitle: "Por qué anunciarte aquí",
+    valueProps: [
+      {
+        title: "Audiencia con intención real",
+        body: "Quien llega a una ficha de herramienta ya está comparando para auto-hospedar algo esta semana, no navegando sin rumbo.",
+      },
+      {
+        title: "Contexto, no ruido",
+        body: "Tu herramienta aparece junto a alternativas reales de su categoría, no en un banner genérico desconectado del contenido.",
+      },
+      {
+        title: "SEO que se queda",
+        body: "El backlink vive en tu ficha de herramienta mientras dure el patrocinio, indexado y con contexto temático relevante.",
+      },
+    ],
+    plansTitle: "Planes de patrocinio",
+    plansSubtitle: "Facturación mensual, cancela cuando quieras. Envía el formulario de abajo y coordinamos el pago y el material por email.",
+    plans: {
+      featured: {
+        name: "Featured",
+        price: "$49",
+        period: "/mes",
+        description: "Para ganar visibilidad dentro de tu categoría.",
+        features: [
+          'Badge "Destacado" en tu tarjeta y en tu ficha de herramienta',
+          'Aparece en la sección "Destacadas de la semana" en portada',
+          "Vigencia de 30 días, renovable",
+        ],
+        cta: "Elegir Featured",
+      },
+      top: {
+        name: "Top de categoría",
+        price: "$99",
+        period: "/mes",
+        badge: "Más popular",
+        description: "Para la máxima visibilidad y un backlink que se queda.",
+        features: [
+          "Todo lo del plan Featured",
+          "Posición fija en el top 3 de tu categoría",
+          "Backlink dofollow desde tu ficha de herramienta",
+          'Prioridad de publicación si tu herramienta está en estado "Próximamente"',
+        ],
+        cta: "Elegir Top de categoría",
+      },
+    },
+    formTitle: "Cuéntanos sobre tu herramienta",
+    formSubtitle: "Revisamos cada solicitud a mano — te respondemos por email en 1-2 días con los siguientes pasos.",
+    fields: {
+      toolName: "Nombre de la herramienta",
+      toolNamePlaceholder: "ej. Plane, Coolify, Zitadel...",
+      url: "URL de la herramienta",
+      urlPlaceholder: "https://tuherramienta.com",
+      email: "Tu email",
+      emailPlaceholder: "tu@email.com",
+      category: "Categoría",
+      categoryPlaceholder: "Selecciona una categoría",
+      plan: "Plan de interés",
+      planUnsure: "Aún no estoy seguro",
+    },
+    submit: "Enviar solicitud",
+    submitting: "Enviando...",
+    success: "¡Solicitud recibida! Te responderemos por email en 1-2 días.",
+    sendAnother: "Enviar otra solicitud",
+    error: "Algo falló al enviar el formulario. Inténtalo de nuevo o escríbenos directamente a lecastvarg@gmail.com.",
+    errorInvalidUrl: "Introduce una URL válida (con http:// o https://).",
+    errorInvalidEmail: "Introduce un email válido.",
+    disclaimer: "Al enviar este formulario nos das permiso para contactarte por email sobre tu solicitud de patrocinio. No compartimos tu email con terceros.",
   },
 };
 

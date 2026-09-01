@@ -57,6 +57,9 @@ cp .env.example .env.local
 | `NEXT_PUBLIC_AFFILIATE_DIGITALOCEAN` | Enlace de afiliado en los botones "Desplegar en DigitalOcean" | Usa el enlace real ya hardcodeado |
 | `NEXT_PUBLIC_AFFILIATE_VULTR` | Enlace de afiliado de Vultr | Usa el enlace real ya hardcodeado |
 | `NEXT_PUBLIC_AFFILIATE_RAILWAY` | Enlace de afiliado de Railway | Usa el enlace real ya hardcodeado |
+| `RESEND_API_KEY` | Envía por email las solicitudes del formulario de `/promote` (vía [Resend](https://resend.com)) | El formulario sigue funcionando, pero solo registra la solicitud en los logs de la función |
+| `PROMOTE_NOTIFY_EMAIL` | A qué email llegan las solicitudes de `/promote` | Usa `lecastvarg@gmail.com` |
+| `RESEND_FROM_EMAIL` | Remitente del email de `/promote` | Usa el remitente de pruebas `onboarding@resend.dev` |
 
 ## Desarrollo local
 

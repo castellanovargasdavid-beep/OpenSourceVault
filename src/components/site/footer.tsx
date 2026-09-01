@@ -63,6 +63,9 @@ export function Footer({ locale = "es" }: { locale?: Locale }) {
             © {siteConfig.year} {siteConfig.name}. {t.footer.disclosure}
           </p>
           <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-600">
+            <Link href={localeHref("/promote", locale)} className="hover:text-emerald-700">
+              {t.footer.promote}
+            </Link>
             <Link href={localeHref("/privacy", locale)} className="hover:text-emerald-700">
               {t.footer.privacidad}
             </Link>

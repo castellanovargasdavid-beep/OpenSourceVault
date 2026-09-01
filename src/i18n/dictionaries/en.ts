@@ -9,6 +9,7 @@ const en: Dictionary = {
     guiaDespliegue: "Deployment guide",
     hosting: "Hosting",
     verOfertas: "See hosting deals",
+    promote: "Promote your tool",
   },
   footer: {
     categorias: "Categories",
@@ -17,6 +18,7 @@ const en: Dictionary = {
     guiaDespliegue: "Deployment guide",
     hostingDescuentos: "Hosting & Deals",
     herramientasDestacadas: "Featured tools",
+    promote: "Promote your tool",
     disclosure: "Some hosting links are affiliate links: we may earn a commission at no extra cost to you.",
     privacidad: "Privacy",
     terminos: "Terms of use",
@@ -240,6 +242,82 @@ const en: Dictionary = {
     ctaSubtitle: "Full profile with license, tech stack and ready-to-copy docker-compose.",
     ctaButton: (tool: string) => `View ${tool}'s profile`,
     footerNote: (from: string) => `These steps are a general guideline — the exact export menu can vary depending on ${from}'s plan and version.`,
+  },
+  promotePage: {
+    metaTitle: "Promote your tool on AltFreeStack",
+    metaDescription:
+      "Reach people who are actively comparing open source and self-hosted alternatives. Featured badge, top category placement and an SEO backlink from $49/mo.",
+    badge: "For founders & maintainers",
+    title: "Put your tool in front of people already looking for an alternative",
+    subtitle:
+      "AltFreeStack gets traffic from people actively comparing open source, self-hostable alternatives to tools like Notion, Auth0, Sentry or Vercel. A sponsored spot puts you right where they're deciding.",
+    valuePropsTitle: "Why advertise here",
+    valueProps: [
+      {
+        title: "Real buying intent",
+        body: "Anyone landing on a tool page is already comparing options to self-host something this week, not browsing aimlessly.",
+      },
+      {
+        title: "Context, not noise",
+        body: "Your tool shows up next to real alternatives in its category, not in a generic banner disconnected from the content.",
+      },
+      {
+        title: "SEO that sticks around",
+        body: "The backlink lives on your tool page for as long as the sponsorship runs, indexed and with relevant topical context.",
+      },
+    ],
+    plansTitle: "Sponsorship plans",
+    plansSubtitle: "Billed monthly, cancel anytime. Send the form below and we'll sort out payment and assets by email.",
+    plans: {
+      featured: {
+        name: "Featured",
+        price: "$49",
+        period: "/mo",
+        description: "To gain visibility within your category.",
+        features: [
+          '"Featured" badge on your card and on your tool page',
+          'Appears in the "Featured this week" section on the homepage',
+          "30-day run, renewable",
+        ],
+        cta: "Choose Featured",
+      },
+      top: {
+        name: "Top of category",
+        price: "$99",
+        period: "/mo",
+        badge: "Most popular",
+        description: "For maximum visibility and a backlink that sticks around.",
+        features: [
+          "Everything in Featured",
+          "Fixed top-3 spot in your category",
+          "Dofollow backlink from your tool page",
+          'Priority publishing if your tool is currently "Coming Soon"',
+        ],
+        cta: "Choose Top of category",
+      },
+    },
+    formTitle: "Tell us about your tool",
+    formSubtitle: "We review every request by hand — expect an email reply within 1-2 days with next steps.",
+    fields: {
+      toolName: "Tool name",
+      toolNamePlaceholder: "e.g. Plane, Coolify, Zitadel...",
+      url: "Tool URL",
+      urlPlaceholder: "https://yourtool.com",
+      email: "Your email",
+      emailPlaceholder: "you@email.com",
+      category: "Category",
+      categoryPlaceholder: "Select a category",
+      plan: "Plan you're interested in",
+      planUnsure: "Not sure yet",
+    },
+    submit: "Send request",
+    submitting: "Sending...",
+    success: "Request received! We'll reply by email within 1-2 days.",
+    sendAnother: "Send another request",
+    error: "Something went wrong sending the form. Try again or email us directly at lecastvarg@gmail.com.",
+    errorInvalidUrl: "Enter a valid URL (starting with http:// or https://).",
+    errorInvalidEmail: "Enter a valid email address.",
+    disclaimer: "By sending this form you agree to let us contact you by email about your sponsorship request. We never share your email with third parties.",
   },
 };
 

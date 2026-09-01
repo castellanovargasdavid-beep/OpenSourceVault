@@ -42,6 +42,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ["/hosting-deals", "monthly", 0.7],
     ["/guias/desplegar-con-docker", "monthly", 0.7],
     ["/calculadora-ahorro", "monthly", 0.8],
+    ["/promote", "monthly", 0.5],
     ["/privacy", "yearly", 0.2],
     ["/terms", "yearly", 0.2],
     ["/affiliate-disclosure", "yearly", 0.2],
