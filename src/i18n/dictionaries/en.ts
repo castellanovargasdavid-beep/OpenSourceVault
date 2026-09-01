@@ -117,6 +117,7 @@ const en: Dictionary = {
     generate: "Generate secure secrets",
     copied: "Copied",
     copy: "Copy",
+    copyError: "Couldn't copy",
     randomizedNote: "Passwords generated randomly in your browser — never sent to any server. Save them somewhere safe before copying.",
   },
   notFound: {

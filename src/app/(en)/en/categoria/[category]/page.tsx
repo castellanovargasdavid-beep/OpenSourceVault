@@ -33,6 +33,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       languages: { es: `${siteConfig.url}/categoria/${category.slug}`, en: url },
     },
     openGraph: { title, description, url },
+    twitter: { card: "summary_large_image", title, description },
   };
 }
 

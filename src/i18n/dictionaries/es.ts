@@ -115,6 +115,7 @@ const es = {
     generate: "Generar secretos seguros",
     copied: "Copiado",
     copy: "Copiar",
+    copyError: "No se pudo copiar",
     randomizedNote: "Contraseñas generadas al azar en tu navegador — no se envían a ningún servidor. Guárdalas en un lugar seguro antes de copiar.",
   },
   notFound: {

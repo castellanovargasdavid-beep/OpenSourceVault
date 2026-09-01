@@ -12,8 +12,9 @@ export const siteConfig = {
 
 /**
  * Enlaces de afiliado globales para hosting. Se leen de variables de entorno
- * públicas y caen a "#" si no están definidas, para que el build nunca falle
- * por falta de configuración en Vercel.
+ * públicas y caen a los enlaces de afiliado reales de abajo si no están
+ * definidas, para que el build nunca falle por falta de configuración en
+ * Vercel y los botones funcionen desde el primer despliegue.
  */
 export const affiliateLinks = {
   digitalOceanUrl: process.env.NEXT_PUBLIC_AFFILIATE_DIGITALOCEAN || "https://m.do.co/c/9f6e4c18c93c",

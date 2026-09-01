@@ -1,9 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { Check, Copy, Wand2 } from "lucide-react";
+import { Check, Copy, Wand2, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getDictionary } from "@/i18n/get-dictionary";
+import { cn } from "@/lib/utils";
 import type { Locale } from "@/i18n/config";
 
 function generateSecret(length = 32): string {
@@ -27,6 +28,7 @@ export function DockerComposeBlock({ code, locale = "es" }: { code: string; loca
   const t = getDictionary(locale);
   const [displayCode, setDisplayCode] = React.useState(code);
   const [copied, setCopied] = React.useState(false);
+  const [copyError, setCopyError] = React.useState(false);
   const [randomized, setRandomized] = React.useState(false);
   const hasPlaceholders = /change-me/.test(code);
 
@@ -37,6 +39,8 @@ export function DockerComposeBlock({ code, locale = "es" }: { code: string; loca
       setTimeout(() => setCopied(false), 2000);
     } catch {
       // navigator.clipboard puede no estar disponible (http o permisos denegados)
+      setCopyError(true);
+      setTimeout(() => setCopyError(false), 2000);
     }
   }
 
@@ -73,10 +77,19 @@ export function DockerComposeBlock({ code, locale = "es" }: { code: string; loca
             variant="ghost"
             size="sm"
             onClick={handleCopy}
-            className="gap-1.5 text-slate-300 hover:bg-slate-800 hover:text-white"
+            className={cn(
+              "gap-1.5 hover:bg-slate-800",
+              copyError ? "text-red-400 hover:text-red-300" : "text-slate-300 hover:text-white"
+            )}
           >
-            {copied ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
-            {copied ? t.dockerBlock.copied : t.dockerBlock.copy}
+            {copyError ? (
+              <AlertTriangle size={14} />
+            ) : copied ? (
+              <Check size={14} className="text-emerald-400" />
+            ) : (
+              <Copy size={14} />
+            )}
+            {copyError ? t.dockerBlock.copyError : copied ? t.dockerBlock.copied : t.dockerBlock.copy}
           </Button>
         </div>
       </div>
