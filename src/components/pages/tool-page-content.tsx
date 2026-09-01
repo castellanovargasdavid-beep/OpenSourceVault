@@ -48,7 +48,7 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
         }}
       />
 
-      <nav className="mb-6 text-sm text-slate-500">
+      <nav className="mb-6 text-sm text-slate-600">
         <Link href={localeHref("/", locale)} className="hover:text-emerald-700">
           {t.breadcrumb.home}
         </Link>
@@ -91,7 +91,7 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
         </h1>
         <p className="mt-4 max-w-3xl text-lg text-slate-600">{tool.description}</p>
 
-        <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-slate-500">
+        <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-slate-600">
           <span className="inline-flex items-center gap-1.5">
             <GitFork size={16} /> {t.toolPage.license} {tool.license}
           </span>

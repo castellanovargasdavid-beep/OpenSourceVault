@@ -19,7 +19,7 @@ export function LanguageSwitcher({ locale }: { locale: Locale }) {
         href={esHref}
         className={cn(
           "rounded-md px-2 py-1 transition-colors",
-          locale === "es" ? "bg-slate-900 text-white" : "text-slate-500 hover:text-slate-900"
+          locale === "es" ? "bg-slate-900 text-white" : "text-slate-600 hover:text-slate-900"
         )}
       >
         ES
@@ -28,7 +28,7 @@ export function LanguageSwitcher({ locale }: { locale: Locale }) {
         href={enHref}
         className={cn(
           "rounded-md px-2 py-1 transition-colors",
-          locale === "en" ? "bg-slate-900 text-white" : "text-slate-500 hover:text-slate-900"
+          locale === "en" ? "bg-slate-900 text-white" : "text-slate-600 hover:text-slate-900"
         )}
       >
         EN

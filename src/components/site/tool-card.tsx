@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { Star, GitFork, ArrowRight, BadgeCheck, Clock } from "lucide-react";
 import type { OpenSourceTool } from "@/lib/types";
 import { isPublished } from "@/lib/types";
@@ -10,13 +11,18 @@ import { getLocalizedTool } from "@/data/tools";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { LogoImage } from "@/components/site/logo-image";
-import { ComingSoonModal } from "@/components/site/coming-soon-modal";
 import { getSaasDomain } from "@/lib/saas-domains";
 import { categoryColors } from "@/lib/category-colors";
 import { cn, formatStars, getHostname } from "@/lib/utils";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { localeHref } from "@/lib/locale-href";
 import type { Locale } from "@/i18n/config";
+
+// Solo se necesita tras un clic en una tarjeta "Próximamente": se separa del
+// bundle inicial para no cargarlo en cada página que lista herramientas.
+const ComingSoonModal = dynamic(() =>
+  import("@/components/site/coming-soon-modal").then((m) => m.ComingSoonModal)
+);
 
 export function ToolCard({ tool: rawTool, locale = "es" }: { tool: OpenSourceTool; locale?: Locale }) {
   const tool = getLocalizedTool(rawTool, locale);
@@ -44,7 +50,7 @@ export function ToolCard({ tool: rawTool, locale = "es" }: { tool: OpenSourceToo
         </span>
       )}
       {!published && (
-        <span className="absolute -top-2.5 right-4 inline-flex items-center gap-1 rounded-full bg-slate-500 px-2.5 py-1 text-[10px] font-medium text-white shadow-sm">
+        <span className="absolute -top-2.5 right-4 inline-flex items-center gap-1 rounded-full bg-slate-600 px-2.5 py-1 text-[10px] font-medium text-white shadow-sm">
           <Clock size={11} /> {t.comingSoon.badge}
         </span>
       )}
@@ -85,7 +91,7 @@ export function ToolCard({ tool: rawTool, locale = "es" }: { tool: OpenSourceToo
                     />
                   ))}
                 </div>
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-slate-600">
                   {t.toolCard.alternativeTo} {tool.replaces.join(", ")}
                 </p>
               </div>
@@ -97,7 +103,7 @@ export function ToolCard({ tool: rawTool, locale = "es" }: { tool: OpenSourceToo
       <CardContent className="flex flex-1 flex-col gap-4 pt-0">
         <p className="text-sm text-slate-600">{tool.shortDescription}</p>
 
-        <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500">
+        <div className="flex flex-wrap items-center gap-3 text-xs text-slate-600">
           <span className="inline-flex items-center gap-1">
             <GitFork size={14} /> {tool.license}
           </span>

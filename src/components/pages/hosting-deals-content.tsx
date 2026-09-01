@@ -34,7 +34,7 @@ export function HostingDealsContent({ locale = "es" }: { locale?: Locale }) {
                 <p className="text-2xl font-bold text-slate-900">{provider.startingPrice}</p>
                 {provider.freeCredit && <p className="mt-1 text-sm font-medium text-emerald-700">{provider.freeCredit}</p>}
               </div>
-              <p className="text-sm text-slate-500">
+              <p className="text-sm text-slate-600">
                 {t.hostingDeals.bestFor} {provider.bestFor}
               </p>
               <ul className="flex-1 space-y-2">
@@ -63,7 +63,7 @@ export function HostingDealsContent({ locale = "es" }: { locale?: Locale }) {
         <h2 className="mb-4 text-xl font-semibold text-slate-900">{t.hostingDeals.quickCompare}</h2>
         <table className="w-full min-w-[640px] border-collapse overflow-hidden rounded-xl border border-slate-200 text-sm">
           <thead>
-            <tr className="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
+            <tr className="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-600">
               <th className="px-4 py-3">{t.hostingDeals.tableProvider}</th>
               <th className="px-4 py-3">{t.hostingDeals.tablePriceFrom}</th>
               <th className="px-4 py-3">{t.hostingDeals.tableFreeCredit}</th>

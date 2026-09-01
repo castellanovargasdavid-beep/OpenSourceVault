@@ -300,7 +300,7 @@ export function DeployGuideContent({ locale = "es" }: { locale?: Locale }) {
             <div className="flex-1 pb-2">
               <div className="mb-2 flex flex-wrap items-center gap-2">
                 <h2 className="text-lg font-semibold text-slate-900">{step.title}</h2>
-                <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-500">
+                <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-600">
                   <Clock size={12} /> {step.time}
                 </span>
               </div>

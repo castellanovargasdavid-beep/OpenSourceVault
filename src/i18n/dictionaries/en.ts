@@ -51,6 +51,7 @@ const en: Dictionary = {
     subtitle: "Filter by category, license or tag to find your next tool.",
     searchPlaceholder: "Search by name or SaaS (e.g. Slack, Airtable...)",
     allCategories: "All categories",
+    categoryFilterLabel: "Filter by category",
     clearFilters: "Clear filters",
     noResults: "No tools match those filters.",
     tagDockerReady: "Docker Ready",

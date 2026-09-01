@@ -73,6 +73,7 @@ export function ToolExplorer({ locale = "es" }: { locale?: Locale }) {
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
+            aria-label={t.toolExplorer.categoryFilterLabel}
             className="h-11 rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
           >
             <option value="all">{t.toolExplorer.allCategories}</option>
@@ -118,7 +119,7 @@ export function ToolExplorer({ locale = "es" }: { locale?: Locale }) {
         </div>
       ) : (
         <div className="rounded-xl border border-dashed border-slate-300 py-16 text-center">
-          <p className="text-slate-500">{t.toolExplorer.noResults}</p>
+          <p className="text-slate-600">{t.toolExplorer.noResults}</p>
           <Button variant="link" onClick={clearFilters}>
             {t.toolExplorer.clearFilters}
           </Button>

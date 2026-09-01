@@ -91,7 +91,7 @@ export function SearchBar({ className, locale = "es" }: { className?: string; lo
           />
           <button
             type="submit"
-            className="absolute right-2 top-1/2 inline-flex h-10 -translate-y-1/2 items-center gap-1.5 rounded-lg bg-emerald-600 px-4 text-sm font-medium text-white transition-colors hover:bg-emerald-500"
+            className="absolute right-2 top-1/2 inline-flex h-10 -translate-y-1/2 items-center gap-1.5 rounded-lg bg-emerald-700 px-4 text-sm font-medium text-white transition-colors hover:bg-emerald-600"
           >
             {t.searchBar.button}
             <ArrowRight size={16} />
@@ -112,7 +112,7 @@ export function SearchBar({ className, locale = "es" }: { className?: string; lo
                     <span>
                       <span className="font-medium text-slate-900">{match.name}</span>
                       {match.matchedReplaces && (
-                        <span className="text-slate-500"> · {t.searchBar.alternativeTo} {match.matchedReplaces}</span>
+                        <span className="text-slate-600"> · {t.searchBar.alternativeTo} {match.matchedReplaces}</span>
                       )}
                     </span>
                     <span className="shrink-0 text-xs text-slate-400">{match.categoryLabel}</span>
@@ -121,7 +121,7 @@ export function SearchBar({ className, locale = "es" }: { className?: string; lo
               ))}
             </ul>
           ) : (
-            <p className="px-4 py-3 text-sm text-slate-500">{t.searchBar.noMatches}</p>
+            <p className="px-4 py-3 text-sm text-slate-600">{t.searchBar.noMatches}</p>
           )}
         </div>
       )}

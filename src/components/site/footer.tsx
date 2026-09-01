@@ -14,7 +14,7 @@ export function Footer({ locale = "es" }: { locale?: Locale }) {
       <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 md:grid-cols-4 lg:px-8">
         <div className="md:col-span-2">
           <p className="text-base font-semibold text-slate-900">{siteConfig.name}</p>
-          <p className="mt-2 max-w-sm text-sm text-slate-500">{t.siteDescription}</p>
+          <p className="mt-2 max-w-sm text-sm text-slate-600">{t.siteDescription}</p>
         </div>
         <div>
           <p className="text-sm font-semibold text-slate-900">{t.footer.categorias}</p>
@@ -23,7 +23,7 @@ export function Footer({ locale = "es" }: { locale?: Locale }) {
               <li key={category.id}>
                 <Link
                   href={localeHref(`/categoria/${category.slug}`, locale)}
-                  className="text-sm text-slate-500 hover:text-emerald-700"
+                  className="text-sm text-slate-600 hover:text-emerald-700"
                 >
                   {locale === "en" ? categoriesEn[category.id].label : category.label}
                 </Link>
@@ -35,22 +35,22 @@ export function Footer({ locale = "es" }: { locale?: Locale }) {
           <p className="text-sm font-semibold text-slate-900">{t.footer.recursos}</p>
           <ul className="mt-3 space-y-2">
             <li>
-              <Link href={localeHref("/calculadora-ahorro", locale)} className="text-sm text-slate-500 hover:text-emerald-700">
+              <Link href={localeHref("/calculadora-ahorro", locale)} className="text-sm text-slate-600 hover:text-emerald-700">
                 {t.footer.calculadora}
               </Link>
             </li>
             <li>
-              <Link href={localeHref("/guias/desplegar-con-docker", locale)} className="text-sm text-slate-500 hover:text-emerald-700">
+              <Link href={localeHref("/guias/desplegar-con-docker", locale)} className="text-sm text-slate-600 hover:text-emerald-700">
                 {t.footer.guiaDespliegue}
               </Link>
             </li>
             <li>
-              <Link href={localeHref("/hosting-deals", locale)} className="text-sm text-slate-500 hover:text-emerald-700">
+              <Link href={localeHref("/hosting-deals", locale)} className="text-sm text-slate-600 hover:text-emerald-700">
                 {t.footer.hostingDescuentos}
               </Link>
             </li>
             <li>
-              <Link href={localeHref("/#destacadas", locale)} className="text-sm text-slate-500 hover:text-emerald-700">
+              <Link href={localeHref("/#destacadas", locale)} className="text-sm text-slate-600 hover:text-emerald-700">
                 {t.footer.herramientasDestacadas}
               </Link>
             </li>

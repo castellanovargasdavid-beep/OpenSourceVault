@@ -28,7 +28,7 @@ export function AlternativaPageContent({ group, locale }: { group: SaasAlternati
         }}
       />
 
-      <nav className="mb-6 text-sm text-slate-500">
+      <nav className="mb-6 text-sm text-slate-600">
         <Link href={localeHref("/", locale)} className="hover:text-emerald-700">
           {t.breadcrumb.home}
         </Link>

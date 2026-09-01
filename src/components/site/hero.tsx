@@ -55,23 +55,23 @@ export function Hero({ locale = "es" }: { locale?: Locale }) {
             <p className="text-2xl font-bold text-slate-900">
               <AnimatedCounter value={tools.length} suffix="+" />
             </p>
-            <p className="text-xs text-slate-500">{t.hero.statTools}</p>
+            <p className="text-xs text-slate-600">{t.hero.statTools}</p>
           </div>
           <div>
             <p className="text-2xl font-bold text-slate-900">
               <AnimatedCounter value={totalSaas} suffix="+" />
             </p>
-            <p className="text-xs text-slate-500">{t.hero.statSaas}</p>
+            <p className="text-xs text-slate-600">{t.hero.statSaas}</p>
           </div>
           <div>
             <p className="text-2xl font-bold text-slate-900">
               <AnimatedCounter value={categories.length} />
             </p>
-            <p className="text-xs text-slate-500">{t.hero.statCategories}</p>
+            <p className="text-xs text-slate-600">{t.hero.statCategories}</p>
           </div>
           <div>
             <p className="text-2xl font-bold text-emerald-600">$0</p>
-            <p className="text-xs text-slate-500">{t.hero.statLicenseCost}</p>
+            <p className="text-xs text-slate-600">{t.hero.statLicenseCost}</p>
           </div>
         </div>
 

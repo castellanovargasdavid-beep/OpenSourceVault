@@ -49,6 +49,7 @@ const es = {
     subtitle: "Filtra por categoría, licencia o etiqueta para encontrar tu próxima herramienta.",
     searchPlaceholder: "Buscar por nombre o SaaS (ej. Slack, Airtable...)",
     allCategories: "Todas las categorías",
+    categoryFilterLabel: "Filtrar por categoría",
     clearFilters: "Limpiar filtros",
     noResults: "No hay herramientas que coincidan con esos filtros.",
     tagDockerReady: "Docker Ready",

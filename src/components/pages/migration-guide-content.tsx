@@ -31,7 +31,7 @@ export function MigrationGuideContent({
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
-      <nav className="mb-6 text-sm text-slate-500">
+      <nav className="mb-6 text-sm text-slate-600">
         <Link href={localeHref("/", locale)} className="hover:text-emerald-700">
           {t.breadcrumb.home}
         </Link>

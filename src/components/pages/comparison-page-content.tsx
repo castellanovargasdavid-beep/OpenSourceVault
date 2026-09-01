@@ -33,7 +33,7 @@ export function ComparisonPageContent({ comparison, locale }: { comparison: Tool
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
-      <nav className="mb-6 text-sm text-slate-500">
+      <nav className="mb-6 text-sm text-slate-600">
         <Link href={localeHref("/", locale)} className="hover:text-emerald-700">
           {t.breadcrumb.home}
         </Link>
@@ -72,7 +72,7 @@ export function ComparisonPageContent({ comparison, locale }: { comparison: Tool
       <section className="mb-10 overflow-x-auto">
         <table className="w-full min-w-[560px] border-collapse overflow-hidden rounded-xl border border-slate-200 text-sm">
           <thead>
-            <tr className="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
+            <tr className="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-600">
               <th className="px-4 py-3"></th>
               <th className="px-4 py-3">{toolA.name}</th>
               <th className="px-4 py-3">{toolB.name}</th>
@@ -80,7 +80,7 @@ export function ComparisonPageContent({ comparison, locale }: { comparison: Tool
           </thead>
           <tbody className="divide-y divide-slate-100">
             <tr>
-              <td className="px-4 py-3 font-medium text-slate-500">{t.comparisonPage.tableCategory}</td>
+              <td className="px-4 py-3 font-medium text-slate-600">{t.comparisonPage.tableCategory}</td>
               <td className="px-4 py-3">
                 <Badge className={paletteA.badge}>{categoryA.label}</Badge>
               </td>
@@ -89,12 +89,12 @@ export function ComparisonPageContent({ comparison, locale }: { comparison: Tool
               </td>
             </tr>
             <tr>
-              <td className="px-4 py-3 font-medium text-slate-500">{t.comparisonPage.tableLicense}</td>
+              <td className="px-4 py-3 font-medium text-slate-600">{t.comparisonPage.tableLicense}</td>
               <td className="px-4 py-3 text-slate-900">{toolA.license}</td>
               <td className="px-4 py-3 text-slate-900">{toolB.license}</td>
             </tr>
             <tr>
-              <td className="px-4 py-3 font-medium text-slate-500">{t.comparisonPage.tableStars}</td>
+              <td className="px-4 py-3 font-medium text-slate-600">{t.comparisonPage.tableStars}</td>
               <td className="px-4 py-3 text-slate-900">
                 {toolA.starsCount ? (
                   <span className="inline-flex items-center gap-1">
@@ -115,12 +115,12 @@ export function ComparisonPageContent({ comparison, locale }: { comparison: Tool
               </td>
             </tr>
             <tr>
-              <td className="px-4 py-3 font-medium text-slate-500">{t.comparisonPage.tableStack}</td>
+              <td className="px-4 py-3 font-medium text-slate-600">{t.comparisonPage.tableStack}</td>
               <td className="px-4 py-3 text-slate-900">{toolA.techStack.join(", ")}</td>
               <td className="px-4 py-3 text-slate-900">{toolB.techStack.join(", ")}</td>
             </tr>
             <tr>
-              <td className="px-4 py-3 font-medium text-slate-500">{t.comparisonPage.tableReplaces}</td>
+              <td className="px-4 py-3 font-medium text-slate-600">{t.comparisonPage.tableReplaces}</td>
               <td className="px-4 py-3 text-slate-900">{toolA.replaces.join(", ")}</td>
               <td className="px-4 py-3 text-slate-900">{toolB.replaces.join(", ")}</td>
             </tr>

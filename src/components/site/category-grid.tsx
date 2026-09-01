@@ -52,7 +52,7 @@ export function CategoryGrid({ locale = "es" }: { locale?: Locale }) {
               </div>
               <div className="relative">
                 <p className="font-semibold text-slate-900">{label}</p>
-                <p className="mt-1 text-sm text-slate-500">{description}</p>
+                <p className="mt-1 text-sm text-slate-600">{description}</p>
               </div>
               <span
                 className={cn(

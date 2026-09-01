@@ -24,7 +24,7 @@ export function CategoryPageContent({
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-      <nav className="mb-6 text-sm text-slate-500">
+      <nav className="mb-6 text-sm text-slate-600">
         <Link href={localeHref("/", locale)} className="hover:text-emerald-700">
           {t.breadcrumb.home}
         </Link>
@@ -47,7 +47,7 @@ export function CategoryPageContent({
           ))}
         </div>
       ) : (
-        <p className="text-slate-500">{t.categoryPage.emptyState}</p>
+        <p className="text-slate-600">{t.categoryPage.emptyState}</p>
       )}
     </div>
   );
