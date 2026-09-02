@@ -9,10 +9,10 @@ export const metadata: Metadata = {
   title: t.deployGuidePage.metaTitle(siteConfig.year),
   description: t.deployGuidePage.metaDescription,
   alternates: {
-    canonical: `${siteConfig.url}/en/guias/desplegar-con-docker`,
+    canonical: `${siteConfig.url}/en/guides/deploy-with-docker`,
     languages: {
       es: `${siteConfig.url}/guias/desplegar-con-docker`,
-      en: `${siteConfig.url}/en/guias/desplegar-con-docker`,
+      en: `${siteConfig.url}/en/guides/deploy-with-docker`,
     },
   },
 };

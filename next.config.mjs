@@ -44,6 +44,30 @@ const nextConfig = {
         destination: `/en/categories/${enSlug}`,
         permanent: true,
       })),
+      // /en/comparar/x-vs-y -> /en/compare/x-vs-y (el slug del par no cambia)
+      {
+        source: "/en/comparar/:pair",
+        destination: "/en/compare/:pair",
+        permanent: true,
+      },
+      // /en/guias/desplegar-con-docker -> /en/guides/deploy-with-docker
+      {
+        source: "/en/guias/desplegar-con-docker",
+        destination: "/en/guides/deploy-with-docker",
+        permanent: true,
+      },
+      // /en/guias/migrar/notion/appflowy -> /en/guides/migrate/notion/appflowy
+      {
+        source: "/en/guias/migrar/:from/:to",
+        destination: "/en/guides/migrate/:from/:to",
+        permanent: true,
+      },
+      // /en/calculadora-ahorro -> /en/savings-calculator
+      {
+        source: "/en/calculadora-ahorro",
+        destination: "/en/savings-calculator",
+        permanent: true,
+      },
     ];
   },
 };

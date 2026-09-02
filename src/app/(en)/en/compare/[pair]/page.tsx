@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const t = getDictionary("en");
   const title = t.comparisonPage.metaTitle(toolA.name, toolB.name, siteConfig.year);
   const description = t.comparisonPage.metaDescription(toolA.name, toolB.name);
-  const url = `${siteConfig.url}/en/comparar/${comparison.pairSlug}`;
+  const url = `${siteConfig.url}/en/compare/${comparison.pairSlug}`;
 
   return {
     title,

@@ -4,6 +4,7 @@ import { categories, getCategoryHref } from "@/data/categories";
 import { categoriesEn } from "@/data/categories.en";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { localeHref } from "@/lib/locale-href";
+import { getSavingsCalculatorHref, getDeployGuideHref } from "@/lib/routes";
 import type { Locale } from "@/i18n/config";
 
 export function Footer({ locale = "es" }: { locale?: Locale }) {
@@ -35,12 +36,12 @@ export function Footer({ locale = "es" }: { locale?: Locale }) {
           <p className="text-sm font-semibold text-slate-900">{t.footer.recursos}</p>
           <ul className="mt-3 space-y-2">
             <li>
-              <Link href={localeHref("/calculadora-ahorro", locale)} className="text-sm text-slate-600 hover:text-emerald-700">
+              <Link href={getSavingsCalculatorHref(locale)} className="text-sm text-slate-600 hover:text-emerald-700">
                 {t.footer.calculadora}
               </Link>
             </li>
             <li>
-              <Link href={localeHref("/guias/desplegar-con-docker", locale)} className="text-sm text-slate-600 hover:text-emerald-700">
+              <Link href={getDeployGuideHref(locale)} className="text-sm text-slate-600 hover:text-emerald-700">
                 {t.footer.guiaDespliegue}
               </Link>
             </li>

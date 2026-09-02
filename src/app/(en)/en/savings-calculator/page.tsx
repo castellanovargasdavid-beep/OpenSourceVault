@@ -10,10 +10,10 @@ export const metadata: Metadata = {
   title: t.savingsCalcPage.metaTitle,
   description: t.savingsCalcPage.metaDescription,
   alternates: {
-    canonical: `${siteConfig.url}/en/calculadora-ahorro`,
+    canonical: `${siteConfig.url}/en/savings-calculator`,
     languages: {
       es: `${siteConfig.url}/calculadora-ahorro`,
-      en: `${siteConfig.url}/en/calculadora-ahorro`,
+      en: `${siteConfig.url}/en/savings-calculator`,
     },
   },
 };

@@ -3,6 +3,7 @@ import { Boxes } from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { localeHref } from "@/lib/locale-href";
+import { getSavingsCalculatorHref, getDeployGuideHref } from "@/lib/routes";
 import type { Locale } from "@/i18n/config";
 import { LanguageSwitcher } from "@/components/site/language-switcher";
 
@@ -10,8 +11,8 @@ export function Header({ locale = "es" }: { locale?: Locale }) {
   const t = getDictionary(locale);
   const navLinks = [
     { href: localeHref("/#categorias", locale), label: t.header.categorias },
-    { href: localeHref("/calculadora-ahorro", locale), label: t.header.calculadora },
-    { href: localeHref("/guias/desplegar-con-docker", locale), label: t.header.guiaDespliegue },
+    { href: getSavingsCalculatorHref(locale), label: t.header.calculadora },
+    { href: getDeployGuideHref(locale), label: t.header.guiaDespliegue },
     { href: localeHref("/hosting-deals", locale), label: t.header.hosting },
     { href: localeHref("/promote", locale), label: t.header.promote },
   ];

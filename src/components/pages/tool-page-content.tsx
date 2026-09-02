@@ -3,6 +3,7 @@ import { Star, GitFork, ExternalLink, Check, X, ArrowRight, PlayCircle } from "l
 import { getLocalizedTool } from "@/data/tools";
 import { getCategoryMetaLocalized, getCategoryHref } from "@/data/categories";
 import { getAlternativeHref } from "@/lib/alternatives";
+import { getMigrationGuideHref, getDeployGuideHref, getCompareHref } from "@/lib/routes";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { AffiliateHostingWidget } from "@/components/site/affiliate-hosting-widget";
@@ -29,7 +30,7 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
   const palette = categoryColors[tool.category];
   const comparisons: ToolComparison[] = getComparisonsForTool(tool.slug).slice(0, 5);
   const migrationFromSaas = tool.replaces[0];
-  const migrationGuideHref = localeHref(`/guias/migrar/${slugify(migrationFromSaas)}/${tool.slug}`, locale);
+  const migrationGuideHref = getMigrationGuideHref(slugify(migrationFromSaas), tool.slug, locale);
   const liveStats = await getGithubStats(tool.githubUrl);
   const ogImageUrl = await getOgImageUrl(tool.websiteUrl);
 
@@ -226,7 +227,7 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
             <h2 className="mb-4 text-xl font-semibold text-slate-900">{t.toolPage.dockerGuideTitle}</h2>
             <p className="mb-4 text-sm text-slate-600">
               {t.toolPage.dockerGuideText}{" "}
-              <Link href={localeHref("/guias/desplegar-con-docker", locale)} className="font-medium text-emerald-700 hover:underline">
+              <Link href={getDeployGuideHref(locale)} className="font-medium text-emerald-700 hover:underline">
                 {t.toolPage.dockerGuideLink}
               </Link>
             </p>
@@ -273,7 +274,7 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
                   return (
                     <Link
                       key={comparison.pairSlug}
-                      href={localeHref(`/comparar/${comparison.pairSlug}`, locale)}
+                      href={getCompareHref(comparison.pairSlug, locale)}
                       className={cn(buttonVariants({ variant: "outline", size: "sm" }), "justify-between")}
                     >
                       {t.toolPage.comparisonLink(tool.name, other.name)}

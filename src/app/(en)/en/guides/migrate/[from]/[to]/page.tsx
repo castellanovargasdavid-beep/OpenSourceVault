@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const t = getDictionary("en");
   const title = t.migrationGuidePage.metaTitle(fromName, tool.name, siteConfig.year);
   const description = t.migrationGuidePage.metaDescription(fromName, tool.name);
-  const url = `${siteConfig.url}/en/guias/migrar/${from}/${to}`;
+  const url = `${siteConfig.url}/en/guides/migrate/${from}/${to}`;
 
   return {
     title,

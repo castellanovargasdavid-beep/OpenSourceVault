@@ -4,6 +4,7 @@ import { categories } from "@/data/categories";
 import { categoriesEn } from "@/data/categories.en";
 import { getAllSaasSlugs } from "@/lib/alternatives";
 import { getAllComparisonSlugs } from "@/lib/comparisons";
+import { getCompareHref, getDeployGuideHref, getMigrationGuideHref, getSavingsCalculatorHref } from "@/lib/routes";
 import { siteConfig } from "@/lib/site-config";
 import { slugify } from "@/lib/utils";
 
@@ -41,8 +42,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticPaths: [string, MetadataRoute.Sitemap[number]["changeFrequency"], number][] = [
     ["/", "weekly", 1],
     ["/hosting-deals", "monthly", 0.7],
-    ["/guias/desplegar-con-docker", "monthly", 0.7],
-    ["/calculadora-ahorro", "monthly", 0.8],
     ["/promote", "monthly", 0.5],
     ["/privacy", "yearly", 0.2],
     ["/terms", "yearly", 0.2],
@@ -55,22 +54,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     0.8,
   ]);
 
-  const comparisonPaths: [string, MetadataRoute.Sitemap[number]["changeFrequency"], number][] = getAllComparisonSlugs().map(
-    (pair) => [`/comparar/${pair}`, "monthly", 0.7]
-  );
+  const allPaths = [...staticPaths, ...toolPaths];
 
-  const migrationGuidePaths: [string, MetadataRoute.Sitemap[number]["changeFrequency"], number][] = tools.map((tool) => [
-    `/guias/migrar/${slugify(tool.replaces[0])}/${tool.slug}`,
-    "monthly",
-    0.6,
-  ]);
-
-  const allPaths = [...staticPaths, ...toolPaths, ...comparisonPaths, ...migrationGuidePaths];
-
-  // Categorías y páginas "alternativas a X": la URL en inglés usa un slug y
-  // un segmento propios (/en/categories/auth-identity, /en/alternatives/notion)
-  // en vez de reutilizar las palabras en español, así que no se pueden
-  // generar con el simple prefijo /en que usan entry()/entryEn().
+  // Categorías, páginas "alternativas a X", comparativas, la guía de
+  // despliegue, las guías de migración y la calculadora de ahorro: la URL en
+  // inglés de todas estas usa su propio segmento (/en/categories/auth-identity,
+  // /en/alternatives/notion, /en/compare/…, /en/guides/…, /en/savings-calculator)
+  // en vez de reutilizar la palabra en español, así que no se pueden generar
+  // con el simple prefijo /en que usan entry()/entryEn().
   const categoryEntries: MetadataRoute.Sitemap = categories.flatMap((category) => {
     const esUrl = `${siteConfig.url}/categoria/${category.slug}`;
     const enUrl = `${siteConfig.url}/en/categories/${categoriesEn[category.id].slug}`;
@@ -91,10 +82,45 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ];
   });
 
+  const comparisonEntries: MetadataRoute.Sitemap = getAllComparisonSlugs().flatMap((pair) => {
+    const esUrl = `${siteConfig.url}${getCompareHref(pair, "es")}`;
+    const enUrl = `${siteConfig.url}${getCompareHref(pair, "en")}`;
+    const alternates = { languages: { es: esUrl, en: enUrl } };
+    return [
+      { url: esUrl, changeFrequency: "monthly", priority: 0.7, alternates },
+      { url: enUrl, changeFrequency: "monthly", priority: 0.7, alternates },
+    ];
+  });
+
+  const migrationGuideEntries: MetadataRoute.Sitemap = tools.flatMap((tool) => {
+    const fromSlug = slugify(tool.replaces[0]);
+    const esUrl = `${siteConfig.url}${getMigrationGuideHref(fromSlug, tool.slug, "es")}`;
+    const enUrl = `${siteConfig.url}${getMigrationGuideHref(fromSlug, tool.slug, "en")}`;
+    const alternates = { languages: { es: esUrl, en: enUrl } };
+    return [
+      { url: esUrl, changeFrequency: "monthly", priority: 0.6, alternates },
+      { url: enUrl, changeFrequency: "monthly", priority: 0.6, alternates },
+    ];
+  });
+
+  const deployGuideEsUrl = `${siteConfig.url}${getDeployGuideHref("es")}`;
+  const deployGuideEnUrl = `${siteConfig.url}${getDeployGuideHref("en")}`;
+  const deployGuideAlternates = { languages: { es: deployGuideEsUrl, en: deployGuideEnUrl } };
+
+  const savingsCalcEsUrl = `${siteConfig.url}${getSavingsCalculatorHref("es")}`;
+  const savingsCalcEnUrl = `${siteConfig.url}${getSavingsCalculatorHref("en")}`;
+  const savingsCalcAlternates = { languages: { es: savingsCalcEsUrl, en: savingsCalcEnUrl } };
+
   return [
     ...allPaths.map(([path, freq, priority]) => entry(path, freq, priority)),
     ...allPaths.map(([path, freq, priority]) => entryEn(path, freq, priority)),
     ...categoryEntries,
     ...alternativeEntries,
+    ...comparisonEntries,
+    ...migrationGuideEntries,
+    { url: deployGuideEsUrl, changeFrequency: "monthly", priority: 0.7, alternates: deployGuideAlternates },
+    { url: deployGuideEnUrl, changeFrequency: "monthly", priority: 0.7, alternates: deployGuideAlternates },
+    { url: savingsCalcEsUrl, changeFrequency: "monthly", priority: 0.8, alternates: savingsCalcAlternates },
+    { url: savingsCalcEnUrl, changeFrequency: "monthly", priority: 0.8, alternates: savingsCalcAlternates },
   ];
 }
