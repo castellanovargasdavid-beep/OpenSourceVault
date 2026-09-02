@@ -11,8 +11,7 @@ import type { Locale } from "@/i18n/config";
 
 type Tab = "vps" | "coolify" | "oneClick";
 
-function CommandLine({ command, locale }: { command: string; locale: Locale }) {
-  const t = getDictionary(locale);
+function CommandLine({ command, copyLabel }: { command: string; copyLabel: string }) {
   const [copied, setCopied] = React.useState(false);
   const [error, setError] = React.useState(false);
 
@@ -33,7 +32,7 @@ function CommandLine({ command, locale }: { command: string; locale: Locale }) {
       <button
         type="button"
         onClick={handleCopy}
-        aria-label={t.dockerBlock.copy}
+        aria-label={copyLabel}
         className={cn("shrink-0 rounded-md p-1.5 hover:bg-slate-800", error ? "text-red-400" : "text-slate-300")}
       >
         {error ? <AlertTriangle size={14} /> : copied ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
@@ -47,13 +46,13 @@ function Step({
   title,
   desc,
   command,
-  locale,
+  copyLabel,
 }: {
   number: number;
   title: string;
   desc?: string;
   command?: string;
-  locale: Locale;
+  copyLabel: string;
 }) {
   return (
     <div className="flex gap-3">
@@ -63,7 +62,7 @@ function Step({
       <div className="flex-1 space-y-2 pb-1">
         <p className="text-sm font-medium text-slate-900">{title}</p>
         {desc && <p className="text-sm text-slate-600">{desc}</p>}
-        {command && <CommandLine command={command} locale={locale} />}
+        {command && <CommandLine command={command} copyLabel={copyLabel} />}
       </div>
     </div>
   );
@@ -78,12 +77,11 @@ function Callout({ children }: { children: React.ReactNode }) {
   );
 }
 
-function EnvVarsList({ envVars, locale }: { envVars: string[]; locale: Locale }) {
-  const t = getDictionary(locale);
+function EnvVarsList({ envVars, label }: { envVars: string[]; label: string }) {
   if (envVars.length === 0) return null;
   return (
     <div>
-      <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-600">{t.howToDeploy.envVarsLabel}</p>
+      <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-600">{label}</p>
       <div className="flex flex-wrap gap-1.5">
         {envVars.map((key) => (
           <code key={key} className="rounded border border-slate-200 bg-slate-100 px-1.5 py-0.5 text-[11px] text-slate-700">
@@ -100,6 +98,13 @@ function EnvVarsList({ envVars, locale }: { envVars: string[]; locale: Locale })
  * módulo y cargado solo vía next/dynamic desde HowToDeployGuide, para que
  * su JS no entre en el bundle inicial de cada ficha de herramienta y solo
  * se descargue cuando el usuario pulsa el botón "¿Cómo funciona esto?".
+ *
+ * t.howToDeploy incluye funciones de interpolación (title, firewallCallout...),
+ * que React no puede serializar como prop de un Server Component a un Client
+ * Component — por eso el diccionario se resuelve aquí dentro (con locale)
+ * en vez de recibirse ya resuelto. Como este módulo solo se descarga tras el
+ * clic, el coste de es.ts+en.ts completos queda confinado a ese chunk
+ * perezoso y nunca entra en el bundle inicial de la página.
  */
 export function HowToDeployModal({
   toolName,
@@ -116,7 +121,9 @@ export function HowToDeployModal({
   locale: Locale;
   onClose: () => void;
 }) {
-  const t = getDictionary(locale);
+  const dict = getDictionary(locale);
+  const t = dict.howToDeploy;
+  const copyLabel = dict.dockerBlock.copy;
   const dialogRef = React.useRef<HTMLDivElement>(null);
   const [tab, setTab] = React.useState<Tab>("vps");
 
@@ -138,9 +145,9 @@ export function HowToDeployModal({
   }, [onClose]);
 
   const tabs: { id: Tab; label: string }[] = [
-    { id: "vps", label: t.howToDeploy.tabVps },
-    { id: "coolify", label: t.howToDeploy.tabCoolify },
-    { id: "oneClick", label: t.howToDeploy.tabOneClick },
+    { id: "vps", label: t.tabVps },
+    { id: "coolify", label: t.tabCoolify },
+    { id: "oneClick", label: t.tabOneClick },
   ];
 
   return createPortal(
@@ -162,14 +169,14 @@ export function HowToDeployModal({
         <div className="flex items-start justify-between gap-4 border-b border-slate-100 px-5 py-4">
           <div>
             <h2 id="how-to-deploy-title" className="text-lg font-semibold text-slate-900">
-              {t.howToDeploy.title(toolName)}
+              {t.title(toolName)}
             </h2>
-            <p className="mt-0.5 text-sm text-slate-600">{t.howToDeploy.subtitle}</p>
+            <p className="mt-0.5 text-sm text-slate-600">{t.subtitle}</p>
           </div>
           <button
             type="button"
             onClick={onClose}
-            aria-label={t.howToDeploy.close}
+            aria-label={t.close}
             className="shrink-0 rounded-full p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600"
           >
             <X size={18} />
@@ -195,39 +202,37 @@ export function HowToDeployModal({
         <div className="flex-1 space-y-5 overflow-y-auto px-5 py-5">
           {tab === "vps" && (
             <>
-              <Step number={1} title={t.howToDeploy.vps.step1Title} command={t.howToDeploy.vps.step1Command} locale={locale} />
+              <Step number={1} title={t.vps.step1Title} command={t.vps.step1Command} copyLabel={copyLabel} />
               {composeFile ? (
                 <Step
                   number={2}
-                  title={t.howToDeploy.vps.step2TitleCompose(toolName)}
-                  desc={t.howToDeploy.vps.step2DescCompose}
-                  command={t.howToDeploy.vps.step2CommandCompose(toolSlug)}
-                  locale={locale}
+                  title={t.vps.step2TitleCompose(toolName)}
+                  desc={t.vps.step2DescCompose}
+                  command={t.vps.step2CommandCompose(toolSlug)}
+                  copyLabel={copyLabel}
                 />
               ) : (
-                <Step number={2} title={t.howToDeploy.vps.step2TitleScript} desc={t.howToDeploy.vps.step2DescScript} locale={locale} />
+                <Step number={2} title={t.vps.step2TitleScript} desc={t.vps.step2DescScript} copyLabel={copyLabel} />
               )}
-              {composeFile && (
-                <Step number={3} title={t.howToDeploy.vps.step3Title} command={t.howToDeploy.vps.step3Command} locale={locale} />
-              )}
+              {composeFile && <Step number={3} title={t.vps.step3Title} command={t.vps.step3Command} copyLabel={copyLabel} />}
               <Step
                 number={composeFile ? 4 : 3}
-                title={t.howToDeploy.vps.step4Title}
-                command={composeFile ? t.howToDeploy.vps.step4Command : t.howToDeploy.vps.step4CommandGeneric}
-                locale={locale}
+                title={t.vps.step4Title}
+                command={composeFile ? t.vps.step4Command : t.vps.step4CommandGeneric}
+                copyLabel={copyLabel}
               />
-              <Callout>{t.howToDeploy.firewallCallout(port)}</Callout>
-              {envVars.length > 0 && <Callout>{t.howToDeploy.secretsCallout}</Callout>}
+              <Callout>{t.firewallCallout(port)}</Callout>
+              {envVars.length > 0 && <Callout>{t.secretsCallout}</Callout>}
             </>
           )}
 
           {tab === "coolify" && (
             <>
-              <Step number={1} title={t.howToDeploy.coolify.step1Title} desc={t.howToDeploy.coolify.step1Desc} locale={locale} />
-              <Step number={2} title={t.howToDeploy.coolify.step2Title} desc={t.howToDeploy.coolify.step2Desc} locale={locale} />
-              <Step number={3} title={t.howToDeploy.coolify.step3Title} desc={t.howToDeploy.coolify.step3Desc} locale={locale} />
-              <EnvVarsList envVars={envVars} locale={locale} />
-              {envVars.length > 0 && <Callout>{t.howToDeploy.secretsCallout}</Callout>}
+              <Step number={1} title={t.coolify.step1Title} desc={t.coolify.step1Desc} copyLabel={copyLabel} />
+              <Step number={2} title={t.coolify.step2Title} desc={t.coolify.step2Desc} copyLabel={copyLabel} />
+              <Step number={3} title={t.coolify.step3Title} desc={t.coolify.step3Desc} copyLabel={copyLabel} />
+              <EnvVarsList envVars={envVars} label={t.envVarsLabel} />
+              {envVars.length > 0 && <Callout>{t.secretsCallout}</Callout>}
             </>
           )}
 
@@ -240,15 +245,15 @@ export function HowToDeployModal({
                       <Rocket size={14} className="text-violet-600" />
                       {target.platform}
                     </p>
-                    <Step number={1} title={t.howToDeploy.oneClick.step1Title(target.platform)} desc={t.howToDeploy.oneClick.step1Desc} locale={locale} />
-                    <Step number={2} title={t.howToDeploy.oneClick.step2Title} desc={t.howToDeploy.oneClick.step2Desc} locale={locale} />
-                    <Step number={3} title={t.howToDeploy.oneClick.step3Title} desc={t.howToDeploy.oneClick.step3Desc} locale={locale} />
+                    <Step number={1} title={t.oneClick.step1Title(target.platform)} desc={t.oneClick.step1Desc} copyLabel={copyLabel} />
+                    <Step number={2} title={t.oneClick.step2Title} desc={t.oneClick.step2Desc} copyLabel={copyLabel} />
+                    <Step number={3} title={t.oneClick.step3Title} desc={t.oneClick.step3Desc} copyLabel={copyLabel} />
                   </div>
                 ))}
-                <EnvVarsList envVars={envVars} locale={locale} />
+                <EnvVarsList envVars={envVars} label={t.envVarsLabel} />
               </>
             ) : (
-              <Callout>{t.howToDeploy.oneClick.noTemplate(toolName)}</Callout>
+              <Callout>{t.oneClick.noTemplate(toolName)}</Callout>
             ))}
         </div>
       </div>

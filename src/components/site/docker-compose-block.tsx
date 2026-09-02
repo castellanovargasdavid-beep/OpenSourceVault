@@ -3,9 +3,8 @@
 import * as React from "react";
 import { Check, Copy, Wand2, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { getDictionary } from "@/i18n/get-dictionary";
 import { cn } from "@/lib/utils";
-import type { Locale } from "@/i18n/config";
+import type { Dictionary } from "@/i18n/dictionaries/es";
 
 function generateSecret(length = 32): string {
   const bytes = new Uint8Array(length);
@@ -24,8 +23,7 @@ function randomizeSecrets(code: string): string {
   });
 }
 
-export function DockerComposeBlock({ code, locale = "es" }: { code: string; locale?: Locale }) {
-  const t = getDictionary(locale);
+export function DockerComposeBlock({ code, t }: { code: string; t: Dictionary["dockerBlock"] }) {
   const [displayCode, setDisplayCode] = React.useState(code);
   const [copied, setCopied] = React.useState(false);
   const [copyError, setCopyError] = React.useState(false);
@@ -70,7 +68,7 @@ export function DockerComposeBlock({ code, locale = "es" }: { code: string; loca
               className="gap-1.5 text-slate-300 hover:bg-slate-800 hover:text-white"
             >
               <Wand2 size={14} />
-              {randomized ? t.dockerBlock.regenerate : t.dockerBlock.generate}
+              {randomized ? t.regenerate : t.generate}
             </Button>
           )}
           <Button
@@ -89,7 +87,7 @@ export function DockerComposeBlock({ code, locale = "es" }: { code: string; loca
             ) : (
               <Copy size={14} />
             )}
-            {copyError ? t.dockerBlock.copyError : copied ? t.dockerBlock.copied : t.dockerBlock.copy}
+            {copyError ? t.copyError : copied ? t.copied : t.copy}
           </Button>
         </div>
       </div>
@@ -98,7 +96,7 @@ export function DockerComposeBlock({ code, locale = "es" }: { code: string; loca
       </pre>
       {randomized && (
         <p className="border-t border-emerald-900/50 bg-emerald-950/40 px-4 py-2 text-xs text-emerald-300">
-          {t.dockerBlock.randomizedNote}
+          {t.randomizedNote}
         </p>
       )}
     </div>

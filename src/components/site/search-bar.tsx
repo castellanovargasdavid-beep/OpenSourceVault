@@ -6,10 +6,10 @@ import { Search, ArrowRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { getCategoryMetaLocalized } from "@/data/categories";
 import { cn } from "@/lib/utils";
-import { getDictionary } from "@/i18n/get-dictionary";
 import { localeHref } from "@/lib/locale-href";
 import type { Locale } from "@/i18n/config";
 import type { ToolCardData } from "@/lib/types";
+import type { Dictionary } from "@/i18n/dictionaries/es";
 
 interface Match {
   slug: string;
@@ -43,8 +43,18 @@ function findMatches(tools: ToolCardData[], query: string, locale: Locale): Matc
   return results;
 }
 
-export function SearchBar({ tools, className, locale = "es" }: { tools: ToolCardData[]; className?: string; locale?: Locale }) {
-  const t = getDictionary(locale);
+export function SearchBar({
+  tools,
+  className,
+  locale = "es",
+  t,
+}: {
+  tools: ToolCardData[];
+  className?: string;
+  locale?: Locale;
+  /** t.searchBar ya resuelto por el Server Component ancestro (Hero) — evita importar get-dictionary (es+en completos) en este client component. */
+  t: Dictionary["searchBar"];
+}) {
   const router = useRouter();
   const [query, setQuery] = React.useState("");
   const [open, setOpen] = React.useState(false);
@@ -85,15 +95,15 @@ export function SearchBar({ tools, className, locale = "es" }: { tools: ToolCard
               setOpen(true);
             }}
             onFocus={() => setOpen(true)}
-            placeholder={t.searchBar.placeholder}
+            placeholder={t.placeholder}
             className="h-14 rounded-xl pl-12 pr-32 text-base shadow-lg"
-            aria-label={t.searchBar.ariaLabel}
+            aria-label={t.ariaLabel}
           />
           <button
             type="submit"
             className="absolute right-2 top-1/2 inline-flex h-10 -translate-y-1/2 items-center gap-1.5 rounded-lg bg-emerald-700 px-4 text-sm font-medium text-white transition-colors hover:bg-emerald-600"
           >
-            {t.searchBar.button}
+            {t.button}
             <ArrowRight size={16} />
           </button>
         </div>
@@ -112,7 +122,7 @@ export function SearchBar({ tools, className, locale = "es" }: { tools: ToolCard
                     <span>
                       <span className="font-medium text-slate-900">{match.name}</span>
                       {match.matchedReplaces && (
-                        <span className="text-slate-600"> · {t.searchBar.alternativeTo} {match.matchedReplaces}</span>
+                        <span className="text-slate-600"> · {t.alternativeTo} {match.matchedReplaces}</span>
                       )}
                     </span>
                     <span className="shrink-0 text-xs text-slate-600">{match.categoryLabel}</span>
@@ -121,7 +131,7 @@ export function SearchBar({ tools, className, locale = "es" }: { tools: ToolCard
               ))}
             </ul>
           ) : (
-            <p className="px-4 py-3 text-sm text-slate-600">{t.searchBar.noMatches}</p>
+            <p className="px-4 py-3 text-sm text-slate-600">{t.noMatches}</p>
           )}
         </div>
       )}

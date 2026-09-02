@@ -14,9 +14,9 @@ import { LogoImage } from "@/components/site/logo-image";
 import { getSaasDomain } from "@/lib/saas-domains";
 import { categoryColors } from "@/lib/category-colors";
 import { cn, formatStars, getHostname } from "@/lib/utils";
-import { getDictionary } from "@/i18n/get-dictionary";
 import { localeHref } from "@/lib/locale-href";
 import type { Locale } from "@/i18n/config";
+import type { Dictionary } from "@/i18n/dictionaries/es";
 
 // Solo se necesita tras un clic en una tarjeta "Próximamente": se separa del
 // bundle inicial para no cargarlo en cada página que lista herramientas.
@@ -24,14 +24,25 @@ const ComingSoonModal = dynamic(() =>
   import("@/components/site/coming-soon-modal").then((m) => m.ComingSoonModal)
 );
 
-export function ToolCard({ tool: rawTool, locale = "es" }: { tool: ToolCardData; locale?: Locale }) {
+export function ToolCard({
+  tool: rawTool,
+  locale = "es",
+  t,
+  comingSoonBadge,
+}: {
+  tool: ToolCardData;
+  locale?: Locale;
+  /** t.toolCard ya resuelto por el Server Component ancestro — evita que este client component arrastre es+en completos solo para renderizar una tarjeta. */
+  t: Dictionary["toolCard"];
+  /** t.comingSoon.badge — un string plano (a diferencia del resto de t.comingSoon, que incluye una función y no puede pasarse como prop de Server a Client Component). */
+  comingSoonBadge: string;
+}) {
   const tool = getLocalizedToolCardData(rawTool, locale);
-  const t = getDictionary(locale);
   const [modalOpen, setModalOpen] = React.useState(false);
   const tagLabels: Record<string, string> = {
-    "docker-ready": t.toolCard.tagDockerReady,
-    "1-click-deploy": t.toolCard.tagOneClick,
-    "permissive-license": t.toolCard.tagPermissive,
+    "docker-ready": t.tagDockerReady,
+    "1-click-deploy": t.tagOneClick,
+    "permissive-license": t.tagPermissive,
   };
   const category = getCategoryMetaLocalized(tool.category, locale);
   const palette = categoryColors[tool.category];
@@ -46,12 +57,12 @@ export function ToolCard({ tool: rawTool, locale = "es" }: { tool: ToolCardData;
     >
       {tool.sponsored && (
         <span className="absolute -top-2.5 right-4 inline-flex items-center gap-1 rounded-full bg-slate-900 px-2.5 py-1 text-[10px] font-medium text-white shadow-sm">
-          <BadgeCheck size={11} /> {t.toolCard.sponsored}
+          <BadgeCheck size={11} /> {t.sponsored}
         </span>
       )}
       {!published && (
         <span className="absolute -top-2.5 right-4 inline-flex items-center gap-1 rounded-full bg-slate-600 px-2.5 py-1 text-[10px] font-medium text-white shadow-sm">
-          <Clock size={11} /> {t.comingSoon.badge}
+          <Clock size={11} /> {comingSoonBadge}
         </span>
       )}
       <CardHeader className="pb-3">
@@ -92,7 +103,7 @@ export function ToolCard({ tool: rawTool, locale = "es" }: { tool: ToolCardData;
                   ))}
                 </span>
                 <span className="text-xs font-medium text-slate-700">
-                  {t.toolCard.alternativeTo} {tool.replaces.join(", ")}
+                  {t.alternativeTo} {tool.replaces.join(", ")}
                 </span>
               </p>
             </div>
@@ -119,7 +130,7 @@ export function ToolCard({ tool: rawTool, locale = "es" }: { tool: ToolCardData;
                 tool.fossModel === "FOSS" ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-800"
               )}
             >
-              {tool.fossModel === "FOSS" ? t.toolCard.fossModelFoss : t.toolCard.fossModelOpenCore}
+              {tool.fossModel === "FOSS" ? t.fossModelFoss : t.fossModelOpenCore}
             </span>
           )}
         </div>
@@ -140,7 +151,7 @@ export function ToolCard({ tool: rawTool, locale = "es" }: { tool: ToolCardData;
               palette.gradient
             )}
           >
-            {t.toolCard.cta}
+            {t.cta}
             <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
           </Link>
         ) : (
@@ -149,7 +160,7 @@ export function ToolCard({ tool: rawTool, locale = "es" }: { tool: ToolCardData;
             onClick={() => setModalOpen(true)}
             className="mt-auto inline-flex items-center justify-center gap-1.5 rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50"
           >
-            {t.toolCard.comingSoonCta}
+            {t.comingSoonCta}
             <Clock size={15} />
           </button>
         )}

@@ -292,8 +292,9 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
                     dockerCompose={tool.dockerCompose}
                     oneClickDeploy={tool.oneClickDeploy}
                     locale={locale}
+                    trigger={t.howToDeploy.trigger}
                   />
-                  <DockerComposeBlock code={tool.dockerCompose} locale={locale} />
+                  <DockerComposeBlock code={tool.dockerCompose} t={t.dockerBlock} />
                 </>
               )}
             </section>

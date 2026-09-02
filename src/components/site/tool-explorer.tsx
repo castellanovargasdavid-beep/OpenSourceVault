@@ -9,15 +9,27 @@ import { Button } from "@/components/ui/button";
 import { ToolCard } from "@/components/site/tool-card";
 import { cn } from "@/lib/utils";
 import type { ToolCardData, ToolTag } from "@/lib/types";
-import { getDictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
+import type { Dictionary } from "@/i18n/dictionaries/es";
 
-export function ToolExplorer({ tools: allTools, locale = "es" }: { tools: ToolCardData[]; locale?: Locale }) {
-  const t = getDictionary(locale);
+export function ToolExplorer({
+  tools: allTools,
+  locale = "es",
+  t,
+  toolCardT,
+  comingSoonBadge,
+}: {
+  tools: ToolCardData[];
+  locale?: Locale;
+  /** Slices ya resueltos por el Server Component ancestro (page.tsx) — así este client component no importa get-dictionary (es+en completos). */
+  t: Dictionary["toolExplorer"];
+  toolCardT: Dictionary["toolCard"];
+  comingSoonBadge: string;
+}) {
   const quickTags: { id: ToolTag; label: string }[] = [
-    { id: "docker-ready", label: t.toolExplorer.tagDockerReady },
-    { id: "1-click-deploy", label: t.toolExplorer.tagOneClick },
-    { id: "permissive-license", label: t.toolExplorer.tagPermissive },
+    { id: "docker-ready", label: t.tagDockerReady },
+    { id: "1-click-deploy", label: t.tagOneClick },
+    { id: "permissive-license", label: t.tagPermissive },
   ];
 
   const [query, setQuery] = React.useState("");
@@ -55,8 +67,8 @@ export function ToolExplorer({ tools: allTools, locale = "es" }: { tools: ToolCa
     <section id="explorador" className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
       <div className="mb-8 flex flex-col gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">{t.toolExplorer.title}</h2>
-          <p className="mt-2 text-slate-600">{t.toolExplorer.subtitle}</p>
+          <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">{t.title}</h2>
+          <p className="mt-2 text-slate-600">{t.subtitle}</p>
         </div>
 
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -65,17 +77,17 @@ export function ToolExplorer({ tools: allTools, locale = "es" }: { tools: ToolCa
             <Input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder={t.toolExplorer.searchPlaceholder}
+              placeholder={t.searchPlaceholder}
               className="pl-9"
             />
           </div>
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            aria-label={t.toolExplorer.categoryFilterLabel}
+            aria-label={t.categoryFilterLabel}
             className="h-11 rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
           >
-            <option value="all">{t.toolExplorer.allCategories}</option>
+            <option value="all">{t.allCategories}</option>
             {categories.map((c) => (
               <option key={c.id} value={c.id}>
                 {locale === "en" ? categoriesEn[c.id].label : c.label}
@@ -104,7 +116,7 @@ export function ToolExplorer({ tools: allTools, locale = "es" }: { tools: ToolCa
           })}
           {hasActiveFilters && (
             <Button variant="ghost" size="sm" onClick={clearFilters} className="gap-1">
-              <X size={14} /> {t.toolExplorer.clearFilters}
+              <X size={14} /> {t.clearFilters}
             </Button>
           )}
         </div>
@@ -113,14 +125,14 @@ export function ToolExplorer({ tools: allTools, locale = "es" }: { tools: ToolCa
       {filtered.length > 0 ? (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((tool) => (
-            <ToolCard key={tool.id} tool={tool} locale={locale} />
+            <ToolCard key={tool.id} tool={tool} locale={locale} t={toolCardT} comingSoonBadge={comingSoonBadge} />
           ))}
         </div>
       ) : (
         <div className="rounded-xl border border-dashed border-slate-300 py-16 text-center">
-          <p className="text-slate-600">{t.toolExplorer.noResults}</p>
+          <p className="text-slate-600">{t.noResults}</p>
           <Button variant="link" onClick={clearFilters}>
-            {t.toolExplorer.clearFilters}
+            {t.clearFilters}
           </Button>
         </div>
       )}

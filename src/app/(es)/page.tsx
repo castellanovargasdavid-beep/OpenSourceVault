@@ -4,8 +4,10 @@ import { FeaturedTools } from "@/components/site/featured-tools";
 import { ToolExplorer } from "@/components/site/tool-explorer";
 import { allTools, tools } from "@/data/tools";
 import { toToolCardData } from "@/lib/tool-card-data";
+import { getDictionary } from "@/i18n/get-dictionary";
 
 export default function HomePage() {
+  const t = getDictionary("es");
   const publishedToolCards = tools.map(toToolCardData);
   const allToolCards = allTools.map(toToolCardData);
 
@@ -14,7 +16,7 @@ export default function HomePage() {
       <Hero tools={publishedToolCards} />
       <CategoryGrid />
       <FeaturedTools />
-      <ToolExplorer tools={allToolCards} />
+      <ToolExplorer tools={allToolCards} t={t.toolExplorer} toolCardT={t.toolCard} comingSoonBadge={t.comingSoon.badge} />
     </>
   );
 }

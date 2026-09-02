@@ -27,10 +27,17 @@ export function ComingSoonModal({
   onClose,
 }: {
   tool: ToolCardData;
+  /**
+   * t.comingSoon.modalTitle es una función (interpolación con el nombre de la
+   * herramienta), y React no permite pasar funciones como prop de un Server
+   * Component a un Client Component (no son serializables en el flight
+   * payload) — por eso este modal sigue resolviendo el diccionario aquí
+   * dentro en vez de recibirlo ya resuelto, a diferencia de ToolCard.
+   */
   locale: Locale;
   onClose: () => void;
 }) {
-  const t = getDictionary(locale);
+  const t = getDictionary(locale).comingSoon;
   const storageKey = `altfreestack:voted:${tool.slug}`;
   // Lectura perezosa de localStorage: este componente solo se monta en el
   // cliente (ToolCard lo renderiza tras un clic), así que no hay riesgo de
@@ -89,17 +96,17 @@ export function ComingSoonModal({
         className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl outline-none"
       >
         <div className="mb-4 flex items-start justify-between gap-4">
-          <h2 className="text-lg font-semibold text-slate-900">{t.comingSoon.modalTitle(tool.name)}</h2>
+          <h2 className="text-lg font-semibold text-slate-900">{t.modalTitle(tool.name)}</h2>
           <button
             onClick={onClose}
-            aria-label={t.comingSoon.close}
+            aria-label={t.close}
             className="shrink-0 rounded-full p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600"
           >
             <X size={18} />
           </button>
         </div>
 
-        <p className="mb-5 text-sm text-slate-600">{t.comingSoon.modalBody}</p>
+        <p className="mb-5 text-sm text-slate-600">{t.modalBody}</p>
 
         <Button
           onClick={handleVote}
@@ -108,23 +115,23 @@ export function ComingSoonModal({
           variant={voted ? "secondary" : "default"}
         >
           {voted ? <Check size={16} /> : <ThumbsUp size={16} />}
-          {voted ? t.comingSoon.voteButtonDone : t.comingSoon.voteButton}
+          {voted ? t.voteButtonDone : t.voteButton}
         </Button>
 
         <div className="my-4 flex items-center gap-3 text-xs uppercase tracking-wide text-slate-600">
           <span className="h-px flex-1 bg-slate-200" />
-          {t.comingSoon.orDivider}
+          {t.orDivider}
           <span className="h-px flex-1 bg-slate-200" />
         </div>
 
         {emailSent ? (
           <p className="flex items-center gap-2 rounded-lg bg-emerald-50 px-3 py-2.5 text-sm text-emerald-700">
-            <Check size={16} /> {t.comingSoon.emailButtonDone}
+            <Check size={16} /> {t.emailButtonDone}
           </p>
         ) : (
           <form onSubmit={handleEmailSubmit} className="flex flex-col gap-2">
             <label htmlFor={`interest-email-${tool.slug}`} className="text-sm font-medium text-slate-700">
-              {t.comingSoon.emailLabel}
+              {t.emailLabel}
             </label>
             <div className="flex gap-2">
               <Input
@@ -133,18 +140,18 @@ export function ComingSoonModal({
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder={t.comingSoon.emailPlaceholder}
+                placeholder={t.emailPlaceholder}
                 className="flex-1"
               />
               <Button type="submit" className="gap-1.5 shrink-0">
                 <Mail size={15} />
-                {t.comingSoon.emailButton}
+                {t.emailButton}
               </Button>
             </div>
           </form>
         )}
 
-        <p className="mt-4 text-xs text-slate-600">{t.comingSoon.disclaimer}</p>
+        <p className="mt-4 text-xs text-slate-600">{t.disclaimer}</p>
       </div>
     </div>,
     document.body

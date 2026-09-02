@@ -47,7 +47,7 @@ export function Hero({ tools, locale = "es" }: { tools: ToolCardData[]; locale?:
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-600">{t.hero.subtitle}</p>
         <div className="mx-auto mt-10 max-w-2xl">
-          <SearchBar tools={tools} locale={locale} />
+          <SearchBar tools={tools} locale={locale} t={t.searchBar} />
         </div>
 
         <div className="mx-auto mt-10 flex max-w-xl flex-wrap items-center justify-center gap-x-10 gap-y-4">

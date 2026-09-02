@@ -36,7 +36,7 @@ export function PromoteContent({ locale = "es" }: { locale?: Locale }) {
         </div>
       </section>
 
-      <PromoteSection locale={locale} />
+      <PromoteSection locale={locale} t={t.promotePage} />
     </div>
   );
 }

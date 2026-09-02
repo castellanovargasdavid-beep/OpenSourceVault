@@ -82,8 +82,9 @@ function StackToolProfile({ tool: rawTool, locale }: { tool: OpenSourceTool; loc
             dockerCompose={tool.dockerCompose}
             oneClickDeploy={tool.oneClickDeploy}
             locale={locale}
+            trigger={t.howToDeploy.trigger}
           />
-          <DockerComposeBlock code={tool.dockerCompose} locale={locale} />
+          <DockerComposeBlock code={tool.dockerCompose} t={t.dockerBlock} />
         </>
       )}
 

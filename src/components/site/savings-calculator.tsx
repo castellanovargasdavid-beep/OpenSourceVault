@@ -19,7 +19,11 @@ const formatUsd = (value: number, locale: Locale) =>
   }).format(value);
 
 export function SavingsCalculator({ locale = "es" }: { locale?: Locale }) {
-  const t = getDictionary(locale);
+  // t.savingsCalculator incluye varias funciones de interpolación
+  // (perYear, disclaimer, cta...), que React no puede serializar como prop
+  // de un Server Component a un Client Component — por eso se resuelve aquí
+  // dentro en vez de recibirse ya resuelto, a diferencia de otros componentes.
+  const t = getDictionary(locale).savingsCalculator;
   const hostingProviders = getHostingProvidersLocalized(locale);
   const [saasName, setSaasName] = React.useState(saasPricing[0].saasName);
   const [seats, setSeats] = React.useState(10);
@@ -38,7 +42,7 @@ export function SavingsCalculator({ locale = "es" }: { locale?: Locale }) {
       <div className="grid gap-6 sm:grid-cols-3">
         <div>
           <label className="mb-1.5 block text-sm font-medium text-slate-700">
-            {t.savingsCalculator.saasLabel}
+            {t.saasLabel}
           </label>
           <select
             value={saasName}
@@ -56,7 +60,7 @@ export function SavingsCalculator({ locale = "es" }: { locale?: Locale }) {
 
         <div>
           <label className="mb-1.5 block text-sm font-medium text-slate-700">
-            {t.savingsCalculator.seatsLabel}
+            {t.seatsLabel}
           </label>
           <input
             type="number"
@@ -70,7 +74,7 @@ export function SavingsCalculator({ locale = "es" }: { locale?: Locale }) {
 
         <div>
           <label className="mb-1.5 block text-sm font-medium text-slate-700">
-            {t.savingsCalculator.providerLabel}
+            {t.providerLabel}
           </label>
           <select
             value={providerId}
@@ -89,40 +93,40 @@ export function SavingsCalculator({ locale = "es" }: { locale?: Locale }) {
       <div className="mt-8 grid gap-4 sm:grid-cols-3">
         <div className="rounded-xl border border-slate-200 bg-slate-50 p-5 text-center">
           <p className="text-xs font-medium uppercase tracking-wide text-slate-600">
-            {t.savingsCalculator.perYear(saasName)}
+            {t.perYear(saasName)}
           </p>
           <p className="mt-1 text-2xl font-bold text-slate-900">{formatUsd(saasAnnualCost, locale)}</p>
           <p className="mt-1 text-xs text-slate-600">
-            {seats} {t.savingsCalculator.seatsUnit(seats)} × {formatUsd(saas.pricePerSeatUsd, locale)}/{t.savingsCalculator.perMonth}
+            {seats} {t.seatsUnit(seats)} × {formatUsd(saas.pricePerSeatUsd, locale)}/{t.perMonth}
           </p>
         </div>
         <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-5 text-center">
           <p className="text-xs font-medium uppercase tracking-wide text-emerald-700">
-            {t.savingsCalculator.selfHostedPerYear}
+            {t.selfHostedPerYear}
           </p>
           <p className="mt-1 text-2xl font-bold text-emerald-700">
             {formatUsd(selfHostAnnualCost, locale)}
           </p>
-          <p className="mt-1 text-xs text-emerald-600">{t.savingsCalculator.selfHostedNote(provider.name)}</p>
+          <p className="mt-1 text-xs text-emerald-600">{t.selfHostedNote(provider.name)}</p>
         </div>
         <div className="rounded-xl border border-slate-900 bg-slate-900 p-5 text-center text-white">
           <p className="flex items-center justify-center gap-1 text-xs font-medium uppercase tracking-wide text-emerald-400">
-            <TrendingDown size={14} /> {t.savingsCalculator.estimatedSavings}
+            <TrendingDown size={14} /> {t.estimatedSavings}
           </p>
           <p className="mt-1 text-2xl font-bold">{formatUsd(savings, locale)}</p>
-          <p className="mt-1 text-xs text-slate-300">{t.savingsCalculator.lessPerYear(savingsPercent)}</p>
+          <p className="mt-1 text-xs text-slate-300">{t.lessPerYear(savingsPercent)}</p>
         </div>
       </div>
 
       <p className="mt-4 text-xs text-slate-600">
-        {t.savingsCalculator.disclaimer(saas.billingNote.toLowerCase(), saasName)}
+        {t.disclaimer(saas.billingNote.toLowerCase(), saasName)}
       </p>
 
       <Link
         href={getAlternativeHref(saasName, locale)}
         className={cn(buttonVariants({ size: "lg" }), "mt-6 w-full justify-center gap-1.5 sm:w-auto")}
       >
-        {t.savingsCalculator.cta(saasName)} <ArrowRight size={16} />
+        {t.cta(saasName)} <ArrowRight size={16} />
       </Link>
     </div>
   );
