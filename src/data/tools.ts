@@ -6370,12 +6370,804 @@ cd dub && pnpm install && pnpm build
     tags: ["docker-ready", "permissive-license"],
     status: "coming_soon",
   },
+
+  // ---------- Añadidas para los "Curated Stacks" ----------
+  {
+    id: "invoice-ninja",
+    name: "Invoice Ninja",
+    slug: "invoice-ninja",
+    replaces: ["FreshBooks", "Bill.com"],
+    category: "CRM",
+    description:
+      "Invoice Ninja gestiona facturas, presupuestos y gastos recurrentes con un portal de cliente para pagos online integrado, como alternativa auto-hospedable a FreshBooks o Bill.com para freelancers y pequeñas agencias.",
+    shortDescription: "Facturación y presupuestos con portal de cliente, alternativa a FreshBooks.",
+    websiteUrl: "https://invoiceninja.com",
+    githubUrl: "https://github.com/invoiceninja/invoiceninja",
+    starsCount: 8300,
+    license: "Elastic License 2.0",
+    database: "MySQL",
+    language: "PHP (Laravel)",
+    platforms: ["Web", "Mobile (iOS/Android)"],
+    fossModel: "OpenCore",
+    dockerCompose: `services:
+  app:
+    image: invoiceninja/invoiceninja:5
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    environment:
+      APP_URL: http://localhost # CHANGE THIS TO YOUR DOMAIN
+      APP_KEY: change-me-32-char-app-key # REQUIRED: generate a random secret before first run
+      DB_HOST: db
+      DB_DATABASE: ninja
+      DB_USERNAME: ninja
+      DB_PASSWORD: change-me-mysql-password # REQUIRED: generate a random secret before first run
+    volumes:
+      - ninja_data:/var/www/app/public/storage
+    depends_on:
+      - db
+  db:
+    image: mysql:8
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ninja
+      MYSQL_USER: ninja
+      MYSQL_PASSWORD: change-me-mysql-password # must match DB_PASSWORD above
+      MYSQL_ROOT_PASSWORD: change-me-mysql-root-password # REQUIRED: generate a random secret before first run
+    volumes:
+      - ninja_db_data:/var/lib/mysql
+volumes:
+  ninja_data:
+  ninja_db_data:
+`,
+    affiliateLinks,
+    features: [
+      "Facturas, presupuestos y gastos recurrentes",
+      "Portal de cliente para pagos online",
+      "Múltiples pasarelas de pago (Stripe, PayPal, etc.)",
+    ],
+    techStack: ["PHP (Laravel)", "MySQL", "Vue.js"],
+    pros: ["Muy completo para freelancers y pequeñas agencias", "Portal de cliente incluido de serie"],
+    cons: [
+      "La v5 se distribuye bajo Elastic License 2.0, no una licencia OSI clásica",
+      "La interfaz de administración puede sentirse sobrecargada al principio",
+    ],
+    tags: ["docker-ready"],
+  },
+  {
+    id: "activepieces",
+    name: "Activepieces",
+    slug: "activepieces",
+    replaces: ["Zapier", "Make"],
+    category: "DevTools",
+    description:
+      "Activepieces es una plataforma de automatización de flujos de trabajo con más de 200 integraciones y un constructor visual sin código, pensada como alternativa open source moderna a Zapier o Make.",
+    shortDescription: "Automatización de flujos con 200+ integraciones, alternativa a Zapier.",
+    websiteUrl: "https://www.activepieces.com",
+    githubUrl: "https://github.com/activepieces/activepieces",
+    starsCount: 14000,
+    license: "MIT",
+    database: "PostgreSQL",
+    language: "TypeScript (Node.js)",
+    platforms: ["Web"],
+    fossModel: "OpenCore",
+    dockerCompose: `services:
+  activepieces:
+    image: activepieces/activepieces:latest
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      AP_ENCRYPTION_KEY: change-me-32-char-key # REQUIRED: generate a random secret before first run
+      AP_JWT_SECRET: change-me-super-secret # REQUIRED: generate a random secret before first run
+      AP_FRONTEND_URL: http://localhost:8080 # CHANGE THIS TO YOUR DOMAIN
+      AP_POSTGRES_HOST: activepieces-db
+      AP_POSTGRES_USERNAME: activepieces
+      AP_POSTGRES_PASSWORD: change-me-postgres-password # REQUIRED: generate a random secret before first run
+      AP_POSTGRES_DATABASE: activepieces
+      AP_REDIS_HOST: activepieces-redis
+    depends_on:
+      - activepieces-db
+      - activepieces-redis
+  activepieces-db:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: activepieces
+      POSTGRES_PASSWORD: change-me-postgres-password # must match AP_POSTGRES_PASSWORD above
+      POSTGRES_DB: activepieces
+    volumes:
+      - activepieces_pg_data:/var/lib/postgresql/data
+  activepieces-redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+volumes:
+  activepieces_pg_data:
+`,
+    affiliateLinks,
+    features: [
+      "Más de 200 integraciones (piezas) listas para usar",
+      "Constructor de flujos visual sin código",
+      "SDK para crear piezas/integraciones propias",
+    ],
+    techStack: ["Node.js", "PostgreSQL", "Redis", "React"],
+    pros: ["Interfaz mucho más moderna que la de n8n", "Licencia MIT en el núcleo"],
+    cons: [
+      "Algunas funciones de equipo (SSO, analíticas) solo en el plan Enterprise de pago",
+      "Ecosistema de integraciones aún más pequeño que Zapier",
+    ],
+    tags: ["docker-ready", "permissive-license"],
+  },
+  {
+    id: "shlink",
+    name: "Shlink",
+    slug: "shlink",
+    replaces: ["Bitly", "Rebrandly"],
+    category: "MarketingForms",
+    description:
+      "Shlink es un servidor de enlaces cortos con API REST completa y analíticas de clics por enlace y dominio, mantenido activamente como alternativa open source y sin restricciones a Bitly.",
+    shortDescription: "Servidor de enlaces cortos con API y analíticas, alternativa a Bitly.",
+    websiteUrl: "https://shlink.io",
+    githubUrl: "https://github.com/shlinkio/shlink",
+    starsCount: 4700,
+    license: "MIT",
+    database: "MySQL / PostgreSQL / SQLite",
+    language: "PHP",
+    platforms: ["Web"],
+    fossModel: "FOSS",
+    dockerCompose: `services:
+  shlink:
+    image: shlinkio/shlink:stable
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      DEFAULT_DOMAIN: localhost # CHANGE THIS TO YOUR DOMAIN
+      IS_HTTPS_ENABLED: "false"
+      DB_DRIVER: mysql
+      DB_HOST: shlink-db
+      DB_NAME: shlink
+      DB_USER: shlink
+      DB_PASSWORD: change-me-mysql-password # REQUIRED: generate a random secret before first run
+    depends_on:
+      - shlink-db
+  shlink-db:
+    image: mysql:8
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: shlink
+      MYSQL_USER: shlink
+      MYSQL_PASSWORD: change-me-mysql-password # must match DB_PASSWORD above
+      MYSQL_ROOT_PASSWORD: change-me-mysql-root-password # REQUIRED: generate a random secret before first run
+    volumes:
+      - shlink_db_data:/var/lib/mysql
+volumes:
+  shlink_db_data:
+`,
+    affiliateLinks,
+    features: [
+      "API REST completa para integraciones propias",
+      "Analíticas de clics por enlace y por dominio",
+      "Soporta múltiples dominios propios en una sola instancia",
+    ],
+    techStack: ["PHP", "MySQL"],
+    pros: ["Licencia MIT sin restricciones", "Muy ligero, mantenido por un desarrollador muy activo"],
+    cons: [
+      "Sin interfaz web oficial incluida (usa una app cliente aparte, Shlink Web Client)",
+      "Requiere configurar el cliente web por separado para tener panel visual",
+    ],
+    tags: ["docker-ready", "permissive-license"],
+  },
+  {
+    id: "jellyfin",
+    name: "Jellyfin",
+    slug: "jellyfin",
+    replaces: ["Plex", "Netflix"],
+    category: "Storage",
+    description:
+      "Jellyfin transmite tu propia colección de películas, series, música y fotos a cualquier dispositivo, con transcodificación por hardware y cero telemetría, como alternativa 100% libre a Plex.",
+    shortDescription: "Servidor de streaming multimedia personal, alternativa libre a Plex.",
+    websiteUrl: "https://jellyfin.org",
+    githubUrl: "https://github.com/jellyfin/jellyfin",
+    starsCount: 37000,
+    license: "GPL-2.0",
+    database: "SQLite",
+    language: "C# (.NET)",
+    platforms: ["Web", "Desktop (Mac/Win/Linux)", "Mobile (iOS/Android)", "Smart TV"],
+    fossModel: "FOSS",
+    dockerCompose: `services:
+  jellyfin:
+    image: jellyfin/jellyfin:latest
+    restart: unless-stopped
+    ports:
+      - "8096:8096"
+    volumes:
+      - jellyfin_config:/config
+      - jellyfin_cache:/cache
+      - /path/to/your/media:/media # point this at your media library folder
+volumes:
+  jellyfin_config:
+  jellyfin_cache:
+`,
+    affiliateLinks,
+    features: [
+      "Streaming de video, música y fotos a cualquier dispositivo",
+      "Transcodificación por hardware (GPU)",
+      "Apps nativas para TV, móvil y navegador — sin cuenta ni telemetría",
+    ],
+    techStack: [".NET", "SQLite", "ffmpeg"],
+    pros: ["100% gratis y libre de telemetría, a diferencia de Plex", "Comunidad muy activa, fork directo de Emby tras su cierre"],
+    cons: [
+      "La transcodificación por hardware requiere pasos manuales según tu GPU",
+      "Sin app de Smart TV oficial en algunas plataformas (usa apps de terceros)",
+    ],
+    tags: ["docker-ready", "permissive-license"],
+  },
+  {
+    id: "linkwarden",
+    name: "Linkwarden",
+    slug: "linkwarden",
+    replaces: ["Pocket", "Raindrop.io"],
+    category: "Productivity",
+    description:
+      "Linkwarden guarda enlaces junto con una copia archivada de cada página (capturas y PDF), organizados en colecciones colaborativas, como alternativa auto-hospedable a Pocket o Raindrop.io.",
+    shortDescription: "Gestor de marcadores con archivado de páginas, alternativa a Raindrop.io.",
+    websiteUrl: "https://linkwarden.app",
+    githubUrl: "https://github.com/linkwarden/linkwarden",
+    starsCount: 13000,
+    license: "AGPL-3.0",
+    database: "PostgreSQL",
+    language: "TypeScript (Next.js)",
+    platforms: ["Web", "Mobile (iOS/Android)", "Desktop (browser extension)"],
+    dockerCompose: `services:
+  linkwarden:
+    image: ghcr.io/linkwarden/linkwarden:latest
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NEXTAUTH_SECRET: change-me-super-secret # REQUIRED: generate a random secret before first run
+      NEXTAUTH_URL: http://localhost:3000 # CHANGE THIS TO YOUR DOMAIN
+      DATABASE_URL: "postgresql://linkwarden:change-me-postgres-password@linkwarden-db:5432/linkwarden" # must match POSTGRES_PASSWORD below
+    volumes:
+      - linkwarden_data:/data/data
+    depends_on:
+      - linkwarden-db
+  linkwarden-db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: linkwarden
+      POSTGRES_PASSWORD: change-me-postgres-password # REQUIRED: generate a random secret before first run
+      POSTGRES_DB: linkwarden
+    volumes:
+      - linkwarden_pg_data:/var/lib/postgresql/data
+volumes:
+  linkwarden_data:
+  linkwarden_pg_data:
+`,
+    affiliateLinks,
+    features: [
+      "Guarda enlaces, capturas y archivos PDF de cada página",
+      "Organización por colecciones y etiquetas colaborativas",
+      "Extensión de navegador y apps móviles",
+    ],
+    techStack: ["Next.js", "PostgreSQL"],
+    pros: ["Guarda una copia archivada de la página, no solo el enlace", "Colecciones compartidas con otros usuarios"],
+    cons: [
+      "Licencia AGPL-3.0: revisa implicaciones si ofreces el servicio a terceros",
+      "El archivado completo de páginas consume bastante almacenamiento",
+    ],
+    tags: ["docker-ready"],
+  },
+  {
+    id: "wallabag",
+    name: "wallabag",
+    slug: "wallabag",
+    replaces: ["Pocket"],
+    category: "Productivity",
+    description:
+      "wallabag extrae y guarda artículos para leer después sin conexión, sin anuncios ni distracciones, con texto a voz y modo lectura anotable, como alternativa madura y libre a Pocket.",
+    shortDescription: "Guarda artículos para leer después sin conexión, alternativa a Pocket.",
+    websiteUrl: "https://wallabag.org",
+    githubUrl: "https://github.com/wallabag/wallabag",
+    starsCount: 10800,
+    license: "MIT",
+    database: "MySQL / PostgreSQL / SQLite",
+    language: "PHP (Symfony)",
+    platforms: ["Web", "Mobile (iOS/Android)", "Desktop (browser extension)"],
+    fossModel: "FOSS",
+    dockerCompose: `services:
+  wallabag:
+    image: wallabag/wallabag
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      SYMFONY__ENV__DATABASE_DRIVER: pdo_mysql
+      SYMFONY__ENV__DATABASE_HOST: wallabag-db
+      SYMFONY__ENV__DATABASE_NAME: wallabag
+      SYMFONY__ENV__DATABASE_USER: wallabag
+      SYMFONY__ENV__DATABASE_PASSWORD: change-me-mysql-password # REQUIRED: generate a random secret before first run
+      SYMFONY__ENV__DOMAIN_NAME: http://localhost:8080 # CHANGE THIS TO YOUR DOMAIN
+      SYMFONY__ENV__SECRET: change-me-super-secret # REQUIRED: generate a random secret before first run
+    depends_on:
+      - wallabag-db
+  wallabag-db:
+    image: mysql:8
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: wallabag
+      MYSQL_USER: wallabag
+      MYSQL_PASSWORD: change-me-mysql-password # must match SYMFONY__ENV__DATABASE_PASSWORD above
+      MYSQL_ROOT_PASSWORD: change-me-mysql-root-password # REQUIRED: generate a random secret before first run
+    volumes:
+      - wallabag_db_data:/var/lib/mysql
+volumes:
+  wallabag_db_data:
+`,
+    affiliateLinks,
+    features: [
+      "Guarda artículos para leer después, sin conexión",
+      "Extrae el contenido limpio, sin anuncios ni distracciones",
+      "Texto a voz y modo lectura anotable",
+    ],
+    techStack: ["PHP", "Symfony", "MySQL"],
+    pros: ["Licencia MIT muy permisiva", "Proyecto maduro con más de 10 años de desarrollo activo"],
+    cons: [
+      "La interfaz se siente algo más anticuada que alternativas más nuevas",
+      "El archivado de contenido multimedia es más limitado que Linkwarden",
+    ],
+    tags: ["docker-ready", "permissive-license"],
+  },
+  {
+    id: "headscale",
+    name: "Headscale",
+    slug: "headscale",
+    replaces: ["Tailscale"],
+    category: "AuthIdentity",
+    description:
+      "Headscale es una implementación open source del servidor de coordinación de Tailscale: crea tu propia red mallada cifrada con WireGuard usando los mismos clientes oficiales, sin depender del control plane comercial.",
+    shortDescription: "Servidor de coordinación auto-hospedado compatible con Tailscale.",
+    websiteUrl: "https://headscale.net",
+    githubUrl: "https://github.com/juanfont/headscale",
+    starsCount: 24000,
+    license: "BSD-3-Clause",
+    database: "SQLite / PostgreSQL",
+    language: "Go",
+    platforms: ["Web", "Desktop (Mac/Win/Linux)", "Mobile (iOS/Android)"],
+    fossModel: "FOSS",
+    dockerCompose: `# Headscale necesita un archivo config.yaml montado además de las
+# variables de entorno — copia el config-example.yaml oficial antes de
+# arrancar:
+services:
+  headscale:
+    image: headscale/headscale:latest
+    restart: unless-stopped
+    command: serve
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./config:/etc/headscale
+      - headscale_data:/var/lib/headscale
+volumes:
+  headscale_data:
+`,
+    affiliateLinks,
+    features: [
+      "Compatible con los clientes oficiales de Tailscale en todos los dispositivos",
+      "Red mallada (mesh VPN) cifrada con WireGuard bajo el capó",
+      "Soporta ACLs, exit nodes y subredes igual que el servicio comercial",
+    ],
+    techStack: ["Go", "SQLite"],
+    pros: ["Compatible con la app oficial de Tailscale en todos los dispositivos", "Cero dependencia del control plane comercial de Tailscale Inc."],
+    cons: [
+      "Requiere editar un archivo de configuración YAML, no todo se controla por variables de entorno",
+      "Algunas funciones nuevas del cliente oficial tardan en llegar a Headscale",
+    ],
+    tags: ["docker-ready", "permissive-license"],
+  },
+  {
+    id: "wg-easy",
+    name: "WireGuard Easy",
+    slug: "wireguard-easy",
+    replaces: ["NordVPN Teams", "OpenVPN Access Server"],
+    category: "AuthIdentity",
+    description:
+      "WireGuard Easy pone un panel web sobre un servidor WireGuard completo para crear y gestionar clientes VPN con códigos QR en minutos, sin tocar la línea de comandos, como alternativa libre a un VPN comercial de equipo.",
+    shortDescription: "Panel web para tu propio servidor WireGuard, sin línea de comandos.",
+    websiteUrl: "https://github.com/wg-easy/wg-easy",
+    githubUrl: "https://github.com/wg-easy/wg-easy",
+    starsCount: 23000,
+    license: "AGPL-3.0",
+    database: "None / File-based",
+    language: "Node.js / Vue.js",
+    platforms: ["Web"],
+    dockerCompose: `services:
+  wg-easy:
+    image: ghcr.io/wg-easy/wg-easy:latest
+    restart: unless-stopped
+    environment:
+      WG_HOST: vpn.yourdomain.com # CHANGE THIS TO YOUR DOMAIN
+      PASSWORD_HASH: change-me-bcrypt-password-hash # REQUIRED: generate a random secret before first run
+    volumes:
+      - wg_easy_data:/etc/wireguard
+    ports:
+      - "51820:51820/udp"
+      - "51821:51821/tcp"
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    sysctls:
+      - net.ipv4.ip_forward=1
+      - net.ipv4.conf.all.src_valid_mark=1
+volumes:
+  wg_easy_data:
+`,
+    affiliateLinks,
+    features: [
+      "Panel web para crear y gestionar clientes WireGuard con códigos QR",
+      "Estadísticas de tráfico en tiempo real por dispositivo",
+      "Un solo contenedor, sin base de datos externa",
+    ],
+    techStack: ["Node.js", "WireGuard"],
+    pros: ["Configura un servidor WireGuard completo en minutos", "Interfaz mucho más simple que configurar WireGuard a mano"],
+    cons: [
+      "Pensado para un único servidor VPN, no para redes malladas multi-nodo como Headscale",
+      "Requiere abrir un puerto UDP en tu firewall/router",
+    ],
+    tags: ["docker-ready"],
+  },
+  {
+    id: "pihole",
+    name: "Pi-hole",
+    slug: "pihole",
+    replaces: ["NextDNS"],
+    category: "MonitoringLogs",
+    description:
+      "Pi-hole bloquea anuncios y rastreadores a nivel de red para todos tus dispositivos actuando como servidor DNS, con un panel de estadísticas de consultas en tiempo real, como alternativa libre y auto-hospedada a NextDNS.",
+    shortDescription: "Bloqueo de anuncios a nivel de DNS para toda la red, alternativa a NextDNS.",
+    websiteUrl: "https://pi-hole.net",
+    githubUrl: "https://github.com/pi-hole/pi-hole",
+    starsCount: 50000,
+    license: "EUPL-1.2",
+    database: "None / File-based",
+    language: "Shell / PHP",
+    platforms: ["Web"],
+    fossModel: "FOSS",
+    dockerCompose: `services:
+  pihole:
+    image: pihole/pihole:latest
+    restart: unless-stopped
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "80:80"
+    environment:
+      TZ: UTC
+      WEBPASSWORD: change-me-admin-password # REQUIRED: generate a random secret before first run
+    volumes:
+      - pihole_data:/etc/pihole
+      - pihole_dnsmasq:/etc/dnsmasq.d
+    cap_add:
+      - NET_ADMIN
+volumes:
+  pihole_data:
+  pihole_dnsmasq:
+`,
+    affiliateLinks,
+    features: [
+      "Bloquea anuncios y rastreadores a nivel de red para todos tus dispositivos",
+      "Panel web con estadísticas de consultas DNS en tiempo real",
+      "Listas de bloqueo (blocklists) actualizables y personalizables",
+    ],
+    techStack: ["dnsmasq", "PHP", "Shell"],
+    pros: ["Protege todos los dispositivos de tu red sin instalar nada en cada uno", "Muy ligero, corre perfectamente en una Raspberry Pi"],
+    cons: [
+      "Necesita ser tu servidor DNS primario para funcionar (requiere configurar tu router)",
+      "Sin DNS-over-HTTPS nativo (necesita un proxy adicional como cloudflared)",
+    ],
+    tags: ["docker-ready", "permissive-license"],
+  },
+  {
+    id: "adguard-home",
+    name: "AdGuard Home",
+    slug: "adguard-home",
+    replaces: ["NextDNS"],
+    category: "MonitoringLogs",
+    description:
+      "AdGuard Home bloquea anuncios y rastreadores a nivel de DNS para toda tu red con soporte nativo de DNS-over-HTTPS/TLS y controles parentales, como alternativa libre y auto-hospedada a NextDNS.",
+    shortDescription: "Bloqueo de anuncios a nivel de DNS con DoH/DoT nativo, alternativa a NextDNS.",
+    websiteUrl: "https://adguard.com/en/adguard-home/overview.html",
+    githubUrl: "https://github.com/AdguardTeam/AdGuardHome",
+    starsCount: 24000,
+    license: "GPL-3.0",
+    database: "None / File-based",
+    language: "Go",
+    platforms: ["Web"],
+    fossModel: "FOSS",
+    dockerCompose: `services:
+  adguardhome:
+    image: adguard/adguardhome:latest
+    restart: unless-stopped
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "3000:3000"
+      - "80:80"
+    volumes:
+      - adguard_work:/opt/adguardhome/work
+      - adguard_conf:/opt/adguardhome/conf
+volumes:
+  adguard_work:
+  adguard_conf:
+`,
+    affiliateLinks,
+    features: [
+      "Bloqueo de anuncios y rastreadores a nivel de DNS para toda la red",
+      "Soporta DNS-over-HTTPS y DNS-over-TLS de forma nativa",
+      "Controles parentales y perfiles de filtrado por cliente",
+    ],
+    techStack: ["Go"],
+    pros: ["DNS-over-HTTPS/TLS nativo sin necesitar un proxy adicional, a diferencia de Pi-hole", "Panel de estadísticas más moderno"],
+    cons: ["Comunidad y listas de bloqueo de terceros algo menos numerosas que las de Pi-hole"],
+    tags: ["docker-ready", "permissive-license"],
+  },
+  {
+    id: "joplin",
+    name: "Joplin",
+    slug: "joplin",
+    replaces: ["Evernote", "OneNote"],
+    category: "Productivity",
+    description:
+      "Joplin combina notas en Markdown con cifrado de extremo a extremo opcional y apps nativas en escritorio, móvil y web, sincronizadas contra tu propio servidor (Joplin Server), como alternativa libre a Evernote.",
+    shortDescription: "Notas cifradas multiplataforma, alternativa libre a Evernote.",
+    websiteUrl: "https://joplinapp.org",
+    githubUrl: "https://github.com/laurent22/joplin",
+    starsCount: 46000,
+    license: "AGPL-3.0",
+    database: "PostgreSQL / SQLite",
+    language: "TypeScript / Node.js",
+    platforms: ["Web", "Desktop (Mac/Win/Linux)", "Mobile (iOS/Android)"],
+    fossModel: "FOSS",
+    dockerCompose: `services:
+  joplin-server:
+    image: joplin/server:latest
+    restart: unless-stopped
+    ports:
+      - "22300:22300"
+    environment:
+      APP_BASE_URL: http://localhost:22300 # CHANGE THIS TO YOUR DOMAIN
+      DB_CLIENT: pg
+      POSTGRES_HOST: joplin-db
+      POSTGRES_DATABASE: joplin
+      POSTGRES_USER: joplin
+      POSTGRES_PASSWORD: change-me-postgres-password # REQUIRED: generate a random secret before first run
+    depends_on:
+      - joplin-db
+  joplin-db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: joplin
+      POSTGRES_PASSWORD: change-me-postgres-password # must match POSTGRES_PASSWORD above
+      POSTGRES_DB: joplin
+    volumes:
+      - joplin_pg_data:/var/lib/postgresql/data
+volumes:
+  joplin_pg_data:
+`,
+    affiliateLinks,
+    features: [
+      "Notas Markdown con cifrado de extremo a extremo opcional",
+      "Apps nativas para escritorio, móvil y web, todas sincronizadas",
+      "Plugins y temas de la comunidad",
+    ],
+    techStack: ["Node.js", "PostgreSQL", "React Native"],
+    pros: ["Cifrado de extremo a extremo real, no solo en tránsito", "Apps nativas maduras en las 3 plataformas principales"],
+    cons: [
+      "Montar tu propio servidor de sincronización (Joplin Server) es un paso extra frente a la nube de pago",
+      "La interfaz es más funcional que pulida visualmente",
+    ],
+    tags: ["docker-ready"],
+  },
+  {
+    id: "discourse",
+    name: "Discourse",
+    slug: "discourse",
+    replaces: ["Circle"],
+    category: "CRM",
+    description:
+      "Discourse es la plataforma de foros open source más usada en producción a gran escala, con moderación por confianza progresiva de la comunidad, notificaciones por email y resúmenes automáticos.",
+    shortDescription: "Software de foros y comunidad a gran escala, alternativa a Circle.",
+    websiteUrl: "https://www.discourse.org",
+    githubUrl: "https://github.com/discourse/discourse",
+    starsCount: 43000,
+    license: "GPL-2.0",
+    database: "PostgreSQL",
+    language: "Ruby on Rails",
+    platforms: ["Web", "Mobile (iOS/Android)"],
+    dockerCompose: `# Discourse se instala oficialmente con su propio script "launcher" y un
+# archivo app.yml (no un docker-compose.yml estándar):
+git clone https://github.com/discourse/discourse_docker.git /var/discourse
+cd /var/discourse
+./discourse-setup
+`,
+    affiliateLinks,
+    features: [
+      "Foros con hilos, categorías y etiquetas ilimitadas",
+      "Moderación con confianza progresiva de la comunidad",
+      "Notificaciones por email y resúmenes automáticos",
+    ],
+    techStack: ["Ruby on Rails", "PostgreSQL", "Redis", "Ember.js"],
+    pros: ["El software de foros open source más usado en producción a gran escala", "Excelente moderación automática anti-spam"],
+    cons: [
+      "Instalación menos directa que un docker-compose estándar (usa su propio instalador)",
+      "Necesita al menos 2 GB de RAM para funcionar con fluidez",
+    ],
+    tags: [],
+  },
+  {
+    id: "erpnext",
+    name: "ERPNext",
+    slug: "erpnext",
+    replaces: ["SAP Business One", "NetSuite"],
+    category: "CRM",
+    description:
+      "ERPNext (por Frappe) cubre contabilidad, inventario, fabricación, CRM y RR. HH. en una sola suite de gestión empresarial, con cobertura funcional comparable a un ERP comercial completo pero 100% open source.",
+    shortDescription: "Suite ERP completa (contabilidad, inventario, CRM), alternativa a SAP Business One.",
+    websiteUrl: "https://erpnext.com",
+    githubUrl: "https://github.com/frappe/erpnext",
+    starsCount: 24000,
+    license: "GPL-3.0",
+    database: "MariaDB",
+    language: "Python (Frappe Framework)",
+    platforms: ["Web", "Mobile (iOS/Android)"],
+    fossModel: "FOSS",
+    dockerCompose: `services:
+  erpnext:
+    image: frappe/erpnext:latest
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      DB_HOST: erpnext-db
+      DB_ROOT_PASSWORD: change-me-mariadb-root-password # REQUIRED: generate a random secret before first run
+      ADMIN_PASSWORD: change-me-admin-password # REQUIRED: generate a random secret before first run
+      SITE_NAME: localhost # CHANGE THIS TO YOUR DOMAIN
+    volumes:
+      - erpnext_sites:/home/frappe/frappe-bench/sites
+    depends_on:
+      - erpnext-db
+      - erpnext-redis
+  erpnext-db:
+    image: mariadb:10.6
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: change-me-mariadb-root-password # must match DB_ROOT_PASSWORD above
+    volumes:
+      - erpnext_db_data:/var/lib/mysql
+  erpnext-redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+volumes:
+  erpnext_sites:
+  erpnext_db_data:
+`,
+    affiliateLinks,
+    features: [
+      "Contabilidad, inventario, CRM y RR. HH. en una sola suite",
+      "Fabricación y control de calidad integrados",
+      "Portal de autoservicio para clientes y proveedores",
+    ],
+    techStack: ["Python", "Frappe Framework", "MariaDB"],
+    pros: ["Cobertura funcional comparable a un ERP comercial completo", "Respaldado por Frappe, con desarrollo activo desde hace más de una década"],
+    cons: ["Curva de aprendizaje pronunciada por la cantidad de módulos", "Requiere más recursos de servidor que un CRM simple"],
+    tags: ["docker-ready", "permissive-license"],
+  },
+  {
+    id: "dolibarr",
+    name: "Dolibarr",
+    slug: "dolibarr",
+    replaces: ["QuickBooks", "Sage"],
+    category: "CRM",
+    description:
+      "Dolibarr gestiona facturación, contabilidad, stock, CRM y proyectos en una herramienta mucho más ligera que un ERP completo, con módulos que activas solo cuando los necesitas, como alternativa a QuickBooks o Sage.",
+    shortDescription: "Facturación, contabilidad y stock modular, alternativa ligera a QuickBooks.",
+    websiteUrl: "https://www.dolibarr.org",
+    githubUrl: "https://github.com/Dolibarr/dolibarr",
+    starsCount: 6000,
+    license: "GPL-3.0",
+    database: "MySQL / MariaDB / PostgreSQL",
+    language: "PHP",
+    platforms: ["Web", "Mobile (iOS/Android)"],
+    fossModel: "OpenCore",
+    dockerCompose: `services:
+  dolibarr:
+    image: dolibarr/dolibarr:latest
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      DOLI_DB_HOST: dolibarr-db
+      DOLI_DB_NAME: dolibarr
+      DOLI_DB_USER: dolibarr
+      DOLI_DB_PASSWORD: change-me-mysql-password # REQUIRED: generate a random secret before first run
+      DOLI_URL_ROOT: http://localhost:8080 # CHANGE THIS TO YOUR DOMAIN
+      DOLI_ADMIN_LOGIN: admin
+      DOLI_ADMIN_PASSWORD: change-me-admin-password # REQUIRED: generate a random secret before first run
+    depends_on:
+      - dolibarr-db
+  dolibarr-db:
+    image: mariadb:10.6
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: dolibarr
+      MYSQL_USER: dolibarr
+      MYSQL_PASSWORD: change-me-mysql-password # must match DOLI_DB_PASSWORD above
+      MYSQL_ROOT_PASSWORD: change-me-mariadb-root-password # REQUIRED: generate a random secret before first run
+    volumes:
+      - dolibarr_db_data:/var/lib/mysql
+volumes:
+  dolibarr_db_data:
+`,
+    affiliateLinks,
+    features: [
+      "Facturación, contabilidad y gestión de stock integradas",
+      "CRM y gestión de proyectos incluidos",
+      "Módulos activables/desactivables según lo que necesites",
+    ],
+    techStack: ["PHP", "MySQL"],
+    pros: ["Muy ligero comparado con ERPNext, ideal para pymes pequeñas", "Interfaz más simple para quien no necesita todo un ERP completo"],
+    cons: ["El marketplace oficial de módulos incluye extensiones de pago", "La interfaz se siente menos moderna que alternativas más nuevas"],
+    tags: ["docker-ready"],
+  },
+  {
+    id: "dokploy",
+    name: "Dokploy",
+    slug: "dokploy",
+    replaces: ["Heroku", "Vercel"],
+    category: "CloudPaas",
+    description:
+      "Dokploy despliega apps, bases de datos y servicios Docker con un flujo tipo Heroku sobre Docker Swarm, con integración nativa de Traefik para dominios y HTTPS automático, como alternativa auto-hospedada a Heroku o Vercel.",
+    shortDescription: "PaaS auto-hospedado tipo Heroku sobre Docker Swarm, alternativa a Heroku.",
+    websiteUrl: "https://dokploy.com",
+    githubUrl: "https://github.com/Dokploy/dokploy",
+    starsCount: 19000,
+    license: "Apache-2.0",
+    database: "PostgreSQL",
+    language: "TypeScript (Node.js)",
+    platforms: ["Web"],
+    fossModel: "OpenCore",
+    dockerCompose: `# Dokploy se instala con su propio script oficial, que prepara Docker Swarm
+# y despliega la plataforma completa (no un docker-compose.yml suelto):
+curl -sSL https://dokploy.com/install.sh | sh
+`,
+    affiliateLinks,
+    features: [
+      "Despliega apps, bases de datos y servicios Docker con un flujo tipo Heroku",
+      "Integración nativa con Traefik para dominios y HTTPS automático",
+      "Plantillas de un clic para decenas de apps open source",
+    ],
+    techStack: ["Node.js", "PostgreSQL", "Docker Swarm", "Traefik"],
+    pros: ["Onboarding mucho más simple que montar tu propio Kubernetes", "Desarrollo muy activo y comunidad creciendo rápido"],
+    cons: [
+      "Dokploy Cloud (versión gestionada) es de pago; el self-hosted requiere tu propio servidor",
+      "Proyecto más joven que Coolify o CapRover, con menos años en producción",
+    ],
+    tags: ["docker-ready", "permissive-license"],
+  },
 ];
 
 export const tools: OpenSourceTool[] = allTools.filter(isPublished);
 
 export function getToolBySlug(slug: string): OpenSourceTool | undefined {
   return tools.find((t) => t.slug === slug);
+}
+
+/** Busca por `id` (estable, no cambia aunque el `slug` de la URL sí lo haga) — úsalo para referencias internas como los Curated Stacks. */
+export function getToolById(id: string): OpenSourceTool | undefined {
+  return tools.find((t) => t.id === id);
 }
 
 export function getToolsByCategory(category: string) {

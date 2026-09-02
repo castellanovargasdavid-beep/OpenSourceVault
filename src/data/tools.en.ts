@@ -1223,4 +1223,124 @@ export const toolsEn: Record<string, ToolTranslation> = {
     pros: ["The most mature and production-proven tool in this whole batch"],
     cons: ["MySQL as a dependency adds some weight compared to SQLite-based options"],
   },
+  "invoice-ninja": {
+    description:
+      "Invoice Ninja manages invoices, quotes and recurring expenses with a built-in client portal for online payments, as a self-hostable alternative to FreshBooks or Bill.com for freelancers and small agencies.",
+    shortDescription: "Invoicing and quotes with a client portal, an alternative to FreshBooks.",
+    features: ["Invoices, quotes and recurring expenses", "Client portal for online payments", "Multiple payment gateways (Stripe, PayPal, etc.)"],
+    pros: ["Very complete for freelancers and small agencies", "Client portal included out of the box"],
+    cons: ["v5 ships under the Elastic License 2.0, not a classic OSI license", "The admin interface can feel overwhelming at first"],
+  },
+  activepieces: {
+    description:
+      "Activepieces is a workflow automation platform with 200+ integrations and a visual no-code builder, built as a modern open source alternative to Zapier or Make.",
+    shortDescription: "Workflow automation with 200+ integrations, an alternative to Zapier.",
+    features: ["200+ ready-to-use integrations (pieces)", "Visual no-code flow builder", "SDK to build your own pieces/integrations"],
+    pros: ["Noticeably more modern interface than n8n's", "MIT-licensed core"],
+    cons: ["Some team features (SSO, analytics) are Enterprise-only paid add-ons", "Integration ecosystem still smaller than Zapier's"],
+  },
+  shlink: {
+    description:
+      "Shlink is a URL shortener server with a full REST API and per-link/per-domain click analytics, actively maintained as an unrestricted open source alternative to Bitly.",
+    shortDescription: "URL shortener server with API and analytics, an alternative to Bitly.",
+    features: ["Full REST API for your own integrations", "Click analytics per link and per domain", "Supports multiple custom domains on one instance"],
+    pros: ["Unrestricted MIT license", "Very lightweight, maintained by a highly active developer"],
+    cons: ["No official web UI bundled (uses a separate client app, Shlink Web Client)", "Requires setting up the web client separately for a visual panel"],
+  },
+  jellyfin: {
+    description:
+      "Jellyfin streams your own movie, TV, music and photo collection to any device, with hardware transcoding and zero telemetry, as a fully free alternative to Plex.",
+    shortDescription: "Personal media streaming server, a free alternative to Plex.",
+    features: ["Streams video, music and photos to any device", "Hardware (GPU) transcoding", "Native TV, mobile and browser apps — no account or telemetry"],
+    pros: ["100% free and telemetry-free, unlike Plex", "Very active community, a direct fork of Emby after it went closed-source"],
+    cons: ["Hardware transcoding setup requires manual steps depending on your GPU", "No official Smart TV app on some platforms (uses third-party apps)"],
+  },
+  linkwarden: {
+    description:
+      "Linkwarden saves links along with an archived copy of each page (screenshots and PDF), organized into collaborative collections, as a self-hostable alternative to Pocket or Raindrop.io.",
+    shortDescription: "Bookmark manager with page archiving, an alternative to Raindrop.io.",
+    features: ["Saves links plus screenshots and PDF archives of each page", "Organization via collaborative collections and tags", "Browser extension and mobile apps"],
+    pros: ["Archives a full copy of the page, not just the link", "Collections shared with other users"],
+    cons: ["AGPL-3.0 license: check the implications if you offer it as a service to others", "Full page archiving uses significant storage"],
+  },
+  wallabag: {
+    description:
+      "wallabag extracts and saves articles to read later offline, free of ads and distractions, with text-to-speech and an annotatable reading mode, as a mature and free alternative to Pocket.",
+    shortDescription: "Save articles to read later offline, an alternative to Pocket.",
+    features: ["Save articles to read later, offline", "Extracts clean content, no ads or distractions", "Text-to-speech and annotatable reading mode"],
+    pros: ["Very permissive MIT license", "Mature project with over 10 years of active development"],
+    cons: ["Interface feels somewhat dated compared to newer alternatives", "Media archiving is more limited than Linkwarden's"],
+  },
+  headscale: {
+    description:
+      "Headscale is an open source implementation of Tailscale's coordination server: build your own encrypted WireGuard mesh network using the official clients, without relying on the commercial control plane.",
+    shortDescription: "Self-hosted coordination server compatible with Tailscale.",
+    features: ["Compatible with official Tailscale clients on every device", "Encrypted WireGuard mesh network under the hood", "Supports ACLs, exit nodes and subnets just like the commercial service"],
+    pros: ["Works with the official Tailscale app on every device", "Zero dependency on Tailscale Inc.'s commercial control plane"],
+    cons: ["Requires editing a YAML config file, not everything is environment-variable driven", "Some new official client features take time to land in Headscale"],
+  },
+  "wg-easy": {
+    description:
+      "WireGuard Easy puts a web panel on top of a full WireGuard server so you can create and manage VPN clients with QR codes in minutes, no command line needed, as a free alternative to a commercial team VPN.",
+    shortDescription: "Web panel for your own WireGuard server, no command line needed.",
+    features: ["Web panel to create and manage WireGuard clients with QR codes", "Real-time traffic stats per device", "A single container, no external database"],
+    pros: ["Sets up a full WireGuard server in minutes", "Much simpler interface than configuring WireGuard by hand"],
+    cons: ["Built for a single VPN server, not a multi-node mesh network like Headscale", "Requires opening a UDP port on your firewall/router"],
+  },
+  pihole: {
+    description:
+      "Pi-hole blocks ads and trackers network-wide for every device by acting as your DNS server, with a real-time query statistics dashboard, as a free, self-hosted alternative to NextDNS.",
+    shortDescription: "Network-wide DNS ad-blocking, an alternative to NextDNS.",
+    features: ["Blocks ads and trackers network-wide for every device", "Web dashboard with real-time DNS query stats", "Updatable, customizable blocklists"],
+    pros: ["Protects every device on your network without installing anything on each one", "Very lightweight, runs great on a Raspberry Pi"],
+    cons: ["Needs to be your primary DNS server to work (requires router configuration)", "No native DNS-over-HTTPS (needs an extra proxy like cloudflared)"],
+  },
+  "adguard-home": {
+    description:
+      "AdGuard Home blocks ads and trackers network-wide at the DNS level with native DNS-over-HTTPS/TLS support and parental controls, as a free, self-hosted alternative to NextDNS.",
+    shortDescription: "Network-wide DNS ad-blocking with native DoH/DoT, an alternative to NextDNS.",
+    features: ["Network-wide ad and tracker blocking at the DNS level", "Native DNS-over-HTTPS and DNS-over-TLS support", "Parental controls and per-client filtering profiles"],
+    pros: ["Native DNS-over-HTTPS/TLS without needing an extra proxy, unlike Pi-hole", "More modern statistics dashboard"],
+    cons: ["Smaller third-party blocklist community than Pi-hole's"],
+  },
+  joplin: {
+    description:
+      "Joplin combines Markdown notes with optional end-to-end encryption and native desktop, mobile and web apps, synced against your own server (Joplin Server), as a free alternative to Evernote.",
+    shortDescription: "Cross-platform encrypted notes, a free alternative to Evernote.",
+    features: ["Markdown notes with optional end-to-end encryption", "Native desktop, mobile and web apps, all synced", "Community plugins and themes"],
+    pros: ["Real end-to-end encryption, not just in transit", "Mature native apps on all 3 major platforms"],
+    cons: ["Running your own sync server (Joplin Server) is an extra step compared to the paid cloud", "Interface is more functional than visually polished"],
+  },
+  discourse: {
+    description:
+      "Discourse is the most widely used open source forum software in large-scale production, with community trust-level moderation, email notifications and automatic digests.",
+    shortDescription: "Large-scale forum and community software, an alternative to Circle.",
+    features: ["Forums with threads, categories and unlimited tags", "Moderation via community trust levels", "Email notifications and automatic digests"],
+    pros: ["The most widely used open source forum software in large-scale production", "Excellent automatic anti-spam moderation"],
+    cons: ["Less straightforward install than a standard docker-compose (uses its own installer)", "Needs at least 2 GB of RAM to run smoothly"],
+  },
+  erpnext: {
+    description:
+      "ERPNext (by Frappe) covers accounting, inventory, manufacturing, CRM and HR in a single business management suite, with functional coverage comparable to a full commercial ERP but 100% open source.",
+    shortDescription: "Full ERP suite (accounting, inventory, CRM), an alternative to SAP Business One.",
+    features: ["Accounting, inventory, CRM and HR in a single suite", "Built-in manufacturing and quality control", "Self-service portal for customers and vendors"],
+    pros: ["Functional coverage comparable to a full commercial ERP", "Backed by Frappe, with over a decade of active development"],
+    cons: ["Steep learning curve given the number of modules", "Needs more server resources than a simple CRM"],
+  },
+  dolibarr: {
+    description:
+      "Dolibarr manages invoicing, accounting, stock, CRM and projects in a tool much lighter than a full ERP, with modules you enable only when you need them, as an alternative to QuickBooks or Sage.",
+    shortDescription: "Modular invoicing, accounting and stock, a lightweight alternative to QuickBooks.",
+    features: ["Integrated invoicing, accounting and stock management", "CRM and project management included", "Modules you can enable/disable as needed"],
+    pros: ["Much lighter than ERPNext, ideal for small businesses", "Simpler interface for anyone who doesn't need a full ERP"],
+    cons: ["The official module marketplace includes paid extensions", "Interface feels less modern than newer alternatives"],
+  },
+  dokploy: {
+    description:
+      "Dokploy deploys apps, databases and Docker services with a Heroku-like workflow on top of Docker Swarm, with native Traefik integration for domains and automatic HTTPS, as a self-hosted alternative to Heroku or Vercel.",
+    shortDescription: "Self-hosted Heroku-like PaaS on Docker Swarm, an alternative to Heroku.",
+    features: ["Deploy apps, databases and Docker services with a Heroku-like workflow", "Native Traefik integration for domains and automatic HTTPS", "One-click templates for dozens of open source apps"],
+    pros: ["Much simpler onboarding than running your own Kubernetes", "Very active development and fast-growing community"],
+    cons: ["Dokploy Cloud (the managed version) is paid; self-hosting requires your own server", "Younger project than Coolify or CapRover, with less time in production"],
+  },
 };

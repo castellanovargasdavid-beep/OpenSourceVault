@@ -91,6 +91,36 @@ export interface OpenSourceTool {
   publishDate?: string;
 }
 
+export type StackIcon =
+  | "rocket"
+  | "trending-up"
+  | "users"
+  | "hard-drive"
+  | "shield-check"
+  | "terminal"
+  | "headset"
+  | "shopping-cart";
+
+/**
+ * Pack temático de herramientas ya existentes en el catálogo, agrupadas por
+ * caso de uso (ej. "el stack de un solopreneur para lanzar su web"). Ver
+ * src/data/stacks.ts.
+ */
+export interface Stack {
+  slug: string;
+  title: string;
+  description: string;
+  /** Frase-gancho del ahorro frente al equivalente SaaS, ej. "Ahorra más de $120/mes...". */
+  estimatedSavings: string;
+  /** Etiqueta general del pack, ej. "Marketing", "DevOps", "Productividad". */
+  categoryTag: string;
+  /** ids de OpenSourceTool que componen el pack (deben existir y estar publicados). */
+  tools: string[];
+  icon: StackIcon;
+  /** Clases Tailwind "from-x to-y" para el acento visual del pack. */
+  gradient: string;
+}
+
 /** true si la ficha debe tener página propia, entrar en el sitemap y ser enlazable. */
 export function isPublished(tool: Pick<OpenSourceTool, "status" | "publishDate">): boolean {
   if (!tool.status || tool.status === "published") return true;

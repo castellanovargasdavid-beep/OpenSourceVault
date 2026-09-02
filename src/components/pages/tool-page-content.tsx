@@ -2,6 +2,7 @@ import Link from "next/link";
 import { GitFork, ExternalLink, Check, X, ArrowRight, PlayCircle, Database, Code2, MonitorSmartphone, TriangleAlert } from "lucide-react";
 import { getLocalizedTool } from "@/data/tools";
 import { getCategoryMetaLocalized, getCategoryHref } from "@/data/categories";
+import { getStacksForTool, getLocalizedStack } from "@/data/stacks";
 import { getAlternativeHref } from "@/lib/alternatives";
 import { getMigrationGuideHref, getDeployGuideHref, getCompareHref } from "@/lib/routes";
 import { Badge } from "@/components/ui/badge";
@@ -33,6 +34,7 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
   const comparisons: ToolComparison[] = getComparisonsForTool(tool.slug).slice(0, 5);
   const migrationFromSaas = tool.replaces[0];
   const migrationGuideHref = getMigrationGuideHref(slugify(migrationFromSaas), tool.slug, locale);
+  const featuredStacks = getStacksForTool(tool.id).map((stack) => getLocalizedStack(stack, locale));
   const liveStats = await getGithubStats(tool.githubUrl);
   const ogImageUrl = await getOgImageUrl(tool.websiteUrl);
 
@@ -293,6 +295,24 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
         <aside className="space-y-6 lg:sticky lg:top-24 lg:self-start">
           <RepoHealthBadge liveStats={liveStats} estimatedStars={tool.starsCount} license={tool.license} locale={locale} />
           <AffiliateHostingWidget tool={tool} locale={locale} />
+
+          {featuredStacks.length > 0 && (
+            <div className="rounded-xl border border-slate-200 p-6">
+              <p className="mb-3 text-sm font-semibold text-slate-900">{t.toolPage.featuredInTitle}</p>
+              <div className="flex flex-col gap-2">
+                {featuredStacks.map((stack) => (
+                  <Link
+                    key={stack.slug}
+                    href={localeHref(`/stacks/${stack.slug}`, locale)}
+                    className={cn(buttonVariants({ variant: "outline", size: "sm" }), "justify-between")}
+                  >
+                    {t.toolPage.featuredInBadge(stack.title)}
+                    <ExternalLink size={14} />
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
 
           <div className={cn("rounded-xl border p-6", palette.soft, palette.border)}>
             <p className="mb-3 text-sm font-semibold text-slate-900">{t.toolPage.otherAlternatives}</p>

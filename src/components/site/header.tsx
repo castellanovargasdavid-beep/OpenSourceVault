@@ -12,6 +12,7 @@ export function Header({ locale = "es" }: { locale?: Locale }) {
   const t = getDictionary(locale);
   const navLinks = [
     { href: localeHref("/#categorias", locale), label: t.header.categorias },
+    { href: localeHref("/stacks", locale), label: t.header.stacks },
     { href: getSavingsCalculatorHref(locale), label: t.header.calculadora },
     { href: getDeployGuideHref(locale), label: t.header.guiaDespliegue },
     { href: localeHref("/hosting-deals", locale), label: t.header.hosting },
@@ -50,7 +51,7 @@ export function Header({ locale = "es" }: { locale?: Locale }) {
           </a>
           <Link
             href={localeHref("/hosting-deals", locale)}
-            className="hidden h-9 items-center rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 px-4 text-sm font-medium text-white shadow-sm transition-opacity hover:opacity-90 sm:inline-flex"
+            className="hidden h-9 items-center whitespace-nowrap rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 px-4 text-sm font-medium text-white shadow-sm transition-opacity hover:opacity-90 xl:inline-flex"
           >
             {t.header.verOfertas}
           </Link>

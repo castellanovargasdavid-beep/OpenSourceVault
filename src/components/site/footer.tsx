@@ -37,6 +37,11 @@ export function Footer({ locale = "es" }: { locale?: Locale }) {
           <p className="text-sm font-semibold text-slate-900">{t.footer.recursos}</p>
           <ul className="mt-3 space-y-2">
             <li>
+              <Link href={localeHref("/stacks", locale)} className="text-sm text-slate-600 hover:text-emerald-700">
+                {t.footer.stacks}
+              </Link>
+            </li>
+            <li>
               <Link href={getSavingsCalculatorHref(locale)} className="text-sm text-slate-600 hover:text-emerald-700">
                 {t.footer.calculadora}
               </Link>

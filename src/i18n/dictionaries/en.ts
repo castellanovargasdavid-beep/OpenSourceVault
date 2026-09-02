@@ -5,6 +5,7 @@ const en: Dictionary = {
     "Discover open source, self-hostable alternatives to the most popular SaaS software. Compare licenses, check the docker-compose and deploy in minutes.",
   header: {
     categorias: "Categories",
+    stacks: "Stacks",
     calculadora: "Calculator",
     guiaDespliegue: "Docker Guide",
     hosting: "Hosting",
@@ -14,6 +15,7 @@ const en: Dictionary = {
   footer: {
     categorias: "Categories",
     recursos: "Resources",
+    stacks: "Stacks",
     calculadora: "Savings calculator",
     guiaDespliegue: "Deployment guide",
     hostingDescuentos: "Hosting & Deals",
@@ -179,6 +181,8 @@ const en: Dictionary = {
     repoHealthLastCommit: (date: string) => `Last commit ${date}`,
     replacesBadge: (saas: string) => `Alternative to ${saas}`,
     replacesAriaLabel: "SaaS tools this replaces",
+    featuredInTitle: "Featured in these stacks",
+    featuredInBadge: (stackTitle: string) => `Featured in ${stackTitle}`,
     underTheHoodTitle: "Under the hood",
     underTheHoodDatabase: "Database",
     underTheHoodLanguage: "Language",
@@ -220,6 +224,27 @@ const en: Dictionary = {
   categoryPage: {
     metaTitle: (label: string) => `Open Source ${label} Alternatives`,
     emptyState: "We don't have any tools published in this category yet.",
+  },
+  stacksPage: {
+    metaTitle: "Curated Stacks: open source tool packs by use case",
+    metaDescription:
+      "Complete packs of open source, self-hostable tools grouped by use case: web launch, marketing, DevOps, e-commerce, privacy and more.",
+    badge: "Curated Stacks",
+    title: "Complete tool packs by use case",
+    subtitle:
+      "Stop assembling your stack one tool at a time. Each pack groups the pieces that already work well together for a specific use case, with license, docker-compose and a deployment guide for every one.",
+    toolsInPack: (n: number) => `${n} ${n === 1 ? "tool" : "tools"}`,
+    exploreStack: "Explore Stack",
+  },
+  stackDetailPage: {
+    metaTitle: (title: string) => `${title} — AltFreeStack Curated Stack`,
+    metaDescription: (title: string, count: number) =>
+      `${title}: ${count} open source, self-hostable tools that already work well together, with license, docker-compose and a deployment guide for every one.`,
+    breadcrumb: "Stacks",
+    savingsLabel: "Estimated savings",
+    toolsTitle: "Tools in this pack",
+    viewFullProfile: (name: string) => `View ${name}'s full profile`,
+    backToStacks: "← View all stacks",
   },
   comparisonPage: {
     metaTitle: (a: string, b: string, year: number) => `${a} vs ${b}: which one to choose in ${year}?`,

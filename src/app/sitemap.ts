@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { tools } from "@/data/tools";
+import { stacks } from "@/data/stacks";
 import { categories } from "@/data/categories";
 import { categoriesEn } from "@/data/categories.en";
 import { getAllSaasSlugs } from "@/lib/alternatives";
@@ -41,6 +42,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const staticPaths: [string, MetadataRoute.Sitemap[number]["changeFrequency"], number][] = [
     ["/", "weekly", 1],
+    ["/stacks", "weekly", 0.8],
     ["/hosting-deals", "monthly", 0.7],
     ["/promote", "monthly", 0.5],
     ["/privacy", "yearly", 0.2],
@@ -54,7 +56,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     0.8,
   ]);
 
-  const allPaths = [...staticPaths, ...toolPaths];
+  const stackPaths: [string, MetadataRoute.Sitemap[number]["changeFrequency"], number][] = stacks.map((stack) => [
+    `/stacks/${stack.slug}`,
+    "weekly",
+    0.7,
+  ]);
+
+  const allPaths = [...staticPaths, ...toolPaths, ...stackPaths];
 
   // Categorías, páginas "alternativas a X", comparativas, la guía de
   // despliegue, las guías de migración y la calculadora de ahorro: la URL en

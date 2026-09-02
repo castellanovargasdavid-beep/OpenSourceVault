@@ -3,6 +3,7 @@ const es = {
     "Descubre alternativas de código abierto y auto-hospedables al software SaaS más popular. Compara licencias, mira el docker-compose y despliega en minutos.",
   header: {
     categorias: "Categorías",
+    stacks: "Stacks",
     calculadora: "Calculadora",
     guiaDespliegue: "Guía Docker",
     hosting: "Hosting",
@@ -12,6 +13,7 @@ const es = {
   footer: {
     categorias: "Categorías",
     recursos: "Recursos",
+    stacks: "Stacks",
     calculadora: "Calculadora de ahorro",
     guiaDespliegue: "Guía de despliegue",
     hostingDescuentos: "Hosting & Descuentos",
@@ -177,6 +179,8 @@ const es = {
     repoHealthLastCommit: (date: string) => `Último commit ${date}`,
     replacesBadge: (saas: string) => `Alternativa a ${saas}`,
     replacesAriaLabel: "Herramientas SaaS que sustituye",
+    featuredInTitle: "Incluida en estos stacks",
+    featuredInBadge: (stackTitle: string) => `Incluida en ${stackTitle}`,
     underTheHoodTitle: "Bajo el capó",
     underTheHoodDatabase: "Base de datos",
     underTheHoodLanguage: "Lenguaje",
@@ -218,6 +222,27 @@ const es = {
   categoryPage: {
     metaTitle: (label: string) => `Alternativas Open Source de ${label}`,
     emptyState: "Todavía no tenemos herramientas publicadas en esta categoría.",
+  },
+  stacksPage: {
+    metaTitle: "Curated Stacks: packs de herramientas open source por caso de uso",
+    metaDescription:
+      "Packs completos de herramientas open source y auto-hospedables agrupadas por caso de uso: lanzamiento web, marketing, DevOps, e-commerce, privacidad y más.",
+    badge: "Curated Stacks",
+    title: "Packs completos de herramientas por caso de uso",
+    subtitle:
+      "Deja de armar tu stack herramienta por herramienta. Cada pack agrupa las piezas que ya funcionan bien juntas para un caso de uso concreto, con licencia, docker-compose y guía de despliegue para cada una.",
+    toolsInPack: (n: number): string => `${n} ${n === 1 ? "herramienta" : "herramientas"}`,
+    exploreStack: "Explorar stack",
+  },
+  stackDetailPage: {
+    metaTitle: (title: string) => `${title} — Curated Stack de AltFreeStack`,
+    metaDescription: (title: string, count: number) =>
+      `${title}: ${count} herramientas open source auto-hospedables que ya funcionan bien juntas, con licencia, docker-compose y guía de despliegue para cada una.`,
+    breadcrumb: "Stacks",
+    savingsLabel: "Ahorro estimado",
+    toolsTitle: "Herramientas de este pack",
+    viewFullProfile: (name: string) => `Ver ficha completa de ${name}`,
+    backToStacks: "← Ver todos los stacks",
   },
   comparisonPage: {
     metaTitle: (a: string, b: string, year: number) => `${a} vs ${b}: ¿cuál elegir en ${year}?`,
