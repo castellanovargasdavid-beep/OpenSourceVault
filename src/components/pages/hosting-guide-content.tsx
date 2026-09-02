@@ -12,6 +12,11 @@ import {
   Clock,
   ArrowRight,
   ArrowLeft,
+  KeyRound,
+  FolderPlus,
+  Power,
+  AlertTriangle,
+  MousePointerClick,
 } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -39,6 +44,13 @@ const InlineCode = ({ children }: { children: React.ReactNode }) => (
   <code className="rounded bg-slate-100 px-1 py-0.5 text-xs">{children}</code>
 );
 
+const Callout = ({ children }: { children: React.ReactNode }) => (
+  <div className="mt-2 flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2.5 text-xs text-amber-800">
+    <AlertTriangle size={14} className="mt-0.5 shrink-0" />
+    <span>{children}</span>
+  </div>
+);
+
 // ---------------------------------------------------------------------------
 // DigitalOcean
 // ---------------------------------------------------------------------------
@@ -51,12 +63,16 @@ const digitaloceanEs: GuideStep[] = [
     body: (
       <>
         <p>
-          Entra en digitalocean.com y pulsa <strong>Sign Up</strong> arriba a la derecha. Puedes registrarte con tu email o con tu cuenta
-          de Google/GitHub — es más rápido. Confirma tu email desde el enlace que te llega.
+          Antes de empezar necesitas: una cuenta en DigitalOcean (suelen ofrecer créditos gratuitos de bienvenida para empezar), tu
+          ordenador (Windows, Mac o Linux) y la ficha de la herramienta que quieras instalar abierta en otra pestaña de tu navegador
+          en AltFreeStack.
         </p>
         <p className="mt-2">
-          Te pedirá un método de pago (tarjeta o PayPal) antes de dejarte crear servidores, pero no se te cobra nada hasta que uses
-          recursos — y con el enlace de arriba obtienes $200 de crédito gratis durante 60 días.
+          Entra en tu navegador a digitalocean.com. Arriba a la derecha, haz clic en <strong>Sign Up</strong>. Elige registrarte con
+          Google, GitHub o correo electrónico y confirma el enlace de verificación en tu bandeja de entrada.
+        </p>
+        <p className="mt-2">
+          Añade un método de pago o PayPal — no te cobran al instante, solo facturan por las horas que el servidor esté encendido.
         </p>
       </>
     ),
@@ -64,155 +80,181 @@ const digitaloceanEs: GuideStep[] = [
   {
     icon: Rocket,
     title: "2. Crea tu Droplet (servidor)",
-    time: "~5 min",
+    time: "~4 min",
     body: (
       <>
         <p>
-          En el panel, pulsa el botón verde <strong>Create</strong> (arriba a la derecha) → <strong>Droplets</strong>. Ahí eliges:
+          En el panel principal de DigitalOcean, haz clic arriba a la derecha en el botón verde <strong>Create</strong> y selecciona{" "}
+          <strong>Droplets</strong>.
         </p>
         <ul className="mt-2 list-disc space-y-1.5 pl-5">
           <li>
-            <strong>Imagen:</strong> el camino más rápido es la pestaña <strong>Marketplace</strong> → busca &quot;Docker&quot; → elige
-            la imagen oficial <em>Docker on Ubuntu</em> (trae Docker y Compose ya instalados, te saltas el paso 4 de esta guía). Si
-            prefieres instalarlo tú mismo, elige la pestaña <strong>OS</strong> → <em>Ubuntu 24.04 (LTS) x64</em>.
+            <strong>Choose Region:</strong> elige el centro de datos más cercano a ti o a tus usuarios (ej. Frankfurt, Ámsterdam,
+            Nueva York).
           </li>
           <li>
-            <strong>Plan:</strong> &quot;Basic&quot; → &quot;Regular&quot; con 1 vCPU / 1GB RAM (el más barato) es suficiente para la
-            mayoría de herramientas del catálogo — revisa la ficha técnica de la tuya si necesita más.
+            <strong>Choose an Image:</strong> haz clic en la pestaña <strong>Marketplace</strong> (esto es dentro de DigitalOcean, no
+            toques AltFreeStack aún). En la barra de búsqueda escribe <InlineCode>Docker</InlineCode>. Verás una tarjeta que dice{" "}
+            <em>Docker on Ubuntu</em> — haz clic sobre ella para que quede marcada con un recuadro azul (así el servidor ya viene con
+            Docker de fábrica).
           </li>
           <li>
-            <strong>Authentication:</strong> elige <strong>Password</strong> si es tu primera vez (más simple) o{" "}
-            <strong>SSH Key</strong> si ya tienes una (más seguro).
+            <strong>Droplet Type / CPU:</strong> elige la pestaña <strong>Shared CPU</strong> y la opción <strong>Basic</strong>. En
+            la lista de precios, pulsa en la flecha izquierda o en <strong>Regular</strong> hasta ver la opción económica: $6/mes (1
+            GB RAM / 1 vCPU / 25 GB SSD).
+          </li>
+          <li>
+            <strong>Authentication Method:</strong> selecciona la casilla <strong>Password</strong>. Escribe una contraseña fuerte
+            para el usuario root (mayúsculas, números y al menos 8 caracteres) y anótala en un bloc de notas — la necesitarás en el
+            paso 4.
           </li>
         </ul>
         <p className="mt-2">
-          Pulsa <strong>Create Droplet</strong> al final y espera ~1 minuto. Copia la <strong>IP pública</strong> que aparece en el
-          panel — la necesitas en el siguiente paso.
+          Baja al final de la página, ignora las opciones adicionales por ahora y haz clic en el botón verde grande{" "}
+          <strong>Create Droplet</strong>. Espera 1 minuto a que la barra de progreso se complete y aparezca la dirección IP junto al
+          nombre de tu servidor.
+        </p>
+      </>
+    ),
+  },
+  {
+    icon: KeyRound,
+    title: "3. Copia la IP de tu Droplet",
+    time: "~1 min",
+    body: (
+      <>
+        <p>
+          En el listado de Droplets verás una columna que dice <strong>IPv4</strong>. Pon el ratón sobre los 4 números separados por
+          puntos (ej. <InlineCode>165.22.10.45</InlineCode>) y haz clic en <strong>Copy</strong>. Esta es la IP que usarás en toda la
+          guía.
         </p>
       </>
     ),
   },
   {
     icon: Terminal,
-    title: "3. Entra por consola (SSH) y aprende lo básico",
-    time: "~5 min",
+    title: "4. Conéctate desde tu ordenador",
+    time: "~3 min",
     body: (
       <>
-        <p>Desde la terminal de tu ordenador (macOS/Linux: Terminal; Windows: PowerShell o Windows Terminal), conéctate:</p>
-        <CodeBlock>ssh root@TU_IP_DEL_SERVIDOR</CodeBlock>
-        <p className="mt-2">
-          La primera vez te preguntará si confías en el servidor — escribe <InlineCode>yes</InlineCode>. Si elegiste
-          &quot;Password&quot;, te la pide (DigitalOcean te la manda por email si no la viste al crear el Droplet).
-        </p>
-        <p className="mt-3">Ya dentro, estos son los únicos comandos que necesitas para moverte:</p>
+        <p>Abre la consola en tu equipo:</p>
         <ul className="mt-2 list-disc space-y-1 pl-5">
           <li>
-            <InlineCode>pwd</InlineCode> — en qué carpeta estás ahora mismo.
+            <strong>En Windows:</strong> pulsa la tecla Windows, escribe <InlineCode>cmd</InlineCode> o &quot;Terminal&quot; y
+            presiona Enter.
           </li>
           <li>
-            <InlineCode>ls</InlineCode> — qué archivos y carpetas hay aquí.
-          </li>
-          <li>
-            <InlineCode>mkdir mi-app</InlineCode> — crea una carpeta nueva llamada &quot;mi-app&quot;.
-          </li>
-          <li>
-            <InlineCode>cd mi-app</InlineCode> — entra en esa carpeta (<InlineCode>cd ..</InlineCode> para salir).
+            <strong>En Mac:</strong> pulsa Comando + Espacio, escribe &quot;Terminal&quot; y presiona Enter.
           </li>
         </ul>
+        <p className="mt-3">Escribe el comando sustituyendo TU_IP por la IP que copiaste:</p>
+        <CodeBlock>ssh root@TU_IP</CodeBlock>
+        <p className="mt-2">
+          (Ejemplo real: <InlineCode>ssh root@165.22.10.45</InlineCode>) y pulsa Enter. Si te aparece una pregunta en inglés con
+          (yes/no), escribe <InlineCode>yes</InlineCode> y presiona Enter. Te pedirá <InlineCode>password:</InlineCode> — pega la
+          contraseña que definiste en el paso 2 (en Windows se pega con clic derecho; en Mac con Comando + V) y pulsa Enter.
+        </p>
+        <Callout>
+          Recuerda que la consola no moverá el cursor ni mostrará asteriscos al pegar la contraseña. Parece que no escribe, pero sí
+          lo hace — pégala una sola vez y dale a Enter.
+        </Callout>
+        <p className="mt-2">
+          Al ver el mensaje <InlineCode>root@ubuntu-docker:~#</InlineCode>, ya estás conectado a DigitalOcean.
+        </p>
       </>
     ),
   },
   {
-    icon: Package,
-    title: "4. Instala Docker (solo si no usaste la imagen del Marketplace)",
-    time: "~2 min",
+    icon: FolderPlus,
+    title: "5. Crea la carpeta de trabajo",
+    time: "~1 min",
     body: (
       <>
-        <p>Si elegiste Ubuntu normal en el paso 2, instala Docker con el script oficial:</p>
-        <CodeBlock>curl -fsSL https://get.docker.com | sh</CodeBlock>
-        <p className="mt-2">
-          Comprueba que se instaló bien: <InlineCode>docker --version</InlineCode>. Si elegiste la imagen &quot;Docker on
-          Ubuntu&quot; del Marketplace, sáltate este paso — ya lo tienes.
-        </p>
+        <p>En esa misma ventana de consola, pega esto y pulsa Enter:</p>
+        <CodeBlock>mkdir app && cd app</CodeBlock>
+        <p className="mt-2">Esto crea la carpeta app y te coloca dentro de ella.</p>
       </>
     ),
   },
   {
     icon: FileCode,
-    title: "5. Copia el docker-compose.yml de tu herramienta",
+    title: "6. Crea el archivo y pega el código de AltFreeStack",
     time: "~3 min",
     body: (
       <>
-        <p>
-          En la ficha de la herramienta que quieras desplegar en AltFreeStack, pulsa <strong>Copiar</strong> en el bloque de código.
-          De vuelta en tu terminal SSH:
-        </p>
-        <CodeBlock>{`mkdir mi-app && cd mi-app
-nano docker-compose.yml
-# pega el contenido con clic-derecho o Cmd/Ctrl+V, guarda con Ctrl+O y Enter, sal con Ctrl+X`}</CodeBlock>
+        <p>En la consola, copia, pega y pulsa Enter:</p>
+        <CodeBlock>nano docker-compose.yml</CodeBlock>
         <p className="mt-2">
-          Antes de arrancar, sustituye cada valor <InlineCode>change-me...</InlineCode> por una contraseña real — puedes generarlas
-          con el botón &quot;Generar secretos seguros&quot; de la ficha de la herramienta y pegarlas aquí.
+          Se abrirá una pantalla negra vacía. Ve a la pestaña de AltFreeStack, busca tu herramienta y haz clic en{" "}
+          <strong>Copiar docker-compose.yml</strong>. Vuelve a tu terminal y pega el contenido (clic derecho en Windows o Comando + V
+          en Mac).
+        </p>
+        <p className="mt-2">
+          <strong>Configura tus contraseñas:</strong> revisa las líneas que dicen <InlineCode># CAMBIAR</InlineCode> o{" "}
+          <InlineCode>change-me</InlineCode>, desplázate con las flechas del teclado y cámbialas por contraseñas seguras inventadas
+          por ti (o generadas con el botón &quot;Generar secretos seguros&quot; de la ficha de la herramienta).
+        </p>
+        <p className="mt-2">
+          <strong>Guardar y salir:</strong> pulsa <InlineCode>Ctrl + O</InlineCode> y luego Enter (guarda el archivo). Pulsa{" "}
+          <InlineCode>Ctrl + X</InlineCode> (sale del editor y vuelve a la consola normal).
         </p>
       </>
     ),
   },
   {
-    icon: CheckCircle2,
-    title: "6. Arranca y comprueba que funciona",
-    time: "~3 min",
+    icon: Power,
+    title: "7. Enciende la herramienta",
+    time: "~2 min",
     body: (
       <>
-        <p>Desde la misma carpeta:</p>
+        <p>En la misma consola, copia y pega:</p>
         <CodeBlock>docker compose up -d</CodeBlock>
-        <p className="mt-2">Verifica que los contenedores están corriendo y revisa los logs si algo falla:</p>
-        <CodeBlock>{`docker compose ps
-docker compose logs -f    # Ctrl+C para salir`}</CodeBlock>
         <p className="mt-2">
-          Los Droplets de DigitalOcean no tienen firewall activado por defecto, así que abre{" "}
-          <InlineCode>http://TU_IP:PUERTO</InlineCode> en el navegador y ya deberías ver tu herramienta. Si quieres restringir
-          accesos, crea uno desde <strong>Networking → Firewalls → Create Firewall</strong> y abre solo los puertos 22, 80, 443 y el
-          de tu app.
+          Presiona Enter. El servidor descargará e iniciará todo automáticamente (verás <InlineCode>Pulling</InlineCode>,{" "}
+          <InlineCode>Downloaded</InlineCode>, <InlineCode>Started</InlineCode>). Cuando vuelva a salir la línea{" "}
+          <InlineCode>root@...:~/app#</InlineCode>, la app estará encendida.
         </p>
       </>
     ),
   },
   {
     icon: Globe,
-    title: "7. Pon tu dominio propio y HTTPS",
-    time: "~10 min",
+    title: "8. Abre tu herramienta en el navegador",
+    time: "~1 min",
     body: (
       <>
-        <p>
-          En el panel de tu proveedor de dominio (o en DigitalOcean → <strong>Networking → Domains</strong> si migras el DNS), crea
-          un registro <strong>A</strong> apuntando a la IP de tu Droplet.
-        </p>
+        <p>Abre tu navegador web y escribe en la barra de direcciones:</p>
+        <CodeBlock>http://TU_IP:PUERTO</CodeBlock>
         <p className="mt-2">
-          Para HTTPS gratuito sin complicarte, pon{" "}
-          <a href="https://caddyserver.com" target="_blank" rel="noopener noreferrer" className="font-medium text-emerald-700 hover:underline">
-            Caddy
-          </a>{" "}
-          delante como proxy inverso — renueva certificados de Let&apos;s Encrypt solo:
+          Sustituye TU_IP por la IP de tu Droplet y PUERTO por el número indicado en la ficha de AltFreeStack (ej.{" "}
+          <InlineCode>http://165.22.10.45:3000</InlineCode>). Pulsa Enter y verás la pantalla de configuración inicial de tu
+          herramienta.
         </p>
-        <CodeBlock>{`tudominio.com {
-  reverse_proxy localhost:PUERTO_DE_TU_APP
-}`}</CodeBlock>
       </>
     ),
   },
   {
     icon: RefreshCw,
-    title: "8. Mantenimiento",
+    title: "¿Cómo gestionarla en el futuro?",
     time: "recurrente",
     body: (
       <>
-        <p>Para actualizar a la última versión de forma segura:</p>
-        <CodeBlock>{`docker compose pull
-docker compose up -d`}</CodeBlock>
-        <p className="mt-2">
-          Haz backup periódico de las carpetas bajo <InlineCode>volumes:</InlineCode> en tu docker-compose.yml — ahí vive tu base de
-          datos y tus archivos.
+        <p>
+          Si algún día necesitas hacer mantenimiento, conéctate como en el paso 4, entra a la carpeta (<InlineCode>cd app</InlineCode>
+          ) y usa estos comandos:
         </p>
+        <ul className="mt-2 list-disc space-y-1.5 pl-5">
+          <li>
+            Ver si sigue funcionando o revisar errores: <InlineCode>docker compose ps</InlineCode> o{" "}
+            <InlineCode>docker compose logs -f</InlineCode>
+          </li>
+          <li>
+            Apagar la herramienta: <InlineCode>docker compose down</InlineCode>
+          </li>
+          <li>
+            Actualizar a la versión más reciente: <InlineCode>docker compose pull && docker compose up -d</InlineCode>
+          </li>
+        </ul>
       </>
     ),
   },
@@ -226,12 +268,15 @@ const digitaloceanEn: GuideStep[] = [
     body: (
       <>
         <p>
-          Go to digitalocean.com and click <strong>Sign Up</strong> in the top right. You can sign up with your email or your
-          Google/GitHub account — it&apos;s faster. Confirm your email from the link you receive.
+          Before you start you need: a DigitalOcean account (they often offer free welcome credit to get started), your computer
+          (Windows, Mac or Linux), and the tool&apos;s page open in another browser tab on AltFreeStack.
         </p>
         <p className="mt-2">
-          You&apos;ll be asked for a payment method (card or PayPal) before you can create servers, but you&apos;re not charged
-          until you actually use resources — and the link above gives you $200 in free credit for 60 days.
+          Go to digitalocean.com in your browser. In the top right, click <strong>Sign Up</strong>. Choose to sign up with Google,
+          GitHub or email, and confirm the verification link in your inbox.
+        </p>
+        <p className="mt-2">
+          Add a payment method or PayPal — you&apos;re not charged instantly, they only bill for the hours your server is running.
         </p>
       </>
     ),
@@ -239,151 +284,177 @@ const digitaloceanEn: GuideStep[] = [
   {
     icon: Rocket,
     title: "2. Create your Droplet (server)",
-    time: "~5 min",
+    time: "~4 min",
     body: (
       <>
         <p>
-          In the dashboard, click the green <strong>Create</strong> button (top right) → <strong>Droplets</strong>. There you pick:
+          On DigitalOcean&apos;s main dashboard, click the green <strong>Create</strong> button in the top right and pick{" "}
+          <strong>Droplets</strong>.
         </p>
         <ul className="mt-2 list-disc space-y-1.5 pl-5">
           <li>
-            <strong>Image:</strong> the fastest path is the <strong>Marketplace</strong> tab → search &quot;Docker&quot; → pick the
-            official <em>Docker on Ubuntu</em> image (Docker and Compose already installed, skips step 4 of this guide). If you&apos;d
-            rather install it yourself, use the <strong>OS</strong> tab → <em>Ubuntu 24.04 (LTS) x64</em>.
+            <strong>Choose Region:</strong> pick the data center closest to you or your users (e.g. Frankfurt, Amsterdam, New York).
           </li>
           <li>
-            <strong>Plan:</strong> &quot;Basic&quot; → &quot;Regular&quot; with 1 vCPU / 1GB RAM (the cheapest) is enough for most
-            tools in the catalog — check your tool&apos;s technical profile if it needs more.
+            <strong>Choose an Image:</strong> click the <strong>Marketplace</strong> tab (this is inside DigitalOcean, not
+            AltFreeStack yet). In the search bar type <InlineCode>Docker</InlineCode>. You&apos;ll see a card that says{" "}
+            <em>Docker on Ubuntu</em> — click it so it gets marked with a blue outline (this way the server ships with Docker
+            pre-installed).
           </li>
           <li>
-            <strong>Authentication:</strong> pick <strong>Password</strong> if it&apos;s your first time (simpler) or{" "}
-            <strong>SSH Key</strong> if you already have one (more secure).
+            <strong>Droplet Type / CPU:</strong> pick the <strong>Shared CPU</strong> tab and the <strong>Basic</strong> option. In
+            the pricing list, click the left arrow or <strong>Regular</strong> until you see the cheap option: $6/mo (1 GB RAM / 1
+            vCPU / 25 GB SSD).
+          </li>
+          <li>
+            <strong>Authentication Method:</strong> select the <strong>Password</strong> checkbox. Type a strong password for the
+            root user (uppercase letters, numbers and at least 8 characters) and write it down — you&apos;ll need it in step 4.
           </li>
         </ul>
         <p className="mt-2">
-          Click <strong>Create Droplet</strong> at the bottom and wait ~1 minute. Copy the <strong>public IP</strong> shown in the
-          dashboard — you&apos;ll need it in the next step.
+          Scroll to the bottom of the page, ignore the extra options for now, and click the large green <strong>Create Droplet</strong>{" "}
+          button. Wait about a minute for the progress bar to finish and the IP address to appear next to your server&apos;s name.
+        </p>
+      </>
+    ),
+  },
+  {
+    icon: KeyRound,
+    title: "3. Copy your Droplet's IP",
+    time: "~1 min",
+    body: (
+      <>
+        <p>
+          In the Droplets list you&apos;ll see a column labeled <strong>IPv4</strong>. Hover over the 4 numbers separated by dots
+          (e.g. <InlineCode>165.22.10.45</InlineCode>) and click <strong>Copy</strong>. This is the IP you&apos;ll use throughout the
+          guide.
         </p>
       </>
     ),
   },
   {
     icon: Terminal,
-    title: "3. Log in via console (SSH) and learn the basics",
-    time: "~5 min",
+    title: "4. Connect from your computer",
+    time: "~3 min",
     body: (
       <>
-        <p>From your computer&apos;s terminal (macOS/Linux: Terminal; Windows: PowerShell or Windows Terminal), connect:</p>
-        <CodeBlock>ssh root@YOUR_SERVER_IP</CodeBlock>
-        <p className="mt-2">
-          The first time it&apos;ll ask if you trust the server — type <InlineCode>yes</InlineCode>. If you picked
-          &quot;Password&quot;, it&apos;ll ask for it (DigitalOcean emails it to you if you missed it when creating the Droplet).
-        </p>
-        <p className="mt-3">Once inside, these are the only commands you need to get around:</p>
+        <p>Open the console on your machine:</p>
         <ul className="mt-2 list-disc space-y-1 pl-5">
           <li>
-            <InlineCode>pwd</InlineCode> — which folder you&apos;re in right now.
+            <strong>On Windows:</strong> press the Windows key, type <InlineCode>cmd</InlineCode> or &quot;Terminal&quot; and press
+            Enter.
           </li>
           <li>
-            <InlineCode>ls</InlineCode> — what files and folders are here.
-          </li>
-          <li>
-            <InlineCode>mkdir my-app</InlineCode> — create a new folder called &quot;my-app&quot;.
-          </li>
-          <li>
-            <InlineCode>cd my-app</InlineCode> — enter that folder (<InlineCode>cd ..</InlineCode> to go back).
+            <strong>On Mac:</strong> press Cmd + Space, type &quot;Terminal&quot; and press Enter.
           </li>
         </ul>
+        <p className="mt-3">Type the command, replacing YOUR_IP with the IP you copied:</p>
+        <CodeBlock>ssh root@YOUR_IP</CodeBlock>
+        <p className="mt-2">
+          (Real example: <InlineCode>ssh root@165.22.10.45</InlineCode>) and press Enter. If you&apos;re asked a (yes/no) question,
+          type <InlineCode>yes</InlineCode> and press Enter. It&apos;ll prompt for <InlineCode>password:</InlineCode> — paste the
+          password you set in step 2 (right-click to paste on Windows; Cmd + V on Mac) and press Enter.
+        </p>
+        <Callout>
+          Remember the console won&apos;t move the cursor or show asterisks while you paste the password. It looks like nothing is
+          being typed, but it is — paste it once and press Enter.
+        </Callout>
+        <p className="mt-2">
+          Once you see <InlineCode>root@ubuntu-docker:~#</InlineCode>, you&apos;re connected to DigitalOcean.
+        </p>
       </>
     ),
   },
   {
-    icon: Package,
-    title: "4. Install Docker (only if you didn't use the Marketplace image)",
-    time: "~2 min",
+    icon: FolderPlus,
+    title: "5. Create the working folder",
+    time: "~1 min",
     body: (
       <>
-        <p>If you picked plain Ubuntu in step 2, install Docker with the official script:</p>
-        <CodeBlock>curl -fsSL https://get.docker.com | sh</CodeBlock>
-        <p className="mt-2">
-          Check it installed correctly: <InlineCode>docker --version</InlineCode>. If you used the &quot;Docker on Ubuntu&quot; Marketplace
-          image, skip this step — you already have it.
-        </p>
+        <p>In that same console window, paste this and press Enter:</p>
+        <CodeBlock>mkdir app && cd app</CodeBlock>
+        <p className="mt-2">This creates the app folder and puts you inside it.</p>
       </>
     ),
   },
   {
     icon: FileCode,
-    title: "5. Copy your tool's docker-compose.yml",
+    title: "6. Create the file and paste AltFreeStack's code",
     time: "~3 min",
     body: (
       <>
-        <p>On the profile of the tool you want to deploy on AltFreeStack, click <strong>Copy</strong> on the code block. Back in your SSH terminal:</p>
-        <CodeBlock>{`mkdir my-app && cd my-app
-nano docker-compose.yml
-# paste with right-click or Cmd/Ctrl+V, save with Ctrl+O and Enter, exit with Ctrl+X`}</CodeBlock>
+        <p>In the console, copy, paste and press Enter:</p>
+        <CodeBlock>nano docker-compose.yml</CodeBlock>
         <p className="mt-2">
-          Before starting it up, replace every <InlineCode>change-me...</InlineCode> value with a real password — you can generate
-          them with the &quot;Generate secure secrets&quot; button on the tool&apos;s page and paste them in here.
+          An empty black screen will open. Go to the AltFreeStack tab, find your tool, and click{" "}
+          <strong>Copy docker-compose.yml</strong>. Back in your terminal, paste the content (right-click on Windows or Cmd + V on
+          Mac).
+        </p>
+        <p className="mt-2">
+          <strong>Set your passwords:</strong> look for lines marked <InlineCode># CHANGE-ME</InlineCode> or{" "}
+          <InlineCode>change-me</InlineCode>, use the arrow keys to move there, and replace them with real, secure passwords (or
+          generate one with the &quot;Generate secure secrets&quot; button on the tool&apos;s page).
+        </p>
+        <p className="mt-2">
+          <strong>Save and exit:</strong> press <InlineCode>Ctrl + O</InlineCode> then Enter (saves the file). Press{" "}
+          <InlineCode>Ctrl + X</InlineCode> (exits the editor back to the regular console).
         </p>
       </>
     ),
   },
   {
-    icon: CheckCircle2,
-    title: "6. Start it up and check it works",
-    time: "~3 min",
+    icon: Power,
+    title: "7. Start the tool",
+    time: "~2 min",
     body: (
       <>
-        <p>From the same folder:</p>
+        <p>In the same console, copy and paste:</p>
         <CodeBlock>docker compose up -d</CodeBlock>
-        <p className="mt-2">Check the containers are running and look at the logs if anything fails:</p>
-        <CodeBlock>{`docker compose ps
-docker compose logs -f    # Ctrl+C to exit`}</CodeBlock>
         <p className="mt-2">
-          DigitalOcean Droplets don&apos;t have a firewall enabled by default, so open <InlineCode>http://YOUR_IP:PORT</InlineCode> in
-          your browser and you should already see your tool. To restrict access, create one under{" "}
-          <strong>Networking → Firewalls → Create Firewall</strong> and open only ports 22, 80, 443 and your app&apos;s port.
+          Press Enter. The server will download and start everything automatically (you&apos;ll see <InlineCode>Pulling</InlineCode>,{" "}
+          <InlineCode>Downloaded</InlineCode>, <InlineCode>Started</InlineCode>). Once the line{" "}
+          <InlineCode>root@...:~/app#</InlineCode> comes back, the app is running.
         </p>
       </>
     ),
   },
   {
     icon: Globe,
-    title: "7. Point your own domain and enable HTTPS",
-    time: "~10 min",
+    title: "8. Open your tool in the browser",
+    time: "~1 min",
     body: (
       <>
-        <p>
-          In your domain provider&apos;s dashboard (or DigitalOcean → <strong>Networking → Domains</strong> if you migrate the DNS),
-          create an <strong>A</strong> record pointing to your Droplet&apos;s IP.
-        </p>
+        <p>Open your web browser and type in the address bar:</p>
+        <CodeBlock>http://YOUR_IP:PORT</CodeBlock>
         <p className="mt-2">
-          For free HTTPS with no hassle, put{" "}
-          <a href="https://caddyserver.com" target="_blank" rel="noopener noreferrer" className="font-medium text-emerald-700 hover:underline">
-            Caddy
-          </a>{" "}
-          in front as a reverse proxy — it renews Let&apos;s Encrypt certificates on its own:
+          Replace YOUR_IP with your Droplet&apos;s IP and PORT with the number shown on the AltFreeStack tool page (e.g.{" "}
+          <InlineCode>http://165.22.10.45:3000</InlineCode>). Press Enter and you&apos;ll see your tool&apos;s initial setup screen.
         </p>
-        <CodeBlock>{`yourdomain.com {
-  reverse_proxy localhost:YOUR_APP_PORT
-}`}</CodeBlock>
       </>
     ),
   },
   {
     icon: RefreshCw,
-    title: "8. Maintenance",
+    title: "How do you manage it going forward?",
     time: "recurring",
     body: (
       <>
-        <p>To safely update to the latest version:</p>
-        <CodeBlock>{`docker compose pull
-docker compose up -d`}</CodeBlock>
-        <p className="mt-2">
-          Back up the folders under <InlineCode>volumes:</InlineCode> in your docker-compose.yml periodically — that&apos;s where your
-          database and files live.
+        <p>
+          If you ever need to do maintenance, connect the same way as step 4, go into the folder (<InlineCode>cd app</InlineCode>)
+          and use these commands:
         </p>
+        <ul className="mt-2 list-disc space-y-1.5 pl-5">
+          <li>
+            Check it&apos;s running or look at errors: <InlineCode>docker compose ps</InlineCode> or{" "}
+            <InlineCode>docker compose logs -f</InlineCode>
+          </li>
+          <li>
+            Turn the tool off: <InlineCode>docker compose down</InlineCode>
+          </li>
+          <li>
+            Update to the latest version: <InlineCode>docker compose pull && docker compose up -d</InlineCode>
+          </li>
+        </ul>
       </>
     ),
   },
@@ -401,167 +472,225 @@ const vultrEs: GuideStep[] = [
     body: (
       <>
         <p>
-          Entra en vultr.com y pulsa <strong>Sign Up</strong> (o inicia sesión con Google/GitHub para ir más rápido). Verifica tu
-          email desde el enlace que te llega y añade un método de pago — no se cobra nada hasta que despliegues un servidor.
+          Antes de empezar necesitas solo 3 cosas: una tarjeta o cuenta PayPal para registrarte en Vultr, tu ordenador (Windows, Mac
+          o Linux) y la ficha de la herramienta que quieras instalar abierta en otra pestaña de tu navegador en AltFreeStack.
+        </p>
+        <p className="mt-2">
+          Entra en tu navegador a vultr.com. Arriba a la derecha, haz clic en el botón azul <strong>Sign Up</strong>. Escribe tu
+          email y define una contraseña (o haz clic en <em>Continue with Google/GitHub</em>). Ve a tu bandeja de correo, abre el
+          email de Vultr y haz clic en el enlace para verificar la cuenta.
+        </p>
+        <p className="mt-2">
+          Regresa a Vultr y añade un método de pago. No te cobrarán nada en este instante — solo se tarifica el tiempo que tengas un
+          servidor encendido, calculándose por céntimos al día.
         </p>
       </>
     ),
   },
   {
     icon: Rocket,
-    title: "2. Despliega tu servidor (Cloud Compute)",
-    time: "~5 min",
+    title: "2. Encarga tu servidor",
+    time: "~4 min",
     body: (
       <>
         <p>
-          En el panel, pulsa el botón azul <strong>+ Deploy New Server</strong> (o &quot;Deploy&quot; en el menú lateral). Ahí
-          eliges:
+          En el panel principal de Vultr, pulsa en el menú lateral en <strong>Deploy</strong> o en el botón azul{" "}
+          <strong>+ Deploy Server</strong> (arriba a la derecha). Selecciona la opción <strong>Cloud Compute – Shared CPU</strong>.
         </p>
         <ul className="mt-2 list-disc space-y-1.5 pl-5">
           <li>
-            <strong>Tipo de servidor:</strong> <em>Cloud Compute – Shared CPU</em> (el más barato y suficiente para la mayoría de
-            herramientas).
+            <strong>Location:</strong> elige la bandera de la ciudad más cercana a ti o a tus visitantes (ej. Madrid, Frankfurt,
+            Miami). Cuanto más cerca esté, menor será la latencia.
           </li>
           <li>
-            <strong>Ubicación:</strong> elige el datacenter más cercano a donde estén tus usuarios — Vultr tiene 32 en 6
-            continentes.
+            <strong>Server Image:</strong> verás varias pestañas horizontales. Haz clic en la pestaña{" "}
+            <strong>Marketplace Apps</strong> (no toques nada de AltFreeStack todavía; esto es dentro de la web de Vultr). En la
+            barra de búsqueda de esa sección escribe <InlineCode>Docker</InlineCode>. Verás una tarjeta con el icono de una ballena
+            azul que dice <em>Docker on Ubuntu</em> — haz clic sobre esa tarjeta, quedará seleccionada con un borde azul. Así el
+            servidor trae Docker preinstalado y no tienes que pelearte con comandos de instalación.
           </li>
           <li>
-            <strong>Imagen del servidor:</strong> pestaña <strong>Marketplace Apps</strong> → busca &quot;Docker&quot; para una
-            imagen con Docker ya instalado (te saltas el paso 4), o pestaña <strong>OS</strong> → <em>Ubuntu 24.04 LTS x64</em> para
-            instalarlo tú.
-          </li>
-          <li>
-            <strong>Tamaño del servidor:</strong> el plan &quot;Regular Performance&quot; de 1 vCPU / 1GB RAM (~$6/mes) es
-            suficiente para la mayoría de herramientas del catálogo.
-          </li>
-          <li>
-            <strong>SSH Keys (opcional):</strong> sube o genera una si quieres entrar sin contraseña. Si no, Vultr te muestra la
-            contraseña root en el panel del servidor tras crearlo.
+            <strong>Server Size:</strong> haz clic en la pestaña <strong>Regular Performance</strong>. Marca la opción económica:
+            $6/mes (1 vCPU / 1 GB RAM / 25 GB SSD) — es más que suficiente para correr la mayoría de herramientas del catálogo.
           </li>
         </ul>
         <p className="mt-2">
-          Pulsa <strong>Deploy Now</strong> y espera ~1 minuto a que el estado pase a <strong>Running</strong>. Copia la{" "}
-          <strong>Main IP</strong> que aparece en la página del servidor.
+          Baja hasta el final de la página (ignora las opciones opcionales de VPC o Firewall por ahora) y haz clic en el botón azul{" "}
+          <strong>Deploy Now</strong>. En tu lista de productos verás tu nuevo servidor en estado <em>Installing...</em>. Espera entre
+          1 y 2 minutos hasta que cambie a verde con la palabra <strong>Running</strong>.
         </p>
+      </>
+    ),
+  },
+  {
+    icon: KeyRound,
+    title: "3. Copia tus credenciales de acceso",
+    time: "~1 min",
+    body: (
+      <>
+        <p>
+          Haz clic directamente sobre el nombre de tu servidor en la lista para abrir su panel de detalles. Localiza estos dos
+          campos y anótalos o déjalos a mano:
+        </p>
+        <ul className="mt-2 list-disc space-y-1.5 pl-5">
+          <li>
+            <strong>IP Address:</strong> una secuencia de 4 números separados por puntos (ej. <InlineCode>149.28.45.12</InlineCode>).
+            Haz clic en el icono de copiar a su lado — esta es la IP que usarás en toda la guía.
+          </li>
+          <li>
+            <strong>Password:</strong> al lado de la palabra Password, haz clic en el icono del ojo para visualizarla y luego en el
+            icono de copiar.
+          </li>
+        </ul>
       </>
     ),
   },
   {
     icon: Terminal,
-    title: "3. Entra por consola (SSH) y aprende lo básico",
-    time: "~5 min",
+    title: "4. Conéctate al servidor desde tu ordenador",
+    time: "~3 min",
     body: (
       <>
-        <p>Desde tu terminal:</p>
-        <CodeBlock>ssh root@TU_IP_DEL_SERVIDOR</CodeBlock>
-        <p className="mt-2">
-          Escribe <InlineCode>yes</InlineCode> para confiar en el servidor la primera vez, y pega la contraseña root que viste en el
-          panel de Vultr (o no te la pedirá si usaste una SSH key).
-        </p>
-        <p className="mt-3">Comandos básicos para moverte:</p>
+        <p>Abre la consola/terminal de tu sistema:</p>
         <ul className="mt-2 list-disc space-y-1 pl-5">
           <li>
-            <InlineCode>pwd</InlineCode> — en qué carpeta estás.
+            <strong>En Windows:</strong> pulsa la tecla Windows, escribe <InlineCode>cmd</InlineCode> (o Terminal) y presiona Enter.
           </li>
           <li>
-            <InlineCode>ls</InlineCode> — qué hay en esta carpeta.
-          </li>
-          <li>
-            <InlineCode>mkdir mi-app</InlineCode> — crea una carpeta.
-          </li>
-          <li>
-            <InlineCode>cd mi-app</InlineCode> — entra en ella (<InlineCode>cd ..</InlineCode> para salir).
+            <strong>En Mac:</strong> pulsa Comando + Espacio, escribe Terminal y presiona Enter.
           </li>
         </ul>
+        <p className="mt-3">En esa ventana negra, escribe exactamente lo siguiente, sustituyendo TU_IP por los números que copiaste:</p>
+        <CodeBlock>ssh root@TU_IP</CodeBlock>
+        <p className="mt-2">
+          (Ejemplo real: <InlineCode>ssh root@149.28.45.12</InlineCode>) y presiona Enter. ¿Aparece un mensaje en inglés preguntando
+          (yes/no/[fingerprint])? Escribe <InlineCode>yes</InlineCode> con el teclado y presiona Enter.
+        </p>
+        <p className="mt-2">
+          La consola te pedirá la contraseña (<InlineCode>password:</InlineCode>): pega la contraseña copiada en el paso anterior
+          (en Windows haz clic derecho con el ratón sobre la ventana; en Mac pulsa Comando + V) y presiona Enter.
+        </p>
+        <Callout>
+          Al pegar la contraseña, la terminal no mostrará texto, ni asteriscos, ni moverá el cursor. Parece que no escribe nada por
+          motivos de seguridad, pero sí lo está leyendo. Pégala una sola vez y pulsa Enter.
+        </Callout>
+        <p className="mt-2">
+          Al ver que aparece el texto <InlineCode>root@vultr:~#</InlineCode>, ya estás dentro de tu servidor.
+        </p>
       </>
     ),
   },
   {
-    icon: Package,
-    title: "4. Instala Docker (si no usaste la Marketplace App)",
-    time: "~2 min",
+    icon: FolderPlus,
+    title: "5. Crea la carpeta de trabajo",
+    time: "~1 min",
     body: (
       <>
-        <p>Con Ubuntu normal, instala Docker con el script oficial:</p>
-        <CodeBlock>curl -fsSL https://get.docker.com | sh</CodeBlock>
+        <p>Inmediatamente después de entrar (en la misma ventana donde pusiste la contraseña), copia y pega esto:</p>
+        <CodeBlock>mkdir app && cd app</CodeBlock>
         <p className="mt-2">
-          Verifica con <InlineCode>docker --version</InlineCode>. Si elegiste la app de Docker del Marketplace, ya lo tienes
-          instalado.
+          Pulsa Enter. Esto crea una carpeta vacía llamada app y entra en ella. Si quieres llamarla con el nombre de tu herramienta,
+          por ejemplo umami, puedes escribir <InlineCode>mkdir umami && cd umami</InlineCode>.
         </p>
       </>
     ),
   },
   {
     icon: FileCode,
-    title: "5. Copia el docker-compose.yml de tu herramienta",
+    title: "6. Crea el archivo y pega el código de tu herramienta",
     time: "~3 min",
     body: (
       <>
-        <p>
-          En la ficha de tu herramienta en AltFreeStack, pulsa <strong>Copiar</strong>. En tu terminal SSH:
-        </p>
-        <CodeBlock>{`mkdir mi-app && cd mi-app
-nano docker-compose.yml
-# pega, guarda con Ctrl+O y Enter, sal con Ctrl+X`}</CodeBlock>
+        <p>En la misma consola, copia y pega este comando tal cual y pulsa Enter:</p>
+        <CodeBlock>nano docker-compose.yml</CodeBlock>
         <p className="mt-2">
-          Cambia cada <InlineCode>change-me...</InlineCode> por una contraseña real antes de arrancar — usa el botón &quot;Generar
-          secretos seguros&quot; de la ficha de la herramienta.
+          Esto abrirá una pantalla negra casi vacía con opciones abajo; es un editor de texto dentro de tu servidor. Ve a la pestaña
+          de AltFreeStack en tu navegador, entra en la ficha de la herramienta que elegiste y haz clic en el botón{" "}
+          <strong>Copiar docker-compose.yml</strong>.
+        </p>
+        <p className="mt-2">
+          Vuelve a tu ventana negra de la terminal y pega lo que acabas de copiar (en Windows haz clic derecho; en Mac pulsa Comando
+          + V). Verás que aparecen de golpe todas las líneas de código. No necesitas pulsar Enter tras pegar.
+        </p>
+        <p className="mt-2">
+          <strong>Configura tus contraseñas:</strong> mira el texto en pantalla. Si ves líneas marcadas con{" "}
+          <InlineCode># CAMBIAR</InlineCode> o palabras como <InlineCode>change-me</InlineCode>, usa las flechas de tu teclado para
+          moverte hasta ahí, borra <InlineCode>change-me</InlineCode> y escribe una contraseña segura inventada por ti (o usa el
+          botón &quot;Generar secretos seguros&quot; de la ficha de AltFreeStack para copiar una clave aleatoria).
+        </p>
+        <p className="mt-2">
+          <strong>Guardar y salir:</strong> pulsa la combinación de teclas <InlineCode>Ctrl + O</InlineCode> y luego pulsa Enter
+          (esto guarda lo que pegaste). Pulsa <InlineCode>Ctrl + X</InlineCode> (esto te saca de esa pantalla y te devuelve a la
+          consola habitual).
         </p>
       </>
     ),
   },
   {
-    icon: CheckCircle2,
-    title: "6. Arranca y comprueba que funciona",
-    time: "~3 min",
+    icon: Power,
+    title: "7. Enciende la herramienta",
+    time: "~2 min",
     body: (
       <>
+        <p>En la misma ventana donde acabas de salir, copia y pega este comando y pulsa Enter:</p>
         <CodeBlock>docker compose up -d</CodeBlock>
-        <p className="mt-2">Comprueba el estado y los logs:</p>
-        <CodeBlock>{`docker compose ps
-docker compose logs -f    # Ctrl+C para salir`}</CodeBlock>
         <p className="mt-2">
-          Abre <InlineCode>http://TU_IP:PUERTO</InlineCode> en el navegador. Si no carga, revisa la sección{" "}
-          <strong>Firewall</strong> en la configuración de tu servidor dentro del panel de Vultr — por defecto no suele haber
-          ninguno activo, pero si creaste uno, asegúrate de que el puerto de tu app esté permitido.
+          No tienes que abrir otra terminal ni hacer nada previo. Verás que el servidor empieza a descargar archivos
+          automáticamente (<InlineCode>Pulling</InlineCode>, <InlineCode>Downloaded</InlineCode>, <InlineCode>Started</InlineCode>).
+          Cuando termine y vuelva a aparecer la línea <InlineCode>root@vultr:~/app#</InlineCode>, la herramienta ya está encendida y
+          funcionando.
         </p>
       </>
     ),
   },
   {
     icon: Globe,
-    title: "7. Pon tu dominio propio y HTTPS",
-    time: "~10 min",
+    title: "8. Abre tu herramienta en el navegador",
+    time: "~1 min",
     body: (
       <>
-        <p>
-          Crea un registro <strong>A</strong> en tu proveedor de dominio apuntando a la Main IP de tu servidor Vultr.
-        </p>
+        <p>Abre una pestaña nueva en tu navegador web habitual (Chrome, Firefox, Safari). Para entrar necesitas dos datos:</p>
+        <ul className="mt-2 list-disc space-y-1.5 pl-5">
+          <li>
+            <strong>La IP:</strong> la misma que copiaste en el paso 3 de Vultr (ej. <InlineCode>149.28.45.12</InlineCode>).
+          </li>
+          <li>
+            <strong>El Puerto:</strong> míralo en la ficha de la herramienta en AltFreeStack (bajo el título o en las
+            especificaciones verás un dato que dice Puerto: seguido de un número, por ejemplo 3000 u 8080).
+          </li>
+        </ul>
+        <p className="mt-2">En la barra donde pones las páginas web, escribe:</p>
+        <CodeBlock>http://TU_IP:PUERTO</CodeBlock>
         <p className="mt-2">
-          Para HTTPS automático y gratuito, usa{" "}
-          <a href="https://caddyserver.com" target="_blank" rel="noopener noreferrer" className="font-medium text-emerald-700 hover:underline">
-            Caddy
-          </a>{" "}
-          como proxy inverso:
+          (Ejemplo real: si tu IP es 149.28.45.12 y el puerto es 3000, escribes{" "}
+          <InlineCode>http://149.28.45.12:3000</InlineCode>). Pulsa Enter. ¡Listo! Verás la pantalla de bienvenida de tu aplicación,
+          lista para que crees tu usuario administrador y empieces a usarla.
         </p>
-        <CodeBlock>{`tudominio.com {
-  reverse_proxy localhost:PUERTO_DE_TU_APP
-}`}</CodeBlock>
       </>
     ),
   },
   {
     icon: RefreshCw,
-    title: "8. Mantenimiento",
+    title: "¿Cómo gestionarla en el futuro?",
     time: "recurrente",
     body: (
       <>
-        <CodeBlock>{`docker compose pull
-docker compose up -d`}</CodeBlock>
-        <p className="mt-2">
-          Haz backup periódico de las carpetas bajo <InlineCode>volumes:</InlineCode> — ahí vive tu base de datos y tus archivos.
+        <p>
+          Si algún día necesitas hacer mantenimiento, solo abres tu terminal, te conectas como en el paso 4, entras a la carpeta (
+          <InlineCode>cd app</InlineCode>) y usas estos comandos:
         </p>
+        <ul className="mt-2 list-disc space-y-1.5 pl-5">
+          <li>
+            Ver si sigue funcionando o revisar errores: <InlineCode>docker compose ps</InlineCode> o{" "}
+            <InlineCode>docker compose logs -f</InlineCode>
+          </li>
+          <li>
+            Apagar la herramienta: <InlineCode>docker compose down</InlineCode>
+          </li>
+          <li>
+            Actualizar a la versión más reciente: <InlineCode>docker compose pull && docker compose up -d</InlineCode>
+          </li>
+        </ul>
       </>
     ),
   },
@@ -575,163 +704,221 @@ const vultrEn: GuideStep[] = [
     body: (
       <>
         <p>
-          Go to vultr.com and click <strong>Sign Up</strong> (or sign in with Google/GitHub to go faster). Verify your email from
-          the link you receive and add a payment method — you&apos;re not charged until you deploy a server.
+          Before you start you only need 3 things: a card or PayPal account to sign up with Vultr, your computer (Windows, Mac or
+          Linux), and the tool&apos;s page open in another browser tab on AltFreeStack.
+        </p>
+        <p className="mt-2">
+          Go to vultr.com in your browser. In the top right, click the blue <strong>Sign Up</strong> button. Type your email and set
+          a password (or click <em>Continue with Google/GitHub</em>). Go to your inbox, open Vultr&apos;s email and click the link
+          to verify your account.
+        </p>
+        <p className="mt-2">
+          Go back to Vultr and add a payment method. You won&apos;t be charged right away — you&apos;re only billed for the time a
+          server stays on, calculated by cents per day.
         </p>
       </>
     ),
   },
   {
     icon: Rocket,
-    title: "2. Deploy your server (Cloud Compute)",
-    time: "~5 min",
+    title: "2. Order your server",
+    time: "~4 min",
     body: (
       <>
         <p>
-          In the dashboard, click the blue <strong>+ Deploy New Server</strong> button (or &quot;Deploy&quot; in the sidebar). There you
-          pick:
+          On Vultr&apos;s main dashboard, click <strong>Deploy</strong> in the sidebar or the blue <strong>+ Deploy Server</strong>{" "}
+          button (top right). Select the <strong>Cloud Compute – Shared CPU</strong> option.
         </p>
         <ul className="mt-2 list-disc space-y-1.5 pl-5">
           <li>
-            <strong>Server type:</strong> <em>Cloud Compute – Shared CPU</em> (the cheapest, and enough for most tools).
+            <strong>Location:</strong> pick the flag of the city closest to you or your visitors (e.g. Madrid, Frankfurt, Miami).
+            The closer it is, the lower the latency.
           </li>
           <li>
-            <strong>Location:</strong> pick the datacenter closest to your users — Vultr has 32 across 6 continents.
+            <strong>Server Image:</strong> you&apos;ll see several horizontal tabs. Click the <strong>Marketplace Apps</strong> tab
+            (don&apos;t touch anything on AltFreeStack yet — this is inside Vultr&apos;s site). In that section&apos;s search bar
+            type <InlineCode>Docker</InlineCode>. You&apos;ll see a card with a blue whale icon that says <em>Docker on Ubuntu</em> —
+            click that card, it&apos;ll get selected with a blue border. This way the server ships with Docker pre-installed and you
+            won&apos;t have to fight with install commands.
           </li>
           <li>
-            <strong>Server image:</strong> the <strong>Marketplace Apps</strong> tab → search &quot;Docker&quot; for an image with Docker
-            pre-installed (skips step 4), or the <strong>OS</strong> tab → <em>Ubuntu 24.04 LTS x64</em> to install it yourself.
-          </li>
-          <li>
-            <strong>Server size:</strong> the &quot;Regular Performance&quot; 1 vCPU / 1GB RAM plan (~$6/mo) is enough for most tools in the
-            catalog.
-          </li>
-          <li>
-            <strong>SSH Keys (optional):</strong> upload or generate one if you want passwordless login. Otherwise Vultr shows you
-            the root password on the server&apos;s page after it&apos;s created.
+            <strong>Server Size:</strong> click the <strong>Regular Performance</strong> tab. Pick the cheap option: $6/mo (1 vCPU /
+            1 GB RAM / 25 GB SSD) — more than enough to run most tools in the catalog.
           </li>
         </ul>
         <p className="mt-2">
-          Click <strong>Deploy Now</strong> and wait ~1 minute for the status to become <strong>Running</strong>. Copy the{" "}
-          <strong>Main IP</strong> shown on the server&apos;s page.
+          Scroll to the bottom of the page (ignore the optional VPC or Firewall options for now) and click the blue{" "}
+          <strong>Deploy Now</strong> button. In your product list you&apos;ll see your new server in <em>Installing...</em> status.
+          Wait 1-2 minutes until it turns green with the word <strong>Running</strong>.
         </p>
+      </>
+    ),
+  },
+  {
+    icon: KeyRound,
+    title: "3. Copy your login credentials",
+    time: "~1 min",
+    body: (
+      <>
+        <p>
+          Click directly on your server&apos;s name in the list to open its details panel. Find these two fields and write them
+          down or keep them handy:
+        </p>
+        <ul className="mt-2 list-disc space-y-1.5 pl-5">
+          <li>
+            <strong>IP Address:</strong> a sequence of 4 numbers separated by dots (e.g. <InlineCode>149.28.45.12</InlineCode>).
+            Click the copy icon next to it — this is the IP you&apos;ll use throughout the guide.
+          </li>
+          <li>
+            <strong>Password:</strong> next to the word Password, click the eye icon to reveal it, then the copy icon.
+          </li>
+        </ul>
       </>
     ),
   },
   {
     icon: Terminal,
-    title: "3. Log in via console (SSH) and learn the basics",
-    time: "~5 min",
+    title: "4. Connect to the server from your computer",
+    time: "~3 min",
     body: (
       <>
-        <p>From your terminal:</p>
-        <CodeBlock>ssh root@YOUR_SERVER_IP</CodeBlock>
-        <p className="mt-2">
-          Type <InlineCode>yes</InlineCode> to trust the server the first time, and paste the root password you saw in the Vultr
-          dashboard (skipped if you used an SSH key).
-        </p>
-        <p className="mt-3">Basic commands to get around:</p>
+        <p>Open your system&apos;s console/terminal:</p>
         <ul className="mt-2 list-disc space-y-1 pl-5">
           <li>
-            <InlineCode>pwd</InlineCode> — which folder you&apos;re in.
+            <strong>On Windows:</strong> press the Windows key, type <InlineCode>cmd</InlineCode> (or Terminal) and press Enter.
           </li>
           <li>
-            <InlineCode>ls</InlineCode> — what&apos;s in this folder.
-          </li>
-          <li>
-            <InlineCode>mkdir my-app</InlineCode> — create a folder.
-          </li>
-          <li>
-            <InlineCode>cd my-app</InlineCode> — enter it (<InlineCode>cd ..</InlineCode> to go back).
+            <strong>On Mac:</strong> press Cmd + Space, type Terminal and press Enter.
           </li>
         </ul>
+        <p className="mt-3">In that black window, type exactly the following, replacing YOUR_IP with the numbers you copied:</p>
+        <CodeBlock>ssh root@YOUR_IP</CodeBlock>
+        <p className="mt-2">
+          (Real example: <InlineCode>ssh root@149.28.45.12</InlineCode>) and press Enter. Does a message show up asking
+          (yes/no/[fingerprint])? Type <InlineCode>yes</InlineCode> on your keyboard and press Enter.
+        </p>
+        <p className="mt-2">
+          The console will ask for the password (<InlineCode>password:</InlineCode>): paste the password you copied in the previous
+          step (right-click the window on Windows; Cmd + V on Mac) and press Enter.
+        </p>
+        <Callout>
+          When you paste the password, the terminal won&apos;t show any text, asterisks, or move the cursor. It looks like
+          it&apos;s not typing anything for security reasons, but it is reading it. Paste it once and press Enter.
+        </Callout>
+        <p className="mt-2">
+          Once you see the text <InlineCode>root@vultr:~#</InlineCode>, you&apos;re inside your server.
+        </p>
       </>
     ),
   },
   {
-    icon: Package,
-    title: "4. Install Docker (if you didn't use the Marketplace App)",
-    time: "~2 min",
+    icon: FolderPlus,
+    title: "5. Create the working folder",
+    time: "~1 min",
     body: (
       <>
-        <p>With plain Ubuntu, install Docker with the official script:</p>
-        <CodeBlock>curl -fsSL https://get.docker.com | sh</CodeBlock>
+        <p>Right after logging in (in the same window where you pasted the password), copy and paste this:</p>
+        <CodeBlock>mkdir app && cd app</CodeBlock>
         <p className="mt-2">
-          Check with <InlineCode>docker --version</InlineCode>. If you picked the Marketplace Docker app, it&apos;s already installed.
+          Press Enter. This creates an empty folder called app and enters it. If you&apos;d rather name it after your tool, e.g.
+          umami, type <InlineCode>mkdir umami && cd umami</InlineCode>.
         </p>
       </>
     ),
   },
   {
     icon: FileCode,
-    title: "5. Copy your tool's docker-compose.yml",
+    title: "6. Create the file and paste your tool's code",
     time: "~3 min",
     body: (
       <>
-        <p>
-          On your tool&apos;s profile on AltFreeStack, click <strong>Copy</strong>. In your SSH terminal:
-        </p>
-        <CodeBlock>{`mkdir my-app && cd my-app
-nano docker-compose.yml
-# paste, save with Ctrl+O and Enter, exit with Ctrl+X`}</CodeBlock>
+        <p>In the same console, copy and paste this command exactly and press Enter:</p>
+        <CodeBlock>nano docker-compose.yml</CodeBlock>
         <p className="mt-2">
-          Replace every <InlineCode>change-me...</InlineCode> value with a real password before starting it — use the &quot;Generate
-          secure secrets&quot; button on the tool&apos;s page.
+          This opens an almost-empty black screen with options at the bottom — it&apos;s a text editor inside your server. Go to the
+          AltFreeStack tab in your browser, open the tool you chose, and click the <strong>Copy docker-compose.yml</strong> button.
+        </p>
+        <p className="mt-2">
+          Go back to your black terminal window and paste what you just copied (right-click on Windows; Cmd + V on Mac). You&apos;ll
+          see every line of code appear at once. You don&apos;t need to press Enter after pasting.
+        </p>
+        <p className="mt-2">
+          <strong>Set your passwords:</strong> look at the text on screen. If you see lines marked with{" "}
+          <InlineCode># CHANGE-ME</InlineCode> or words like <InlineCode>change-me</InlineCode>, use your keyboard&apos;s arrow keys
+          to move there, delete <InlineCode>change-me</InlineCode> and type a secure password you make up (or use the &quot;Generate
+          secure secrets&quot; button on the AltFreeStack tool page to copy a random key).
+        </p>
+        <p className="mt-2">
+          <strong>Save and exit:</strong> press <InlineCode>Ctrl + O</InlineCode> then Enter (this saves what you pasted). Press{" "}
+          <InlineCode>Ctrl + X</InlineCode> (this takes you out of that screen back to the regular console).
         </p>
       </>
     ),
   },
   {
-    icon: CheckCircle2,
-    title: "6. Start it up and check it works",
-    time: "~3 min",
+    icon: Power,
+    title: "7. Start the tool",
+    time: "~2 min",
     body: (
       <>
+        <p>In the same window you just exited from, copy and paste this command and press Enter:</p>
         <CodeBlock>docker compose up -d</CodeBlock>
-        <p className="mt-2">Check the status and logs:</p>
-        <CodeBlock>{`docker compose ps
-docker compose logs -f    # Ctrl+C to exit`}</CodeBlock>
         <p className="mt-2">
-          Open <InlineCode>http://YOUR_IP:PORT</InlineCode> in your browser. If it doesn&apos;t load, check the{" "}
-          <strong>Firewall</strong> section in your server&apos;s settings on the Vultr dashboard — none is active by default, but if you
-          created one, make sure your app&apos;s port is allowed.
+          You don&apos;t need to open another terminal or do anything beforehand. You&apos;ll see the server start downloading files
+          automatically (<InlineCode>Pulling</InlineCode>, <InlineCode>Downloaded</InlineCode>, <InlineCode>Started</InlineCode>).
+          When it finishes and the line <InlineCode>root@vultr:~/app#</InlineCode> shows up again, the tool is running.
         </p>
       </>
     ),
   },
   {
     icon: Globe,
-    title: "7. Point your own domain and enable HTTPS",
-    time: "~10 min",
+    title: "8. Open your tool in the browser",
+    time: "~1 min",
     body: (
       <>
-        <p>
-          Create an <strong>A</strong> record with your domain provider pointing to your Vultr server&apos;s Main IP.
-        </p>
+        <p>Open a new tab in your usual web browser (Chrome, Firefox, Safari). You need two pieces of information to enter:</p>
+        <ul className="mt-2 list-disc space-y-1.5 pl-5">
+          <li>
+            <strong>The IP:</strong> the same one you copied in Vultr&apos;s step 3 (e.g. <InlineCode>149.28.45.12</InlineCode>).
+          </li>
+          <li>
+            <strong>The Port:</strong> check it on the tool&apos;s page on AltFreeStack (under the title or in the specs you&apos;ll
+            see a Port: field followed by a number, e.g. 3000 or 8080).
+          </li>
+        </ul>
+        <p className="mt-2">In the address bar, type:</p>
+        <CodeBlock>http://YOUR_IP:PORT</CodeBlock>
         <p className="mt-2">
-          For free, automatic HTTPS, use{" "}
-          <a href="https://caddyserver.com" target="_blank" rel="noopener noreferrer" className="font-medium text-emerald-700 hover:underline">
-            Caddy
-          </a>{" "}
-          as a reverse proxy:
+          (Real example: if your IP is 149.28.45.12 and the port is 3000, type{" "}
+          <InlineCode>http://149.28.45.12:3000</InlineCode>). Press Enter. Done! You&apos;ll see your app&apos;s welcome screen,
+          ready for you to create your admin user and start using it.
         </p>
-        <CodeBlock>{`yourdomain.com {
-  reverse_proxy localhost:YOUR_APP_PORT
-}`}</CodeBlock>
       </>
     ),
   },
   {
     icon: RefreshCw,
-    title: "8. Maintenance",
+    title: "How do you manage it going forward?",
     time: "recurring",
     body: (
       <>
-        <CodeBlock>{`docker compose pull
-docker compose up -d`}</CodeBlock>
-        <p className="mt-2">
-          Back up the folders under <InlineCode>volumes:</InlineCode> periodically — that&apos;s where your database and files live.
+        <p>
+          If you ever need to do maintenance, just open your terminal, connect like in step 4, go into the folder (
+          <InlineCode>cd app</InlineCode>) and use these commands:
         </p>
+        <ul className="mt-2 list-disc space-y-1.5 pl-5">
+          <li>
+            Check it&apos;s still running or look at errors: <InlineCode>docker compose ps</InlineCode> or{" "}
+            <InlineCode>docker compose logs -f</InlineCode>
+          </li>
+          <li>
+            Turn the tool off: <InlineCode>docker compose down</InlineCode>
+          </li>
+          <li>
+            Update to the latest version: <InlineCode>docker compose pull && docker compose up -d</InlineCode>
+          </li>
+        </ul>
       </>
     ),
   },
@@ -749,94 +936,103 @@ const railwayEs: GuideStep[] = [
     body: (
       <>
         <p>
-          Entra en railway.app y pulsa <strong>Login</strong> → inicia sesión con tu cuenta de GitHub (es el método principal,
-          Railway está pensado para desplegar directo desde repositorios e imágenes). No hace falta tarjeta para empezar, pero
-          para pasar al plan Hobby ($5/mes, necesario para mantener un servicio activo permanentemente) tendrás que añadir una.
+          <strong>¿Qué diferencia tiene Railway?</strong> Es una plataforma PaaS (plataforma como servicio) — no necesitas usar la
+          consola ni conectarte por SSH, todo el despliegue se hace mediante clics y formularios visuales desde su propia página
+          web.
+        </p>
+        <p className="mt-2">
+          Entra en tu navegador a railway.app (o railway.com). Haz clic en el botón superior derecho <strong>Login</strong> o{" "}
+          <strong>Start a New Project</strong>. Selecciona <strong>Continue with GitHub</strong> (es la forma recomendada para no
+          tener fricciones de permisos) y acepta los términos de uso.
         </p>
       </>
     ),
   },
   {
-    icon: Rocket,
-    title: "2. El camino más rápido: la plantilla oficial de la herramienta",
+    icon: MousePointerClick,
+    title: "2. Usa el botón de 1-Click Deploy de AltFreeStack",
     time: "~2 min",
     body: (
       <>
         <p>
-          La forma más fiable de desplegar en Railway es con su plantilla oficial verificada: en la ficha de la herramienta en
-          AltFreeStack, busca el botón <strong>&quot;Desplegar en Railway&quot;</strong> — aparece cuando esa herramienta tiene una
-          plantilla verificada — y púlsalo. Te lleva directo a Railway con todos los servicios (app + base de datos si hace falta)
-          y variables ya preconfiguradas; solo tienes que revisar los valores y pulsar <strong>Deploy</strong>.
+          (La forma más rápida si la herramienta cuenta con plantilla directa): en la ficha de la herramienta en AltFreeStack,
+          localiza la sección de despliegue y haz clic en el botón <strong>Deploy on Railway</strong> (o botón de 1-Click). Se te
+          abrirá automáticamente una pestaña en Railway mostrando la plantilla de la herramienta.
         </p>
         <p className="mt-2">
-          Si tu herramienta todavía no tiene una plantilla verificada en nuestro catálogo, sigue el paso 3 para desplegarla a mano,
-          o usa las guías de DigitalOcean/Vultr de esta misma página, que funcionan con el docker-compose.yml de cualquier
-          herramienta.
+          Haz clic en el botón morado <strong>Deploy Now</strong> (o <strong>Configure</strong>). Si la plantilla te pide campos
+          obligatorios marcados con asterisco (como contraseñas, URLs o tokens), reemplaza cualquier valor por defecto con
+          contraseñas seguras creadas por ti o haz clic en el botón de candado/generador si Railway te lo ofrece al lado del campo.
+          Haz clic en <strong>Deploy</strong>.
         </p>
       </>
     ),
   },
   {
     icon: Package,
-    title: "3. Alternativa: desplegar manualmente desde un docker-compose.yml",
-    time: "~10 min",
+    title: "3. Alternativa: desplegar mediante Dockerfile / Imagen",
+    time: "~3 min",
     body: (
       <>
         <p>
-          En el panel de Railway, pulsa <strong>New Project</strong> → <strong>Empty Project</strong>. Dentro del proyecto, por cada
-          servicio que aparezca en el docker-compose.yml de tu herramienta:
+          (Si la herramienta no tiene botón preconfigurado y quieres lanzarla desde un panel limpio): en tu panel de Railway, pulsa
+          en <strong>+ New Project</strong>. Selecciona la opción <strong>Deploy from Docker Image</strong> o{" "}
+          <strong>Empty Project</strong>.
         </p>
-        <ul className="mt-2 list-disc space-y-1.5 pl-5">
-          <li>
-            Para el servicio principal de la app: pulsa <strong>+ Create</strong> → <strong>Docker Image</strong> y pega el nombre
-            de la imagen que aparece en la línea <InlineCode>image:</InlineCode> del docker-compose.yml (ej.{" "}
-            <InlineCode>n8nio/n8n:latest</InlineCode>).
-          </li>
-          <li>
-            Para una base de datos (Postgres, MySQL, Redis...): es más simple pulsar <strong>+ Create</strong> →{" "}
-            <strong>Database</strong> y elegirla del catálogo gestionado de Railway, en vez de crear tú el contenedor a mano.
-          </li>
-        </ul>
-      </>
-    ),
-  },
-  {
-    icon: FileCode,
-    title: "4. Configura las variables de entorno",
-    time: "~5 min",
-    body: (
-      <>
-        <p>
-          Entra al servicio de la app → pestaña <strong>Variables</strong> → <strong>+ New Variable</strong>. Añade cada línea del
-          docker-compose.yml original que tenga un valor <InlineCode>change-me...</InlineCode> (cámbialo por uno real y seguro), más
-          las que conecten un servicio con otro — por ejemplo la URL de la base de datos, que Railway te muestra ya lista en la
-          pestaña &quot;Variables&quot; de ese servicio de base de datos, para copiar y pegar.
+        <p className="mt-2">
+          Si elegiste Deploy from Docker Image, escribe el nombre de la imagen que aparece en el archivo Compose de AltFreeStack
+          (por ejemplo: <InlineCode>ghost:latest</InlineCode> o <InlineCode>plausible/analytics:latest</InlineCode>) y presiona
+          Enter. Railway creará una caja en un lienzo visual y comenzará a desplegarla.
         </p>
       </>
     ),
   },
   {
     icon: Globe,
-    title: "5. Genera tu dominio y comprueba que está activo",
-    time: "~3 min",
+    title: "4. Genera un dominio público para entrar",
+    time: "~1 min",
     body: (
       <>
         <p>
-          En el servicio de la app → <strong>Settings</strong> → <strong>Networking</strong> → <strong>Generate Domain</strong> te
-          da gratis un subdominio <InlineCode>*.up.railway.app</InlineCode> con HTTPS automático. Si prefieres el tuyo propio, usa{" "}
-          <strong>+ Custom Domain</strong> — te pedirá crear un registro CNAME en tu proveedor de DNS.
+          A diferencia de un VPS como Vultr o DigitalOcean donde entras por una IP numérica, en Railway la plataforma te regala una
+          dirección web pública (<InlineCode>.up.railway.app</InlineCode>) con HTTPS y candado seguro ya activado:
         </p>
+        <ul className="mt-2 list-disc space-y-1.5 pl-5">
+          <li>En el panel de Railway, haz clic sobre la tarjeta de tu servicio recién desplegado.</li>
+          <li>
+            Ve a la pestaña <strong>Settings</strong> (Ajustes) en el menú lateral de esa tarjeta.
+          </li>
+          <li>
+            Baja hasta la sección llamada <strong>Networking</strong> o <strong>Public Networking</strong>.
+          </li>
+          <li>
+            Verás un botón que dice <strong>Generate Domain</strong>. Haz clic sobre él — aparecerá un enlace web terminado en{" "}
+            <InlineCode>.up.railway.app</InlineCode> (por ejemplo: <InlineCode>mi-app-production.up.railway.app</InlineCode>).
+          </li>
+        </ul>
         <p className="mt-2">
-          Ve a la pestaña <strong>Deployments</strong> para ver los logs en vivo — cuando el estado pase de
-          &quot;Building&quot;/&quot;Deploying&quot; a <strong>Active</strong>, tu herramienta ya está accesible en la URL de
-          arriba.
+          Si la ficha de AltFreeStack indicaba un puerto específico (por ejemplo 3000 u 8080), asegúrate en ese mismo apartado de
+          que el campo <strong>Port</strong> tenga escrito ese mismo número.
+        </p>
+      </>
+    ),
+  },
+  {
+    icon: CheckCircle2,
+    title: "5. Abre tu herramienta en el navegador",
+    time: "~1 min",
+    body: (
+      <>
+        <p>
+          Haz clic directamente sobre el enlace que Railway te acaba de generar en azul. Se abrirá la aplicación en una pestaña
+          nueva, protegida con certificado SSL (HTTPS) y completamente lista para configurar tu usuario inicial.
         </p>
       </>
     ),
   },
   {
     icon: RefreshCw,
-    title: "6. Mantenimiento",
+    title: "¿Cómo gestionarla en el futuro?",
     time: "recurrente",
     body: (
       <>
@@ -859,97 +1055,106 @@ const railwayEn: GuideStep[] = [
     body: (
       <>
         <p>
-          Go to railway.app and click <strong>Login</strong> → sign in with your GitHub account (it&apos;s the main method — Railway is
-          built around deploying directly from repos and images). No card needed to start, but to move to the Hobby plan ($5/mo,
-          needed to keep a service running permanently) you&apos;ll have to add one.
+          <strong>What&apos;s different about Railway?</strong> It&apos;s a PaaS (platform as a service) — you don&apos;t need to
+          use a console or connect over SSH, the entire deployment happens through clicks and visual forms on their own website.
+        </p>
+        <p className="mt-2">
+          Go to railway.app (or railway.com) in your browser. Click the <strong>Login</strong> or{" "}
+          <strong>Start a New Project</strong> button in the top right. Select <strong>Continue with GitHub</strong> (it&apos;s the
+          recommended way to avoid permission friction) and accept the terms of use.
         </p>
       </>
     ),
   },
   {
-    icon: Rocket,
-    title: "2. The fastest path: the tool's official template",
+    icon: MousePointerClick,
+    title: "2. Use AltFreeStack's 1-Click Deploy button",
     time: "~2 min",
     body: (
       <>
         <p>
-          The most reliable way to deploy on Railway is its official verified template: on the tool&apos;s page on AltFreeStack, look
-          for the <strong>&quot;Deploy on Railway&quot;</strong> button — it shows up when that tool has a verified template — and click it.
-          It takes you straight to Railway with every service (app + database if needed) and variable already pre-filled; just
-          review the values and click <strong>Deploy</strong>.
+          (The fastest way, if the tool has a direct template): on the tool&apos;s page on AltFreeStack, find the deployment
+          section and click the <strong>Deploy on Railway</strong> button (or 1-Click button). A Railway tab will open automatically
+          showing the tool&apos;s template.
         </p>
         <p className="mt-2">
-          If your tool doesn&apos;t have a verified template in our catalog yet, follow step 3 to deploy it manually, or use the
-          DigitalOcean/Vultr guides on this same page, which work with any tool&apos;s docker-compose.yml.
+          Click the purple <strong>Deploy Now</strong> button (or <strong>Configure</strong>). If the template asks for required
+          fields marked with an asterisk (like passwords, URLs or tokens), replace any default value with secure passwords you
+          create, or click the lock/generator button if Railway offers one next to the field. Click <strong>Deploy</strong>.
         </p>
       </>
     ),
   },
   {
     icon: Package,
-    title: "3. Alternative: deploy manually from a docker-compose.yml",
-    time: "~10 min",
+    title: "3. Alternative: deploy via a Dockerfile / Image",
+    time: "~3 min",
     body: (
       <>
         <p>
-          In the Railway dashboard, click <strong>New Project</strong> → <strong>Empty Project</strong>. Inside the project, for
-          each service in your tool&apos;s docker-compose.yml:
+          (If the tool has no pre-configured button and you want to launch it from a clean panel): on your Railway dashboard, click{" "}
+          <strong>+ New Project</strong>. Select <strong>Deploy from Docker Image</strong> or <strong>Empty Project</strong>.
         </p>
-        <ul className="mt-2 list-disc space-y-1.5 pl-5">
-          <li>
-            For the main app service: click <strong>+ Create</strong> → <strong>Docker Image</strong> and paste the image name from
-            the <InlineCode>image:</InlineCode> line of the docker-compose.yml (e.g. <InlineCode>n8nio/n8n:latest</InlineCode>).
-          </li>
-          <li>
-            For a database (Postgres, MySQL, Redis...): it&apos;s simpler to click <strong>+ Create</strong> → <strong>Database</strong>{" "}
-            and pick it from Railway&apos;s managed catalog instead of building the container yourself.
-          </li>
-        </ul>
-      </>
-    ),
-  },
-  {
-    icon: FileCode,
-    title: "4. Set the environment variables",
-    time: "~5 min",
-    body: (
-      <>
-        <p>
-          Open the app service → <strong>Variables</strong> tab → <strong>+ New Variable</strong>. Add every line from the original
-          docker-compose.yml with a <InlineCode>change-me...</InlineCode> value (replace it with a real, secure one), plus the ones
-          that connect one service to another — for example the database URL, which Railway already shows you ready to copy on
-          that database service&apos;s &quot;Variables&quot; tab.
+        <p className="mt-2">
+          If you chose Deploy from Docker Image, type the image name shown in AltFreeStack&apos;s Compose file (for example:{" "}
+          <InlineCode>ghost:latest</InlineCode> or <InlineCode>plausible/analytics:latest</InlineCode>) and press Enter. Railway
+          will create a box on a visual canvas and start deploying it.
         </p>
       </>
     ),
   },
   {
     icon: Globe,
-    title: "5. Generate your domain and confirm it's live",
-    time: "~3 min",
+    title: "4. Generate a public domain to access it",
+    time: "~1 min",
     body: (
       <>
         <p>
-          On the app service → <strong>Settings</strong> → <strong>Networking</strong> → <strong>Generate Domain</strong> gives you
-          a free <InlineCode>*.up.railway.app</InlineCode> subdomain with automatic HTTPS. If you&apos;d rather use your own, click{" "}
-          <strong>+ Custom Domain</strong> — it&apos;ll ask you to create a CNAME record with your DNS provider.
+          Unlike a VPS such as Vultr or DigitalOcean where you connect through a numeric IP, on Railway the platform gives you a
+          free public web address (<InlineCode>.up.railway.app</InlineCode>) with HTTPS and a secure lock already enabled:
         </p>
+        <ul className="mt-2 list-disc space-y-1.5 pl-5">
+          <li>On the Railway dashboard, click your recently deployed service&apos;s card.</li>
+          <li>
+            Go to the <strong>Settings</strong> tab in that card&apos;s sidebar.
+          </li>
+          <li>
+            Scroll down to the section called <strong>Networking</strong> or <strong>Public Networking</strong>.
+          </li>
+          <li>
+            You&apos;ll see a button that says <strong>Generate Domain</strong>. Click it — a web link ending in{" "}
+            <InlineCode>.up.railway.app</InlineCode> will appear (for example: <InlineCode>my-app-production.up.railway.app</InlineCode>).
+          </li>
+        </ul>
         <p className="mt-2">
-          Check the <strong>Deployments</strong> tab for live logs — once the status moves from &quot;Building&quot;/&quot;Deploying&quot; to{" "}
-          <strong>Active</strong>, your tool is already reachable at the URL above.
+          If the AltFreeStack page mentioned a specific port (e.g. 3000 or 8080), make sure the <strong>Port</strong> field in that
+          same section has that same number set.
+        </p>
+      </>
+    ),
+  },
+  {
+    icon: CheckCircle2,
+    title: "5. Open your tool in the browser",
+    time: "~1 min",
+    body: (
+      <>
+        <p>
+          Click directly on the blue link Railway just generated for you. The app will open in a new tab, secured with an SSL
+          certificate (HTTPS) and fully ready for you to set up your initial user.
         </p>
       </>
     ),
   },
   {
     icon: RefreshCw,
-    title: "6. Maintenance",
+    title: "How do you manage it going forward?",
     time: "recurring",
     body: (
       <>
         <p>
-          Railway doesn&apos;t need manual update commands: if you connected a GitHub repo, every push redeploys automatically; if you
-          used a plain Docker image, change the tag on the service and click <strong>Redeploy</strong>. Railway&apos;s managed
+          Railway doesn&apos;t need manual update commands: if you connected a GitHub repo, every push redeploys automatically; if
+          you used a plain Docker image, change the tag on the service and click <strong>Redeploy</strong>. Railway&apos;s managed
           databases back up automatically — check the retention plan under <strong>Settings → Backups</strong> on that service.
         </p>
       </>
