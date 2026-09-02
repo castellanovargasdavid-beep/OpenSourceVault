@@ -9,6 +9,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { LogoImage } from "@/components/site/logo-image";
 import { DockerComposeBlock } from "@/components/site/docker-compose-block";
 import { OneClickDeploy } from "@/components/site/one-click-deploy";
+import { HowToDeployGuide } from "@/components/site/how-to-deploy-guide";
 import { JsonLd } from "@/components/site/json-ld";
 import { stackIconMap } from "@/lib/stack-icons";
 import { categoryColors } from "@/lib/category-colors";
@@ -73,7 +74,18 @@ function StackToolProfile({ tool: rawTool, locale }: { tool: OpenSourceTool; loc
       </div>
 
       <OneClickDeploy targets={tool.oneClickDeploy} locale={locale} />
-      {tool.dockerCompose && <DockerComposeBlock code={tool.dockerCompose} locale={locale} />}
+      {tool.dockerCompose && (
+        <>
+          <HowToDeployGuide
+            toolName={tool.name}
+            toolSlug={tool.slug}
+            dockerCompose={tool.dockerCompose}
+            oneClickDeploy={tool.oneClickDeploy}
+            locale={locale}
+          />
+          <DockerComposeBlock code={tool.dockerCompose} locale={locale} />
+        </>
+      )}
 
       <Link
         href={localeHref(`/tool/${tool.slug}`, locale)}

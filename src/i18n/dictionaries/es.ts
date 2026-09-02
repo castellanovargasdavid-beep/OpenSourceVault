@@ -126,6 +126,54 @@ const es = {
     copyError: "No se pudo copiar",
     randomizedNote: "Contraseñas generadas al azar en tu navegador — no se envían a ningún servidor. Guárdalas en un lugar seguro antes de copiar.",
   },
+  howToDeploy: {
+    trigger: "¿Cómo funciona esto? Guía paso a paso",
+    title: (tool: string) => `Cómo desplegar ${tool}`,
+    subtitle: "Elige tu método de despliegue y sigue los pasos exactos, sin salir de esta página.",
+    close: "Cerrar",
+    tabVps: "VPS auto-hospedado (Docker CLI)",
+    tabCoolify: "Coolify / PaaS",
+    tabOneClick: "Railway / Render / 1-Click",
+    envVarsLabel: "Variables de entorno que debes rellenar",
+    firewallCallout: (port: string | null): string =>
+      port
+        ? `Abre el puerto ${port} (y el 80/443 si vas a poner tu propio dominio con HTTPS) en el firewall de tu servidor.`
+        : "Abre los puertos que declara el docker-compose.yml (sección \"ports:\") en el firewall de tu servidor.",
+    secretsCallout:
+      'Antes de arrancar, cambia todos los valores "change-me..." del docker-compose.yml por secretos aleatorios reales — usa el botón "Generar secretos seguros" del bloque de arriba.',
+    vps: {
+      step1Title: "Conéctate por SSH a tu servidor",
+      step1Command: "ssh user@your-server-ip",
+      step2TitleCompose: (tool: string) => `Crea una carpeta y pega el docker-compose.yml de ${tool}`,
+      step2CommandCompose: (slug: string) => `mkdir ${slug} && cd ${slug} && nano docker-compose.yml`,
+      step2DescCompose: 'Pega ahí el contenido del bloque docker-compose.yml de arriba (usa su botón "Copiar"), guarda y cierra.',
+      step2TitleScript: "Copia y ejecuta el script de instalación de arriba",
+      step2DescScript: "Esta herramienta se instala con su propio instalador oficial en vez de un docker-compose.yml suelto — usa el botón \"Copiar\" del bloque de arriba y pégalo en tu terminal SSH.",
+      step3Title: "Arranca los contenedores",
+      step3Command: "docker compose up -d",
+      step4Title: "Comprueba que está corriendo",
+      step4Command: "docker compose ps && docker compose logs -f",
+      step4CommandGeneric: "docker ps",
+    },
+    coolify: {
+      step1Title: "En el panel de Coolify, crea un nuevo recurso",
+      step1Desc: 'Clic en "+ New Resource" → "Docker Compose".',
+      step2Title: "Pega la configuración",
+      step2Desc: "Pega el docker-compose.yml de arriba y declara las variables de entorno resaltadas abajo.",
+      step3Title: "Asigna el dominio y despliega",
+      step3Desc: 'Escribe tu dominio público (Coolify emite el certificado HTTPS automáticamente) y pulsa "Deploy".',
+    },
+    oneClick: {
+      step1Title: (platform: string) => `Pulsa el botón oficial "Desplegar en ${platform}"`,
+      step1Desc: "Lo encontrarás justo encima de esta guía.",
+      step2Title: "Rellena las variables mínimas requeridas",
+      step2Desc: "La plataforma te las pedirá en un formulario antes de crear el servicio.",
+      step3Title: "Espera a que el contenedor quede activo",
+      step3Desc: 'El estado pasará de "Building"/"Deploying" a "Active"/"Running" en unos minutos.',
+      noTemplate: (tool: string) =>
+        `Todavía no tenemos una plantilla de 1-click verificada para ${tool}. Usa la pestaña "VPS" o "Coolify" de arriba — el mismo docker-compose.yml funciona en cualquiera de las dos.`,
+    },
+  },
   notFound: {
     code: "404",
     title: "No encontramos esa página",

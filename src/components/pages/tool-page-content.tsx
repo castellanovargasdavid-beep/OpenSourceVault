@@ -10,6 +10,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { AffiliateHostingWidget } from "@/components/site/affiliate-hosting-widget";
 import { DockerComposeBlock } from "@/components/site/docker-compose-block";
 import { OneClickDeploy } from "@/components/site/one-click-deploy";
+import { HowToDeployGuide } from "@/components/site/how-to-deploy-guide";
 import { RepoHealthBadge } from "@/components/site/repo-health-badge";
 import { JsonLd } from "@/components/site/json-ld";
 import { LogoImage } from "@/components/site/logo-image";
@@ -285,6 +286,13 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
                       {t.toolPage.dockerGuideLink}
                     </Link>
                   </p>
+                  <HowToDeployGuide
+                    toolName={tool.name}
+                    toolSlug={tool.slug}
+                    dockerCompose={tool.dockerCompose}
+                    oneClickDeploy={tool.oneClickDeploy}
+                    locale={locale}
+                  />
                   <DockerComposeBlock code={tool.dockerCompose} locale={locale} />
                 </>
               )}

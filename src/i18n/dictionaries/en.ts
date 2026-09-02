@@ -128,6 +128,54 @@ const en: Dictionary = {
     copyError: "Couldn't copy",
     randomizedNote: "Passwords generated randomly in your browser — never sent to any server. Save them somewhere safe before copying.",
   },
+  howToDeploy: {
+    trigger: "How does this work? Step-by-step guide",
+    title: (tool: string) => `How to deploy ${tool}`,
+    subtitle: "Pick your deployment method and follow the exact steps, without leaving this page.",
+    close: "Close",
+    tabVps: "Self-Hosted VPS (Docker CLI)",
+    tabCoolify: "Coolify / PaaS",
+    tabOneClick: "Railway / Render / 1-Click",
+    envVarsLabel: "Environment variables you need to fill in",
+    firewallCallout: (port: string | null) =>
+      port
+        ? `Open port ${port} (and 80/443 if you're pointing your own domain with HTTPS) in your server's firewall.`
+        : 'Open the ports declared in the docker-compose.yml ("ports:" section) in your server\'s firewall.',
+    secretsCallout:
+      'Before starting it up, replace every "change-me..." value in the docker-compose.yml with a real random secret — use the "Generate secure secrets" button on the block above.',
+    vps: {
+      step1Title: "Connect to your server via SSH",
+      step1Command: "ssh user@your-server-ip",
+      step2TitleCompose: (tool: string) => `Create a folder and paste ${tool}'s docker-compose.yml`,
+      step2CommandCompose: (slug: string) => `mkdir ${slug} && cd ${slug} && nano docker-compose.yml`,
+      step2DescCompose: 'Paste the docker-compose.yml block from above in there (use its "Copy" button), then save and exit.',
+      step2TitleScript: "Copy and run the installation script above",
+      step2DescScript: "This tool installs via its own official installer instead of a plain docker-compose.yml — use the \"Copy\" button on the block above and paste it into your SSH terminal.",
+      step3Title: "Start the containers",
+      step3Command: "docker compose up -d",
+      step4Title: "Check that it's running",
+      step4Command: "docker compose ps && docker compose logs -f",
+      step4CommandGeneric: "docker ps",
+    },
+    coolify: {
+      step1Title: "In the Coolify dashboard, create a new resource",
+      step1Desc: 'Click "+ New Resource" → "Docker Compose".',
+      step2Title: "Paste the configuration",
+      step2Desc: "Paste the docker-compose.yml from above and declare the environment variables highlighted below.",
+      step3Title: "Set the domain and deploy",
+      step3Desc: 'Enter your public domain (Coolify issues the HTTPS certificate automatically) and click "Deploy".',
+    },
+    oneClick: {
+      step1Title: (platform: string) => `Click the official "Deploy on ${platform}" button`,
+      step1Desc: "You'll find it right above this guide.",
+      step2Title: "Fill in the minimum required variables",
+      step2Desc: "The platform will ask for them in a form before creating the service.",
+      step3Title: "Wait for the container to go live",
+      step3Desc: 'Its status will move from "Building"/"Deploying" to "Active"/"Running" within a few minutes.',
+      noTemplate: (tool: string) =>
+        `We don't have a verified 1-click template for ${tool} yet. Use the "VPS" or "Coolify" tab above instead — the same docker-compose.yml works on either.`,
+    },
+  },
   notFound: {
     code: "404",
     title: "We couldn't find that page",

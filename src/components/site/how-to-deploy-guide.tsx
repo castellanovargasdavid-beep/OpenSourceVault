@@ -1,0 +1,292 @@
+"use client";
+
+import * as React from "react";
+import { createPortal } from "react-dom";
+import { Terminal, X, Copy, Check, AlertTriangle, Rocket } from "lucide-react";
+import type { OneClickDeployTarget } from "@/lib/types";
+import { extractDefaultPort, extractEnvPlaceholders, isComposeFile } from "@/lib/deploy-guide";
+import { cn } from "@/lib/utils";
+import { getDictionary } from "@/i18n/get-dictionary";
+import type { Locale } from "@/i18n/config";
+
+type Tab = "vps" | "coolify" | "oneClick";
+
+function CommandLine({ command, locale }: { command: string; locale: Locale }) {
+  const t = getDictionary(locale);
+  const [copied, setCopied] = React.useState(false);
+  const [error, setError] = React.useState(false);
+
+  async function handleCopy() {
+    try {
+      await navigator.clipboard.writeText(command);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setError(true);
+      setTimeout(() => setError(false), 2000);
+    }
+  }
+
+  return (
+    <div className="flex items-center justify-between gap-2 rounded-lg border border-slate-700/60 bg-slate-900 px-3 py-2.5">
+      <code className="flex-1 overflow-x-auto whitespace-pre text-xs text-emerald-300">{command}</code>
+      <button
+        type="button"
+        onClick={handleCopy}
+        aria-label={t.dockerBlock.copy}
+        className={cn("shrink-0 rounded-md p-1.5 hover:bg-slate-800", error ? "text-red-400" : "text-slate-300")}
+      >
+        {error ? <AlertTriangle size={14} /> : copied ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
+      </button>
+    </div>
+  );
+}
+
+function Step({
+  number,
+  title,
+  desc,
+  command,
+  locale,
+}: {
+  number: number;
+  title: string;
+  desc?: string;
+  command?: string;
+  locale: Locale;
+}) {
+  return (
+    <div className="flex gap-3">
+      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-xs font-semibold text-emerald-800">
+        {number}
+      </span>
+      <div className="flex-1 space-y-2 pb-1">
+        <p className="text-sm font-medium text-slate-900">{title}</p>
+        {desc && <p className="text-sm text-slate-600">{desc}</p>}
+        {command && <CommandLine command={command} locale={locale} />}
+      </div>
+    </div>
+  );
+}
+
+function Callout({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2.5 text-xs text-amber-800">
+      <AlertTriangle size={14} className="mt-0.5 shrink-0" />
+      <span>{children}</span>
+    </div>
+  );
+}
+
+function EnvVarsList({ envVars, locale }: { envVars: string[]; locale: Locale }) {
+  const t = getDictionary(locale);
+  if (envVars.length === 0) return null;
+  return (
+    <div>
+      <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-600">{t.howToDeploy.envVarsLabel}</p>
+      <div className="flex flex-wrap gap-1.5">
+        {envVars.map((key) => (
+          <code key={key} className="rounded border border-slate-200 bg-slate-100 px-1.5 py-0.5 text-[11px] text-slate-700">
+            {key}
+          </code>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function HowToDeployModal({
+  toolName,
+  toolSlug,
+  dockerCompose,
+  oneClickDeploy,
+  locale,
+  onClose,
+}: {
+  toolName: string;
+  toolSlug: string;
+  dockerCompose: string;
+  oneClickDeploy?: OneClickDeployTarget[];
+  locale: Locale;
+  onClose: () => void;
+}) {
+  const t = getDictionary(locale);
+  const dialogRef = React.useRef<HTMLDivElement>(null);
+  const [tab, setTab] = React.useState<Tab>("vps");
+
+  const port = React.useMemo(() => extractDefaultPort(dockerCompose), [dockerCompose]);
+  const envVars = React.useMemo(() => extractEnvPlaceholders(dockerCompose), [dockerCompose]);
+  const composeFile = React.useMemo(() => isComposeFile(dockerCompose), [dockerCompose]);
+
+  React.useEffect(() => {
+    function handleKey(e: KeyboardEvent) {
+      if (e.key === "Escape") onClose();
+    }
+    document.addEventListener("keydown", handleKey);
+    document.body.style.overflow = "hidden";
+    dialogRef.current?.focus();
+    return () => {
+      document.removeEventListener("keydown", handleKey);
+      document.body.style.overflow = "";
+    };
+  }, [onClose]);
+
+  const tabs: { id: Tab; label: string }[] = [
+    { id: "vps", label: t.howToDeploy.tabVps },
+    { id: "coolify", label: t.howToDeploy.tabCoolify },
+    { id: "oneClick", label: t.howToDeploy.tabOneClick },
+  ];
+
+  return createPortal(
+    <div
+      className="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-4"
+      style={{ backgroundColor: "rgba(15, 23, 42, 0.5)" }}
+      onClick={onClose}
+      role="presentation"
+    >
+      <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="how-to-deploy-title"
+        tabIndex={-1}
+        onClick={(e) => e.stopPropagation()}
+        className="flex max-h-[92vh] w-full flex-col overflow-hidden rounded-t-2xl border border-slate-200 bg-white shadow-2xl outline-none sm:max-w-2xl sm:rounded-2xl"
+      >
+        <div className="flex items-start justify-between gap-4 border-b border-slate-100 px-5 py-4">
+          <div>
+            <h2 id="how-to-deploy-title" className="text-lg font-semibold text-slate-900">
+              {t.howToDeploy.title(toolName)}
+            </h2>
+            <p className="mt-0.5 text-sm text-slate-600">{t.howToDeploy.subtitle}</p>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label={t.howToDeploy.close}
+            className="shrink-0 rounded-full p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600"
+          >
+            <X size={18} />
+          </button>
+        </div>
+
+        <div className="flex gap-1 overflow-x-auto border-b border-slate-100 px-3 pt-2">
+          {tabs.map((tabItem) => (
+            <button
+              key={tabItem.id}
+              type="button"
+              onClick={() => setTab(tabItem.id)}
+              className={cn(
+                "shrink-0 whitespace-nowrap rounded-t-lg px-3 py-2 text-sm font-medium transition-colors",
+                tab === tabItem.id ? "border-b-2 border-emerald-600 text-emerald-700" : "text-slate-500 hover:text-slate-700"
+              )}
+            >
+              {tabItem.label}
+            </button>
+          ))}
+        </div>
+
+        <div className="flex-1 space-y-5 overflow-y-auto px-5 py-5">
+          {tab === "vps" && (
+            <>
+              <Step number={1} title={t.howToDeploy.vps.step1Title} command={t.howToDeploy.vps.step1Command} locale={locale} />
+              {composeFile ? (
+                <Step
+                  number={2}
+                  title={t.howToDeploy.vps.step2TitleCompose(toolName)}
+                  desc={t.howToDeploy.vps.step2DescCompose}
+                  command={t.howToDeploy.vps.step2CommandCompose(toolSlug)}
+                  locale={locale}
+                />
+              ) : (
+                <Step number={2} title={t.howToDeploy.vps.step2TitleScript} desc={t.howToDeploy.vps.step2DescScript} locale={locale} />
+              )}
+              {composeFile && (
+                <Step number={3} title={t.howToDeploy.vps.step3Title} command={t.howToDeploy.vps.step3Command} locale={locale} />
+              )}
+              <Step
+                number={composeFile ? 4 : 3}
+                title={t.howToDeploy.vps.step4Title}
+                command={composeFile ? t.howToDeploy.vps.step4Command : t.howToDeploy.vps.step4CommandGeneric}
+                locale={locale}
+              />
+              <Callout>{t.howToDeploy.firewallCallout(port)}</Callout>
+              {envVars.length > 0 && <Callout>{t.howToDeploy.secretsCallout}</Callout>}
+            </>
+          )}
+
+          {tab === "coolify" && (
+            <>
+              <Step number={1} title={t.howToDeploy.coolify.step1Title} desc={t.howToDeploy.coolify.step1Desc} locale={locale} />
+              <Step number={2} title={t.howToDeploy.coolify.step2Title} desc={t.howToDeploy.coolify.step2Desc} locale={locale} />
+              <Step number={3} title={t.howToDeploy.coolify.step3Title} desc={t.howToDeploy.coolify.step3Desc} locale={locale} />
+              <EnvVarsList envVars={envVars} locale={locale} />
+              {envVars.length > 0 && <Callout>{t.howToDeploy.secretsCallout}</Callout>}
+            </>
+          )}
+
+          {tab === "oneClick" &&
+            (oneClickDeploy && oneClickDeploy.length > 0 ? (
+              <>
+                {oneClickDeploy.map((target) => (
+                  <div key={target.platform} className="space-y-3 rounded-xl border border-slate-100 p-4">
+                    <p className="flex items-center gap-1.5 text-sm font-semibold text-slate-900">
+                      <Rocket size={14} className="text-violet-600" />
+                      {target.platform}
+                    </p>
+                    <Step number={1} title={t.howToDeploy.oneClick.step1Title(target.platform)} desc={t.howToDeploy.oneClick.step1Desc} locale={locale} />
+                    <Step number={2} title={t.howToDeploy.oneClick.step2Title} desc={t.howToDeploy.oneClick.step2Desc} locale={locale} />
+                    <Step number={3} title={t.howToDeploy.oneClick.step3Title} desc={t.howToDeploy.oneClick.step3Desc} locale={locale} />
+                  </div>
+                ))}
+                <EnvVarsList envVars={envVars} locale={locale} />
+              </>
+            ) : (
+              <Callout>{t.howToDeploy.oneClick.noTemplate(toolName)}</Callout>
+            ))}
+        </div>
+      </div>
+    </div>,
+    document.body
+  );
+}
+
+export function HowToDeployGuide({
+  toolName,
+  toolSlug,
+  dockerCompose,
+  oneClickDeploy,
+  locale,
+}: {
+  toolName: string;
+  toolSlug: string;
+  dockerCompose: string;
+  oneClickDeploy?: OneClickDeployTarget[];
+  locale: Locale;
+}) {
+  const t = getDictionary(locale);
+  const [open, setOpen] = React.useState(false);
+
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className="mb-3 inline-flex items-center gap-1.5 text-sm font-medium text-emerald-700 hover:underline"
+      >
+        <Terminal size={15} />
+        {t.howToDeploy.trigger}
+      </button>
+      {open && (
+        <HowToDeployModal
+          toolName={toolName}
+          toolSlug={toolSlug}
+          dockerCompose={dockerCompose}
+          oneClickDeploy={oneClickDeploy}
+          locale={locale}
+          onClose={() => setOpen(false)}
+        />
+      )}
+    </>
+  );
+}
