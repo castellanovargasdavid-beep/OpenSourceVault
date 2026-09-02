@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { categories, getCategoryBySlug, getCategoryMetaLocalized } from "@/data/categories";
+import { categories, getCategoryBySlugLocalized } from "@/data/categories";
+import { categoriesEn } from "@/data/categories.en";
 import { getToolsByCategoryAll } from "@/data/tools";
 import { siteConfig } from "@/lib/site-config";
 import { getDictionary } from "@/i18n/get-dictionary";
@@ -11,26 +12,26 @@ interface PageProps {
 }
 
 export function generateStaticParams() {
-  return categories.map((category) => ({ category: category.slug }));
+  return categories.map((category) => ({ category: categoriesEn[category.id].slug }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { category: categorySlug } = await params;
-  const category = getCategoryBySlug(categorySlug);
+  const category = getCategoryBySlugLocalized(categorySlug, "en");
   if (!category) return {};
 
-  const localized = getCategoryMetaLocalized(category.id, "en");
   const t = getDictionary("en");
-  const title = t.categoryPage.metaTitle(localized.label);
-  const description = localized.description;
-  const url = `${siteConfig.url}/en/categoria/${category.slug}`;
+  const title = t.categoryPage.metaTitle(category.label);
+  const description = category.description;
+  const url = `${siteConfig.url}/en/categories/${category.slug}`;
+  const esSlug = categories.find((c) => c.id === category.id)!.slug;
 
   return {
     title,
     description,
     alternates: {
       canonical: url,
-      languages: { es: `${siteConfig.url}/categoria/${category.slug}`, en: url },
+      languages: { es: `${siteConfig.url}/categoria/${esSlug}`, en: url },
     },
     openGraph: { title, description, url },
     twitter: { card: "summary_large_image", title, description },
@@ -39,10 +40,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function CategoryPageEn({ params }: PageProps) {
   const { category: categorySlug } = await params;
-  const category = getCategoryBySlug(categorySlug);
+  const category = getCategoryBySlugLocalized(categorySlug, "en");
   if (!category) notFound();
 
-  const localized = getCategoryMetaLocalized(category.id, "en");
   const categoryTools = getToolsByCategoryAll(category.id);
-  return <CategoryPageContent category={localized} categoryTools={categoryTools} locale="en" />;
+  return <CategoryPageContent category={category} categoryTools={categoryTools} locale="en" />;
 }

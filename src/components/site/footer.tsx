@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { siteConfig } from "@/lib/site-config";
-import { categories } from "@/data/categories";
+import { categories, getCategoryHref } from "@/data/categories";
 import { categoriesEn } from "@/data/categories.en";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { localeHref } from "@/lib/locale-href";
@@ -22,7 +22,7 @@ export function Footer({ locale = "es" }: { locale?: Locale }) {
             {categories.map((category) => (
               <li key={category.id}>
                 <Link
-                  href={localeHref(`/categoria/${category.slug}`, locale)}
+                  href={getCategoryHref(category.id, locale)}
                   className="text-sm text-slate-600 hover:text-emerald-700"
                 >
                   {locale === "en" ? categoriesEn[category.id].label : category.label}

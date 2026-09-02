@@ -1,4 +1,5 @@
 import type { ToolCategory } from "@/lib/types";
+import type { Locale } from "@/i18n/config";
 import { categoriesEn } from "./categories.en";
 
 export interface CategoryMeta {
@@ -133,4 +134,26 @@ export function getCategoryMetaLocalized(id: ToolCategory, locale: "es" | "en"):
     return { ...meta, ...categoriesEn[id] };
   }
   return meta;
+}
+
+/**
+ * Busca una categoría por su slug propio del locale: en inglés el slug vive
+ * en categoriesEn (p.ej. "auth-identity"), no en el `slug` español de
+ * `categories`. Úsalo en la ruta /en/categories/[category] en vez de
+ * getCategoryBySlug.
+ */
+export function getCategoryBySlugLocalized(slug: string, locale: Locale): CategoryMeta | undefined {
+  if (locale === "en") {
+    const id = (Object.keys(categoriesEn) as ToolCategory[]).find((key) => categoriesEn[key].slug === slug);
+    return id ? getCategoryMetaLocalized(id, "en") : undefined;
+  }
+  return getCategoryBySlug(slug);
+}
+
+/** URL indexable de una categoría, distinta por locale (evita mezclar palabras en español en la URL en inglés). */
+export function getCategoryHref(id: ToolCategory, locale: Locale): string {
+  if (locale === "en") {
+    return `/en/categories/${categoriesEn[id].slug}`;
+  }
+  return `/categoria/${getCategoryMeta(id).slug}`;
 }

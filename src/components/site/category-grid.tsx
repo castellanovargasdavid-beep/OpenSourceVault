@@ -1,13 +1,12 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { categories } from "@/data/categories";
+import { categories, getCategoryHref } from "@/data/categories";
 import { categoriesEn } from "@/data/categories.en";
 import { allTools } from "@/data/tools";
 import { categoryColors } from "@/lib/category-colors";
 import { categoryIconMap } from "@/lib/category-icons";
 import { cn } from "@/lib/utils";
 import { getDictionary } from "@/i18n/get-dictionary";
-import { localeHref } from "@/lib/locale-href";
 import type { Locale } from "@/i18n/config";
 
 export function CategoryGrid({ locale = "es" }: { locale?: Locale }) {
@@ -29,7 +28,7 @@ export function CategoryGrid({ locale = "es" }: { locale?: Locale }) {
           return (
             <Link
               key={category.id}
-              href={localeHref(`/categoria/${category.slug}`, locale)}
+              href={getCategoryHref(category.id, locale)}
               className={cn(
                 "group relative flex flex-col gap-3 overflow-hidden rounded-xl border bg-white p-6 transition-all hover:-translate-y-0.5 hover:shadow-lg",
                 palette.border,

@@ -1,6 +1,7 @@
 import { tools } from "@/data/tools";
 import { slugify } from "@/lib/utils";
 import type { OpenSourceTool } from "@/lib/types";
+import type { Locale } from "@/i18n/config";
 
 export interface SaasAlternativeGroup {
   saasSlug: string;
@@ -41,4 +42,14 @@ export function getAllSaasSlugs(): string[] {
 
 export function getSaasAlternatives(saasSlug: string): SaasAlternativeGroup | undefined {
   return getGroups().get(saasSlug);
+}
+
+/**
+ * URL indexable de la página "alternativas a {saas}", distinta por locale
+ * (/alternativas/notion en es, /en/alternatives/notion en en) para no
+ * mezclar palabras en español en la URL en inglés.
+ */
+export function getAlternativeHref(saasName: string, locale: Locale): string {
+  const slug = slugify(saasName);
+  return locale === "en" ? `/en/alternatives/${slug}` : `/alternativas/${slug}`;
 }

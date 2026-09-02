@@ -5,40 +5,30 @@ import { siteConfig } from "@/lib/site-config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { AlternativaPageContent } from "@/components/pages/alternativa-page-content";
 
-const ALTERNATIVA_PREFIX = "alternativa-a-";
-
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-function getSaasSlugFromRouteSlug(routeSlug: string): string | null {
-  if (!routeSlug.startsWith(ALTERNATIVA_PREFIX)) return null;
-  return routeSlug.slice(ALTERNATIVA_PREFIX.length) || null;
-}
-
 export function generateStaticParams() {
-  return getAllSaasSlugs().map((saasSlug) => ({
-    slug: `${ALTERNATIVA_PREFIX}${saasSlug}`,
-  }));
+  return getAllSaasSlugs().map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { slug: routeSlug } = await params;
-  const saasSlug = getSaasSlugFromRouteSlug(routeSlug);
-  const group = saasSlug ? getSaasAlternatives(saasSlug) : undefined;
+  const { slug } = await params;
+  const group = getSaasAlternatives(slug);
   if (!group) return {};
 
   const t = getDictionary("en");
   const title = t.alternativaPage.metaTitle(group.saasName, siteConfig.year);
   const description = t.alternativaPage.metaDescription(group.tools.length, group.saasName);
-  const url = `${siteConfig.url}/en/${ALTERNATIVA_PREFIX}${group.saasSlug}`;
+  const url = `${siteConfig.url}/en/alternatives/${group.saasSlug}`;
 
   return {
     title,
     description,
     alternates: {
       canonical: url,
-      languages: { es: `${siteConfig.url}/${ALTERNATIVA_PREFIX}${group.saasSlug}`, en: url },
+      languages: { es: `${siteConfig.url}/alternativas/${group.saasSlug}`, en: url },
     },
     openGraph: { title, description, url, type: "article" },
     twitter: { card: "summary_large_image", title, description },
@@ -46,9 +36,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function AlternativaPageEn({ params }: PageProps) {
-  const { slug: routeSlug } = await params;
-  const saasSlug = getSaasSlugFromRouteSlug(routeSlug);
-  const group = saasSlug ? getSaasAlternatives(saasSlug) : undefined;
+  const { slug } = await params;
+  const group = getSaasAlternatives(slug);
   if (!group) notFound();
 
   return <AlternativaPageContent group={group} locale="en" />;

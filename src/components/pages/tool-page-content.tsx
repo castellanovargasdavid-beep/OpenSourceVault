@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { Star, GitFork, ExternalLink, Check, X, ArrowRight, PlayCircle } from "lucide-react";
 import { getLocalizedTool } from "@/data/tools";
-import { getCategoryMetaLocalized } from "@/data/categories";
+import { getCategoryMetaLocalized, getCategoryHref } from "@/data/categories";
+import { getAlternativeHref } from "@/lib/alternatives";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { AffiliateHostingWidget } from "@/components/site/affiliate-hosting-widget";
@@ -53,7 +54,7 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
           {t.breadcrumb.home}
         </Link>
         <span className="mx-2">/</span>
-        <Link href={localeHref(`/categoria/${category.slug}`, locale)} className="hover:text-emerald-700">
+        <Link href={getCategoryHref(tool.category, locale)} className="hover:text-emerald-700">
           {category.label}
         </Link>
         <span className="mx-2">/</span>
@@ -242,7 +243,7 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
               {tool.replaces.map((saas) => (
                 <Link
                   key={saas}
-                  href={localeHref(`/alternativa-a-${slugify(saas)}`, locale)}
+                  href={getAlternativeHref(saas, locale)}
                   className={cn(buttonVariants({ variant: "outline", size: "sm" }), "justify-between")}
                 >
                   {t.toolPage.viewAlternatives(saas)}

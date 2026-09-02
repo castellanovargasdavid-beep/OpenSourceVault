@@ -5,10 +5,10 @@ import Link from "next/link";
 import { ArrowRight, TrendingDown } from "lucide-react";
 import { saasPricing, getSaasPricingLocalized } from "@/data/saas-pricing";
 import { getHostingProvidersLocalized } from "@/data/hosting-providers";
-import { slugify, cn } from "@/lib/utils";
+import { getAlternativeHref } from "@/lib/alternatives";
+import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { getDictionary } from "@/i18n/get-dictionary";
-import { localeHref } from "@/lib/locale-href";
 import type { Locale } from "@/i18n/config";
 
 const formatUsd = (value: number, locale: Locale) =>
@@ -119,7 +119,7 @@ export function SavingsCalculator({ locale = "es" }: { locale?: Locale }) {
       </p>
 
       <Link
-        href={localeHref(`/alternativa-a-${slugify(saasName)}`, locale)}
+        href={getAlternativeHref(saasName, locale)}
         className={cn(buttonVariants({ size: "lg" }), "mt-6 w-full justify-center gap-1.5 sm:w-auto")}
       >
         {t.savingsCalculator.cta(saasName)} <ArrowRight size={16} />
