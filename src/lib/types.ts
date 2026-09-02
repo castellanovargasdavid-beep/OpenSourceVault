@@ -41,6 +41,8 @@ export interface OpenSourceTool {
   starsCount?: number;
   license: string;
   dockerCompose: string;
+  /** URL de despliegue en 1 clic (plantilla de Railway/Coolify/etc.), si el proyecto ofrece una. */
+  deployUrl?: string;
   affiliateLinks: {
     digitalOceanUrl: string;
     vultrUrl: string;

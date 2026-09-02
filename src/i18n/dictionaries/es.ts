@@ -8,6 +8,7 @@ const es = {
     hosting: "Hosting",
     verOfertas: "Ver ofertas de hosting",
     promote: "Promociona tu herramienta",
+    github: "Contribuir",
   },
   footer: {
     categorias: "Categorías",
@@ -17,6 +18,7 @@ const es = {
     hostingDescuentos: "Hosting & Descuentos",
     herramientasDestacadas: "Herramientas destacadas",
     promote: "Promociona tu herramienta",
+    github: "Contribuir",
     disclosure: "Algunos enlaces de hosting son de afiliado: podemos recibir una comisión sin coste extra para ti.",
     privacidad: "Privacidad",
     terminos: "Términos de uso",
@@ -164,6 +166,7 @@ const es = {
     estimated: "(estimado)",
     website: "Sitio web",
     tryDemo: "Probar Demo",
+    deployButton: "Desplegar en 1 clic",
     githubRepo: "Repositorio en GitHub",
     fichaTecnica: "Ficha técnica",
     fieldLicense: "Licencia",

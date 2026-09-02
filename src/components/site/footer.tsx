@@ -6,6 +6,7 @@ import { getDictionary } from "@/i18n/get-dictionary";
 import { localeHref } from "@/lib/locale-href";
 import { getSavingsCalculatorHref, getDeployGuideHref } from "@/lib/routes";
 import type { Locale } from "@/i18n/config";
+import { GithubIcon } from "@/components/icons/github-icon";
 
 export function Footer({ locale = "es" }: { locale?: Locale }) {
   const t = getDictionary(locale);
@@ -63,7 +64,16 @@ export function Footer({ locale = "es" }: { locale?: Locale }) {
           <p className="text-xs text-slate-600">
             © {siteConfig.year} {siteConfig.name}. {t.footer.disclosure}
           </p>
-          <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-600">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-600">
+            <a
+              href={siteConfig.links.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 hover:text-emerald-700"
+            >
+              <GithubIcon size={14} />
+              {t.footer.github}
+            </a>
             <Link href={localeHref("/promote", locale)} className="hover:text-emerald-700">
               {t.footer.promote}
             </Link>

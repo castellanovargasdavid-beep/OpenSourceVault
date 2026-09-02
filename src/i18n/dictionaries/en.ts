@@ -10,6 +10,7 @@ const en: Dictionary = {
     hosting: "Hosting",
     verOfertas: "See hosting deals",
     promote: "Promote your tool",
+    github: "Contribute",
   },
   footer: {
     categorias: "Categories",
@@ -19,6 +20,7 @@ const en: Dictionary = {
     hostingDescuentos: "Hosting & Deals",
     herramientasDestacadas: "Featured tools",
     promote: "Promote your tool",
+    github: "Contribute",
     disclosure: "Some hosting links are affiliate links: we may earn a commission at no extra cost to you.",
     privacidad: "Privacy",
     terminos: "Terms of use",
@@ -166,6 +168,7 @@ const en: Dictionary = {
     estimated: "(estimated)",
     website: "Website",
     tryDemo: "Try Demo",
+    deployButton: "1-Click Deploy",
     githubRepo: "GitHub Repository",
     fichaTecnica: "Technical profile",
     fieldLicense: "License",

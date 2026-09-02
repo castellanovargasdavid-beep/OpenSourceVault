@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Star, GitFork, ExternalLink, Check, X, ArrowRight, PlayCircle } from "lucide-react";
+import { Star, GitFork, ExternalLink, Check, X, ArrowRight, PlayCircle, Rocket } from "lucide-react";
 import { getLocalizedTool } from "@/data/tools";
 import { getCategoryMetaLocalized, getCategoryHref } from "@/data/categories";
 import { getAlternativeHref } from "@/lib/alternatives";
@@ -132,6 +132,16 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
               <PlayCircle size={14} /> {t.toolPage.tryDemo}
             </a>
           )}
+          {tool.deployUrl && (
+            <a
+              href={tool.deployUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cn(buttonVariants({ size: "sm" }), "gap-1.5")}
+            >
+              <Rocket size={14} /> {t.toolPage.deployButton}
+            </a>
+          )}
           <a
             href={tool.githubUrl}
             target="_blank"
@@ -223,16 +233,18 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
             </div>
           </section>
 
-          <section>
-            <h2 className="mb-4 text-xl font-semibold text-slate-900">{t.toolPage.dockerGuideTitle}</h2>
-            <p className="mb-4 text-sm text-slate-600">
-              {t.toolPage.dockerGuideText}{" "}
-              <Link href={getDeployGuideHref(locale)} className="font-medium text-emerald-700 hover:underline">
-                {t.toolPage.dockerGuideLink}
-              </Link>
-            </p>
-            <DockerComposeBlock code={tool.dockerCompose} locale={locale} />
-          </section>
+          {tool.dockerCompose && (
+            <section>
+              <h2 className="mb-4 text-xl font-semibold text-slate-900">{t.toolPage.dockerGuideTitle}</h2>
+              <p className="mb-4 text-sm text-slate-600">
+                {t.toolPage.dockerGuideText}{" "}
+                <Link href={getDeployGuideHref(locale)} className="font-medium text-emerald-700 hover:underline">
+                  {t.toolPage.dockerGuideLink}
+                </Link>
+              </p>
+              <DockerComposeBlock code={tool.dockerCompose} locale={locale} />
+            </section>
+          )}
         </div>
 
         <aside className="space-y-6 lg:sticky lg:top-24 lg:self-start">

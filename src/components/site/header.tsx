@@ -6,6 +6,7 @@ import { localeHref } from "@/lib/locale-href";
 import { getSavingsCalculatorHref, getDeployGuideHref } from "@/lib/routes";
 import type { Locale } from "@/i18n/config";
 import { LanguageSwitcher } from "@/components/site/language-switcher";
+import { GithubIcon } from "@/components/icons/github-icon";
 
 export function Header({ locale = "es" }: { locale?: Locale }) {
   const t = getDictionary(locale);
@@ -39,6 +40,15 @@ export function Header({ locale = "es" }: { locale?: Locale }) {
         </nav>
         <div className="flex items-center gap-3">
           <LanguageSwitcher locale={locale} />
+          <a
+            href={siteConfig.links.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden h-9 items-center gap-1.5 rounded-lg border border-slate-300 px-3 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 sm:inline-flex"
+          >
+            <GithubIcon size={16} />
+            {t.header.github}
+          </a>
           <Link
             href={localeHref("/hosting-deals", locale)}
             className="hidden h-9 items-center rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 px-4 text-sm font-medium text-white shadow-sm transition-opacity hover:opacity-90 sm:inline-flex"
