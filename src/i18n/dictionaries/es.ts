@@ -3,11 +3,10 @@ const es = {
     "Descubre alternativas de código abierto y auto-hospedables al software SaaS más popular. Compara licencias, mira el docker-compose y despliega en minutos.",
   header: {
     categorias: "Categorías",
-    calculadora: "Calculadora de ahorro",
-    guiaDespliegue: "Guía de despliegue",
+    calculadora: "Calculadora",
+    guiaDespliegue: "Guía Docker",
     hosting: "Hosting",
     verOfertas: "Ver ofertas de hosting",
-    promote: "Promociona tu herramienta",
     github: "Contribuir",
   },
   footer: {

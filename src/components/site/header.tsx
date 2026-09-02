@@ -15,7 +15,6 @@ export function Header({ locale = "es" }: { locale?: Locale }) {
     { href: getSavingsCalculatorHref(locale), label: t.header.calculadora },
     { href: getDeployGuideHref(locale), label: t.header.guiaDespliegue },
     { href: localeHref("/hosting-deals", locale), label: t.header.hosting },
-    { href: localeHref("/promote", locale), label: t.header.promote },
   ];
 
   return (
@@ -32,7 +31,7 @@ export function Header({ locale = "es" }: { locale?: Locale }) {
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-slate-600 transition-colors hover:text-slate-900"
+              className="whitespace-nowrap text-sm font-medium text-slate-600 transition-colors hover:text-slate-900"
             >
               {link.label}
             </Link>

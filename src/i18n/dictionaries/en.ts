@@ -5,11 +5,10 @@ const en: Dictionary = {
     "Discover open source, self-hostable alternatives to the most popular SaaS software. Compare licenses, check the docker-compose and deploy in minutes.",
   header: {
     categorias: "Categories",
-    calculadora: "Savings calculator",
-    guiaDespliegue: "Deployment guide",
+    calculadora: "Calculator",
+    guiaDespliegue: "Docker Guide",
     hosting: "Hosting",
     verOfertas: "See hosting deals",
-    promote: "Promote your tool",
     github: "Contribute",
   },
   footer: {
