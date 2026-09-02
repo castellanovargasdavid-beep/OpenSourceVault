@@ -30,7 +30,7 @@ export const allTools: OpenSourceTool[] = [
     database: "PostgreSQL",
     language: "Rust",
     platforms: ["Web", "Desktop (Mac/Win/Linux)", "Mobile (iOS/Android)"],
-    fossModel: "FOSS",
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   appflowy-cloud:
@@ -1094,7 +1094,7 @@ volumes:
     database: "SQLite",
     language: "Python",
     platforms: ["Web"],
-    fossModel: "FOSS",
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   open-webui:
@@ -1201,7 +1201,7 @@ volumes:
     starsCount: 11000,
     license: "AGPL-3.0",
     database: "MongoDB",
-    language: "Rust",
+    language: "TypeScript",
     platforms: ["Web", "Desktop (Mac/Win/Linux)"],
     fossModel: "FOSS",
     dockerCompose: `version: "3.9"
@@ -1396,7 +1396,7 @@ volumes:
     database: "SQLite / PostgreSQL / MySQL",
     language: "Go",
     platforms: ["Web", "Desktop (Mac/Win/Linux)", "Mobile (iOS/Android)"],
-    fossModel: "FOSS",
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   vikunja:
@@ -1560,7 +1560,7 @@ volumes:
     database: "PostgreSQL",
     language: "TypeScript (NestJS)",
     platforms: ["Web"],
-    fossModel: "FOSS",
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   docmost:
@@ -1613,7 +1613,7 @@ volumes:
     database: "PostgreSQL",
     language: "Rust + TypeScript",
     platforms: ["Web", "Desktop (Mac/Win/Linux)", "Mobile (iOS/Android)"],
-    fossModel: "FOSS",
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   affine:
@@ -1665,7 +1665,7 @@ volumes:
     database: "PostgreSQL",
     language: "Python (Django)",
     platforms: ["Web", "Desktop (Mac/Win/Linux)", "Mobile (iOS/Android)"],
-    fossModel: "OpenCore",
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   zulip:
@@ -2352,7 +2352,7 @@ volumes:
     database: "PostgreSQL / MySQL / SQLite",
     language: "Go",
     platforms: ["Web"],
-    fossModel: "FOSS",
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   gitea:
@@ -2714,7 +2714,7 @@ volumes:
     database: "None / File-based",
     language: "Rust",
     platforms: ["Web"],
-    fossModel: "FOSS",
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   meilisearch:
@@ -2791,7 +2791,7 @@ volumes:
     database: "MongoDB",
     language: "TypeScript (NestJS)",
     platforms: ["Web"],
-    fossModel: "FOSS",
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   novu:
@@ -2983,7 +2983,7 @@ volumes:
     database: "PostgreSQL",
     language: "TypeScript (Next.js)",
     platforms: ["Web"],
-    fossModel: "FOSS",
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   documenso:
@@ -3566,7 +3566,7 @@ volumes:
     database: "None / File-based",
     language: "Go",
     platforms: ["Web", "Desktop (Mac/Win/Linux)"],
-    fossModel: "FOSS",
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   ollama:
@@ -3786,7 +3786,7 @@ volumes:
     database: "SQLite",
     language: "Python",
     platforms: ["Web"],
-    fossModel: "FOSS",
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   langflow:
@@ -3964,7 +3964,7 @@ volumes:
     database: "SQLite",
     language: "Python",
     platforms: ["Web", "Desktop (Mac/Win/Linux)"],
-    fossModel: "FOSS",
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   invokeai:
@@ -4080,7 +4080,7 @@ volumes:
     database: "PostgreSQL",
     language: "TypeScript (Next.js)",
     platforms: ["Web"],
-    fossModel: "FOSS",
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   typebot-builder:
@@ -4814,7 +4814,7 @@ volumes:
     database: "PostgreSQL",
     language: "TypeScript (NestJS)",
     platforms: ["Web"],
-    fossModel: "FOSS",
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   vendure:
