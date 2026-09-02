@@ -19,7 +19,7 @@ import { getSaasDomain } from "@/lib/saas-domains";
 import { categoryColors } from "@/lib/category-colors";
 import { getComparisonsForTool, type ToolComparison } from "@/lib/comparisons";
 import { extractDefaultPort, isComposeFile } from "@/lib/deploy-guide";
-import { getGithubStats } from "@/lib/github-stats";
+import { getGithubStats, formatRelativeDate } from "@/lib/github-stats";
 import { getOgImageUrl } from "@/lib/og-image";
 import { siteConfig } from "@/lib/site-config";
 import { difficultyMeta, formatMinRam, resolveToolResourceProfile } from "@/lib/tool-difficulty";
@@ -308,6 +308,19 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
                     trigger={t.howToDeploy.trigger}
                   />
                   <DockerComposeBlock code={tool.dockerCompose} t={t.dockerBlock} />
+                  <p className="mt-2 text-xs text-slate-600">
+                    {liveStats
+                      ? t.toolPage.dockerComposeSourceActive(formatRelativeDate(liveStats.updatedAt, locale))
+                      : t.toolPage.dockerComposeSourceGeneric}
+                  </p>
+                  <a
+                    href={`${siteConfig.links.github}/issues/new?title=${encodeURIComponent(t.toolPage.reportIssueTitle(tool.name))}&labels=bug`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-1 inline-block text-xs font-medium text-emerald-700 hover:underline"
+                  >
+                    {t.toolPage.reportIssueLink}
+                  </a>
                 </>
               )}
             </section>

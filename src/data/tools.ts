@@ -7183,6 +7183,35 @@ export function getFeaturedTools() {
   return tools.filter((t) => t.featured);
 }
 
+/**
+ * ids de las últimas herramientas añadidas al catálogo — verificado a mano
+ * contra el historial de git (commit f9d1968, "Add Curated Stacks"), no
+ * inferido en build time, para no depender de que el entorno de despliegue
+ * conserve el historial completo de git (muchos hacen clone --depth=1).
+ * Actualiza esta lista cuando entre un lote nuevo de herramientas.
+ */
+const RECENTLY_ADDED_TOOL_IDS = [
+  "dokploy",
+  "erpnext",
+  "dolibarr",
+  "discourse",
+  "headscale",
+  "wg-easy",
+  "pihole",
+  "adguard-home",
+  "linkwarden",
+  "wallabag",
+  "joplin",
+  "jellyfin",
+  "shlink",
+  "activepieces",
+  "invoice-ninja",
+];
+
+export function getRecentlyAddedTools() {
+  return RECENTLY_ADDED_TOOL_IDS.map((id) => getToolById(id)).filter((t): t is OpenSourceTool => t !== undefined);
+}
+
 export function getComingSoonTools() {
   return allTools.filter((t) => !isPublished(t));
 }

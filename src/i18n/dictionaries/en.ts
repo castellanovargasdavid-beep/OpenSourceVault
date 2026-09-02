@@ -51,6 +51,12 @@ const en: Dictionary = {
     subtitle: "Chosen for project maturity, active community and ease of deployment with Docker.",
     viewAll: "View the full catalog →",
   },
+  recentlyAdded: {
+    badge: "Recently added",
+    title: "The latest additions to the catalog",
+    subtitle: "Tools added in the latest update, with their docker-compose.yml and deploy guide already ready.",
+    viewAll: "View the full catalog →",
+  },
   toolExplorer: {
     title: "Explore the full catalog",
     subtitle: "Filter by category, license or tag to find your next tool.",
@@ -297,6 +303,10 @@ const en: Dictionary = {
     dockerGuideTitle: "Quick Docker installation guide",
     dockerGuideText: "Copy this docker-compose.yml, adjust the example passwords and run docker compose up -d on your server.",
     dockerGuideLink: "See the full step-by-step guide →",
+    dockerComposeSourceActive: (date: string) => `✓ Official Docker image from an actively maintained project — last commit ${date}.`,
+    dockerComposeSourceGeneric: "Official Docker image, as published by the project itself.",
+    reportIssueLink: "This docker-compose not working for you? Report it on GitHub →",
+    reportIssueTitle: (tool: string) => `${tool}'s docker-compose isn't working`,
     otherAlternatives: "Other alternatives to the same tool",
     viewAlternatives: (saas: string) => `View alternatives to ${saas}`,
     migrationGuide: "Migration guide",

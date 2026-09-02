@@ -1,6 +1,7 @@
 import { Hero } from "@/components/site/hero";
 import { CategoryGrid } from "@/components/site/category-grid";
 import { FeaturedTools } from "@/components/site/featured-tools";
+import { RecentlyAddedTools } from "@/components/site/recently-added-tools";
 import { ToolExplorer } from "@/components/site/tool-explorer";
 import { allTools, tools } from "@/data/tools";
 import { toToolCardData } from "@/lib/tool-card-data";
@@ -16,6 +17,7 @@ export default function HomePage() {
       <Hero tools={publishedToolCards} />
       <CategoryGrid />
       <FeaturedTools />
+      <RecentlyAddedTools />
       <ToolExplorer
         tools={allToolCards}
         t={t.toolExplorer}
