@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { GitFork, ExternalLink, Check, X, ArrowRight, PlayCircle, Database, Code2, MonitorSmartphone, TriangleAlert } from "lucide-react";
+import { GitFork, ExternalLink, Check, X, ArrowRight, PlayCircle, Database, Code2, MonitorSmartphone, TriangleAlert, ChevronDown } from "lucide-react";
 import { getLocalizedTool } from "@/data/tools";
 import { getCategoryMetaLocalized, getCategoryHref } from "@/data/categories";
 import { getStacksForTool, getLocalizedStack } from "@/data/stacks";
@@ -18,9 +18,11 @@ import { ToolPreviewImage } from "@/components/site/tool-preview-image";
 import { getSaasDomain } from "@/lib/saas-domains";
 import { categoryColors } from "@/lib/category-colors";
 import { getComparisonsForTool, type ToolComparison } from "@/lib/comparisons";
+import { extractDefaultPort, isComposeFile } from "@/lib/deploy-guide";
 import { getGithubStats } from "@/lib/github-stats";
 import { getOgImageUrl } from "@/lib/og-image";
 import { siteConfig } from "@/lib/site-config";
+import { difficultyMeta, formatMinRam, resolveToolResourceProfile } from "@/lib/tool-difficulty";
 import { slugify, cn, getHostname } from "@/lib/utils";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { localeHref } from "@/lib/locale-href";
@@ -38,6 +40,11 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
   const featuredStacks = getStacksForTool(tool.id).map((stack) => getLocalizedStack(stack, locale));
   const liveStats = await getGithubStats(tool.githubUrl);
   const ogImageUrl = await getOgImageUrl(tool.websiteUrl);
+  const { difficulty, minRamMb } = resolveToolResourceProfile(tool);
+  const difficultyStyle = difficultyMeta[difficulty];
+  const difficultyLabel =
+    difficulty === "beginner" ? t.difficulty.beginnerBadge : difficulty === "intermediate" ? t.difficulty.intermediateBadge : t.difficulty.advancedBadge;
+  const port = extractDefaultPort(tool.dockerCompose ?? "");
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
@@ -106,6 +113,12 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
               {tool.fossModel === "FOSS" ? t.toolPage.fossModelFoss : t.toolPage.fossModelOpenCore}
             </span>
           )}
+          <span
+            title={`${t.difficulty.ramBadgePrefix} ${formatMinRam(minRamMb)}`}
+            className={cn("inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-xs font-medium", difficultyStyle.badgeClass)}
+          >
+            {difficultyStyle.emoji} {difficultyLabel} · {formatMinRam(minRamMb)}
+          </span>
         </div>
         <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
           {t.toolPage.h1(tool.name, tool.replaces[0], siteConfig.year)}
@@ -297,6 +310,75 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
                   <DockerComposeBlock code={tool.dockerCompose} t={t.dockerBlock} />
                 </>
               )}
+            </section>
+          )}
+
+          {tool.dockerCompose && (
+            <section className="space-y-3">
+              {isComposeFile(tool.dockerCompose) && (
+                <details className="group rounded-xl border border-slate-200 open:border-emerald-200">
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-2 px-5 py-4 text-lg font-semibold text-slate-900 [&::-webkit-details-marker]:hidden">
+                    {t.howToDeploy.backups.title}
+                    <ChevronDown size={18} className="shrink-0 text-slate-400 transition-transform group-open:rotate-180" />
+                  </summary>
+                  <div className="space-y-3 border-t border-slate-100 px-5 py-4 text-sm text-slate-600">
+                    <p>{t.howToDeploy.backups.intro}</p>
+                    <div>
+                      <p className="font-medium text-slate-900">{t.howToDeploy.backups.step1Title}</p>
+                      <pre className="mt-1.5 overflow-x-auto rounded-lg bg-slate-900 p-3 text-xs text-emerald-300">
+                        <code>{t.howToDeploy.backups.step1Command}</code>
+                      </pre>
+                    </div>
+                    <div>
+                      <p className="font-medium text-slate-900">{t.howToDeploy.backups.step2Title}</p>
+                      <p className="text-xs">{t.howToDeploy.backups.step2Desc}</p>
+                      <pre className="mt-1.5 overflow-x-auto rounded-lg bg-slate-900 p-3 text-xs text-emerald-300">
+                        <code>{t.howToDeploy.backups.step2Command}</code>
+                      </pre>
+                    </div>
+                    <div>
+                      <p className="font-medium text-slate-900">{t.howToDeploy.backups.step3Title}</p>
+                      <pre className="mt-1.5 overflow-x-auto rounded-lg bg-slate-900 p-3 text-xs text-emerald-300">
+                        <code>{t.howToDeploy.backups.step3Command}</code>
+                      </pre>
+                    </div>
+                  </div>
+                </details>
+              )}
+
+              <details className="group rounded-xl border border-slate-200 open:border-emerald-200">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-2 px-5 py-4 text-lg font-semibold text-slate-900 [&::-webkit-details-marker]:hidden">
+                  {t.howToDeploy.domain.title}
+                  <ChevronDown size={18} className="shrink-0 text-slate-400 transition-transform group-open:rotate-180" />
+                </summary>
+                <div className="space-y-4 border-t border-slate-100 px-5 py-4 text-sm text-slate-600">
+                  <div>
+                    <p className="font-medium text-slate-900">{t.howToDeploy.domain.step1Title}</p>
+                    <p className="mt-1 text-xs">{t.howToDeploy.domain.step1Desc}</p>
+                    <dl className="mt-2 grid grid-cols-3 gap-2 rounded-lg border border-slate-200 bg-slate-50 p-3 text-xs">
+                      <dt className="font-semibold text-slate-600">{t.howToDeploy.domain.dnsType}</dt>
+                      <dd className="col-span-2 font-mono text-slate-900">{t.howToDeploy.domain.dnsTypeValue}</dd>
+                      <dt className="font-semibold text-slate-600">{t.howToDeploy.domain.dnsHost}</dt>
+                      <dd className="col-span-2 text-slate-900">{t.howToDeploy.domain.dnsHostHint}</dd>
+                      <dt className="font-semibold text-slate-600">{t.howToDeploy.domain.dnsValue}</dt>
+                      <dd className="col-span-2 text-slate-900">{t.howToDeploy.domain.dnsValueHint}</dd>
+                    </dl>
+                    <p className="mt-2 text-xs">{t.howToDeploy.domain.dnsPropagationNote}</p>
+                  </div>
+                  <div>
+                    <p className="font-medium text-slate-900">{t.howToDeploy.domain.step2Title}</p>
+                    <p className="mt-1 text-xs">{t.howToDeploy.domain.step2Desc}</p>
+                    <p className="mt-2 text-xs">{t.howToDeploy.domain.caddyfileLabel}</p>
+                    <pre className="mt-1.5 overflow-x-auto rounded-lg bg-slate-900 p-3 text-xs text-emerald-300">
+                      <code>{t.howToDeploy.domain.caddyfile(port)}</code>
+                    </pre>
+                    <p className="mt-2 text-xs">{t.howToDeploy.domain.runCommandLabel}</p>
+                    <pre className="mt-1.5 overflow-x-auto rounded-lg bg-slate-900 p-3 text-xs text-emerald-300">
+                      <code>{t.howToDeploy.domain.runCommand}</code>
+                    </pre>
+                  </div>
+                </div>
+              </details>
             </section>
           )}
         </div>

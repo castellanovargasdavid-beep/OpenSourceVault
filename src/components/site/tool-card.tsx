@@ -13,6 +13,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { LogoImage } from "@/components/site/logo-image";
 import { getSaasDomain } from "@/lib/saas-domains";
 import { categoryColors } from "@/lib/category-colors";
+import { difficultyMeta, formatMinRam } from "@/lib/tool-difficulty";
 import { cn, formatStars, getHostname } from "@/lib/utils";
 import { localeHref } from "@/lib/locale-href";
 import type { Locale } from "@/i18n/config";
@@ -29,6 +30,7 @@ export function ToolCard({
   locale = "es",
   t,
   comingSoonBadge,
+  difficultyT,
 }: {
   tool: ToolCardData;
   locale?: Locale;
@@ -36,6 +38,8 @@ export function ToolCard({
   t: Dictionary["toolCard"];
   /** t.comingSoon.badge — un string plano (a diferencia del resto de t.comingSoon, que incluye una función y no puede pasarse como prop de Server a Client Component). */
   comingSoonBadge: string;
+  /** t.difficulty ya resuelto — labels del badge de dificultad/RAM. */
+  difficultyT: Dictionary["difficulty"];
 }) {
   const tool = getLocalizedToolCardData(rawTool, locale);
   const [modalOpen, setModalOpen] = React.useState(false);
@@ -47,6 +51,13 @@ export function ToolCard({
   const category = getCategoryMetaLocalized(tool.category, locale);
   const palette = categoryColors[tool.category];
   const published = isPublished(tool);
+  const difficulty = difficultyMeta[tool.difficulty];
+  const difficultyLabel =
+    tool.difficulty === "beginner"
+      ? difficultyT.beginnerBadge
+      : tool.difficulty === "intermediate"
+        ? difficultyT.intermediateBadge
+        : difficultyT.advancedBadge;
 
   return (
     <Card
@@ -133,6 +144,12 @@ export function ToolCard({
               {tool.fossModel === "FOSS" ? t.fossModelFoss : t.fossModelOpenCore}
             </span>
           )}
+          <span
+            title={`${difficultyT.ramBadgePrefix} ${formatMinRam(tool.minRamMb)}`}
+            className={cn("inline-flex items-center gap-1 rounded-full border px-1.5 py-0.5 text-[10px] font-medium", difficulty.badgeClass)}
+          >
+            {difficulty.emoji} {difficultyLabel} · {formatMinRam(tool.minRamMb)}
+          </span>
         </div>
 
         <div className="flex flex-wrap gap-1.5">

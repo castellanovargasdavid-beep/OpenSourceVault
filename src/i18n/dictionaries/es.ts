@@ -93,6 +93,19 @@ const es = {
     fossModelFoss: "100% FOSS",
     fossModelOpenCore: "Open-Core",
   },
+  difficulty: {
+    filterLabel: "Filtrar por recursos necesarios",
+    beginnerFilter: "🟢 Ligero",
+    beginnerFilterHint: "< 512MB · VPS $4-6/mes",
+    intermediateFilter: "🟡 Estándar",
+    intermediateFilterHint: "1-2GB RAM",
+    advancedFilter: "🔴 Completo",
+    advancedFilterHint: "> 2GB · servidor dedicado",
+    beginnerBadge: "Ligero",
+    intermediateBadge: "Estándar",
+    advancedBadge: "Completo",
+    ramBadgePrefix: "RAM mín.",
+  },
   affiliateWidget: {
     title: (name: string) => `Despliega ${name} en minutos`,
     subtitlePrefix: "Usa el",
@@ -172,6 +185,38 @@ const es = {
       step3Desc: 'El estado pasará de "Building"/"Deploying" a "Active"/"Running" en unos minutos.',
       noTemplate: (tool: string) =>
         `Todavía no tenemos una plantilla de 1-click verificada para ${tool}. Usa la pestaña "VPS" o "Coolify" de arriba — el mismo docker-compose.yml funciona en cualquiera de las dos.`,
+    },
+    backups: {
+      title: "💾 Copias de seguridad en 3 pasos (Día 2)",
+      intro:
+        'Mientras la carpeta ./data (el "volumen" mapeado al contenedor) exista en tu servidor, tus datos sobreviven a cualquier reinicio o actualización — es lo único que necesitas respaldar.',
+      step1Title: "1. Crea una copia comprimida en el servidor",
+      step1Command: "tar -czvf backup-$(date +%F).tar.gz ./data",
+      step2Title: "2. Descárgala a tu ordenador",
+      step2Desc: "Desde la terminal de tu ordenador (no la de tu servidor):",
+      step2Command: "scp root@TU_IP:~/app/backup-*.tar.gz ./",
+      step3Title: "3. Restaura en caso de emergencia",
+      step3Command: "tar -xzvf backup-archivo.tar.gz",
+    },
+    domain: {
+      title: "🌐 Conectar tu dominio con SSL gratis",
+      step1Title: "Paso 1 — Configura el DNS",
+      step1Desc: "En el panel de tu registrador de dominio (Cloudflare, Namecheap, GoDaddy...), crea un registro:",
+      dnsType: "Tipo",
+      dnsTypeValue: "A",
+      dnsHost: "Nombre/Host",
+      dnsHostHint: "@ (dominio raíz) o un subdominio, ej. app",
+      dnsValue: "Contenido/Valor",
+      dnsValueHint: "La IP pública de tu servidor",
+      dnsPropagationNote: "Espera entre 5 y 15 minutos a que el registro se propague por internet.",
+      step2Title: "Paso 2 — Proxy inverso automático con Caddy",
+      step2Desc:
+        "Un solo archivo, sin configurar Nginx ni certificados manuales — Caddy emite y renueva el HTTPS de Let's Encrypt solo.",
+      caddyfileLabel: "Crea un archivo llamado Caddyfile:",
+      caddyfile: (port: string | null) => `tudominio.com {\n    reverse_proxy localhost:${port ?? "PUERTO_APP"}\n}`,
+      runCommandLabel: "Levanta Caddy con este comando (descarga la imagen y arranca en segundo plano):",
+      runCommand:
+        "docker run -d -p 80:80 -p 443:443 --name caddy --restart always -v $PWD/Caddyfile:/etc/caddy/Caddyfile -v caddy_data:/data caddy",
     },
   },
   notFound: {

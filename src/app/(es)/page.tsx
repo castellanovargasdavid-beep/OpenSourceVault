@@ -16,7 +16,13 @@ export default function HomePage() {
       <Hero tools={publishedToolCards} />
       <CategoryGrid />
       <FeaturedTools />
-      <ToolExplorer tools={allToolCards} t={t.toolExplorer} toolCardT={t.toolCard} comingSoonBadge={t.comingSoon.badge} />
+      <ToolExplorer
+        tools={allToolCards}
+        t={t.toolExplorer}
+        toolCardT={t.toolCard}
+        comingSoonBadge={t.comingSoon.badge}
+        difficultyT={t.difficulty}
+      />
     </>
   );
 }

@@ -26,6 +26,14 @@ export type FossModel = "FOSS" | "OpenCore";
 /** Plataformas con plantilla oficial de despliegue en 1 clic verificable por URL. */
 export type DeployPlatform = "Railway" | "Coolify" | "Render" | "Elestio" | "Portainer";
 
+/**
+ * Nivel de dificultad/recursos de despliegue.
+ * 'beginner': 1 contenedor, SQLite o sin base de datos separada, < 512 MB RAM.
+ * 'intermediate': 1-2 contenedores (ej. App + Postgres/Redis), 1-2 GB RAM.
+ * 'advanced': multi-contenedor, microservicios, brokers de colas, > 2 GB RAM.
+ */
+export type ToolDifficulty = "beginner" | "intermediate" | "advanced";
+
 export interface OneClickDeployTarget {
   platform: DeployPlatform;
   /** URL de la plantilla/botón de despliegue oficial de esa plataforma para esta herramienta. */
@@ -78,6 +86,15 @@ export interface OpenSourceTool {
   platforms?: string[];
   /** Transparencia de licencia estilo Awesome-Selfhosted: ver FossModel. */
   fossModel?: FossModel;
+  /**
+   * Override explícito del nivel de dificultad/recursos. Si se omite, se
+   * infiere de dockerCompose + database vía resolveToolResourceProfile() en
+   * src/lib/tool-difficulty.ts — la mayoría de herramientas del catálogo no
+   * necesitan fijar esto a mano.
+   */
+  difficulty?: ToolDifficulty;
+  /** Override explícito de la RAM mínima recomendada, en MB. Ver difficulty. */
+  minRamMb?: number;
   featured?: boolean;
   /**
    * Marca un listado como patrocinado (listing pagado por el propio
@@ -114,6 +131,10 @@ export interface ToolCardData {
   sponsored?: boolean;
   status?: ToolStatus;
   publishDate?: string;
+  /** Siempre resuelto en toToolCardData() — ver resolveToolResourceProfile(). */
+  difficulty: ToolDifficulty;
+  /** RAM mínima recomendada en MB. Ver difficulty. */
+  minRamMb: number;
 }
 
 export type StackIcon =

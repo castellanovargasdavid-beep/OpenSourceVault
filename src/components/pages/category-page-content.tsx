@@ -44,7 +44,14 @@ export function CategoryPageContent({
       {categoryTools.length > 0 ? (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {categoryTools.map((tool) => (
-            <ToolCard key={tool.id} tool={toToolCardData(tool)} locale={locale} t={t.toolCard} comingSoonBadge={t.comingSoon.badge} />
+            <ToolCard
+              key={tool.id}
+              tool={toToolCardData(tool)}
+              locale={locale}
+              t={t.toolCard}
+              comingSoonBadge={t.comingSoon.badge}
+              difficultyT={t.difficulty}
+            />
           ))}
         </div>
       ) : (

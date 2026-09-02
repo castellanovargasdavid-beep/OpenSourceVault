@@ -1,5 +1,6 @@
 import type { OpenSourceTool, ToolCardData } from "@/lib/types";
 import { toolCardShortDescriptionsEn } from "@/data/tool-card-short-descriptions.en";
+import { resolveToolResourceProfile } from "@/lib/tool-difficulty";
 import type { Locale } from "@/i18n/config";
 
 /**
@@ -17,6 +18,7 @@ import type { Locale } from "@/i18n/config";
  * desde allí, aunque no la use.
  */
 export function toToolCardData(tool: OpenSourceTool): ToolCardData {
+  const { difficulty, minRamMb } = resolveToolResourceProfile(tool);
   return {
     id: tool.id,
     slug: tool.slug,
@@ -32,6 +34,8 @@ export function toToolCardData(tool: OpenSourceTool): ToolCardData {
     sponsored: tool.sponsored,
     status: tool.status,
     publishDate: tool.publishDate,
+    difficulty,
+    minRamMb,
   };
 }
 

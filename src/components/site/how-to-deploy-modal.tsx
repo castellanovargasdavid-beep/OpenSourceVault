@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { createPortal } from "react-dom";
-import { X, Copy, Check, AlertTriangle, Rocket } from "lucide-react";
+import { X, Copy, Check, AlertTriangle, Rocket, ChevronDown } from "lucide-react";
 import type { OneClickDeployTarget } from "@/lib/types";
 import { extractDefaultPort, extractEnvPlaceholders, isComposeFile } from "@/lib/deploy-guide";
 import { cn } from "@/lib/utils";
@@ -74,6 +74,23 @@ function Callout({ children }: { children: React.ReactNode }) {
       <AlertTriangle size={14} className="mt-0.5 shrink-0" />
       <span>{children}</span>
     </div>
+  );
+}
+
+/**
+ * Sección "Día 2" colapsable (backups, dominio+HTTPS...). Usa <details> nativo
+ * — nada de useState — así el toggle no añade lógica extra a este chunk ya
+ * perezoso.
+ */
+function CollapsibleSection({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <details className="group rounded-lg border border-slate-200 open:border-emerald-200 open:bg-emerald-50/30">
+      <summary className="flex cursor-pointer list-none items-center justify-between gap-2 px-3 py-2.5 text-sm font-medium text-slate-900 [&::-webkit-details-marker]:hidden">
+        {title}
+        <ChevronDown size={16} className="shrink-0 text-slate-400 transition-transform group-open:rotate-180" />
+      </summary>
+      <div className="space-y-3 border-t border-slate-100 px-3 py-3">{children}</div>
+    </details>
   );
 }
 
@@ -223,6 +240,45 @@ export function HowToDeployModal({
               />
               <Callout>{t.firewallCallout(port)}</Callout>
               {envVars.length > 0 && <Callout>{t.secretsCallout}</Callout>}
+
+              {composeFile && (
+                <CollapsibleSection title={t.backups.title}>
+                  <p className="text-sm text-slate-600">{t.backups.intro}</p>
+                  <Step number={1} title={t.backups.step1Title} command={t.backups.step1Command} copyLabel={copyLabel} />
+                  <Step
+                    number={2}
+                    title={t.backups.step2Title}
+                    desc={t.backups.step2Desc}
+                    command={t.backups.step2Command}
+                    copyLabel={copyLabel}
+                  />
+                  <Step number={3} title={t.backups.step3Title} command={t.backups.step3Command} copyLabel={copyLabel} />
+                </CollapsibleSection>
+              )}
+
+              <CollapsibleSection title={t.domain.title}>
+                <div>
+                  <p className="text-sm font-medium text-slate-900">{t.domain.step1Title}</p>
+                  <p className="mt-1 text-sm text-slate-600">{t.domain.step1Desc}</p>
+                  <dl className="mt-2 grid grid-cols-3 gap-2 rounded-lg border border-slate-200 bg-slate-50 p-3 text-xs">
+                    <dt className="font-semibold text-slate-600">{t.domain.dnsType}</dt>
+                    <dd className="col-span-2 font-mono text-slate-900">{t.domain.dnsTypeValue}</dd>
+                    <dt className="font-semibold text-slate-600">{t.domain.dnsHost}</dt>
+                    <dd className="col-span-2 text-slate-900">{t.domain.dnsHostHint}</dd>
+                    <dt className="font-semibold text-slate-600">{t.domain.dnsValue}</dt>
+                    <dd className="col-span-2 text-slate-900">{t.domain.dnsValueHint}</dd>
+                  </dl>
+                  <p className="mt-2 text-xs text-slate-600">{t.domain.dnsPropagationNote}</p>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-slate-900">{t.domain.step2Title}</p>
+                  <p className="mt-1 text-sm text-slate-600">{t.domain.step2Desc}</p>
+                  <p className="mt-2 text-xs text-slate-600">{t.domain.caddyfileLabel}</p>
+                  <CommandLine command={t.domain.caddyfile(port)} copyLabel={copyLabel} />
+                  <p className="mt-2 text-xs text-slate-600">{t.domain.runCommandLabel}</p>
+                  <CommandLine command={t.domain.runCommand} copyLabel={copyLabel} />
+                </div>
+              </CollapsibleSection>
             </>
           )}
 

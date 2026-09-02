@@ -7,8 +7,9 @@ import { categoriesEn } from "@/data/categories.en";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ToolCard } from "@/components/site/tool-card";
+import { difficultyMeta } from "@/lib/tool-difficulty";
 import { cn } from "@/lib/utils";
-import type { ToolCardData, ToolTag } from "@/lib/types";
+import type { ToolCardData, ToolDifficulty, ToolTag } from "@/lib/types";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries/es";
 
@@ -18,6 +19,7 @@ export function ToolExplorer({
   t,
   toolCardT,
   comingSoonBadge,
+  difficultyT,
 }: {
   tools: ToolCardData[];
   locale?: Locale;
@@ -25,6 +27,7 @@ export function ToolExplorer({
   t: Dictionary["toolExplorer"];
   toolCardT: Dictionary["toolCard"];
   comingSoonBadge: string;
+  difficultyT: Dictionary["difficulty"];
 }) {
   const quickTags: { id: ToolTag; label: string }[] = [
     { id: "docker-ready", label: t.tagDockerReady },
@@ -32,9 +35,16 @@ export function ToolExplorer({
     { id: "permissive-license", label: t.tagPermissive },
   ];
 
+  const difficultyOptions: { id: ToolDifficulty; label: string; hint: string }[] = [
+    { id: "beginner", label: difficultyT.beginnerFilter, hint: difficultyT.beginnerFilterHint },
+    { id: "intermediate", label: difficultyT.intermediateFilter, hint: difficultyT.intermediateFilterHint },
+    { id: "advanced", label: difficultyT.advancedFilter, hint: difficultyT.advancedFilterHint },
+  ];
+
   const [query, setQuery] = React.useState("");
   const [category, setCategory] = React.useState<string>("all");
   const [activeTags, setActiveTags] = React.useState<ToolTag[]>([]);
+  const [difficultyFilter, setDifficultyFilter] = React.useState<ToolDifficulty | "all">("all");
 
   function toggleTag(tag: ToolTag) {
     setActiveTags((prev) =>
@@ -42,10 +52,15 @@ export function ToolExplorer({
     );
   }
 
+  function toggleDifficulty(difficulty: ToolDifficulty) {
+    setDifficultyFilter((prev) => (prev === difficulty ? "all" : difficulty));
+  }
+
   function clearFilters() {
     setQuery("");
     setCategory("all");
     setActiveTags([]);
+    setDifficultyFilter("all");
   }
 
   const filtered = React.useMemo(() => {
@@ -57,11 +72,12 @@ export function ToolExplorer({
         tool.replaces.some((r) => r.toLowerCase().includes(q));
       const matchesCategory = category === "all" || tool.category === category;
       const matchesTags = activeTags.every((tag) => tool.tags.includes(tag));
-      return matchesQuery && matchesCategory && matchesTags;
+      const matchesDifficulty = difficultyFilter === "all" || tool.difficulty === difficultyFilter;
+      return matchesQuery && matchesCategory && matchesTags && matchesDifficulty;
     });
-  }, [allTools, query, category, activeTags]);
+  }, [allTools, query, category, activeTags, difficultyFilter]);
 
-  const hasActiveFilters = query !== "" || category !== "all" || activeTags.length > 0;
+  const hasActiveFilters = query !== "" || category !== "all" || activeTags.length > 0 || difficultyFilter !== "all";
 
   return (
     <section id="explorador" className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
@@ -120,12 +136,36 @@ export function ToolExplorer({
             </Button>
           )}
         </div>
+
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-xs font-medium text-slate-600">{difficultyT.filterLabel}:</span>
+          {difficultyOptions.map((option) => {
+            const active = difficultyFilter === option.id;
+            return (
+              <button
+                key={option.id}
+                type="button"
+                onClick={() => toggleDifficulty(option.id)}
+                title={option.hint}
+                className={cn(
+                  "rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
+                  active
+                    ? difficultyMeta[option.id].pillActiveClass
+                    : "border-slate-300 bg-white text-slate-600 hover:border-slate-400"
+                )}
+              >
+                {option.label}
+                <span className={cn("ml-1", active ? "text-white/80" : "text-slate-400")}>{option.hint}</span>
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {filtered.length > 0 ? (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((tool) => (
-            <ToolCard key={tool.id} tool={tool} locale={locale} t={toolCardT} comingSoonBadge={comingSoonBadge} />
+            <ToolCard key={tool.id} tool={tool} locale={locale} t={toolCardT} comingSoonBadge={comingSoonBadge} difficultyT={difficultyT} />
           ))}
         </div>
       ) : (

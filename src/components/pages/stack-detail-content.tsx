@@ -13,6 +13,7 @@ import { HowToDeployGuide } from "@/components/site/how-to-deploy-guide";
 import { JsonLd } from "@/components/site/json-ld";
 import { stackIconMap } from "@/lib/stack-icons";
 import { categoryColors } from "@/lib/category-colors";
+import { difficultyMeta, formatMinRam, resolveToolResourceProfile } from "@/lib/tool-difficulty";
 import { getSaasDomain } from "@/lib/saas-domains";
 import { siteConfig } from "@/lib/site-config";
 import { cn, getHostname } from "@/lib/utils";
@@ -25,6 +26,10 @@ function StackToolProfile({ tool: rawTool, locale }: { tool: OpenSourceTool; loc
   const t = getDictionary(locale);
   const category = getCategoryMetaLocalized(tool.category, locale);
   const palette = categoryColors[tool.category];
+  const { difficulty, minRamMb } = resolveToolResourceProfile(tool);
+  const difficultyStyle = difficultyMeta[difficulty];
+  const difficultyLabel =
+    difficulty === "beginner" ? t.difficulty.beginnerBadge : difficulty === "intermediate" ? t.difficulty.intermediateBadge : t.difficulty.advancedBadge;
 
   return (
     <div className={cn("rounded-xl border p-6", palette.soft, palette.border)}>
@@ -51,6 +56,12 @@ function StackToolProfile({ tool: rawTool, locale }: { tool: OpenSourceTool; loc
               {tool.fossModel === "FOSS" ? t.toolPage.fossModelFoss : t.toolPage.fossModelOpenCore}
             </span>
           )}
+          <span
+            title={`${t.difficulty.ramBadgePrefix} ${formatMinRam(minRamMb)}`}
+            className={cn("inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] font-medium", difficultyStyle.badgeClass)}
+          >
+            {difficultyStyle.emoji} {difficultyLabel} · {formatMinRam(minRamMb)}
+          </span>
         </div>
       </div>
 

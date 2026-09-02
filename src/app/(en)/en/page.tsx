@@ -22,6 +22,7 @@ export default function EnglishHomePage() {
         t={t.toolExplorer}
         toolCardT={t.toolCard}
         comingSoonBadge={t.comingSoon.badge}
+        difficultyT={t.difficulty}
       />
     </>
   );
