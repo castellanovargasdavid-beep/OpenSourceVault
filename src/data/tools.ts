@@ -27,6 +27,10 @@ export const allTools: OpenSourceTool[] = [
     githubUrl: "https://github.com/AppFlowy-IO/AppFlowy",
     starsCount: 59000,
     license: "AGPL-3.0",
+    database: "PostgreSQL",
+    language: "Rust",
+    platforms: ["Web", "Desktop (Mac/Win/Linux)", "Mobile (iOS/Android)"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   appflowy-cloud:
@@ -35,7 +39,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - APPFLOWY_DATABASE_URL=postgres://postgres:password@postgres:5432/postgres
+      - APPFLOWY_DATABASE_URL=postgres://postgres:change-me-postgres-password@postgres:5432/postgres # password must match the canonical db password below
       - APPFLOWY_GOTRUE_JWT_SECRET=change-me-super-secret
     depends_on:
       - postgres
@@ -43,7 +47,7 @@ services:
     image: postgres:15-alpine
     restart: unless-stopped
     environment:
-      - POSTGRES_PASSWORD=password
+      - POSTGRES_PASSWORD=change-me-postgres-password # REQUIRED: generate a random secret before first run
     volumes:
       - appflowy_pg_data:/var/lib/postgresql/data
 volumes:
@@ -82,6 +86,10 @@ volumes:
     githubUrl: "https://github.com/makeplane/plane",
     starsCount: 33000,
     license: "AGPL-3.0",
+    database: "PostgreSQL",
+    language: "Python (Django) + TypeScript (Next.js)",
+    platforms: ["Web", "Desktop (Mac/Win/Linux)"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   plane-app:
@@ -90,7 +98,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - DATABASE_URL=postgres://plane:plane@plane-db:5432/plane
+      - DATABASE_URL=postgres://plane:change-me-postgres-password@plane-db:5432/plane # password must match the canonical db password below
       - REDIS_URL=redis://plane-redis:6379
       - SECRET_KEY=change-me-super-secret
     depends_on:
@@ -101,7 +109,7 @@ services:
     restart: unless-stopped
     environment:
       - POSTGRES_USER=plane
-      - POSTGRES_PASSWORD=plane
+      - POSTGRES_PASSWORD=change-me-postgres-password # REQUIRED: generate a random secret before first run
       - POSTGRES_DB=plane
     volumes:
       - plane_pg_data:/var/lib/postgresql/data
@@ -143,6 +151,10 @@ volumes:
     githubUrl: "https://github.com/mattermost/focalboard",
     starsCount: 21000,
     license: "MIT",
+    database: "SQLite / PostgreSQL",
+    language: "Go",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   focalboard:
@@ -182,6 +194,10 @@ volumes:
     githubUrl: "https://github.com/nocodb/nocodb",
     starsCount: 50000,
     license: "AGPL-3.0",
+    database: "PostgreSQL / MySQL",
+    language: "Node.js",
+    platforms: ["Web"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   nocodb:
@@ -200,7 +216,7 @@ services:
     restart: unless-stopped
     environment:
       - POSTGRES_USER=nocodb
-      - POSTGRES_PASSWORD=nocodb
+      - POSTGRES_PASSWORD=change-me-postgres-password # REQUIRED: generate a random secret before first run
       - POSTGRES_DB=nocodb
     volumes:
       - nocodb_pg_data:/var/lib/postgresql/data
@@ -236,6 +252,10 @@ volumes:
     githubUrl: "https://github.com/bram2w/baserow",
     starsCount: 22000,
     license: "MIT",
+    database: "PostgreSQL",
+    language: "Python (Django)",
+    platforms: ["Web"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   baserow:
@@ -245,7 +265,7 @@ services:
       - "80:80"
       - "443:443"
     environment:
-      - BASEROW_PUBLIC_URL=http://localhost
+      - BASEROW_PUBLIC_URL=http://localhost # CHANGE THIS TO YOUR DOMAIN
     volumes:
       - baserow_data:/baserow/data
 volumes:
@@ -347,6 +367,10 @@ volumes:
     githubUrl: "https://github.com/umami-software/umami",
     starsCount: 25000,
     license: "MIT",
+    database: "PostgreSQL / MySQL",
+    language: "TypeScript (Node.js)",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   umami:
@@ -355,7 +379,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - DATABASE_URL=postgresql://umami:umami@umami-db:5432/umami
+      - DATABASE_URL=postgresql://umami:change-me-postgres-password@umami-db:5432/umami # password must match the canonical db password below
       - APP_SECRET=change-me-super-secret
     depends_on:
       - umami-db
@@ -364,7 +388,7 @@ services:
     restart: unless-stopped
     environment:
       - POSTGRES_USER=umami
-      - POSTGRES_PASSWORD=umami
+      - POSTGRES_PASSWORD=change-me-postgres-password # REQUIRED: generate a random secret before first run
       - POSTGRES_DB=umami
     volumes:
       - umami_pg_data:/var/lib/postgresql/data
@@ -395,6 +419,10 @@ volumes:
     githubUrl: "https://github.com/matomo-org/matomo",
     starsCount: 19000,
     license: "GPL-3.0",
+    database: "MySQL / MariaDB",
+    language: "PHP",
+    platforms: ["Web"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   matomo:
@@ -405,7 +433,7 @@ services:
     environment:
       - MATOMO_DATABASE_HOST=matomo-db
       - MATOMO_DATABASE_USERNAME=matomo
-      - MATOMO_DATABASE_PASSWORD=matomo
+      - MATOMO_DATABASE_PASSWORD=change-me-mysql-password # must match MYSQL_PASSWORD below
       - MATOMO_DATABASE_DBNAME=matomo
     volumes:
       - matomo_data:/var/www/html
@@ -415,9 +443,9 @@ services:
     image: mariadb:11
     restart: unless-stopped
     environment:
-      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=change-me-mysql-root-password # REQUIRED: generate a random secret before first run
       - MYSQL_USER=matomo
-      - MYSQL_PASSWORD=matomo
+      - MYSQL_PASSWORD=change-me-mysql-password # REQUIRED: generate a random secret before first run
       - MYSQL_DATABASE=matomo
     volumes:
       - matomo_db_data:/var/lib/mysql
@@ -451,6 +479,10 @@ volumes:
     githubUrl: "https://github.com/PostHog/posthog",
     starsCount: 24000,
     license: "MIT",
+    database: "PostgreSQL + ClickHouse",
+    language: "Python (Django)",
+    platforms: ["Web"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   posthog:
@@ -459,7 +491,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_URL=postgres://posthog:posthog@posthog-db:5432/posthog
+      - DATABASE_URL=postgres://posthog:change-me-postgres-password@posthog-db:5432/posthog # password must match the canonical db password below
       - SECRET_KEY=change-me-super-secret
       - REDIS_URL=redis://posthog-redis:6379
     depends_on:
@@ -470,7 +502,7 @@ services:
     restart: unless-stopped
     environment:
       - POSTGRES_USER=posthog
-      - POSTGRES_PASSWORD=posthog
+      - POSTGRES_PASSWORD=change-me-postgres-password # REQUIRED: generate a random secret before first run
       - POSTGRES_DB=posthog
     volumes:
       - posthog_pg_data:/var/lib/postgresql/data
@@ -562,6 +594,10 @@ volumes:
     githubUrl: "https://github.com/RocketChat/Rocket.Chat",
     starsCount: 41000,
     license: "MIT",
+    database: "MongoDB",
+    language: "Node.js",
+    platforms: ["Web", "Desktop (Mac/Win/Linux)", "Mobile (iOS/Android)"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   rocketchat:
@@ -571,7 +607,7 @@ services:
       - "3000:3000"
     environment:
       - MONGO_URL=mongodb://rocketchat-db:27017/rocketchat
-      - ROOT_URL=http://localhost:3000
+      - ROOT_URL=http://localhost:3000 # CHANGE THIS TO YOUR DOMAIN
     depends_on:
       - rocketchat-db
   rocketchat-db:
@@ -607,6 +643,10 @@ volumes:
     githubUrl: "https://github.com/mattermost/mattermost",
     starsCount: 30000,
     license: "MIT",
+    database: "PostgreSQL",
+    language: "Go",
+    platforms: ["Web", "Desktop (Mac/Win/Linux)", "Mobile (iOS/Android)"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   mattermost:
@@ -625,7 +665,7 @@ services:
     restart: unless-stopped
     environment:
       - POSTGRES_USER=mattermost
-      - POSTGRES_PASSWORD=mattermost
+      - POSTGRES_PASSWORD=change-me-postgres-password # REQUIRED: generate a random secret before first run
       - POSTGRES_DB=mattermost
     volumes:
       - mattermost_pg_data:/var/lib/postgresql/data
@@ -657,6 +697,10 @@ volumes:
     githubUrl: "https://github.com/twentyhq/twenty",
     starsCount: 24000,
     license: "AGPL-3.0",
+    database: "PostgreSQL",
+    language: "TypeScript (NestJS)",
+    platforms: ["Web"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   twenty:
@@ -665,7 +709,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - PG_DATABASE_URL=postgres://twenty:twenty@twenty-db:5432/twenty
+      - PG_DATABASE_URL=postgres://twenty:change-me-postgres-password@twenty-db:5432/twenty # password must match the canonical db password below
       - APP_SECRET=change-me-super-secret
     depends_on:
       - twenty-db
@@ -674,7 +718,7 @@ services:
     restart: unless-stopped
     environment:
       - POSTGRES_USER=twenty
-      - POSTGRES_PASSWORD=twenty
+      - POSTGRES_PASSWORD=change-me-postgres-password # REQUIRED: generate a random secret before first run
       - POSTGRES_DB=twenty
     volumes:
       - twenty_pg_data:/var/lib/postgresql/data
@@ -706,6 +750,10 @@ volumes:
     githubUrl: "https://github.com/chatwoot/chatwoot",
     starsCount: 23000,
     license: "MIT",
+    database: "PostgreSQL",
+    language: "Ruby on Rails",
+    platforms: ["Web", "Mobile (iOS/Android)"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   chatwoot:
@@ -717,7 +765,7 @@ services:
       - SECRET_KEY_BASE=change-me-super-secret
       - POSTGRES_HOST=chatwoot-db
       - POSTGRES_USERNAME=chatwoot
-      - POSTGRES_PASSWORD=chatwoot
+      - POSTGRES_PASSWORD=change-me-postgres-password # REQUIRED: generate a random secret before first run
       - REDIS_URL=redis://chatwoot-redis:6379
     depends_on:
       - chatwoot-db
@@ -727,7 +775,7 @@ services:
     restart: unless-stopped
     environment:
       - POSTGRES_USER=chatwoot
-      - POSTGRES_PASSWORD=chatwoot
+      - POSTGRES_PASSWORD=change-me-postgres-password # REQUIRED: generate a random secret before first run
     volumes:
       - chatwoot_pg_data:/var/lib/postgresql/data
   chatwoot-redis:
@@ -818,6 +866,10 @@ volumes:
     githubUrl: "https://github.com/appwrite/appwrite",
     starsCount: 47000,
     license: "BSD-3-Clause",
+    database: "MariaDB",
+    language: "PHP",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   appwrite:
@@ -838,7 +890,7 @@ services:
     image: mariadb:11
     restart: unless-stopped
     environment:
-      - MYSQL_ROOT_PASSWORD=rootpass
+      - MYSQL_ROOT_PASSWORD=change-me-mysql-root-password # REQUIRED: generate a random secret before first run
     volumes:
       - appwrite_mariadb_data:/var/lib/mysql
   redis:
@@ -871,6 +923,10 @@ volumes:
     githubUrl: "https://github.com/minio/minio",
     starsCount: 48000,
     license: "AGPL-3.0",
+    database: "None / Object storage",
+    language: "Go",
+    platforms: ["Web"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   minio:
@@ -1035,6 +1091,10 @@ volumes:
     githubUrl: "https://github.com/open-webui/open-webui",
     starsCount: 62000,
     license: "MIT",
+    database: "SQLite",
+    language: "Python",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   open-webui:
@@ -1085,6 +1145,10 @@ volumes:
     githubUrl: "https://github.com/langfuse/langfuse",
     starsCount: 9000,
     license: "MIT",
+    database: "PostgreSQL + ClickHouse",
+    language: "TypeScript",
+    platforms: ["Web"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   langfuse:
@@ -1093,7 +1157,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - DATABASE_URL=postgresql://langfuse:langfuse@langfuse-db:5432/langfuse
+      - DATABASE_URL=postgresql://langfuse:change-me-postgres-password@langfuse-db:5432/langfuse # password must match the canonical db password below
       - NEXTAUTH_SECRET=change-me-super-secret
       - SALT=change-me-salt
     depends_on:
@@ -1103,7 +1167,7 @@ services:
     restart: unless-stopped
     environment:
       - POSTGRES_USER=langfuse
-      - POSTGRES_PASSWORD=langfuse
+      - POSTGRES_PASSWORD=change-me-postgres-password # REQUIRED: generate a random secret before first run
       - POSTGRES_DB=langfuse
     volumes:
       - langfuse_pg_data:/var/lib/postgresql/data
@@ -1136,6 +1200,10 @@ volumes:
     githubUrl: "https://github.com/hcengineering/huly-platform",
     starsCount: 11000,
     license: "AGPL-3.0",
+    database: "MongoDB",
+    language: "Rust",
+    platforms: ["Web", "Desktop (Mac/Win/Linux)"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   huly:
@@ -1176,6 +1244,10 @@ volumes:
     githubUrl: "https://github.com/outline/outline",
     starsCount: 30000,
     license: "BUSL-1.1",
+    database: "PostgreSQL",
+    language: "Node.js",
+    platforms: ["Web", "Desktop (Mac/Win/Linux)"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   outline:
@@ -1185,7 +1257,7 @@ services:
       - "3000:3000"
     environment:
       - SECRET_KEY=change-me-super-secret
-      - DATABASE_URL=postgres://outline:outline@outline-db:5432/outline
+      - DATABASE_URL=postgres://outline:change-me-postgres-password@outline-db:5432/outline # password must match the canonical db password below
       - REDIS_URL=redis://outline-redis:6379
       - URL=http://localhost:3000
     depends_on:
@@ -1196,7 +1268,7 @@ services:
     restart: unless-stopped
     environment:
       - POSTGRES_USER=outline
-      - POSTGRES_PASSWORD=outline
+      - POSTGRES_PASSWORD=change-me-postgres-password # REQUIRED: generate a random secret before first run
       - POSTGRES_DB=outline
     volumes:
       - outline_pg_data:/var/lib/postgresql/data
@@ -1226,6 +1298,10 @@ volumes:
     githubUrl: "https://github.com/BookStackApp/BookStack",
     starsCount: 14000,
     license: "MIT",
+    database: "MySQL",
+    language: "PHP (Laravel)",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   bookstack:
@@ -1244,10 +1320,10 @@ services:
     image: mariadb:11
     restart: unless-stopped
     environment:
-      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=change-me-mysql-root-password # REQUIRED: generate a random secret before first run
       - MYSQL_DATABASE=bookstack
       - MYSQL_USER=bookstack
-      - MYSQL_PASSWORD=bookstack
+      - MYSQL_PASSWORD=change-me-mysql-password # REQUIRED: generate a random secret before first run
     volumes:
       - bookstack_db_data:/var/lib/mysql
 volumes:
@@ -1273,6 +1349,10 @@ volumes:
     githubUrl: "https://github.com/wekan/wekan",
     starsCount: 19000,
     license: "MIT",
+    database: "MongoDB",
+    language: "Node.js (Meteor)",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   wekan:
@@ -1282,7 +1362,7 @@ services:
       - "8080:8080"
     environment:
       - MONGO_URL=mongodb://wekan-db:27017/wekan
-      - ROOT_URL=http://localhost:8080
+      - ROOT_URL=http://localhost:8080 # CHANGE THIS TO YOUR DOMAIN
     depends_on:
       - wekan-db
   wekan-db:
@@ -1313,6 +1393,10 @@ volumes:
     githubUrl: "https://github.com/go-vikunja/vikunja",
     starsCount: 8000,
     license: "AGPL-3.0",
+    database: "SQLite / PostgreSQL / MySQL",
+    language: "Go",
+    platforms: ["Web", "Desktop (Mac/Win/Linux)", "Mobile (iOS/Android)"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   vikunja:
@@ -1348,6 +1432,10 @@ volumes:
     githubUrl: "https://github.com/taigaio/taiga-back",
     starsCount: 4000,
     license: "AGPL-3.0",
+    database: "PostgreSQL",
+    language: "Python (Django)",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   taiga-back:
@@ -1359,7 +1447,7 @@ services:
       - POSTGRES_HOST=taiga-db
       - POSTGRES_DB=taiga
       - POSTGRES_USER=taiga
-      - POSTGRES_PASSWORD=taiga
+      - POSTGRES_PASSWORD=change-me-postgres-password # REQUIRED: generate a random secret before first run
       - SECRET_KEY=change-me-super-secret
     depends_on:
       - taiga-db
@@ -1369,7 +1457,7 @@ services:
     environment:
       - POSTGRES_DB=taiga
       - POSTGRES_USER=taiga
-      - POSTGRES_PASSWORD=taiga
+      - POSTGRES_PASSWORD=change-me-postgres-password # REQUIRED: generate a random secret before first run
     volumes:
       - taiga_pg_data:/var/lib/postgresql/data
 volumes:
@@ -1395,6 +1483,10 @@ volumes:
     githubUrl: "https://github.com/opf/openproject",
     starsCount: 9000,
     license: "GPL-3.0",
+    database: "PostgreSQL",
+    language: "Ruby on Rails",
+    platforms: ["Web"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   openproject:
@@ -1429,6 +1521,10 @@ volumes:
     githubUrl: "https://github.com/zadam/trilium",
     starsCount: 28000,
     license: "AGPL-3.0",
+    database: "SQLite",
+    language: "Node.js",
+    platforms: ["Web", "Desktop (Mac/Win/Linux)"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   trilium:
@@ -1461,6 +1557,10 @@ volumes:
     githubUrl: "https://github.com/docmost/docmost",
     starsCount: 14000,
     license: "AGPL-3.0",
+    database: "PostgreSQL",
+    language: "TypeScript (NestJS)",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   docmost:
@@ -1470,7 +1570,7 @@ services:
       - "3000:3000"
     environment:
       - APP_SECRET=change-me-super-secret
-      - DATABASE_URL=postgresql://docmost:docmost@docmost-db:5432/docmost
+      - DATABASE_URL=postgresql://docmost:change-me-postgres-password@docmost-db:5432/docmost # password must match the canonical db password below
       - REDIS_URL=redis://docmost-redis:6379
     depends_on:
       - docmost-db
@@ -1480,7 +1580,7 @@ services:
     restart: unless-stopped
     environment:
       - POSTGRES_USER=docmost
-      - POSTGRES_PASSWORD=docmost
+      - POSTGRES_PASSWORD=change-me-postgres-password # REQUIRED: generate a random secret before first run
       - POSTGRES_DB=docmost
     volumes:
       - docmost_pg_data:/var/lib/postgresql/data
@@ -1510,6 +1610,10 @@ volumes:
     githubUrl: "https://github.com/toeverything/AFFiNE",
     starsCount: 46000,
     license: "MIT",
+    database: "PostgreSQL",
+    language: "Rust + TypeScript",
+    platforms: ["Web", "Desktop (Mac/Win/Linux)", "Mobile (iOS/Android)"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   affine:
@@ -1518,7 +1622,7 @@ services:
     ports:
       - "3010:3010"
     environment:
-      - DATABASE_URL=postgresql://affine:affine@affine-db:5432/affine
+      - DATABASE_URL=postgresql://affine:change-me-postgres-password@affine-db:5432/affine # password must match the canonical db password below
       - REDIS_SERVER_HOST=affine-redis
     depends_on:
       - affine-db
@@ -1528,7 +1632,7 @@ services:
     restart: unless-stopped
     environment:
       - POSTGRES_USER=affine
-      - POSTGRES_PASSWORD=affine
+      - POSTGRES_PASSWORD=change-me-postgres-password # REQUIRED: generate a random secret before first run
       - POSTGRES_DB=affine
     volumes:
       - affine_pg_data:/var/lib/postgresql/data
@@ -1558,6 +1662,10 @@ volumes:
     githubUrl: "https://github.com/zulip/zulip",
     starsCount: 21000,
     license: "Apache-2.0",
+    database: "PostgreSQL",
+    language: "Python (Django)",
+    platforms: ["Web", "Desktop (Mac/Win/Linux)", "Mobile (iOS/Android)"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   zulip:
@@ -1566,7 +1674,7 @@ services:
     ports:
       - "80:80"
     environment:
-      - SETTING_EXTERNAL_HOST=localhost
+      - SETTING_EXTERNAL_HOST=localhost # CHANGE THIS TO YOUR DOMAIN
       - SECRETS_email_password=""
     volumes:
       - zulip_data:/data
@@ -1593,6 +1701,10 @@ volumes:
     githubUrl: "https://github.com/ether/etherpad-lite",
     starsCount: 15000,
     license: "Apache-2.0",
+    database: "PostgreSQL / MySQL / SQLite",
+    language: "Node.js",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   etherpad:
@@ -1613,7 +1725,7 @@ services:
     restart: unless-stopped
     environment:
       - POSTGRES_USER=etherpad
-      - POSTGRES_PASSWORD=etherpad
+      - POSTGRES_PASSWORD=change-me-postgres-password # REQUIRED: generate a random secret before first run
       - POSTGRES_DB=etherpad
     volumes:
       - etherpad_pg_data:/var/lib/postgresql/data
@@ -1640,6 +1752,10 @@ volumes:
     githubUrl: "https://github.com/requarks/wiki",
     starsCount: 24000,
     license: "AGPL-3.0",
+    database: "PostgreSQL",
+    language: "Node.js",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   wikijs:
@@ -1660,7 +1776,7 @@ services:
     restart: unless-stopped
     environment:
       - POSTGRES_USER=wikijs
-      - POSTGRES_PASSWORD=wikijs
+      - POSTGRES_PASSWORD=change-me-postgres-password # REQUIRED: generate a random secret before first run
       - POSTGRES_DB=wikijs
     volumes:
       - wikijs_pg_data:/var/lib/postgresql/data
@@ -1687,6 +1803,10 @@ volumes:
     githubUrl: "https://github.com/lukevella/rallly",
     starsCount: 5000,
     license: "AGPL-3.0",
+    database: "PostgreSQL",
+    language: "TypeScript (Next.js)",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   rallly:
@@ -1695,7 +1815,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - DATABASE_URL=postgresql://rallly:rallly@rallly-db:5432/rallly
+      - DATABASE_URL=postgresql://rallly:change-me-postgres-password@rallly-db:5432/rallly # password must match the canonical db password below
       - SECRET_PASSWORD=change-me-32-char-secret
     depends_on:
       - rallly-db
@@ -1704,7 +1824,7 @@ services:
     restart: unless-stopped
     environment:
       - POSTGRES_USER=rallly
-      - POSTGRES_PASSWORD=rallly
+      - POSTGRES_PASSWORD=change-me-postgres-password # REQUIRED: generate a random secret before first run
       - POSTGRES_DB=rallly
     volumes:
       - rallly_pg_data:/var/lib/postgresql/data
@@ -1731,6 +1851,10 @@ volumes:
     githubUrl: "https://github.com/cryptpad/cryptpad",
     starsCount: 5000,
     license: "AGPL-3.0",
+    database: "None / File-based",
+    language: "Node.js",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   cryptpad:
@@ -1765,6 +1889,10 @@ volumes:
     githubUrl: "https://github.com/getfider/fider",
     starsCount: 4000,
     license: "AGPL-3.0",
+    database: "PostgreSQL",
+    language: "Go",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   fider:
@@ -1773,7 +1901,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - DATABASE_URL=postgres://fider:fider@fider-db:5432/fider?sslmode=disable
+      - DATABASE_URL=postgres://fider:change-me-postgres-password@fider-db:5432/fider?sslmode=disable # password must match the canonical db password below
       - JWT_SECRET=change-me-super-secret
     depends_on:
       - fider-db
@@ -1782,7 +1910,7 @@ services:
     restart: unless-stopped
     environment:
       - POSTGRES_USER=fider
-      - POSTGRES_PASSWORD=fider
+      - POSTGRES_PASSWORD=change-me-postgres-password # REQUIRED: generate a random secret before first run
       - POSTGRES_DB=fider
     volumes:
       - fider_pg_data:/var/lib/postgresql/data
@@ -1812,6 +1940,10 @@ volumes:
     demoUrl: "https://demo.metabase.com",
     starsCount: 38000,
     license: "AGPL-3.0",
+    database: "PostgreSQL (app DB)",
+    language: "Clojure",
+    platforms: ["Web"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   metabase:
@@ -1832,7 +1964,7 @@ services:
     restart: unless-stopped
     environment:
       - POSTGRES_USER=metabase
-      - POSTGRES_PASSWORD=metabase
+      - POSTGRES_PASSWORD=change-me-postgres-password # REQUIRED: generate a random secret before first run
       - POSTGRES_DB=metabase
     volumes:
       - metabase_pg_data:/var/lib/postgresql/data
@@ -1859,6 +1991,10 @@ volumes:
     githubUrl: "https://github.com/apache/superset",
     starsCount: 62000,
     license: "Apache-2.0",
+    database: "PostgreSQL (app DB)",
+    language: "Python",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   superset:
@@ -1893,6 +2029,10 @@ volumes:
     githubUrl: "https://github.com/getredash/redash",
     starsCount: 24000,
     license: "BSD-2-Clause",
+    database: "PostgreSQL",
+    language: "Python",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   redash:
@@ -1901,7 +2041,7 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - REDASH_DATABASE_URL=postgresql://redash:redash@redash-db:5432/redash
+      - REDASH_DATABASE_URL=postgresql://redash:change-me-postgres-password@redash-db:5432/redash # password must match the canonical db password below
       - REDASH_REDIS_URL=redis://redash-redis:6379/0
       - REDASH_COOKIE_SECRET=change-me-super-secret
     depends_on:
@@ -1912,7 +2052,7 @@ services:
     restart: unless-stopped
     environment:
       - POSTGRES_USER=redash
-      - POSTGRES_PASSWORD=redash
+      - POSTGRES_PASSWORD=change-me-postgres-password # REQUIRED: generate a random secret before first run
       - POSTGRES_DB=redash
     volumes:
       - redash_pg_data:/var/lib/postgresql/data
@@ -1942,6 +2082,10 @@ volumes:
     githubUrl: "https://github.com/Countly/countly-server",
     starsCount: 4000,
     license: "AGPL-3.0",
+    database: "MongoDB",
+    language: "Node.js",
+    platforms: ["Web"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   countly:
@@ -1981,6 +2125,10 @@ volumes:
     githubUrl: "https://github.com/electerious/Ackee",
     starsCount: 8000,
     license: "MIT",
+    database: "MongoDB",
+    language: "Node.js",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   ackee:
@@ -2022,6 +2170,10 @@ volumes:
     githubUrl: "https://github.com/arp242/goatcounter",
     starsCount: 5000,
     license: "EUPL-1.2",
+    database: "SQLite",
+    language: "Go",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   goatcounter:
@@ -2055,6 +2207,10 @@ volumes:
     githubUrl: "https://github.com/openreplay/openreplay",
     starsCount: 12000,
     license: "Apache-2.0",
+    database: "PostgreSQL + ClickHouse",
+    language: "Go",
+    platforms: ["Web"],
+    fossModel: "OpenCore",
     dockerCompose: `# OpenReplay recomienda su instalador oficial para producción
 # (varios microservicios). Este es un punto de partida simplificado.
 version: "3.9"
@@ -2089,6 +2245,10 @@ volumes:
     githubUrl: "https://github.com/highlight/highlight",
     starsCount: 7000,
     license: "Apache-2.0",
+    database: "PostgreSQL + ClickHouse",
+    language: "Go",
+    platforms: ["Web"],
+    fossModel: "OpenCore",
     dockerCompose: `# Highlight recomienda docker-compose oficial con varios servicios.
 # Este es un punto de partida simplificado del backend principal.
 version: "3.9"
@@ -2106,7 +2266,7 @@ services:
     image: postgres:15-alpine
     restart: unless-stopped
     environment:
-      - POSTGRES_PASSWORD=highlight
+      - POSTGRES_PASSWORD=change-me-postgres-password # REQUIRED: generate a random secret before first run
     volumes:
       - highlight_pg_data:/var/lib/postgresql/data
 volumes:
@@ -2132,6 +2292,10 @@ volumes:
     githubUrl: "https://github.com/Openpanel-dev/openpanel",
     starsCount: 3000,
     license: "AGPL-3.0",
+    database: "PostgreSQL + ClickHouse",
+    language: "TypeScript (Next.js)",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   openpanel:
@@ -2140,7 +2304,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - DATABASE_URL=postgresql://openpanel:openpanel@openpanel-db:5432/openpanel
+      - DATABASE_URL=postgresql://openpanel:change-me-postgres-password@openpanel-db:5432/openpanel # password must match the canonical db password below
       - CLICKHOUSE_URL=http://openpanel-ch:8123
     depends_on:
       - openpanel-db
@@ -2150,7 +2314,7 @@ services:
     restart: unless-stopped
     environment:
       - POSTGRES_USER=openpanel
-      - POSTGRES_PASSWORD=openpanel
+      - POSTGRES_PASSWORD=change-me-postgres-password # REQUIRED: generate a random secret before first run
       - POSTGRES_DB=openpanel
     volumes:
       - openpanel_pg_data:/var/lib/postgresql/data
@@ -2185,6 +2349,10 @@ volumes:
     githubUrl: "https://github.com/go-gitea/gitea",
     starsCount: 46000,
     license: "MIT",
+    database: "PostgreSQL / MySQL / SQLite",
+    language: "Go",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   gitea:
@@ -2198,7 +2366,7 @@ services:
       - GITEA__database__HOST=gitea-db:5432
       - GITEA__database__NAME=gitea
       - GITEA__database__USER=gitea
-      - GITEA__database__PASSWD=gitea
+      - GITEA__database__PASSWD=change-me-postgres-password # must match POSTGRES_PASSWORD below
     volumes:
       - gitea_data:/data
     depends_on:
@@ -2208,7 +2376,7 @@ services:
     restart: unless-stopped
     environment:
       - POSTGRES_USER=gitea
-      - POSTGRES_PASSWORD=gitea
+      - POSTGRES_PASSWORD=change-me-postgres-password # REQUIRED: generate a random secret before first run
       - POSTGRES_DB=gitea
     volumes:
       - gitea_pg_data:/var/lib/postgresql/data
@@ -2236,6 +2404,10 @@ volumes:
     githubUrl: "https://gitlab.com/gitlab-org/gitlab-foss",
     starsCount: 24000,
     license: "MIT",
+    database: "PostgreSQL",
+    language: "Ruby on Rails",
+    platforms: ["Web"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   gitlab:
@@ -2246,7 +2418,7 @@ services:
       - "443:443"
       - "2222:22"
     environment:
-      - GITLAB_OMNIBUS_CONFIG=external_url 'http://localhost'
+      - GITLAB_OMNIBUS_CONFIG=external_url 'https://git.yourdomain.com' # CHANGE THIS TO YOUR DOMAIN
     volumes:
       - gitlab_config:/etc/gitlab
       - gitlab_data:/var/opt/gitlab
@@ -2274,6 +2446,10 @@ volumes:
     githubUrl: "https://github.com/jenkinsci/jenkins",
     starsCount: 23000,
     license: "MIT",
+    database: "None / File-based",
+    language: "Java",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   jenkins:
@@ -2307,6 +2483,10 @@ volumes:
     githubUrl: "https://github.com/portainer/portainer",
     starsCount: 30000,
     license: "Zlib",
+    database: "None / Embedded (BoltDB)",
+    language: "Go",
+    platforms: ["Web"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   portainer:
@@ -2340,6 +2520,10 @@ volumes:
     githubUrl: "https://github.com/directus/directus",
     starsCount: 29000,
     license: "BUSL-1.1",
+    database: "PostgreSQL",
+    language: "Node.js",
+    platforms: ["Web"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   directus:
@@ -2354,7 +2538,7 @@ services:
       - DB_HOST=directus-db
       - DB_DATABASE=directus
       - DB_USER=directus
-      - DB_PASSWORD=directus
+      - DB_PASSWORD=change-me-postgres-password # must match POSTGRES_PASSWORD below
     depends_on:
       - directus-db
   directus-db:
@@ -2362,7 +2546,7 @@ services:
     restart: unless-stopped
     environment:
       - POSTGRES_USER=directus
-      - POSTGRES_PASSWORD=directus
+      - POSTGRES_PASSWORD=change-me-postgres-password # REQUIRED: generate a random secret before first run
       - POSTGRES_DB=directus
     volumes:
       - directus_pg_data:/var/lib/postgresql/data
@@ -2389,6 +2573,10 @@ volumes:
     githubUrl: "https://github.com/strapi/strapi",
     starsCount: 64000,
     license: "MIT",
+    database: "PostgreSQL",
+    language: "Node.js",
+    platforms: ["Web"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   strapi:
@@ -2401,7 +2589,7 @@ services:
       - DATABASE_HOST=strapi-db
       - DATABASE_NAME=strapi
       - DATABASE_USERNAME=strapi
-      - DATABASE_PASSWORD=strapi
+      - DATABASE_PASSWORD=change-me-postgres-password # must match POSTGRES_PASSWORD below
     volumes:
       - strapi_data:/srv/app
     depends_on:
@@ -2411,7 +2599,7 @@ services:
     restart: unless-stopped
     environment:
       - POSTGRES_USER=strapi
-      - POSTGRES_PASSWORD=strapi
+      - POSTGRES_PASSWORD=change-me-postgres-password # REQUIRED: generate a random secret before first run
       - POSTGRES_DB=strapi
     volumes:
       - strapi_pg_data:/var/lib/postgresql/data
@@ -2439,6 +2627,10 @@ volumes:
     githubUrl: "https://github.com/pocketbase/pocketbase",
     starsCount: 40000,
     license: "MIT",
+    database: "SQLite",
+    language: "Go",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   pocketbase:
@@ -2471,6 +2663,10 @@ volumes:
     githubUrl: "https://github.com/hasura/graphql-engine",
     starsCount: 31000,
     license: "Apache-2.0",
+    database: "PostgreSQL",
+    language: "Haskell",
+    platforms: ["Web"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   hasura:
@@ -2479,7 +2675,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - HASURA_GRAPHQL_DATABASE_URL=postgres://hasura:hasura@hasura-db:5432/hasura
+      - HASURA_GRAPHQL_DATABASE_URL=postgres://hasura:change-me-postgres-password@hasura-db:5432/hasura # password must match the canonical db password below
       - HASURA_GRAPHQL_ADMIN_SECRET=change-me-super-secret
     depends_on:
       - hasura-db
@@ -2488,7 +2684,7 @@ services:
     restart: unless-stopped
     environment:
       - POSTGRES_USER=hasura
-      - POSTGRES_PASSWORD=hasura
+      - POSTGRES_PASSWORD=change-me-postgres-password # REQUIRED: generate a random secret before first run
       - POSTGRES_DB=hasura
     volumes:
       - hasura_pg_data:/var/lib/postgresql/data
@@ -2515,6 +2711,10 @@ volumes:
     githubUrl: "https://github.com/meilisearch/meilisearch",
     starsCount: 46000,
     license: "MIT",
+    database: "None / File-based",
+    language: "Rust",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   meilisearch:
@@ -2549,6 +2749,10 @@ volumes:
     githubUrl: "https://github.com/typesense/typesense",
     starsCount: 21000,
     license: "GPL-3.0",
+    database: "None / File-based",
+    language: "C++",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   typesense:
@@ -2584,6 +2788,10 @@ volumes:
     githubUrl: "https://github.com/novuhq/novu",
     starsCount: 34000,
     license: "MIT",
+    database: "MongoDB",
+    language: "TypeScript (NestJS)",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   novu:
@@ -2628,6 +2836,10 @@ volumes:
     githubUrl: "https://github.com/windmill-labs/windmill",
     starsCount: 9000,
     license: "AGPL-3.0",
+    database: "PostgreSQL",
+    language: "Rust",
+    platforms: ["Web"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   windmill:
@@ -2636,7 +2848,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_URL=postgres://windmill:windmill@windmill-db:5432/windmill
+      - DATABASE_URL=postgres://windmill:change-me-postgres-password@windmill-db:5432/windmill # password must match the canonical db password below
     depends_on:
       - windmill-db
   windmill-db:
@@ -2644,7 +2856,7 @@ services:
     restart: unless-stopped
     environment:
       - POSTGRES_USER=windmill
-      - POSTGRES_PASSWORD=windmill
+      - POSTGRES_PASSWORD=change-me-postgres-password # REQUIRED: generate a random secret before first run
       - POSTGRES_DB=windmill
     volumes:
       - windmill_pg_data:/var/lib/postgresql/data
@@ -2671,6 +2883,10 @@ volumes:
     githubUrl: "https://github.com/Unleash/unleash",
     starsCount: 13000,
     license: "Apache-2.0",
+    database: "PostgreSQL",
+    language: "Node.js",
+    platforms: ["Web"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   unleash:
@@ -2679,7 +2895,7 @@ services:
     ports:
       - "4242:4242"
     environment:
-      - DATABASE_URL=postgres://unleash:unleash@unleash-db:5432/unleash
+      - DATABASE_URL=postgres://unleash:change-me-postgres-password@unleash-db:5432/unleash # password must match the canonical db password below
     depends_on:
       - unleash-db
   unleash-db:
@@ -2687,7 +2903,7 @@ services:
     restart: unless-stopped
     environment:
       - POSTGRES_USER=unleash
-      - POSTGRES_PASSWORD=unleash
+      - POSTGRES_PASSWORD=change-me-postgres-password # REQUIRED: generate a random secret before first run
       - POSTGRES_DB=unleash
     volumes:
       - unleash_pg_data:/var/lib/postgresql/data
@@ -2714,6 +2930,10 @@ volumes:
     githubUrl: "https://github.com/knadh/listmonk",
     starsCount: 7000,
     license: "AGPL-3.0",
+    database: "PostgreSQL",
+    language: "Go",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   listmonk:
@@ -2724,7 +2944,7 @@ services:
     environment:
       - LISTMONK_db__host=listmonk-db
       - LISTMONK_db__user=listmonk
-      - LISTMONK_db__password=listmonk
+      - LISTMONK_db__password=change-me-postgres-password # must match POSTGRES_PASSWORD below
       - LISTMONK_db__database=listmonk
     depends_on:
       - listmonk-db
@@ -2733,7 +2953,7 @@ services:
     restart: unless-stopped
     environment:
       - POSTGRES_USER=listmonk
-      - POSTGRES_PASSWORD=listmonk
+      - POSTGRES_PASSWORD=change-me-postgres-password # REQUIRED: generate a random secret before first run
       - POSTGRES_DB=listmonk
     volumes:
       - listmonk_pg_data:/var/lib/postgresql/data
@@ -2760,6 +2980,10 @@ volumes:
     githubUrl: "https://github.com/documenso/documenso",
     starsCount: 8000,
     license: "AGPL-3.0",
+    database: "PostgreSQL",
+    language: "TypeScript (Next.js)",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   documenso:
@@ -2769,8 +2993,8 @@ services:
       - "3000:3000"
     environment:
       - NEXTAUTH_SECRET=change-me-super-secret
-      - NEXT_PUBLIC_WEBAPP_URL=http://localhost:3000
-      - DATABASE_URL=postgresql://documenso:documenso@documenso-db:5432/documenso
+      - NEXT_PUBLIC_WEBAPP_URL=http://localhost:3000 # CHANGE THIS TO YOUR DOMAIN
+      - DATABASE_URL=postgresql://documenso:change-me-postgres-password@documenso-db:5432/documenso # password must match the canonical db password below
     depends_on:
       - documenso-db
   documenso-db:
@@ -2778,7 +3002,7 @@ services:
     restart: unless-stopped
     environment:
       - POSTGRES_USER=documenso
-      - POSTGRES_PASSWORD=documenso
+      - POSTGRES_PASSWORD=change-me-postgres-password # REQUIRED: generate a random secret before first run
       - POSTGRES_DB=documenso
     volumes:
       - documenso_pg_data:/var/lib/postgresql/data
@@ -2843,6 +3067,10 @@ volumes:
     demoUrl: "https://play.grafana.org",
     starsCount: 66000,
     license: "AGPL-3.0",
+    database: "SQLite / PostgreSQL / MySQL (app DB)",
+    language: "Go",
+    platforms: ["Web"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   grafana:
@@ -2879,6 +3107,10 @@ volumes:
     githubUrl: "https://github.com/espocrm/espocrm",
     starsCount: 3000,
     license: "GPL-3.0",
+    database: "MySQL",
+    language: "PHP",
+    platforms: ["Web"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   espocrm:
@@ -2889,17 +3121,17 @@ services:
     environment:
       - ESPOCRM_DATABASE_HOST=espocrm-db
       - ESPOCRM_DATABASE_USER=espocrm
-      - ESPOCRM_DATABASE_PASSWORD=espocrm
+      - ESPOCRM_DATABASE_PASSWORD=change-me-mysql-password # must match MYSQL_PASSWORD below
     depends_on:
       - espocrm-db
   espocrm-db:
     image: mariadb:11
     restart: unless-stopped
     environment:
-      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=change-me-mysql-root-password # REQUIRED: generate a random secret before first run
       - MYSQL_DATABASE=espocrm
       - MYSQL_USER=espocrm
-      - MYSQL_PASSWORD=espocrm
+      - MYSQL_PASSWORD=change-me-mysql-password # REQUIRED: generate a random secret before first run
     volumes:
       - espocrm_db_data:/var/lib/mysql
 volumes:
@@ -2925,6 +3157,10 @@ volumes:
     githubUrl: "https://github.com/salesagility/SuiteCRM",
     starsCount: 5000,
     license: "AGPL-3.0",
+    database: "MySQL",
+    language: "PHP",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   suitecrm:
@@ -2935,17 +3171,17 @@ services:
     environment:
       - SUITECRM_DATABASE_HOST=suitecrm-db
       - SUITECRM_DATABASE_USER=suitecrm
-      - SUITECRM_DATABASE_PASSWORD=suitecrm
+      - SUITECRM_DATABASE_PASSWORD=change-me-mysql-password # must match MYSQL_PASSWORD below
     depends_on:
       - suitecrm-db
   suitecrm-db:
     image: mariadb:11
     restart: unless-stopped
     environment:
-      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=change-me-mysql-root-password # REQUIRED: generate a random secret before first run
       - MYSQL_DATABASE=suitecrm
       - MYSQL_USER=suitecrm
-      - MYSQL_PASSWORD=suitecrm
+      - MYSQL_PASSWORD=change-me-mysql-password # REQUIRED: generate a random secret before first run
     volumes:
       - suitecrm_db_data:/var/lib/mysql
 volumes:
@@ -2971,6 +3207,10 @@ volumes:
     githubUrl: "https://github.com/krayin/laravel-crm",
     starsCount: 2000,
     license: "MIT",
+    database: "MySQL",
+    language: "PHP (Laravel)",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   krayin:
@@ -2982,17 +3222,17 @@ services:
       - DB_HOST=krayin-db
       - DB_DATABASE=krayin
       - DB_USERNAME=krayin
-      - DB_PASSWORD=krayin
+      - DB_PASSWORD=change-me-mysql-password # must match MYSQL_PASSWORD below
     depends_on:
       - krayin-db
   krayin-db:
     image: mariadb:11
     restart: unless-stopped
     environment:
-      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=change-me-mysql-root-password # REQUIRED: generate a random secret before first run
       - MYSQL_DATABASE=krayin
       - MYSQL_USER=krayin
-      - MYSQL_PASSWORD=krayin
+      - MYSQL_PASSWORD=change-me-mysql-password # REQUIRED: generate a random secret before first run
     volumes:
       - krayin_db_data:/var/lib/mysql
 volumes:
@@ -3018,6 +3258,10 @@ volumes:
     githubUrl: "https://github.com/monicahq/monica",
     starsCount: 21000,
     license: "AGPL-3.0",
+    database: "MySQL",
+    language: "PHP (Laravel)",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   monica:
@@ -3029,18 +3273,18 @@ services:
       - DB_HOST=monica-db
       - DB_DATABASE=monica
       - DB_USERNAME=monica
-      - DB_PASSWORD=monica
-      - APP_KEY=base64:change-me-32-char-key
+      - DB_PASSWORD=change-me-mysql-password # must match MYSQL_PASSWORD below
+      - APP_KEY=change-me-app-key # REQUIRED: generate a random secret before first run
     depends_on:
       - monica-db
   monica-db:
     image: mariadb:11
     restart: unless-stopped
     environment:
-      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=change-me-mysql-root-password # REQUIRED: generate a random secret before first run
       - MYSQL_DATABASE=monica
       - MYSQL_USER=monica
-      - MYSQL_PASSWORD=monica
+      - MYSQL_PASSWORD=change-me-mysql-password # REQUIRED: generate a random secret before first run
     volumes:
       - monica_db_data:/var/lib/mysql
 volumes:
@@ -3066,6 +3310,10 @@ volumes:
     githubUrl: "https://github.com/odoo/odoo",
     starsCount: 39000,
     license: "LGPL-3.0",
+    database: "PostgreSQL",
+    language: "Python",
+    platforms: ["Web"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   odoo:
@@ -3076,7 +3324,7 @@ services:
     environment:
       - HOST=odoo-db
       - USER=odoo
-      - PASSWORD=odoo
+      - PASSWORD=change-me-postgres-password # must match POSTGRES_PASSWORD below
     depends_on:
       - odoo-db
   odoo-db:
@@ -3084,7 +3332,7 @@ services:
     restart: unless-stopped
     environment:
       - POSTGRES_USER=odoo
-      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_PASSWORD=change-me-postgres-password # REQUIRED: generate a random secret before first run
       - POSTGRES_DB=postgres
     volumes:
       - odoo_pg_data:/var/lib/postgresql/data
@@ -3111,6 +3359,10 @@ volumes:
     githubUrl: "https://github.com/mautic/mautic",
     starsCount: 9000,
     license: "GPL-3.0",
+    database: "MySQL",
+    language: "PHP (Symfony)",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   mautic:
@@ -3121,7 +3373,7 @@ services:
     environment:
       - MAUTIC_DB_HOST=mautic-db
       - MAUTIC_DB_USER=mautic
-      - MAUTIC_DB_PASSWORD=mautic
+      - MAUTIC_DB_PASSWORD=change-me-mysql-password # must match MYSQL_PASSWORD below
       - MAUTIC_DB_NAME=mautic
     depends_on:
       - mautic-db
@@ -3129,10 +3381,10 @@ services:
     image: mariadb:11
     restart: unless-stopped
     environment:
-      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=change-me-mysql-root-password # REQUIRED: generate a random secret before first run
       - MYSQL_DATABASE=mautic
       - MYSQL_USER=mautic
-      - MYSQL_PASSWORD=mautic
+      - MYSQL_PASSWORD=change-me-mysql-password # REQUIRED: generate a random secret before first run
     volumes:
       - mautic_db_data:/var/lib/mysql
 volumes:
@@ -3158,6 +3410,10 @@ volumes:
     githubUrl: "https://github.com/zammad/zammad",
     starsCount: 8000,
     license: "AGPL-3.0",
+    database: "PostgreSQL",
+    language: "Ruby on Rails",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   zammad:
@@ -3176,7 +3432,7 @@ services:
     restart: unless-stopped
     environment:
       - POSTGRES_USER=zammad
-      - POSTGRES_PASSWORD=zammad
+      - POSTGRES_PASSWORD=change-me-postgres-password # REQUIRED: generate a random secret before first run
       - POSTGRES_DB=zammad_production
     volumes:
       - zammad_pg_data:/var/lib/postgresql/data
@@ -3203,6 +3459,10 @@ volumes:
     githubUrl: "https://github.com/freescout-helpdesk/freescout",
     starsCount: 2000,
     license: "AGPL-3.0",
+    database: "MySQL",
+    language: "PHP (Laravel)",
+    platforms: ["Web"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   freescout:
@@ -3221,10 +3481,10 @@ services:
     image: mariadb:11
     restart: unless-stopped
     environment:
-      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=change-me-mysql-root-password # REQUIRED: generate a random secret before first run
       - MYSQL_DATABASE=freescout
       - MYSQL_USER=freescout
-      - MYSQL_PASSWORD=freescout
+      - MYSQL_PASSWORD=change-me-mysql-password # REQUIRED: generate a random secret before first run
     volumes:
       - freescout_db_data:/var/lib/mysql
 volumes:
@@ -3250,6 +3510,10 @@ volumes:
     githubUrl: "https://github.com/YetiForceCompany/YetiForceCRM",
     starsCount: 2000,
     license: "AGPL-3.0",
+    database: "MySQL",
+    language: "PHP",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   yetiforce:
@@ -3268,10 +3532,10 @@ services:
     image: mariadb:11
     restart: unless-stopped
     environment:
-      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=change-me-mysql-root-password # REQUIRED: generate a random secret before first run
       - MYSQL_DATABASE=yetiforce
       - MYSQL_USER=yetiforce
-      - MYSQL_PASSWORD=yetiforce
+      - MYSQL_PASSWORD=change-me-mysql-password # REQUIRED: generate a random secret before first run
     volumes:
       - yetiforce_db_data:/var/lib/mysql
 volumes:
@@ -3299,6 +3563,10 @@ volumes:
     githubUrl: "https://github.com/ollama/ollama",
     starsCount: 99000,
     license: "MIT",
+    database: "None / File-based",
+    language: "Go",
+    platforms: ["Web", "Desktop (Mac/Win/Linux)"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   ollama:
@@ -3332,6 +3600,10 @@ volumes:
     githubUrl: "https://github.com/mudler/LocalAI",
     starsCount: 26000,
     license: "MIT",
+    database: "None / File-based",
+    language: "Go",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   localai:
@@ -3364,6 +3636,10 @@ volumes:
     githubUrl: "https://github.com/khoj-ai/khoj",
     starsCount: 15000,
     license: "AGPL-3.0",
+    database: "PostgreSQL",
+    language: "Python (Django)",
+    platforms: ["Web", "Desktop (Mac/Win/Linux)", "Mobile (iOS/Android)"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   khoj:
@@ -3398,6 +3674,10 @@ volumes:
     githubUrl: "https://github.com/vllm-project/vllm",
     starsCount: 29000,
     license: "Apache-2.0",
+    database: "None / File-based",
+    language: "Python",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   vllm:
@@ -3431,6 +3711,10 @@ volumes:
     githubUrl: "https://github.com/Mintplex-Labs/anything-llm",
     starsCount: 24000,
     license: "MIT",
+    database: "SQLite",
+    language: "Node.js",
+    platforms: ["Web", "Desktop (Mac/Win/Linux)"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   anythingllm:
@@ -3463,6 +3747,10 @@ volumes:
     githubUrl: "https://github.com/FlowiseAI/Flowise",
     starsCount: 34000,
     license: "Apache-2.0",
+    database: "SQLite / PostgreSQL",
+    language: "Node.js",
+    platforms: ["Web"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   flowise:
@@ -3495,6 +3783,10 @@ volumes:
     githubUrl: "https://github.com/langflow-ai/langflow",
     starsCount: 44000,
     license: "MIT",
+    database: "SQLite",
+    language: "Python",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   langflow:
@@ -3527,6 +3819,10 @@ volumes:
     githubUrl: "https://github.com/langgenius/dify",
     starsCount: 54000,
     license: "Apache-2.0",
+    database: "PostgreSQL",
+    language: "Python",
+    platforms: ["Web"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   dify-api:
@@ -3537,7 +3833,7 @@ services:
     environment:
       - DB_HOST=dify-db
       - DB_USERNAME=dify
-      - DB_PASSWORD=dify
+      - DB_PASSWORD=change-me-postgres-password # must match POSTGRES_PASSWORD below
       - REDIS_HOST=dify-redis
     depends_on:
       - dify-db
@@ -3547,7 +3843,7 @@ services:
     restart: unless-stopped
     environment:
       - POSTGRES_USER=dify
-      - POSTGRES_PASSWORD=dify
+      - POSTGRES_PASSWORD=change-me-postgres-password # REQUIRED: generate a random secret before first run
       - POSTGRES_DB=dify
     volumes:
       - dify_pg_data:/var/lib/postgresql/data
@@ -3578,6 +3874,10 @@ volumes:
     githubUrl: "https://github.com/AUTOMATIC1111/stable-diffusion-webui",
     starsCount: 145000,
     license: "AGPL-3.0",
+    database: "None / File-based",
+    language: "Python",
+    platforms: ["Web", "Desktop (Mac/Win/Linux)"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   sd-webui:
@@ -3618,6 +3918,10 @@ volumes:
     githubUrl: "https://github.com/comfyanonymous/ComfyUI",
     starsCount: 58000,
     license: "GPL-3.0",
+    database: "None / File-based",
+    language: "Python",
+    platforms: ["Web", "Desktop (Mac/Win/Linux)"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   comfyui:
@@ -3657,6 +3961,10 @@ volumes:
     githubUrl: "https://github.com/invoke-ai/InvokeAI",
     starsCount: 24000,
     license: "Apache-2.0",
+    database: "SQLite",
+    language: "Python",
+    platforms: ["Web", "Desktop (Mac/Win/Linux)"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   invokeai:
@@ -3696,6 +4004,10 @@ volumes:
     githubUrl: "https://github.com/stackblitz-labs/bolt.diy",
     starsCount: 14000,
     license: "MIT",
+    database: "None / File-based",
+    language: "TypeScript (Remix)",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   bolt-diy:
@@ -3728,6 +4040,10 @@ volumes: {}
     githubUrl: "https://github.com/RasaHQ/rasa",
     starsCount: 19000,
     license: "Apache-2.0",
+    database: "SQLite",
+    language: "Python",
+    platforms: ["Web"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   rasa:
@@ -3761,6 +4077,10 @@ volumes:
     githubUrl: "https://github.com/baptisteArno/typebot.io",
     starsCount: 9000,
     license: "AGPL-3.0",
+    database: "PostgreSQL",
+    language: "TypeScript (Next.js)",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   typebot-builder:
@@ -3769,7 +4089,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - DATABASE_URL=postgresql://typebot:typebot@typebot-db:5432/typebot
+      - DATABASE_URL=postgresql://typebot:change-me-postgres-password@typebot-db:5432/typebot # password must match the canonical db password below
       - ENCRYPTION_SECRET=change-me-32-char-secret
     depends_on:
       - typebot-db
@@ -3778,7 +4098,7 @@ services:
     restart: unless-stopped
     environment:
       - POSTGRES_USER=typebot
-      - POSTGRES_PASSWORD=typebot
+      - POSTGRES_PASSWORD=change-me-postgres-password # REQUIRED: generate a random secret before first run
       - POSTGRES_DB=typebot
     volumes:
       - typebot_pg_data:/var/lib/postgresql/data
@@ -3805,6 +4125,10 @@ volumes:
     githubUrl: "https://github.com/danny-avila/LibreChat",
     starsCount: 22000,
     license: "MIT",
+    database: "MongoDB",
+    language: "Node.js",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   librechat:
@@ -3844,6 +4168,10 @@ volumes:
     githubUrl: "https://github.com/oobabooga/text-generation-webui",
     starsCount: 42000,
     license: "AGPL-3.0",
+    database: "None / File-based",
+    language: "Python",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   text-generation-webui:
@@ -3883,6 +4211,10 @@ volumes:
     githubUrl: "https://github.com/zylon-ai/private-gpt",
     starsCount: 55000,
     license: "Apache-2.0",
+    database: "None / File-based",
+    language: "Python",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   privategpt:
@@ -3915,6 +4247,10 @@ volumes:
     githubUrl: "https://github.com/ItzCrazyKns/Perplexica",
     starsCount: 20000,
     license: "MIT",
+    database: "SQLite",
+    language: "TypeScript (Next.js)",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   perplexica:
@@ -3953,6 +4289,10 @@ volumes: {}
     githubUrl: "https://github.com/haiwen/seafile",
     starsCount: 12000,
     license: "AGPL-3.0",
+    database: "MySQL",
+    language: "C / Python",
+    platforms: ["Web", "Desktop (Mac/Win/Linux)", "Mobile (iOS/Android)"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   seafile:
@@ -3962,14 +4302,14 @@ services:
       - "80:80"
     environment:
       - DB_HOST=seafile-db
-      - DB_ROOT_PASSWD=root
+      - DB_ROOT_PASSWD=change-me-db-root-passwd # REQUIRED: generate a random secret before first run
     depends_on:
       - seafile-db
   seafile-db:
     image: mariadb:11
     restart: unless-stopped
     environment:
-      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=change-me-mysql-root-password # REQUIRED: generate a random secret before first run
     volumes:
       - seafile_db_data:/var/lib/mysql
 volumes:
@@ -3995,6 +4335,10 @@ volumes:
     githubUrl: "https://github.com/owncloud/ocis",
     starsCount: 8000,
     license: "AGPL-3.0",
+    database: "PostgreSQL / MySQL / SQLite",
+    language: "Go",
+    platforms: ["Web", "Desktop (Mac/Win/Linux)", "Mobile (iOS/Android)"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   owncloud:
@@ -4003,7 +4347,7 @@ services:
     ports:
       - "9200:9200"
     environment:
-      - OCIS_URL=https://localhost:9200
+      - OCIS_URL=https://localhost:9200 # CHANGE THIS TO YOUR DOMAIN
     volumes:
       - owncloud_data:/var/lib/ocis
 volumes:
@@ -4029,6 +4373,10 @@ volumes:
     githubUrl: "https://github.com/syncthing/syncthing",
     starsCount: 65000,
     license: "MPL-2.0",
+    database: "None / File-based",
+    language: "Go",
+    platforms: ["Desktop (Mac/Win/Linux)", "Mobile (Android)"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   syncthing:
@@ -4064,6 +4412,10 @@ volumes:
     websiteUrl: "https://garagehq.deuxfleurs.fr",
     githubUrl: "https://git.deuxfleurs.fr/Deuxfleurs/garage",
     license: "AGPL-3.0",
+    database: "None / Object storage",
+    language: "Rust",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   garage:
@@ -4099,6 +4451,10 @@ volumes:
     githubUrl: "https://github.com/seaweedfs/seaweedfs",
     starsCount: 23000,
     license: "Apache-2.0",
+    database: "None / Object storage",
+    language: "Go",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   seaweedfs:
@@ -4192,6 +4548,10 @@ volumes:
     githubUrl: "https://github.com/photoprism/photoprism",
     starsCount: 37000,
     license: "Source-available (non-OSI)",
+    database: "MySQL / MariaDB",
+    language: "Go",
+    platforms: ["Web"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   photoprism:
@@ -4229,6 +4589,10 @@ volumes:
     githubUrl: "https://github.com/mickael-kerjean/filestash",
     starsCount: 12000,
     license: "AGPL-3.0",
+    database: "None / File-based",
+    language: "Go",
+    platforms: ["Web"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   filestash:
@@ -4261,6 +4625,10 @@ volumes:
     githubUrl: "https://github.com/pydio/cells",
     starsCount: 2000,
     license: "AGPL-3.0",
+    database: "MySQL",
+    language: "Go",
+    platforms: ["Web"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   pydio-cells:
@@ -4297,6 +4665,10 @@ volumes:
     githubUrl: "https://github.com/searxng/searxng",
     starsCount: 18000,
     license: "AGPL-3.0",
+    database: "None / File-based",
+    language: "Python",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   searxng:
@@ -4331,6 +4703,10 @@ volumes:
     githubUrl: "https://github.com/medusajs/medusa",
     starsCount: 26000,
     license: "MIT",
+    database: "PostgreSQL",
+    language: "Node.js",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   medusa:
@@ -4339,7 +4715,7 @@ services:
     ports:
       - "9000:9000"
     environment:
-      - DATABASE_URL=postgres://medusa:medusa@medusa-db:5432/medusa
+      - DATABASE_URL=postgres://medusa:change-me-postgres-password@medusa-db:5432/medusa # password must match the canonical db password below
       - REDIS_URL=redis://medusa-redis:6379
       - JWT_SECRET=change-me-super-secret
       - COOKIE_SECRET=change-me-super-secret
@@ -4351,7 +4727,7 @@ services:
     restart: unless-stopped
     environment:
       - POSTGRES_USER=medusa
-      - POSTGRES_PASSWORD=medusa
+      - POSTGRES_PASSWORD=change-me-postgres-password # REQUIRED: generate a random secret before first run
       - POSTGRES_DB=medusa
     volumes:
       - medusa_pg_data:/var/lib/postgresql/data
@@ -4382,6 +4758,10 @@ volumes:
     githubUrl: "https://github.com/saleor/saleor",
     starsCount: 21000,
     license: "BSD-3-Clause",
+    database: "PostgreSQL",
+    language: "Python (Django)",
+    platforms: ["Web"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   saleor:
@@ -4390,7 +4770,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_URL=postgres://saleor:saleor@saleor-db:5432/saleor
+      - DATABASE_URL=postgres://saleor:change-me-postgres-password@saleor-db:5432/saleor # password must match the canonical db password below
       - REDIS_URL=redis://saleor-redis:6379
       - SECRET_KEY=change-me-super-secret
     depends_on:
@@ -4401,7 +4781,7 @@ services:
     restart: unless-stopped
     environment:
       - POSTGRES_USER=saleor
-      - POSTGRES_PASSWORD=saleor
+      - POSTGRES_PASSWORD=change-me-postgres-password # REQUIRED: generate a random secret before first run
       - POSTGRES_DB=saleor
     volumes:
       - saleor_pg_data:/var/lib/postgresql/data
@@ -4431,6 +4811,10 @@ volumes:
     githubUrl: "https://github.com/vendure-ecommerce/vendure",
     starsCount: 6000,
     license: "MIT",
+    database: "PostgreSQL",
+    language: "TypeScript (NestJS)",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   vendure:
@@ -4442,7 +4826,7 @@ services:
       - DB_HOST=vendure-db
       - DB_NAME=vendure
       - DB_USERNAME=vendure
-      - DB_PASSWORD=vendure
+      - DB_PASSWORD=change-me-postgres-password # must match POSTGRES_PASSWORD below
       - COOKIE_SECRET=change-me-super-secret
     depends_on:
       - vendure-db
@@ -4451,7 +4835,7 @@ services:
     restart: unless-stopped
     environment:
       - POSTGRES_USER=vendure
-      - POSTGRES_PASSWORD=vendure
+      - POSTGRES_PASSWORD=change-me-postgres-password # REQUIRED: generate a random secret before first run
       - POSTGRES_DB=vendure
     volumes:
       - vendure_pg_data:/var/lib/postgresql/data
@@ -4478,6 +4862,10 @@ volumes:
     githubUrl: "https://github.com/bagisto/bagisto",
     starsCount: 9000,
     license: "MIT",
+    database: "MySQL",
+    language: "PHP (Laravel)",
+    platforms: ["Web"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   bagisto:
@@ -4489,17 +4877,17 @@ services:
       - DB_HOST=bagisto-db
       - DB_DATABASE=bagisto
       - DB_USERNAME=bagisto
-      - DB_PASSWORD=bagisto
+      - DB_PASSWORD=change-me-mysql-password # must match MYSQL_PASSWORD below
     depends_on:
       - bagisto-db
   bagisto-db:
     image: mariadb:11
     restart: unless-stopped
     environment:
-      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=change-me-mysql-root-password # REQUIRED: generate a random secret before first run
       - MYSQL_DATABASE=bagisto
       - MYSQL_USER=bagisto
-      - MYSQL_PASSWORD=bagisto
+      - MYSQL_PASSWORD=change-me-mysql-password # REQUIRED: generate a random secret before first run
     volumes:
       - bagisto_db_data:/var/lib/mysql
 volumes:
@@ -4525,6 +4913,10 @@ volumes:
     githubUrl: "https://github.com/PrestaShop/PrestaShop",
     starsCount: 8000,
     license: "OSL-3.0",
+    database: "MySQL",
+    language: "PHP",
+    platforms: ["Web"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   prestashop:
@@ -4536,17 +4928,17 @@ services:
       - DB_SERVER=prestashop-db
       - DB_NAME=prestashop
       - DB_USER=prestashop
-      - DB_PASSWD=prestashop
+      - DB_PASSWD=change-me-mysql-password # must match MYSQL_PASSWORD below
     depends_on:
       - prestashop-db
   prestashop-db:
     image: mariadb:11
     restart: unless-stopped
     environment:
-      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=change-me-mysql-root-password # REQUIRED: generate a random secret before first run
       - MYSQL_DATABASE=prestashop
       - MYSQL_USER=prestashop
-      - MYSQL_PASSWORD=prestashop
+      - MYSQL_PASSWORD=change-me-mysql-password # REQUIRED: generate a random secret before first run
     volumes:
       - prestashop_db_data:/var/lib/mysql
 volumes:
@@ -4572,6 +4964,10 @@ volumes:
     githubUrl: "https://github.com/Sylius/Sylius",
     starsCount: 8000,
     license: "MIT",
+    database: "MySQL",
+    language: "PHP (Symfony)",
+    platforms: ["Web"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   sylius:
@@ -4580,17 +4976,17 @@ services:
     ports:
       - "8080:80"
     environment:
-      - DATABASE_URL=mysql://sylius:sylius@sylius-db:3306/sylius
+      - DATABASE_URL=mysql://sylius:change-me-mysql-password@sylius-db:3306/sylius # password must match the canonical db password below
     depends_on:
       - sylius-db
   sylius-db:
     image: mariadb:11
     restart: unless-stopped
     environment:
-      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=change-me-mysql-root-password # REQUIRED: generate a random secret before first run
       - MYSQL_DATABASE=sylius
       - MYSQL_USER=sylius
-      - MYSQL_PASSWORD=sylius
+      - MYSQL_PASSWORD=change-me-mysql-password # REQUIRED: generate a random secret before first run
     volumes:
       - sylius_db_data:/var/lib/mysql
 volumes:
@@ -4616,6 +5012,10 @@ volumes:
     githubUrl: "https://github.com/shopware/shopware",
     starsCount: 7000,
     license: "MIT",
+    database: "MySQL",
+    language: "PHP (Symfony)",
+    platforms: ["Web"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   shopware:
@@ -4648,6 +5048,10 @@ volumes:
     githubUrl: "https://github.com/magento/magento2",
     starsCount: 10000,
     license: "OSL-3.0",
+    database: "MySQL",
+    language: "PHP",
+    platforms: ["Web"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   magento:
@@ -4663,7 +5067,7 @@ services:
     image: mariadb:11
     restart: unless-stopped
     environment:
-      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=change-me-mysql-root-password # REQUIRED: generate a random secret before first run
       - MYSQL_DATABASE=magento
     volumes:
       - magento_db_data:/var/lib/mysql
@@ -4690,6 +5094,10 @@ volumes:
     githubUrl: "https://github.com/woocommerce/woocommerce",
     starsCount: 9000,
     license: "GPL-3.0",
+    database: "MySQL",
+    language: "PHP (WordPress)",
+    platforms: ["Web"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   wordpress:
@@ -4700,7 +5108,7 @@ services:
     environment:
       - WORDPRESS_DB_HOST=woocommerce-db
       - WORDPRESS_DB_USER=woocommerce
-      - WORDPRESS_DB_PASSWORD=woocommerce
+      - WORDPRESS_DB_PASSWORD=change-me-mysql-password # must match MYSQL_PASSWORD below
       - WORDPRESS_DB_NAME=woocommerce
     volumes:
       - woocommerce_data:/var/www/html
@@ -4710,10 +5118,10 @@ services:
     image: mariadb:11
     restart: unless-stopped
     environment:
-      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=change-me-mysql-root-password # REQUIRED: generate a random secret before first run
       - MYSQL_DATABASE=woocommerce
       - MYSQL_USER=woocommerce
-      - MYSQL_PASSWORD=woocommerce
+      - MYSQL_PASSWORD=change-me-mysql-password # REQUIRED: generate a random secret before first run
     volumes:
       - woocommerce_db_data:/var/lib/mysql
 volumes:
@@ -4742,6 +5150,10 @@ volumes:
     githubUrl: "https://github.com/jitsi/jitsi-meet",
     starsCount: 24000,
     license: "Apache-2.0",
+    database: "None / File-based",
+    language: "React + WebRTC",
+    platforms: ["Web", "Desktop (Mac/Win/Linux)", "Mobile (iOS/Android)"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   jitsi-web:
@@ -4750,7 +5162,7 @@ services:
     ports:
       - "8443:443"
     environment:
-      - PUBLIC_URL=https://localhost:8443
+      - PUBLIC_URL=https://localhost:8443 # CHANGE THIS TO YOUR DOMAIN
     depends_on:
       - jitsi-prosody
   jitsi-prosody:
@@ -4786,6 +5198,10 @@ services:
     githubUrl: "https://github.com/bigbluebutton/bigbluebutton",
     starsCount: 5000,
     license: "LGPL-3.0",
+    database: "PostgreSQL",
+    language: "Java",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `# BigBlueButton requiere su instalador oficial (bbb-install.sh) sobre
 # Ubuntu para producción; no es un docker-compose de un solo comando.
 version: "3.9"
@@ -4821,6 +5237,10 @@ volumes:
     githubUrl: "https://github.com/livekit/livekit",
     starsCount: 14000,
     license: "Apache-2.0",
+    database: "None / File-based",
+    language: "Go",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   livekit:
@@ -4856,6 +5276,10 @@ volumes:
     githubUrl: "https://github.com/OpenVidu/openvidu",
     starsCount: 3000,
     license: "Apache-2.0",
+    database: "None / File-based",
+    language: "Java",
+    platforms: ["Web"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   openvidu:
@@ -4865,7 +5289,7 @@ services:
       - "4443:4443"
     environment:
       - OPENVIDU_SECRET=change-me-super-secret
-      - OPENVIDU_DOMAIN_OR_PUBLIC_IP=localhost
+      - OPENVIDU_DOMAIN_OR_PUBLIC_IP=localhost # CHANGE THIS TO YOUR DOMAIN
 volumes: {}
 `,
     affiliateLinks,
@@ -4888,6 +5312,10 @@ volumes: {}
     githubUrl: "https://github.com/jech/galene",
     starsCount: 2000,
     license: "MIT",
+    database: "None / File-based",
+    language: "Go",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   galene:
@@ -4920,6 +5348,10 @@ volumes:
     githubUrl: "https://github.com/savoirfairelinux/jami-daemon",
     starsCount: 2000,
     license: "GPL-3.0",
+    database: "None / P2P (no server DB)",
+    language: "C++",
+    platforms: ["Desktop (Mac/Win/Linux)", "Mobile (iOS/Android)"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   jami-daemon:
@@ -4951,6 +5383,10 @@ volumes:
     githubUrl: "https://github.com/m1k1o/neko",
     starsCount: 9000,
     license: "Apache-2.0",
+    database: "None / File-based",
+    language: "Go",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   neko:
@@ -5028,6 +5464,10 @@ volumes:
     githubUrl: "https://github.com/bitwarden/server",
     starsCount: 16000,
     license: "AGPL-3.0",
+    database: "SQL Server / PostgreSQL / MySQL / SQLite",
+    language: "C# (.NET)",
+    platforms: ["Web", "Desktop (Mac/Win/Linux)", "Mobile (iOS/Android)"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   bitwarden:
@@ -5036,7 +5476,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - globalSettings__baseServiceUri=http://localhost:8080
+      - globalSettings__baseServiceUri=http://localhost:8080 # CHANGE THIS TO YOUR DOMAIN
     volumes:
       - bitwarden_data:/etc/bitwarden
 volumes:
@@ -5062,6 +5502,10 @@ volumes:
     githubUrl: "https://github.com/passbolt/passbolt_api",
     starsCount: 4000,
     license: "AGPL-3.0",
+    database: "MySQL",
+    language: "PHP",
+    platforms: ["Web", "Desktop (browser extension)", "Mobile (iOS/Android)"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   passbolt:
@@ -5072,17 +5516,17 @@ services:
     environment:
       - DATASOURCES_DEFAULT_HOST=passbolt-db
       - DATASOURCES_DEFAULT_USERNAME=passbolt
-      - DATASOURCES_DEFAULT_PASSWORD=passbolt
+      - DATASOURCES_DEFAULT_PASSWORD=change-me-mysql-password # must match MYSQL_PASSWORD below
     depends_on:
       - passbolt-db
   passbolt-db:
     image: mariadb:11
     restart: unless-stopped
     environment:
-      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=change-me-mysql-root-password # REQUIRED: generate a random secret before first run
       - MYSQL_DATABASE=passbolt
       - MYSQL_USER=passbolt
-      - MYSQL_PASSWORD=passbolt
+      - MYSQL_PASSWORD=change-me-mysql-password # REQUIRED: generate a random secret before first run
     volumes:
       - passbolt_db_data:/var/lib/mysql
 volumes:
@@ -5108,6 +5552,10 @@ volumes:
     githubUrl: "https://github.com/psono/psono-server",
     starsCount: 2000,
     license: "AGPL-3.0",
+    database: "PostgreSQL",
+    language: "Python (Django)",
+    platforms: ["Web", "Desktop (Mac/Win/Linux)", "Mobile (iOS/Android)"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   psono:
@@ -5118,7 +5566,7 @@ services:
     environment:
       - DATABASE_HOST=psono-db
       - DATABASE_USER=psono
-      - DATABASE_PASSWORD=psono
+      - DATABASE_PASSWORD=change-me-postgres-password # must match POSTGRES_PASSWORD below
     depends_on:
       - psono-db
   psono-db:
@@ -5126,7 +5574,7 @@ services:
     restart: unless-stopped
     environment:
       - POSTGRES_USER=psono
-      - POSTGRES_PASSWORD=psono
+      - POSTGRES_PASSWORD=change-me-postgres-password # REQUIRED: generate a random secret before first run
       - POSTGRES_DB=psono
     volumes:
       - psono_pg_data:/var/lib/postgresql/data
@@ -5153,6 +5601,10 @@ volumes:
     githubUrl: "https://github.com/keeweb/keeweb",
     starsCount: 10000,
     license: "MIT",
+    database: "None / File-based",
+    language: "JavaScript (Electron)",
+    platforms: ["Web", "Desktop (Mac/Win/Linux)"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   keeweb:
