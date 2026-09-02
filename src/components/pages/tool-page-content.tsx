@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Star, GitFork, ExternalLink, Check, X, ArrowRight, PlayCircle, Rocket } from "lucide-react";
+import { GitFork, ExternalLink, Check, X, ArrowRight, PlayCircle } from "lucide-react";
 import { getLocalizedTool } from "@/data/tools";
 import { getCategoryMetaLocalized, getCategoryHref } from "@/data/categories";
 import { getAlternativeHref } from "@/lib/alternatives";
@@ -8,16 +8,18 @@ import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { AffiliateHostingWidget } from "@/components/site/affiliate-hosting-widget";
 import { DockerComposeBlock } from "@/components/site/docker-compose-block";
+import { OneClickDeploy } from "@/components/site/one-click-deploy";
+import { RepoHealthBadge } from "@/components/site/repo-health-badge";
 import { JsonLd } from "@/components/site/json-ld";
 import { LogoImage } from "@/components/site/logo-image";
 import { ToolPreviewImage } from "@/components/site/tool-preview-image";
 import { getSaasDomain } from "@/lib/saas-domains";
 import { categoryColors } from "@/lib/category-colors";
 import { getComparisonsForTool, type ToolComparison } from "@/lib/comparisons";
-import { getGithubStats, formatRelativeDate } from "@/lib/github-stats";
+import { getGithubStats } from "@/lib/github-stats";
 import { getOgImageUrl } from "@/lib/og-image";
 import { siteConfig } from "@/lib/site-config";
-import { slugify, cn, formatStars, getHostname } from "@/lib/utils";
+import { slugify, cn, getHostname } from "@/lib/utils";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { localeHref } from "@/lib/locale-href";
 import type { Locale } from "@/i18n/config";
@@ -97,23 +99,6 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
           <span className="inline-flex items-center gap-1.5">
             <GitFork size={16} /> {t.toolPage.license} {tool.license}
           </span>
-          {liveStats ? (
-            <>
-              <span className="inline-flex items-center gap-1.5">
-                <Star size={16} className="text-amber-500" /> {formatStars(liveStats.stars)} {t.toolPage.stars}
-                <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-1.5 py-0.5 text-[10px] font-medium text-emerald-700">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> {t.toolPage.live}
-                </span>
-              </span>
-              <span>{t.toolPage.updated(formatRelativeDate(liveStats.updatedAt))}</span>
-            </>
-          ) : (
-            tool.starsCount && (
-              <span className="inline-flex items-center gap-1.5">
-                <Star size={16} className="text-amber-500" /> ~{formatStars(tool.starsCount)} {t.toolPage.stars} {t.toolPage.estimated}
-              </span>
-            )
-          )}
           <a
             href={tool.websiteUrl}
             target="_blank"
@@ -130,16 +115,6 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
               className={cn(buttonVariants({ variant: "secondary", size: "sm" }), "gap-1.5")}
             >
               <PlayCircle size={14} /> {t.toolPage.tryDemo}
-            </a>
-          )}
-          {tool.deployUrl && (
-            <a
-              href={tool.deployUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(buttonVariants({ size: "sm" }), "gap-1.5")}
-            >
-              <Rocket size={14} /> {t.toolPage.deployButton}
             </a>
           )}
           <a
@@ -233,21 +208,27 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
             </div>
           </section>
 
-          {tool.dockerCompose && (
+          {(tool.dockerCompose || (tool.oneClickDeploy && tool.oneClickDeploy.length > 0)) && (
             <section>
               <h2 className="mb-4 text-xl font-semibold text-slate-900">{t.toolPage.dockerGuideTitle}</h2>
-              <p className="mb-4 text-sm text-slate-600">
-                {t.toolPage.dockerGuideText}{" "}
-                <Link href={getDeployGuideHref(locale)} className="font-medium text-emerald-700 hover:underline">
-                  {t.toolPage.dockerGuideLink}
-                </Link>
-              </p>
-              <DockerComposeBlock code={tool.dockerCompose} locale={locale} />
+              <OneClickDeploy targets={tool.oneClickDeploy} locale={locale} />
+              {tool.dockerCompose && (
+                <>
+                  <p className="mb-4 text-sm text-slate-600">
+                    {t.toolPage.dockerGuideText}{" "}
+                    <Link href={getDeployGuideHref(locale)} className="font-medium text-emerald-700 hover:underline">
+                      {t.toolPage.dockerGuideLink}
+                    </Link>
+                  </p>
+                  <DockerComposeBlock code={tool.dockerCompose} locale={locale} />
+                </>
+              )}
             </section>
           )}
         </div>
 
         <aside className="space-y-6 lg:sticky lg:top-24 lg:self-start">
+          <RepoHealthBadge liveStats={liveStats} estimatedStars={tool.starsCount} license={tool.license} locale={locale} />
           <AffiliateHostingWidget tool={tool} locale={locale} />
 
           <div className={cn("rounded-xl border p-6", palette.soft, palette.border)}>

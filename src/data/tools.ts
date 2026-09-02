@@ -955,6 +955,7 @@ volumes:
     githubUrl: "https://github.com/n8n-io/n8n",
     starsCount: 55000,
     license: "Sustainable Use License (Fair-code)",
+    oneClickDeploy: [{ platform: "Railway", url: "https://railway.com/deploy/n8n" }],
     dockerCompose: `version: "3.9"
 services:
   n8n:

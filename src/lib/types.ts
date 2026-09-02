@@ -15,6 +15,15 @@ export type ToolCategory =
 
 export type ToolTag = "docker-ready" | "1-click-deploy" | "permissive-license";
 
+/** Plataformas con plantilla oficial de despliegue en 1 clic verificable por URL. */
+export type DeployPlatform = "Railway" | "Coolify" | "Render" | "Elestio" | "Portainer";
+
+export interface OneClickDeployTarget {
+  platform: DeployPlatform;
+  /** URL de la plantilla/botón de despliegue oficial de esa plataforma para esta herramienta. */
+  url: string;
+}
+
 /**
  * published: visible y enlazable con normalidad.
  * coming_soon: visible en catálogo/categoría con badge "Próximamente", sin
@@ -41,8 +50,8 @@ export interface OpenSourceTool {
   starsCount?: number;
   license: string;
   dockerCompose: string;
-  /** URL de despliegue en 1 clic (plantilla de Railway/Coolify/etc.), si el proyecto ofrece una. */
-  deployUrl?: string;
+  /** Plantillas de despliegue en 1 clic verificadas (Railway/Coolify/Render/Elestio/Portainer). */
+  oneClickDeploy?: OneClickDeployTarget[];
   affiliateLinks: {
     digitalOceanUrl: string;
     vultrUrl: string;
