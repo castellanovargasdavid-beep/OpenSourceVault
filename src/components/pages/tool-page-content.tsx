@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { GitFork, ExternalLink, Check, X, ArrowRight, PlayCircle } from "lucide-react";
+import { GitFork, ExternalLink, Check, X, ArrowRight, PlayCircle, Database, Code2, MonitorSmartphone, TriangleAlert } from "lucide-react";
 import { getLocalizedTool } from "@/data/tools";
 import { getCategoryMetaLocalized, getCategoryHref } from "@/data/categories";
 import { getAlternativeHref } from "@/lib/alternatives";
@@ -89,11 +89,39 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
               {tag}
             </Badge>
           ))}
+          {tool.fossModel && (
+            <span
+              title={tool.fossModel === "OpenCore" ? t.toolPage.fossModelOpenCoreCaption : undefined}
+              className={cn(
+                "inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-xs font-medium",
+                tool.fossModel === "FOSS"
+                  ? "border-emerald-200 bg-emerald-50 text-emerald-700"
+                  : "border-amber-200 bg-amber-50 text-amber-800"
+              )}
+            >
+              {tool.fossModel === "FOSS" ? <Check size={12} /> : <TriangleAlert size={12} />}
+              {tool.fossModel === "FOSS" ? t.toolPage.fossModelFoss : t.toolPage.fossModelOpenCore}
+            </span>
+          )}
         </div>
         <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
           {t.toolPage.h1(tool.name, tool.replaces[0], siteConfig.year)}
         </h1>
         <p className="mt-4 max-w-3xl text-lg text-slate-600">{tool.description}</p>
+        {tool.fossModel === "OpenCore" && <p className="mt-2 text-sm text-amber-800">{t.toolPage.fossModelOpenCoreCaption}</p>}
+
+        <div className="mt-5 flex flex-wrap gap-2" aria-label={t.toolPage.replacesAriaLabel}>
+          {tool.replaces.map((saas) => (
+            <Link
+              key={saas}
+              href={getAlternativeHref(saas, locale)}
+              className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 py-1 pl-1.5 pr-3 text-xs font-semibold text-emerald-800 transition-colors hover:bg-emerald-100"
+            >
+              <LogoImage domain={getSaasDomain(saas)} label={saas} size={16} className="ring-1 ring-white" fallbackGradient="from-slate-300 to-slate-400" />
+              {t.toolPage.replacesBadge(saas)}
+            </Link>
+          ))}
+        </div>
 
         <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-slate-600">
           <span className="inline-flex items-center gap-1.5">
@@ -157,6 +185,41 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
               </div>
             </dl>
           </section>
+
+          {(tool.database || tool.language || (tool.platforms && tool.platforms.length > 0)) && (
+            <section>
+              <h2 className="mb-4 text-xl font-semibold text-slate-900">{t.toolPage.underTheHoodTitle}</h2>
+              <div className="grid gap-5 rounded-xl border border-slate-200 p-6 sm:grid-cols-3">
+                {tool.database && (
+                  <div className="flex items-start gap-2.5">
+                    <Database size={18} className="mt-0.5 shrink-0 text-slate-500" />
+                    <div>
+                      <p className="text-xs uppercase tracking-wide text-slate-600">{t.toolPage.underTheHoodDatabase}</p>
+                      <p className="mt-0.5 text-sm font-medium text-slate-900">{tool.database}</p>
+                    </div>
+                  </div>
+                )}
+                {tool.language && (
+                  <div className="flex items-start gap-2.5">
+                    <Code2 size={18} className="mt-0.5 shrink-0 text-slate-500" />
+                    <div>
+                      <p className="text-xs uppercase tracking-wide text-slate-600">{t.toolPage.underTheHoodLanguage}</p>
+                      <p className="mt-0.5 text-sm font-medium text-slate-900">{tool.language}</p>
+                    </div>
+                  </div>
+                )}
+                {tool.platforms && tool.platforms.length > 0 && (
+                  <div className="flex items-start gap-2.5">
+                    <MonitorSmartphone size={18} className="mt-0.5 shrink-0 text-slate-500" />
+                    <div>
+                      <p className="text-xs uppercase tracking-wide text-slate-600">{t.toolPage.underTheHoodPlatforms}</p>
+                      <p className="mt-0.5 text-sm font-medium text-slate-900">{tool.platforms.join(" · ")}</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </section>
+          )}
 
           {ogImageUrl && (
             <section>

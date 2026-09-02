@@ -280,6 +280,10 @@ volumes:
     demoUrl: "https://plausible.io/plausible.io",
     starsCount: 21000,
     license: "AGPL-3.0",
+    database: "PostgreSQL + ClickHouse",
+    language: "Elixir",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   plausible:
@@ -288,9 +292,9 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - BASE_URL=http://localhost:8000
-      - SECRET_KEY_BASE=change-me-64-char-secret
-      - DATABASE_URL=postgres://postgres:postgres@plausible-db:5432/plausible
+      - BASE_URL=https://analytics.yourdomain.com # CHANGE THIS TO YOUR DOMAIN
+      - SECRET_KEY_BASE=change-me-64-char-secret # REQUIRED: generate a random secret before first run
+      - DATABASE_URL=postgres://postgres:change-me-db-password@plausible-db:5432/plausible
       - CLICKHOUSE_DATABASE_URL=http://plausible-events-db:8123/plausible_events_db
     depends_on:
       - plausible-db
@@ -299,7 +303,7 @@ services:
     image: postgres:15-alpine
     restart: unless-stopped
     environment:
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_PASSWORD=change-me-db-password # must match DATABASE_URL above
     volumes:
       - plausible_pg_data:/var/lib/postgresql/data
   plausible-events-db:
@@ -503,6 +507,10 @@ volumes:
     githubUrl: "https://github.com/calcom/cal.com",
     starsCount: 32000,
     license: "AGPL-3.0",
+    database: "PostgreSQL",
+    language: "TypeScript (Node.js)",
+    platforms: ["Web"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   calcom:
@@ -511,9 +519,10 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - DATABASE_URL=postgresql://calcom:calcom@calcom-db:5432/calcom
-      - NEXTAUTH_SECRET=change-me-super-secret
-      - CALENDSO_ENCRYPTION_KEY=change-me-32-char-key
+      - DATABASE_URL=postgresql://calcom:change-me-db-password@calcom-db:5432/calcom
+      - NEXTAUTH_URL=https://cal.yourdomain.com # CHANGE THIS TO YOUR DOMAIN
+      - NEXTAUTH_SECRET=change-me-super-secret # REQUIRED: generate a random secret before first run
+      - CALENDSO_ENCRYPTION_KEY=change-me-32-char-key # REQUIRED: generate a random secret before first run
     depends_on:
       - calcom-db
   calcom-db:
@@ -521,7 +530,7 @@ services:
     restart: unless-stopped
     environment:
       - POSTGRES_USER=calcom
-      - POSTGRES_PASSWORD=calcom
+      - POSTGRES_PASSWORD=change-me-db-password # must match DATABASE_URL above
       - POSTGRES_DB=calcom
     volumes:
       - calcom_pg_data:/var/lib/postgresql/data
@@ -751,6 +760,10 @@ volumes:
     githubUrl: "https://github.com/supabase/supabase",
     starsCount: 78000,
     license: "Apache-2.0",
+    database: "PostgreSQL",
+    language: "Multi-language (Elixir, Go, Rust)",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   studio:
@@ -759,7 +772,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - SUPABASE_URL=http://kong:8000
+      - SUPABASE_URL=http://kong:8000 # CHANGE THIS TO YOUR DOMAIN once you're behind a reverse proxy
   kong:
     image: kong:2.8-alpine
     restart: unless-stopped
@@ -771,7 +784,7 @@ services:
     image: supabase/postgres:15.1.0.117
     restart: unless-stopped
     environment:
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_PASSWORD=change-me-db-password # REQUIRED: generate a random secret before first run
     volumes:
       - supabase_db_data:/var/lib/postgresql/data
 volumes:
@@ -899,6 +912,10 @@ volumes:
     githubUrl: "https://github.com/nextcloud/server",
     starsCount: 27000,
     license: "AGPL-3.0",
+    database: "MySQL / MariaDB / PostgreSQL",
+    language: "PHP",
+    platforms: ["Web", "Desktop (Mac/Win/Linux)", "Mobile (iOS/Android)"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   nextcloud:
@@ -907,10 +924,11 @@ services:
     ports:
       - "8080:80"
     environment:
+      - NEXTCLOUD_TRUSTED_DOMAINS=cloud.yourdomain.com # CHANGE THIS TO YOUR DOMAIN
       - MYSQL_HOST=nextcloud-db
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=nextcloud
-      - MYSQL_PASSWORD=nextcloud
+      - MYSQL_PASSWORD=change-me-db-password # REQUIRED: generate a random secret before first run
     volumes:
       - nextcloud_data:/var/www/html
     depends_on:
@@ -919,10 +937,10 @@ services:
     image: mariadb:11
     restart: unless-stopped
     environment:
-      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=change-me-root-password # REQUIRED: generate a random secret before first run
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=nextcloud
-      - MYSQL_PASSWORD=nextcloud
+      - MYSQL_PASSWORD=change-me-db-password # must match MYSQL_PASSWORD above
     volumes:
       - nextcloud_db_data:/var/lib/mysql
 volumes:
@@ -956,6 +974,10 @@ volumes:
     starsCount: 55000,
     license: "Sustainable Use License (Fair-code)",
     oneClickDeploy: [{ platform: "Railway", url: "https://railway.com/deploy/n8n" }],
+    database: "SQLite / PostgreSQL",
+    language: "TypeScript (Node.js)",
+    platforms: ["Web"],
+    fossModel: "OpenCore",
     dockerCompose: `version: "3.9"
 services:
   n8n:
@@ -964,11 +986,12 @@ services:
     ports:
       - "5678:5678"
     environment:
+      - N8N_HOST=n8n.yourdomain.com # CHANGE THIS TO YOUR DOMAIN (required for webhooks to work)
       - DB_TYPE=postgresdb
       - DB_POSTGRESDB_HOST=n8n-db
       - DB_POSTGRESDB_USER=n8n
-      - DB_POSTGRESDB_PASSWORD=n8n
-      - N8N_ENCRYPTION_KEY=change-me-super-secret
+      - DB_POSTGRESDB_PASSWORD=change-me-db-password # REQUIRED: generate a random secret before first run
+      - N8N_ENCRYPTION_KEY=change-me-super-secret # REQUIRED: generate a random secret before first run
     volumes:
       - n8n_data:/home/node/.n8n
     depends_on:
@@ -978,7 +1001,7 @@ services:
     restart: unless-stopped
     environment:
       - POSTGRES_USER=n8n
-      - POSTGRES_PASSWORD=n8n
+      - POSTGRES_PASSWORD=change-me-db-password # must match DB_POSTGRESDB_PASSWORD above
       - POSTGRES_DB=n8n
     volumes:
       - n8n_pg_data:/var/lib/postgresql/data
@@ -2782,13 +2805,17 @@ volumes:
     githubUrl: "https://github.com/louislam/uptime-kuma",
     starsCount: 57000,
     license: "MIT",
+    database: "SQLite",
+    language: "Node.js",
+    platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   uptime-kuma:
     image: louislam/uptime-kuma:latest
     restart: unless-stopped
     ports:
-      - "3001:3001"
+      - "3001:3001" # put a reverse proxy (Caddy/Nginx/Traefik) with HTTPS in front of this port, pointed at your domain
     volumes:
       - uptime_kuma_data:/app/data
 volumes:
@@ -4107,6 +4134,10 @@ volumes:
     githubUrl: "https://github.com/immich-app/immich",
     starsCount: 50000,
     license: "AGPL-3.0",
+    database: "PostgreSQL",
+    language: "TypeScript (Node.js) / Dart (mobile app)",
+    platforms: ["Web", "Mobile (iOS/Android)"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   immich-server:
@@ -4117,10 +4148,10 @@ services:
     environment:
       - DB_HOSTNAME=immich-db
       - DB_USERNAME=immich
-      - DB_PASSWORD=immich
+      - DB_PASSWORD=change-me-db-password # REQUIRED: generate a random secret before first run
       - REDIS_HOSTNAME=immich-redis
     volumes:
-      - immich_uploads:/usr/src/app/upload
+      - immich_uploads:/usr/src/app/upload # CHANGE THIS to a real disk path with enough space for your photo library
     depends_on:
       - immich-db
       - immich-redis
@@ -4129,7 +4160,7 @@ services:
     restart: unless-stopped
     environment:
       - POSTGRES_USER=immich
-      - POSTGRES_PASSWORD=immich
+      - POSTGRES_PASSWORD=change-me-db-password # must match DB_PASSWORD above
       - POSTGRES_DB=immich
     volumes:
       - immich_pg_data:/var/lib/postgresql/data
@@ -4956,6 +4987,10 @@ services:
     githubUrl: "https://github.com/dani-garcia/vaultwarden",
     starsCount: 40000,
     license: "GPL-3.0",
+    database: "SQLite / MySQL / PostgreSQL",
+    language: "Rust",
+    platforms: ["Web", "Desktop (Mac/Win/Linux)", "Mobile (iOS/Android)"],
+    fossModel: "FOSS",
     dockerCompose: `version: "3.9"
 services:
   vaultwarden:
@@ -4964,7 +4999,8 @@ services:
     ports:
       - "8080:80"
     environment:
-      - ADMIN_TOKEN=change-me-super-secret
+      - DOMAIN=https://vault.yourdomain.com # CHANGE THIS TO YOUR DOMAIN (required for the web vault and apps to work correctly)
+      - ADMIN_TOKEN=change-me-super-secret # REQUIRED: generate a random secret before first run
       - SIGNUPS_ALLOWED=false
     volumes:
       - vaultwarden_data:/data

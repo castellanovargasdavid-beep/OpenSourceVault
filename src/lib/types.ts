@@ -15,6 +15,14 @@ export type ToolCategory =
 
 export type ToolTag = "docker-ready" | "1-click-deploy" | "permissive-license";
 
+/**
+ * 'FOSS': 100% software libre, sin funciones detrás de un plan de pago.
+ * 'OpenCore': el núcleo es open source, pero hay funciones avanzadas o
+ * planes empresariales de pago (o una licencia que restringe el uso
+ * comercial/reventa, como el fair-code de n8n).
+ */
+export type FossModel = "FOSS" | "OpenCore";
+
 /** Plataformas con plantilla oficial de despliegue en 1 clic verificable por URL. */
 export type DeployPlatform = "Railway" | "Coolify" | "Render" | "Elestio" | "Portainer";
 
@@ -62,6 +70,14 @@ export interface OpenSourceTool {
   pros: string[];
   cons: string[];
   tags: ToolTag[];
+  /** Motor de base de datos, ej. "PostgreSQL", "SQLite", "MySQL / MariaDB", "None / File-based". */
+  database?: string;
+  /** Lenguaje principal del backend/core, ej. "Rust", "Go", "TypeScript (Node.js)". */
+  language?: string;
+  /** Dónde corre/se usa, ej. ["Web", "Desktop (Mac/Win/Linux)", "Mobile (iOS/Android)"]. */
+  platforms?: string[];
+  /** Transparencia de licencia estilo Awesome-Selfhosted: ver FossModel. */
+  fossModel?: FossModel;
   featured?: boolean;
   /**
    * Marca un listado como patrocinado (listing pagado por el propio

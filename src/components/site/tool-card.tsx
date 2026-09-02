@@ -78,8 +78,8 @@ export function ToolCard({ tool: rawTool, locale = "es" }: { tool: OpenSourceToo
                   {tool.name}
                 </button>
               )}
-              <div className="mt-1 flex items-center gap-1.5">
-                <div className="flex -space-x-1.5">
+              <p className="mt-1 inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 py-1 pl-1 pr-2.5">
+                <span className="flex -space-x-1.5">
                   {tool.replaces.slice(0, 3).map((saas) => (
                     <LogoImage
                       key={saas}
@@ -90,11 +90,11 @@ export function ToolCard({ tool: rawTool, locale = "es" }: { tool: OpenSourceToo
                       fallbackGradient="from-slate-300 to-slate-400"
                     />
                   ))}
-                </div>
-                <p className="text-xs text-slate-600">
+                </span>
+                <span className="text-xs font-medium text-slate-700">
                   {t.toolCard.alternativeTo} {tool.replaces.join(", ")}
-                </p>
-              </div>
+                </span>
+              </p>
             </div>
           </div>
           <Badge className={palette.badge}>{category.label}</Badge>
@@ -110,6 +110,16 @@ export function ToolCard({ tool: rawTool, locale = "es" }: { tool: OpenSourceToo
           {tool.starsCount && (
             <span className="inline-flex items-center gap-1">
               <Star size={14} className="text-amber-500" /> {formatStars(tool.starsCount)}
+            </span>
+          )}
+          {tool.fossModel && (
+            <span
+              className={cn(
+                "inline-flex items-center rounded-full px-1.5 py-0.5 text-[10px] font-medium",
+                tool.fossModel === "FOSS" ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-800"
+              )}
+            >
+              {tool.fossModel === "FOSS" ? t.toolCard.fossModelFoss : t.toolCard.fossModelOpenCore}
             </span>
           )}
         </div>
