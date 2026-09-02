@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { CategoryMeta } from "@/data/categories";
 import type { OpenSourceTool } from "@/lib/types";
 import { ToolCard } from "@/components/site/tool-card";
+import { toToolCardData } from "@/lib/tool-card-data";
 import { categoryColors } from "@/lib/category-colors";
 import { categoryIconMap } from "@/lib/category-icons";
 import { cn } from "@/lib/utils";
@@ -43,7 +44,7 @@ export function CategoryPageContent({
       {categoryTools.length > 0 ? (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {categoryTools.map((tool) => (
-            <ToolCard key={tool.id} tool={tool} locale={locale} />
+            <ToolCard key={tool.id} tool={toToolCardData(tool)} locale={locale} />
           ))}
         </div>
       ) : (

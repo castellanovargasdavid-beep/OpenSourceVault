@@ -21,6 +21,14 @@ const CATEGORY_SLUG_ES_TO_EN = {
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // Todos los imports de lucide-react en el proyecto ya son nombrados y
+  // directos (auditado: sin `import *` ni imports de paquete completo), así
+  // que el tree-shaking normal ya los reduce a solo los iconos usados; esto
+  // añade una pasada extra específica del compilador para asegurarlo y
+  // acelerar el build.
+  experimental: {
+    optimizePackageImports: ["lucide-react"],
+  },
   async redirects() {
     return [
       // /en/alternativa-a-notion -> /en/alternatives/notion (el slug del SaaS no cambia)

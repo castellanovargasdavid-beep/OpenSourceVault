@@ -2,11 +2,11 @@ import { SearchBar } from "@/components/site/search-bar";
 import { RotatingExamples } from "@/components/site/rotating-examples";
 import { AnimatedCounter } from "@/components/site/animated-counter";
 import { LogoImage } from "@/components/site/logo-image";
-import { tools } from "@/data/tools";
 import { categories } from "@/data/categories";
 import { getSaasDomain } from "@/lib/saas-domains";
 import { getDictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
+import type { ToolCardData } from "@/lib/types";
 
 const showcaseSaas = [
   "Notion",
@@ -19,9 +19,9 @@ const showcaseSaas = [
   "Zapier",
 ];
 
-export function Hero({ locale = "es" }: { locale?: Locale }) {
+export function Hero({ tools, locale = "es" }: { tools: ToolCardData[]; locale?: Locale }) {
   const t = getDictionary(locale);
-  const totalSaas = new Set(tools.flatMap((t) => t.replaces)).size;
+  const totalSaas = new Set(tools.flatMap((tool) => tool.replaces)).size;
 
   return (
     <section className="relative overflow-hidden border-b border-slate-200">
@@ -47,7 +47,7 @@ export function Hero({ locale = "es" }: { locale?: Locale }) {
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-600">{t.hero.subtitle}</p>
         <div className="mx-auto mt-10 max-w-2xl">
-          <SearchBar locale={locale} />
+          <SearchBar tools={tools} locale={locale} />
         </div>
 
         <div className="mx-auto mt-10 flex max-w-xl flex-wrap items-center justify-center gap-x-10 gap-y-4">

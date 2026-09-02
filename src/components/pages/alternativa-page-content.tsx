@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { SaasAlternativeGroup } from "@/lib/alternatives";
 import { ToolCard } from "@/components/site/tool-card";
+import { toToolCardData } from "@/lib/tool-card-data";
 import { JsonLd } from "@/components/site/json-ld";
 import { LogoImage } from "@/components/site/logo-image";
 import { getSaasDomain } from "@/lib/saas-domains";
@@ -57,7 +58,7 @@ export function AlternativaPageContent({ group, locale }: { group: SaasAlternati
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {group.tools.map((tool) => (
-          <ToolCard key={tool.id} tool={tool} locale={locale} />
+          <ToolCard key={tool.id} tool={toToolCardData(tool)} locale={locale} />
         ))}
       </div>
     </div>

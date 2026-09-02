@@ -4,12 +4,12 @@ import * as React from "react";
 import { useRouter } from "next/navigation";
 import { Search, ArrowRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { tools } from "@/data/tools";
 import { getCategoryMetaLocalized } from "@/data/categories";
 import { cn } from "@/lib/utils";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { localeHref } from "@/lib/locale-href";
 import type { Locale } from "@/i18n/config";
+import type { ToolCardData } from "@/lib/types";
 
 interface Match {
   slug: string;
@@ -18,7 +18,7 @@ interface Match {
   categoryLabel: string;
 }
 
-function findMatches(query: string, locale: Locale): Match[] {
+function findMatches(tools: ToolCardData[], query: string, locale: Locale): Match[] {
   const q = query.trim().toLowerCase();
   if (!q) return [];
 
@@ -43,12 +43,12 @@ function findMatches(query: string, locale: Locale): Match[] {
   return results;
 }
 
-export function SearchBar({ className, locale = "es" }: { className?: string; locale?: Locale }) {
+export function SearchBar({ tools, className, locale = "es" }: { tools: ToolCardData[]; className?: string; locale?: Locale }) {
   const t = getDictionary(locale);
   const router = useRouter();
   const [query, setQuery] = React.useState("");
   const [open, setOpen] = React.useState(false);
-  const matches = React.useMemo(() => findMatches(query, locale), [query, locale]);
+  const matches = React.useMemo(() => findMatches(tools, query, locale), [tools, query, locale]);
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {

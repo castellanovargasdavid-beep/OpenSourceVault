@@ -4,10 +4,10 @@ import * as React from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { Star, GitFork, ArrowRight, BadgeCheck, Clock } from "lucide-react";
-import type { OpenSourceTool } from "@/lib/types";
+import type { ToolCardData } from "@/lib/types";
 import { isPublished } from "@/lib/types";
 import { getCategoryMetaLocalized } from "@/data/categories";
-import { getLocalizedTool } from "@/data/tools";
+import { getLocalizedToolCardData } from "@/lib/tool-card-data";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { LogoImage } from "@/components/site/logo-image";
@@ -24,8 +24,8 @@ const ComingSoonModal = dynamic(() =>
   import("@/components/site/coming-soon-modal").then((m) => m.ComingSoonModal)
 );
 
-export function ToolCard({ tool: rawTool, locale = "es" }: { tool: OpenSourceTool; locale?: Locale }) {
-  const tool = getLocalizedTool(rawTool, locale);
+export function ToolCard({ tool: rawTool, locale = "es" }: { tool: ToolCardData; locale?: Locale }) {
+  const tool = getLocalizedToolCardData(rawTool, locale);
   const t = getDictionary(locale);
   const [modalOpen, setModalOpen] = React.useState(false);
   const tagLabels: Record<string, string> = {

@@ -91,6 +91,31 @@ export interface OpenSourceTool {
   publishDate?: string;
 }
 
+/**
+ * Proyección ligera de OpenSourceTool con solo los campos que una tarjeta de
+ * listado (ToolCard) necesita para renderizarse — sin dockerCompose,
+ * features, pros, cons, techStack, affiliateLinks, githubUrl, etc. Úsala en
+ * cualquier vista de listado (portada, categorías, alternativas,
+ * destacadas) para no cruzar esos campos pesados hacia el cliente en cada
+ * tarjeta. Ver toToolCardData() en src/lib/tool-card-data.ts.
+ */
+export interface ToolCardData {
+  id: string;
+  slug: string;
+  name: string;
+  shortDescription: string;
+  websiteUrl: string;
+  category: ToolCategory;
+  replaces: string[];
+  license: string;
+  starsCount?: number;
+  fossModel?: FossModel;
+  tags: ToolTag[];
+  sponsored?: boolean;
+  status?: ToolStatus;
+  publishDate?: string;
+}
+
 export type StackIcon =
   | "rocket"
   | "trending-up"

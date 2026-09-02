@@ -2,18 +2,17 @@
 
 import * as React from "react";
 import { Search, X } from "lucide-react";
-import { allTools } from "@/data/tools";
 import { categories } from "@/data/categories";
 import { categoriesEn } from "@/data/categories.en";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ToolCard } from "@/components/site/tool-card";
 import { cn } from "@/lib/utils";
-import type { ToolTag } from "@/lib/types";
+import type { ToolCardData, ToolTag } from "@/lib/types";
 import { getDictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
 
-export function ToolExplorer({ locale = "es" }: { locale?: Locale }) {
+export function ToolExplorer({ tools: allTools, locale = "es" }: { tools: ToolCardData[]; locale?: Locale }) {
   const t = getDictionary(locale);
   const quickTags: { id: ToolTag; label: string }[] = [
     { id: "docker-ready", label: t.toolExplorer.tagDockerReady },
@@ -48,7 +47,7 @@ export function ToolExplorer({ locale = "es" }: { locale?: Locale }) {
       const matchesTags = activeTags.every((tag) => tool.tags.includes(tag));
       return matchesQuery && matchesCategory && matchesTags;
     });
-  }, [query, category, activeTags]);
+  }, [allTools, query, category, activeTags]);
 
   const hasActiveFilters = query !== "" || category !== "all" || activeTags.length > 0;
 

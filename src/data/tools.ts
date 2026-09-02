@@ -7193,3 +7193,8 @@ export function getLocalizedTool(tool: OpenSourceTool, locale: Locale): OpenSour
   if (!translation) return tool;
   return { ...tool, ...translation };
 }
+
+// Nota: toToolCardData()/getLocalizedToolCardData() viven en
+// src/lib/tool-card-data.ts, no aquí — así ToolCard (client component) no
+// arrastra el `allTools` completo a su bundle solo por importar el
+// mapper. Ver el comentario de ese archivo para el porqué.
