@@ -1,8 +1,10 @@
-import { Check, ExternalLink } from "lucide-react";
+import Link from "next/link";
+import { Check, ExternalLink, GraduationCap } from "lucide-react";
 import { getHostingProvidersLocalized } from "@/data/hosting-providers";
 import { Card, CardContent, CardHeader, CardDescription } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
 import { LogoImage } from "@/components/site/logo-image";
+import { getHostingGuideHref } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { getDictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
@@ -54,6 +56,13 @@ export function HostingDealsContent({ locale = "es" }: { locale?: Locale }) {
                 {provider.ctaLabel}
                 <ExternalLink size={16} />
               </a>
+              <Link
+                href={getHostingGuideHref(provider.id, locale)}
+                className="inline-flex items-center justify-center gap-1.5 text-sm font-medium text-emerald-700 hover:underline"
+              >
+                <GraduationCap size={15} />
+                {t.hostingGuidePage.linkLabel(provider.name)}
+              </Link>
             </CardContent>
           </Card>
         ))}

@@ -21,3 +21,7 @@ export function getMigrationGuideHref(fromSlug: string, toSlug: string, locale: 
 export function getSavingsCalculatorHref(locale: Locale): string {
   return locale === "en" ? "/en/savings-calculator" : "/calculadora-ahorro";
 }
+
+export function getHostingGuideHref(provider: string, locale: Locale): string {
+  return locale === "en" ? `/en/guides/hosting/${provider}` : `/guias/hosting/${provider}`;
+}

@@ -320,6 +320,21 @@ const es = {
     ctaSubtitle: "Elige un proveedor con crédito gratis y empieza en minutos.",
     ctaButton: "Ver hosting recomendado",
   },
+  hostingGuidePage: {
+    badge: "Guía para principiantes",
+    title: (provider: string) => `Cómo desplegar tu primera herramienta en ${provider}`,
+    metaTitle: (provider: string) => `Guía completa de ${provider} para principiantes (paso a paso)`,
+    metaDescription: (provider: string) =>
+      `Aprende a registrarte, crear tu servidor y desplegar cualquier herramienta del catálogo en ${provider}, desde cero: qué botones pulsar, cómo usar la consola y cómo poner tu dominio.`,
+    subtitle: (provider: string) =>
+      `Del registro en ${provider} a tu herramienta funcionando con tu propio dominio — sin dar nada por sabido. Cada paso indica exactamente qué botón pulsar y qué escribir en la consola.`,
+    backToHosting: "← Ver todos los proveedores de hosting",
+    backToDeployGuide: "Guía general de despliegue",
+    ctaTitle: "¿Listo para elegir tu herramienta?",
+    ctaSubtitle: "Vuelve al catálogo, copia el docker-compose.yml de la que quieras y sigue esta misma guía.",
+    ctaButton: "Ver el catálogo completo",
+    linkLabel: (provider: string) => `Guía completa de ${provider} para principiantes`,
+  },
   migrationGuidePage: {
     metaTitle: (from: string, tool: string, year: number) => `Cómo migrar de ${from} a ${tool} sin perder datos (${year})`,
     metaDescription: (from: string, tool: string) =>

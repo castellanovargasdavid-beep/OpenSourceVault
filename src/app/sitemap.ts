@@ -5,7 +5,7 @@ import { categories } from "@/data/categories";
 import { categoriesEn } from "@/data/categories.en";
 import { getAllSaasSlugs } from "@/lib/alternatives";
 import { getAllComparisonSlugs } from "@/lib/comparisons";
-import { getCompareHref, getDeployGuideHref, getMigrationGuideHref, getSavingsCalculatorHref } from "@/lib/routes";
+import { getCompareHref, getDeployGuideHref, getHostingGuideHref, getMigrationGuideHref, getSavingsCalculatorHref } from "@/lib/routes";
 import { siteConfig } from "@/lib/site-config";
 import { slugify } from "@/lib/utils";
 
@@ -111,6 +111,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ];
   });
 
+  const hostingGuideEntries: MetadataRoute.Sitemap = ["digitalocean", "vultr", "railway"].flatMap((provider) => {
+    const esUrl = `${siteConfig.url}${getHostingGuideHref(provider, "es")}`;
+    const enUrl = `${siteConfig.url}${getHostingGuideHref(provider, "en")}`;
+    const alternates = { languages: { es: esUrl, en: enUrl } };
+    return [
+      { url: esUrl, changeFrequency: "monthly", priority: 0.7, alternates },
+      { url: enUrl, changeFrequency: "monthly", priority: 0.7, alternates },
+    ];
+  });
+
   const deployGuideEsUrl = `${siteConfig.url}${getDeployGuideHref("es")}`;
   const deployGuideEnUrl = `${siteConfig.url}${getDeployGuideHref("en")}`;
   const deployGuideAlternates = { languages: { es: deployGuideEsUrl, en: deployGuideEnUrl } };
@@ -126,6 +136,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...alternativeEntries,
     ...comparisonEntries,
     ...migrationGuideEntries,
+    ...hostingGuideEntries,
     { url: deployGuideEsUrl, changeFrequency: "monthly", priority: 0.7, alternates: deployGuideAlternates },
     { url: deployGuideEnUrl, changeFrequency: "monthly", priority: 0.7, alternates: deployGuideAlternates },
     { url: savingsCalcEsUrl, changeFrequency: "monthly", priority: 0.8, alternates: savingsCalcAlternates },

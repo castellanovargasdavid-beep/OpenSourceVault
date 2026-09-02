@@ -322,6 +322,21 @@ const en: Dictionary = {
     ctaSubtitle: "Choose a provider with free credit and get started in minutes.",
     ctaButton: "See recommended hosting",
   },
+  hostingGuidePage: {
+    badge: "Beginner-friendly guide",
+    title: (provider: string) => `How to deploy your first tool on ${provider}`,
+    metaTitle: (provider: string) => `Complete ${provider} guide for beginners (step by step)`,
+    metaDescription: (provider: string) =>
+      `Learn how to sign up, create your server, and deploy any tool in the catalog on ${provider}, from zero: which buttons to click, how to use the console, and how to set up your domain.`,
+    subtitle: (provider: string) =>
+      `From signing up on ${provider} to your tool live on your own domain — nothing assumed. Every step spells out exactly which button to click and what to type in the console.`,
+    backToHosting: "← View all hosting providers",
+    backToDeployGuide: "General deployment guide",
+    ctaTitle: "Ready to pick your tool?",
+    ctaSubtitle: "Head back to the catalog, copy the docker-compose.yml for the one you want, and follow this same guide.",
+    ctaButton: "View the full catalog",
+    linkLabel: (provider: string) => `Complete ${provider} guide for beginners`,
+  },
   migrationGuidePage: {
     metaTitle: (from: string, tool: string, year: number) => `How to migrate from ${from} to ${tool} without losing data (${year})`,
     metaDescription: (from: string, tool: string) =>
