@@ -77,6 +77,7 @@ const STRINGS: Record<
     placeholderSecretVar: (line: number, key: string, value: string) => string;
     placeholderGenericVar: (line: number, key: string, value: string) => string;
     portInfo: (host: string, container: string) => string;
+    portCollision: (host: string, services: string) => string;
     noPorts: string;
     yamlAllGood: string;
     errorFallback: string;
@@ -95,6 +96,8 @@ const STRINGS: Record<
       `Línea ${line}: dejaste "${key}" como "${value}". Si arrancas esto expuesto a internet tal cual, es una contraseña adivinable en segundos — te hackearán en cuestión de minutos. Cámbiala antes de desplegar (el botón de reparar puede generarte una real).`,
     placeholderGenericVar: (line, key, value) => `Línea ${line}: "${key}" tiene el valor de ejemplo "${value}" sin rellenar. Revisa que sea el que quieres antes de desplegar.`,
     portInfo: (host, container) => `Puertos: tu app escuchará en el puerto ${host} (mapeado al ${container} interno del contenedor). Asegúrate de que esté abierto en el cortafuegos de tu VPS si necesitas entrar desde fuera.`,
+    portCollision: (host, services) =>
+      `Puerto ${host} en conflicto: lo usan a la vez ${services}. Docker fallará al arrancar con "port is already allocated" — cambia el puerto de la izquierda en uno de los dos servicios, o deja que el botón de reparar lo reasigne automáticamente.`,
     noPorts: "No se detectó ningún puerto publicado (\"ports:\"). Si solo accedes desde dentro del propio servidor no pasa nada, pero si necesitas entrar desde fuera añade un bloque \"ports:\" al servicio principal.",
     yamlAllGood: "No hemos encontrado nada raro en la estructura del archivo. Tiene buena pinta.",
     errorFallback:
@@ -113,6 +116,8 @@ const STRINGS: Record<
       `Line ${line}: you left "${key}" as "${value}". If you deploy this exposed to the internet as-is, that's a guessable password within minutes — you'll get hacked fast. Change it before deploying (the fix button can generate a real one).`,
     placeholderGenericVar: (line, key, value) => `Line ${line}: "${key}" still has the example value "${value}". Double-check it's what you actually want before deploying.`,
     portInfo: (host, container) => `Ports: your app will listen on port ${host} (mapped to the container's internal ${container}). Make sure it's open on your VPS's firewall if you need to reach it from outside.`,
+    portCollision: (host, services) =>
+      `Port ${host} conflict: it's used by both ${services} at once. Docker will fail to start with "port is already allocated" — change the left-hand port on one of the two services, or let the fix button reassign it automatically.`,
     noPorts: 'No published port ("ports:") was detected. That\'s fine if you only access it from inside the server itself, but if you need to reach it from outside, add a "ports:" block to the main service.',
     yamlAllGood: "We didn't find anything odd in the file's structure. Looks good.",
     errorFallback:
@@ -258,19 +263,68 @@ function placeholderFinding(t: (typeof STRINGS)["es"], line: number, key: string
   return { severity: "warning", line, message: t.placeholderGenericVar(line, key, value) };
 }
 
+interface PortOccurrence {
+  hostPort: string;
+  containerPart: string;
+  lineNo: number;
+  serviceName: string;
+}
+
+const PORT_LINE_PATTERN = /^(\s*-\s*)"?(\d{2,5}):(\d{1,5}(?:\/(?:tcp|udp))?)"?(\s*)$/;
+
+/** Recorre `services:` llevando la cuenta de en qué servicio está cada línea `- "HOST:CONTAINER"`, para poder nombrar los servicios en conflicto. */
+function scanPortOccurrences(lines: string[]): PortOccurrence[] {
+  const occurrences: PortOccurrence[] = [];
+  let inServices = false;
+  let currentService: string | null = null;
+
+  lines.forEach((line, idx) => {
+    if (/^services:\s*$/.test(line)) {
+      inServices = true;
+      currentService = null;
+      return;
+    }
+    if (inServices && /^\S/.test(line) && line.trim() !== "") {
+      inServices = false;
+      currentService = null;
+      return;
+    }
+    if (!inServices) return;
+
+    const svcMatch = line.match(/^ {2}([A-Za-z0-9_.-]+):\s*$/);
+    if (svcMatch) {
+      currentService = svcMatch[1];
+      return;
+    }
+
+    const m = line.match(PORT_LINE_PATTERN);
+    if (m) occurrences.push({ hostPort: m[2], containerPart: m[3], lineNo: idx + 1, serviceName: currentService ?? "?" });
+  });
+
+  return occurrences;
+}
+
 function scanPorts(lines: string[], locale: Locale): DoctorFinding[] {
   const t = STRINGS[locale];
-  const found: { host: string; container: string }[] = [];
-  const seenHosts = new Set<string>();
-  for (const line of lines) {
-    const m = line.match(/^\s*-\s*"?(\d{2,5}):(\d{1,5})(?:\/(?:tcp|udp))?"?\s*$/);
-    if (m && !seenHosts.has(m[1])) {
-      seenHosts.add(m[1]);
-      found.push({ host: m[1], container: m[2] });
+  const occurrences = scanPortOccurrences(lines);
+  if (occurrences.length === 0) return [{ severity: "info", message: t.noPorts }];
+
+  const byHostPort = new Map<string, PortOccurrence[]>();
+  for (const occ of occurrences) {
+    byHostPort.set(occ.hostPort, [...(byHostPort.get(occ.hostPort) ?? []), occ]);
+  }
+
+  const lineWord = locale === "en" ? "line" : "línea";
+  const findings: DoctorFinding[] = [];
+  for (const [hostPort, occs] of byHostPort) {
+    if (occs.length > 1) {
+      const servicesLabel = occs.map((o) => `"${o.serviceName}" (${lineWord} ${o.lineNo})`).join(", ");
+      findings.push({ severity: "error", message: t.portCollision(hostPort, servicesLabel) });
+    } else {
+      findings.push({ severity: "info", message: t.portInfo(hostPort, occs[0].containerPart) });
     }
   }
-  if (found.length === 0) return [{ severity: "info", message: t.noPorts }];
-  return found.map(({ host, container }) => ({ severity: "info" as const, message: t.portInfo(host, container) }));
+  return findings;
 }
 
 const severityRank: Record<DoctorSeverity, number> = { error: 0, warning: 1, info: 2 };
@@ -420,6 +474,46 @@ function generateSecret(length = 32): string {
   return Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("").slice(0, length);
 }
 
+/**
+ * Reasigna al siguiente puerto libre cualquier `- "HOST:CONTAINER"` cuyo
+ * HOST ya esté en uso por un servicio anterior del mismo archivo — mismo
+ * enfoque que ya usa src/lib/stack-merge.ts para fusionar varios
+ * docker-compose.yml sin que colisionen sus puertos.
+ */
+function reassignCollidingPorts(text: string): { text: string; count: number } {
+  const lines = text.split("\n");
+  const usedHostPorts = new Set<string>();
+  let count = 0;
+  let inServices = false;
+
+  const newLines = lines.map((line) => {
+    if (/^services:\s*$/.test(line)) {
+      inServices = true;
+      return line;
+    }
+    if (inServices && /^\S/.test(line) && line.trim() !== "") {
+      inServices = false;
+      return line;
+    }
+    if (!inServices) return line;
+
+    const m = line.match(PORT_LINE_PATTERN);
+    if (!m) return line;
+    const [, prefix, hostPort, rest, trailing] = m;
+    let finalPort = hostPort;
+    if (usedHostPorts.has(finalPort)) {
+      let candidate = parseInt(hostPort, 10) + 1;
+      while (usedHostPorts.has(String(candidate))) candidate++;
+      finalPort = String(candidate);
+      count++;
+    }
+    usedHostPorts.add(finalPort);
+    return `${prefix}"${finalPort}:${rest}"${trailing}`;
+  });
+
+  return { text: newLines.join("\n"), count };
+}
+
 function randomizeSecrets(yaml: string): { text: string; count: number } {
   const generated = new Map<string, string>();
   let count = 0;
@@ -488,6 +582,17 @@ export function autoFixComposeYaml(yaml: string, locale: Locale = "es"): DoctorF
   const beforeCollapse = text;
   text = text.replace(/\n{3,}/g, "\n\n");
   if (text !== beforeCollapse) changes.push(msg("Líneas en blanco de más colapsadas.", "Extra blank lines collapsed."));
+
+  const { text: portsFixed, count: portsReassigned } = reassignCollidingPorts(text);
+  if (portsReassigned > 0) {
+    text = portsFixed;
+    changes.push(
+      msg(
+        `${portsReassigned} puerto${portsReassigned === 1 ? "" : "s"} en conflicto reasignado${portsReassigned === 1 ? "" : "s"} automáticamente al siguiente libre.`,
+        `${portsReassigned} conflicting port${portsReassigned === 1 ? "" : "s"} automatically reassigned to the next free one.`
+      )
+    );
+  }
 
   const { text: randomized, count } = randomizeSecrets(text);
   if (count > 0) {
