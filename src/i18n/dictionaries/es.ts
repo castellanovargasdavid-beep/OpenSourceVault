@@ -538,6 +538,24 @@ const es = {
     oneCommandCopied: "¡Comando copiado!",
     viewScriptLink: "Ver qué hace este script →",
   },
+  hardwareFit: {
+    title: "¿Aguantará mi hardware?",
+    machineLabel: "Elige tu máquina",
+    ramUsedLabel: "RAM estimada usada",
+    ofRam: "de",
+    zoneGreenTitle: "🟢 Zona segura",
+    zoneGreenBody: "Todo perfecto. Te sobra espacio para picos de tráfico.",
+    zoneYellowTitle: "🟡 Al límite",
+    zoneYellowBody: "Va a funcionar, pero te recomendamos activar 1 GB de swap en Linux para evitar cierres inesperados.",
+    zoneRedTitle: "🔴 Bloqueo probable",
+    zoneRedBody: "Con esta selección es probable que el servidor se quede sin memoria y algún contenedor se caiga.",
+    overheadNote: "Incluye una estimación de lo que ya consume el propio sistema operativo antes de arrancar ningún contenedor.",
+    gpuWarningTitle: "Necesita GPU dedicada",
+    gpuWarningBody: "Ninguno de estos perfiles incluye GPU. Sin una GPU NVIDIA, estas herramientas de tu selección no van a arrancar:",
+    armWarningTitle: "Arquitectura ARM (Raspberry Pi)",
+    armWarningBody:
+      "La mayoría de imágenes Docker modernas incluyen una versión para arm64, pero no todas. Antes de desplegar en una Raspberry Pi, comprueba en Docker Hub que cada imagen tenga soporte arm64/aarch64.",
+  },
 };
 
 export type Dictionary = typeof es;

@@ -25,6 +25,7 @@ import type { ToolCardData } from "@/lib/types";
 import { getSaasPricing } from "@/data/saas-pricing";
 import { formatMinRam } from "@/lib/tool-difficulty";
 import { AddToStackButton } from "@/components/site/add-to-stack-button";
+import { HardwareFitPanel } from "@/components/site/hardware-fit-panel";
 import { LogoImage } from "@/components/site/logo-image";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -49,7 +50,17 @@ const formatUsd = (value: number, locale: Locale) =>
     maximumFractionDigits: 0,
   }).format(value);
 
-export function StackBuilderContent({ tools, locale = "es", t }: { tools: ToolCardData[]; locale?: Locale; t: Dictionary["stackBuilder"] }) {
+export function StackBuilderContent({
+  tools,
+  locale = "es",
+  t,
+  hardwareT,
+}: {
+  tools: ToolCardData[];
+  locale?: Locale;
+  t: Dictionary["stackBuilder"];
+  hardwareT: Dictionary["hardwareFit"];
+}) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -69,6 +80,7 @@ export function StackBuilderContent({ tools, locale = "es", t }: { tools: ToolCa
   const selectedTools = displayedSlugs.map((slug) => toolsBySlug.get(slug)).filter((x): x is ToolCardData => x !== undefined);
 
   const totalMinRamMb = selectedTools.reduce((sum, tool) => sum + tool.minRamMb, 0);
+  const gpuRequiredToolNames = selectedTools.filter((tool) => tool.gpuRequired).map((tool) => tool.name);
   const savings = { monthly: 0, matched: 0 };
   for (const tool of selectedTools) {
     const primary = tool.replaces[0];
@@ -417,6 +429,10 @@ export function StackBuilderContent({ tools, locale = "es", t }: { tools: ToolCa
         </div>
 
         <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
+          {selectedTools.length > 0 && (
+            <HardwareFitPanel totalMinRamMb={totalMinRamMb} gpuRequiredToolNames={gpuRequiredToolNames} t={hardwareT} />
+          )}
+
           <div className="rounded-xl border border-slate-200 p-6">
             <p className="mb-4 text-sm font-semibold text-slate-900">{t.metricsTitle}</p>
 

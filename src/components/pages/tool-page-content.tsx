@@ -13,6 +13,7 @@ import { DockerComposeBlock } from "@/components/site/docker-compose-block";
 import { OneClickDeploy } from "@/components/site/one-click-deploy";
 import { HowToDeployGuide } from "@/components/site/how-to-deploy-guide";
 import { RepoHealthBadge } from "@/components/site/repo-health-badge";
+import { HardwareFitPanel } from "@/components/site/hardware-fit-panel";
 import { JsonLd } from "@/components/site/json-ld";
 import { LogoImage } from "@/components/site/logo-image";
 import { ToolPreviewImage } from "@/components/site/tool-preview-image";
@@ -24,6 +25,7 @@ import { getGithubStats, formatRelativeDate } from "@/lib/github-stats";
 import { getOgImageUrl } from "@/lib/og-image";
 import { siteConfig } from "@/lib/site-config";
 import { difficultyMeta, formatMinRam, resolveToolResourceProfile } from "@/lib/tool-difficulty";
+import { detectGpuRequirement } from "@/lib/tool-hardware";
 import { slugify, cn, getHostname } from "@/lib/utils";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { localeHref } from "@/lib/locale-href";
@@ -46,6 +48,7 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
   const difficultyLabel =
     difficulty === "beginner" ? t.difficulty.beginnerBadge : difficulty === "intermediate" ? t.difficulty.intermediateBadge : t.difficulty.advancedBadge;
   const port = extractDefaultPort(tool.dockerCompose ?? "");
+  const gpuRequired = detectGpuRequirement(tool.dockerCompose ?? "");
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
@@ -402,6 +405,7 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
         </div>
 
         <aside className="space-y-6 lg:sticky lg:top-24 lg:self-start">
+          <HardwareFitPanel totalMinRamMb={minRamMb} gpuRequiredToolNames={gpuRequired ? [tool.name] : []} t={t.hardwareFit} />
           <RepoHealthBadge liveStats={liveStats} estimatedStars={tool.starsCount} license={tool.license} locale={locale} />
           <AffiliateHostingWidget tool={tool} locale={locale} />
 

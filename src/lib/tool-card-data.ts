@@ -1,6 +1,7 @@
 import type { OpenSourceTool, ToolCardData } from "@/lib/types";
 import { toolCardShortDescriptionsEn } from "@/data/tool-card-short-descriptions.en";
 import { resolveToolResourceProfile } from "@/lib/tool-difficulty";
+import { detectGpuRequirement } from "@/lib/tool-hardware";
 import type { Locale } from "@/i18n/config";
 
 /**
@@ -36,6 +37,7 @@ export function toToolCardData(tool: OpenSourceTool): ToolCardData {
     publishDate: tool.publishDate,
     difficulty,
     minRamMb,
+    gpuRequired: detectGpuRequirement(tool.dockerCompose),
   };
 }
 
