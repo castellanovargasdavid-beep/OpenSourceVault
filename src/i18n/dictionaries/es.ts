@@ -619,6 +619,8 @@ const es = {
   saasExit: {
     navLabel: "Auditoría SaaS",
     teamSizeLabel: "Tamaño de tu equipo",
+    searchPlaceholder: "Buscar tu herramienta (Notion, Zapier, Dropbox...)",
+    searchNoResults: "No hay ninguna herramienta que coincida.",
     checklistTitle: "¿Qué pagas hoy?",
     flatPlanNote: "precio de plan, no por asiento",
     verdictTitle: "Veredicto financiero",

@@ -621,6 +621,8 @@ const en: Dictionary = {
   saasExit: {
     navLabel: "SaaS Audit",
     teamSizeLabel: "Your team size",
+    searchPlaceholder: "Search for your tool (Notion, Zapier, Dropbox...)",
+    searchNoResults: "No tool matches.",
     checklistTitle: "What are you paying for today?",
     flatPlanNote: "flat plan price, not per seat",
     verdictTitle: "Financial verdict",

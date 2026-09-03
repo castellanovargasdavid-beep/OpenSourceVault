@@ -58,7 +58,7 @@ export function HardwareFitPanel({
       <div className="mb-1.5 flex items-baseline justify-between text-xs text-slate-600">
         <span>{t.ramUsedLabel}</span>
         <span className="font-medium text-slate-900">
-          {formatMinRam(fit.usedMb)} {t.ofRam} {formatMinRam(profile.ramMb)} ({fit.percent}%)
+          {`${formatMinRam(fit.usedMb)} ${t.ofRam} ${formatMinRam(profile.ramMb)} (${fit.percent}%)`}
         </span>
       </div>
       <div className="mb-3 h-2.5 w-full overflow-hidden rounded-full bg-slate-100">
@@ -76,9 +76,7 @@ export function HardwareFitPanel({
           <p className="flex items-center gap-1.5 font-semibold">
             <AlertTriangle size={13} /> {t.gpuWarningTitle}
           </p>
-          <p className="mt-0.5">
-            {t.gpuWarningBody} {gpuRequiredToolNames.join(", ")}
-          </p>
+          <p className="mt-0.5">{`${t.gpuWarningBody} ${gpuRequiredToolNames.join(", ")}`}</p>
         </div>
       )}
 

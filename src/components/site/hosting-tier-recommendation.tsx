@@ -46,35 +46,31 @@ export function HostingTierRecommendation({
         <p className="mt-0.5 text-xs">{categoryDesc}</p>
       </div>
 
-      <div className="space-y-2">
-        {matches.map(({ provider, tier }) => (
-          <div key={provider.id} className="flex items-center justify-between gap-3 rounded-lg border border-slate-200 px-3 py-2.5">
-            <span className="flex min-w-0 items-center gap-2">
-              <LogoImage domain={provider.domain} label={provider.name} size={20} className="shrink-0 rounded" fallbackGradient="from-blue-500 to-blue-600" />
-              <span className="min-w-0">
-                <span className="block truncate text-sm font-medium text-slate-900">{provider.name}</span>
-                {tier ? (
-                  <span className="text-xs text-slate-500">
-                    {formatMinRam(tier.ramMb)} / {tier.vcpu} vCPU · ${tier.monthlyUsdApprox}
-                    {t.perMonth}
-                  </span>
-                ) : (
-                  <span className="text-xs text-rose-600">{t.exceedsAllTiersNote}</span>
-                )}
-              </span>
-            </span>
-            {tier && (
-              <a
-                href={provider.affiliateUrl}
-                target="_blank"
-                rel="noopener noreferrer sponsored"
-                className="inline-flex shrink-0 items-center gap-1 rounded-lg bg-slate-900 px-3 py-1.5 text-xs font-medium text-white transition-opacity hover:opacity-90"
-              >
-                {provider.ctaLabel} <ExternalLink size={11} />
-              </a>
-            )}
-          </div>
-        ))}
+      <div className="space-y-3">
+        {matches.map(({ provider, tier }) => {
+          const specLine = tier ? `${formatMinRam(tier.ramMb)} / ${tier.vcpu} vCPU · $${tier.monthlyUsdApprox}${t.perMonth}` : null;
+          return (
+            <div key={provider.id} className="rounded-lg border border-slate-200 p-3">
+              <div className="flex min-w-0 items-center gap-2">
+                <LogoImage domain={provider.domain} label={provider.name} size={20} className="shrink-0 rounded" fallbackGradient="from-blue-500 to-blue-600" />
+                <div className="min-w-0">
+                  <p className="truncate text-sm font-medium text-slate-900">{provider.name}</p>
+                  {specLine ? <p className="text-xs text-slate-500">{specLine}</p> : <p className="text-xs text-rose-600">{t.exceedsAllTiersNote}</p>}
+                </div>
+              </div>
+              {tier && (
+                <a
+                  href={provider.affiliateUrl}
+                  target="_blank"
+                  rel="noopener noreferrer sponsored"
+                  className="mt-2.5 flex items-center justify-center gap-1.5 rounded-lg bg-slate-900 px-3 py-2 text-xs font-medium text-white transition-opacity hover:opacity-90"
+                >
+                  {provider.ctaLabel} <ExternalLink size={11} className="shrink-0" />
+                </a>
+              )}
+            </div>
+          );
+        })}
       </div>
     </div>
   );

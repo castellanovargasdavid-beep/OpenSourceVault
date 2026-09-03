@@ -2,12 +2,13 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { DollarSign, TrendingDown, Rocket, Share2, Check, Server } from "lucide-react";
+import { DollarSign, TrendingDown, Rocket, Share2, Check, Server, Search } from "lucide-react";
 import type { SaasExitItem } from "@/lib/saas-exit";
 import { hostingProviders } from "@/data/hosting-providers";
 import { HardwareFitPanel } from "@/components/site/hardware-fit-panel";
 import { HostingTierRecommendation } from "@/components/site/hosting-tier-recommendation";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { localeHref } from "@/lib/locale-href";
 import { cn } from "@/lib/utils";
 import type { Locale } from "@/i18n/config";
@@ -36,6 +37,11 @@ export function SaasExitContent({
   const [checked, setChecked] = React.useState<Set<string>>(new Set());
   const [teamSize, setTeamSize] = React.useState(5);
   const [shareCopied, setShareCopied] = React.useState(false);
+  const [search, setSearch] = React.useState("");
+
+  const filteredCatalog = search.trim()
+    ? catalog.filter((item) => item.saasName.toLowerCase().includes(search.trim().toLowerCase()))
+    : catalog;
 
   function toggle(slug: string) {
     setChecked((prev) => {
@@ -101,8 +107,13 @@ export function SaasExitContent({
 
         <div>
           <h2 className="mb-3 text-lg font-semibold text-slate-900">{t.checklistTitle}</h2>
+          <div className="relative mb-3">
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+            <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t.searchPlaceholder} className="pl-9" />
+          </div>
+          {filteredCatalog.length === 0 && <p className="mb-3 text-sm text-slate-500">{t.searchNoResults}</p>}
           <ul className="space-y-2">
-            {catalog.map((item) => {
+            {filteredCatalog.map((item) => {
               const isChecked = checked.has(item.saasSlug);
               return (
                 <li key={item.saasSlug}>
@@ -183,10 +194,7 @@ export function SaasExitContent({
                 <div>
                   <p className="text-xs uppercase tracking-wide text-emerald-400">{t.netSavingsLabel}</p>
                   <p className="mt-0.5 text-2xl font-bold text-emerald-400">{formatUsd(savings, locale)}</p>
-                  <p className="mt-1 text-xs text-emerald-300">
-                    {savingsPercent}
-                    {t.netSavingsSuffix}
-                  </p>
+                  <p className="mt-1 text-xs text-emerald-300">{`${savingsPercent}${t.netSavingsSuffix}`}</p>
                 </div>
               </div>
 
