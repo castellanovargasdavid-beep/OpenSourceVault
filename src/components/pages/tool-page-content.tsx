@@ -11,6 +11,7 @@ import { AddToStackButton } from "@/components/site/add-to-stack-button";
 import { AffiliateHostingWidget } from "@/components/site/affiliate-hosting-widget";
 import { DockerComposeBlock } from "@/components/site/docker-compose-block";
 import { OneClickDeploy } from "@/components/site/one-click-deploy";
+import { OneCommandDeployBlock } from "@/components/site/one-command-deploy-block";
 import { HowToDeployGuide } from "@/components/site/how-to-deploy-guide";
 import { RepoHealthBadge } from "@/components/site/repo-health-badge";
 import { HardwareFitPanel } from "@/components/site/hardware-fit-panel";
@@ -319,6 +320,11 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
                     trigger={t.howToDeploy.trigger}
                   />
                   <DockerComposeBlock code={tool.dockerCompose} t={t.dockerBlock} />
+                  {isComposeFile(tool.dockerCompose) && (
+                    <div className="mt-4">
+                      <OneCommandDeployBlock deployApiPath={`/api/deploy?stack=${tool.slug}&locale=${locale}`} commandPreview={tool.slug} t={t.stackBuilder} />
+                    </div>
+                  )}
                   <p className="mt-2 text-xs text-slate-600">
                     {liveStats
                       ? t.toolPage.dockerComposeSourceActive(formatRelativeDate(liveStats.updatedAt, locale))

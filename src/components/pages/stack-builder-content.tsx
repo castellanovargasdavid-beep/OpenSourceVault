@@ -18,8 +18,6 @@ import {
   DollarSign,
   Loader2,
   FolderInput,
-  Rocket,
-  ExternalLink,
 } from "lucide-react";
 import type { ToolCardData } from "@/lib/types";
 import { getSaasPricing } from "@/data/saas-pricing";
@@ -27,6 +25,7 @@ import { formatMinRam } from "@/lib/tool-difficulty";
 import { AddToStackButton } from "@/components/site/add-to-stack-button";
 import { HardwareFitPanel } from "@/components/site/hardware-fit-panel";
 import { HostingTierRecommendation } from "@/components/site/hosting-tier-recommendation";
+import { OneCommandDeployBlock } from "@/components/site/one-command-deploy-block";
 import { LogoImage } from "@/components/site/logo-image";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -110,7 +109,6 @@ export function StackBuilderContent({
   const [mergeError, setMergeError] = React.useState(false);
   const [copied, setCopied] = React.useState(false);
   const [shareCopied, setShareCopied] = React.useState(false);
-  const [oneCommandCopied, setOneCommandCopied] = React.useState(false);
 
   const displayedSlugsKey = displayedSlugs.join(",");
   const mergeStale = merge !== null && mergeKey !== displayedSlugsKey;
@@ -164,18 +162,6 @@ export function StackBuilderContent({
       setTimeout(() => setShareCopied(false), 2500);
     } catch {
       window.prompt(t.shareButton, url);
-    }
-  }
-
-  async function handleCopyOneCommand() {
-    const url = `${window.location.origin}${deployApiPath}`;
-    const command = `curl -sSL "${url}" | bash`;
-    try {
-      await navigator.clipboard.writeText(command);
-      setOneCommandCopied(true);
-      setTimeout(() => setOneCommandCopied(false), 2500);
-    } catch {
-      window.prompt(t.oneCommandCopyButton, command);
     }
   }
 
@@ -331,47 +317,6 @@ export function StackBuilderContent({
           </div>
 
           {selectedTools.length > 0 && (
-            <div className="rounded-xl border-2 border-emerald-300 bg-emerald-50/40 p-6">
-              <div className="mb-1 flex flex-wrap items-center gap-2">
-                <h2 className="flex items-center gap-1.5 text-lg font-semibold text-slate-900">
-                  <Rocket size={18} className="text-emerald-600" />
-                  {t.oneCommandTitle}
-                </h2>
-                <span className="inline-flex items-center rounded-full bg-emerald-600 px-2 py-0.5 text-[11px] font-medium text-white">
-                  {t.oneCommandBadge}
-                </span>
-              </div>
-              <p className="mb-4 text-sm text-slate-600">{t.oneCommandDesc}</p>
-
-              <div className="flex items-center justify-between gap-2 rounded-lg border border-slate-700/60 bg-slate-900 px-3 py-2.5">
-                <code className="flex-1 overflow-x-auto whitespace-pre text-xs text-emerald-300">
-                  curl -sSL &quot;.../api/deploy?stack={displayedSlugsKey}&quot; | bash
-                </code>
-                <button
-                  type="button"
-                  onClick={handleCopyOneCommand}
-                  aria-label={t.oneCommandCopyButton}
-                  className="shrink-0 rounded-md p-1.5 text-slate-300 hover:bg-slate-800"
-                >
-                  {oneCommandCopied ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
-                </button>
-              </div>
-              <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
-                <span className="text-xs text-slate-600">{oneCommandCopied ? t.oneCommandCopied : ""}</span>
-                <a
-                  href={deployApiPath}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-xs font-medium text-emerald-700 hover:underline"
-                >
-                  {t.viewScriptLink}
-                  <ExternalLink size={12} />
-                </a>
-              </div>
-            </div>
-          )}
-
-          {selectedTools.length > 0 && (
             <div className="rounded-xl border border-slate-200 p-6">
               <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
                 <h2 className="text-lg font-semibold text-slate-900">{t.generateButton}</h2>
@@ -428,6 +373,10 @@ export function StackBuilderContent({
                 </div>
               )}
             </div>
+          )}
+
+          {selectedTools.length > 0 && (
+            <OneCommandDeployBlock deployApiPath={deployApiPath} commandPreview={displayedSlugsKey} t={t} />
           )}
         </div>
 
