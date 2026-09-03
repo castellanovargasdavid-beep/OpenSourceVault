@@ -18,7 +18,6 @@ export function Header({ locale = "es" }: { locale?: Locale }) {
     { href: localeHref("/doctor", locale), label: t.composeDoctor.navLabel },
     { href: getSavingsCalculatorHref(locale), label: t.header.calculadora },
     { href: getDeployGuideHref(locale), label: t.header.guiaDespliegue },
-    { href: localeHref("/hosting-deals", locale), label: t.header.hosting },
   ];
 
   return (
