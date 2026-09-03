@@ -3,7 +3,6 @@ import { Boxes } from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { localeHref } from "@/lib/locale-href";
-import { getDeployGuideHref } from "@/lib/routes";
 import type { Locale } from "@/i18n/config";
 import { LanguageSwitcher } from "@/components/site/language-switcher";
 import { GithubIcon } from "@/components/icons/github-icon";
@@ -16,7 +15,6 @@ export function Header({ locale = "es" }: { locale?: Locale }) {
     { href: localeHref("/stacks/builder", locale), label: t.stackBuilder.navLabel },
     { href: localeHref("/saas-exit", locale), label: t.saasExit.navLabel },
     { href: localeHref("/doctor", locale), label: t.composeDoctor.navLabel },
-    { href: getDeployGuideHref(locale), label: t.header.guiaDespliegue },
   ];
 
   return (
