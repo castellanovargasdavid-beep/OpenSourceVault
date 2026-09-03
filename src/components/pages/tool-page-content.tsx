@@ -14,6 +14,7 @@ import { OneClickDeploy } from "@/components/site/one-click-deploy";
 import { HowToDeployGuide } from "@/components/site/how-to-deploy-guide";
 import { RepoHealthBadge } from "@/components/site/repo-health-badge";
 import { HardwareFitPanel } from "@/components/site/hardware-fit-panel";
+import { UpdateCheckerCard } from "@/components/site/update-checker-card";
 import { JsonLd } from "@/components/site/json-ld";
 import { LogoImage } from "@/components/site/logo-image";
 import { ToolPreviewImage } from "@/components/site/tool-preview-image";
@@ -21,7 +22,7 @@ import { getSaasDomain } from "@/lib/saas-domains";
 import { categoryColors } from "@/lib/category-colors";
 import { getComparisonsForTool, type ToolComparison } from "@/lib/comparisons";
 import { extractDefaultPort, isComposeFile } from "@/lib/deploy-guide";
-import { getGithubStats, formatRelativeDate } from "@/lib/github-stats";
+import { getGithubStats, getLatestRelease, getReleasesPageUrl, getReleasesFeedUrl, formatRelativeDate } from "@/lib/github-stats";
 import { getOgImageUrl } from "@/lib/og-image";
 import { siteConfig } from "@/lib/site-config";
 import { difficultyMeta, formatMinRam, resolveToolResourceProfile } from "@/lib/tool-difficulty";
@@ -41,7 +42,9 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
   const migrationFromSaas = tool.replaces[0];
   const migrationGuideHref = getMigrationGuideHref(slugify(migrationFromSaas), tool.slug, locale);
   const featuredStacks = getStacksForTool(tool.id).map((stack) => getLocalizedStack(stack, locale));
-  const liveStats = await getGithubStats(tool.githubUrl);
+  const [liveStats, latestRelease] = await Promise.all([getGithubStats(tool.githubUrl), getLatestRelease(tool.githubUrl)]);
+  const releasesUrl = getReleasesPageUrl(tool.githubUrl);
+  const releasesFeedUrl = getReleasesFeedUrl(tool.githubUrl);
   const ogImageUrl = await getOgImageUrl(tool.websiteUrl);
   const { difficulty, minRamMb } = resolveToolResourceProfile(tool);
   const difficultyStyle = difficultyMeta[difficulty];
@@ -407,6 +410,7 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
         <aside className="space-y-6 lg:sticky lg:top-24 lg:self-start">
           <HardwareFitPanel totalMinRamMb={minRamMb} gpuRequiredToolNames={gpuRequired ? [tool.name] : []} t={t.hardwareFit} />
           <RepoHealthBadge liveStats={liveStats} estimatedStars={tool.starsCount} license={tool.license} locale={locale} />
+          <UpdateCheckerCard latestRelease={latestRelease} releasesUrl={releasesUrl} feedUrl={releasesFeedUrl} locale={locale} />
           <AffiliateHostingWidget tool={tool} locale={locale} />
 
           {featuredStacks.length > 0 && (

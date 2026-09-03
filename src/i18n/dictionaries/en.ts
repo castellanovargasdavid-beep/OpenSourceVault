@@ -583,6 +583,21 @@ const en: Dictionary = {
     downloadButton: "Download docker-compose.yml",
     switchToYamlHint: "Have the file too? Paste it here for a fuller diagnosis.",
   },
+  updateChecker: {
+    title: "🔄 Is it safe to update?",
+    latestVersionLabel: "Latest published version",
+    noReleaseData: "We couldn't read the latest version from GitHub right now.",
+    viewReleaseNotesLink: "View this version's release notes →",
+    checklistTitle: "Before you update, always:",
+    checklistBackup: "Back up your data — never update without a backup.",
+    checklistChangelog: "Read the release notes: some versions change environment variables or need a step before you pull.",
+    checklistNoAutomation: "Don't automate updates blindly — tools like Watchtower can break your stack on a Sunday night with no warning.",
+    safeUpdateCommandTitle: "Update command with a preventive backup",
+    rssTitle: "New-version alerts, no spam",
+    rssDesc: "GitHub provides a real, free RSS feed of this tool's releases — no account needed, and it doesn't go through our site.",
+    rssLink: "Subscribe to the RSS feed →",
+    rssToDiscordHint: "Prefer Discord or Telegram? Wire this same RSS feed through a free external bridge (IFTTT, a Discord RSS bot, RSS Bridge...) — we don't sit in the middle of it.",
+  },
 };
 
 export default en;

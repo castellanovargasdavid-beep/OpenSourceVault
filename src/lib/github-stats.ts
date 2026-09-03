@@ -19,6 +19,21 @@ export function getRepoHealthStatus(updatedAtIso: string): RepoHealthStatus {
   return "stale";
 }
 
+function parseGithubUrl(githubUrl: string): { owner: string; repo: string } | null {
+  const match = githubUrl.match(/github\.com\/([^/]+)\/([^/]+?)(?:\.git)?\/?$/);
+  return match ? { owner: match[1], repo: match[2] } : null;
+}
+
+function githubFetch(path: string) {
+  return fetch(`https://api.github.com${path}`, {
+    headers: {
+      Accept: "application/vnd.github+json",
+      ...(process.env.GITHUB_TOKEN ? { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` } : {}),
+    },
+    next: { revalidate: 86400 },
+  });
+}
+
 /**
  * Consulta la API pública de GitHub para mostrar datos en vivo (estrellas,
  * última actualización, issues abiertos). Si no hay GITHUB_TOKEN configurado
@@ -28,22 +43,11 @@ export function getRepoHealthStatus(updatedAtIso: string): RepoHealthStatus {
  * vez de romper el build.
  */
 export async function getGithubStats(githubUrl: string): Promise<GithubStats | null> {
-  const match = githubUrl.match(/github\.com\/([^/]+)\/([^/]+?)(?:\.git)?\/?$/);
-  if (!match) return null;
-
-  const [, owner, repo] = match;
+  const parsed = parseGithubUrl(githubUrl);
+  if (!parsed) return null;
 
   try {
-    const res = await fetch(`https://api.github.com/repos/${owner}/${repo}`, {
-      headers: {
-        Accept: "application/vnd.github+json",
-        ...(process.env.GITHUB_TOKEN
-          ? { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` }
-          : {}),
-      },
-      next: { revalidate: 86400 },
-    });
-
+    const res = await githubFetch(`/repos/${parsed.owner}/${parsed.repo}`);
     if (!res.ok) return null;
 
     const data = (await res.json()) as {
@@ -62,6 +66,57 @@ export async function getGithubStats(githubUrl: string): Promise<GithubStats | n
   } catch {
     return null;
   }
+}
+
+export interface LatestRelease {
+  /** Nombre real del tag/versión tal como lo publicó el proyecto, ej. "v2.4.1". */
+  tag: string;
+  /** Enlace directo a las notas de esa versión en GitHub — nunca resumimos ni inventamos qué cambió. */
+  url: string;
+  publishedAt: string | null;
+}
+
+/**
+ * Última versión publicada de verdad en GitHub: usa GitHub Releases si el
+ * proyecto los publica, y si no cae al tag más reciente. Deliberadamente NO
+ * intenta resumir ni clasificar qué cambió entre versiones — eso requeriría
+ * inventar contenido específico por herramienta que no podemos verificar.
+ * Se degrada a null en cualquier fallo (límite de peticiones, repo sin
+ * releases ni tags, sin conexión), igual que getGithubStats().
+ */
+export async function getLatestRelease(githubUrl: string): Promise<LatestRelease | null> {
+  const parsed = parseGithubUrl(githubUrl);
+  if (!parsed) return null;
+  const { owner, repo } = parsed;
+
+  try {
+    const res = await githubFetch(`/repos/${owner}/${repo}/releases/latest`);
+    if (res.ok) {
+      const data = (await res.json()) as { tag_name: string; html_url: string; published_at: string };
+      return { tag: data.tag_name, url: data.html_url, publishedAt: data.published_at };
+    }
+
+    // Muchos proyectos solo publican tags de git, sin usar "Releases" de GitHub.
+    const tagsRes = await githubFetch(`/repos/${owner}/${repo}/tags`);
+    if (!tagsRes.ok) return null;
+    const tags = (await tagsRes.json()) as { name: string }[];
+    if (!Array.isArray(tags) || tags.length === 0) return null;
+    return { tag: tags[0].name, url: `https://github.com/${owner}/${repo}/releases/tag/${encodeURIComponent(tags[0].name)}`, publishedAt: null };
+  } catch {
+    return null;
+  }
+}
+
+/** Página real de releases del repo en GitHub — para "lee las notas antes de actualizar". */
+export function getReleasesPageUrl(githubUrl: string): string | null {
+  const parsed = parseGithubUrl(githubUrl);
+  return parsed ? `https://github.com/${parsed.owner}/${parsed.repo}/releases` : null;
+}
+
+/** Feed Atom real que GitHub expone gratis para cualquier repo público — cero infraestructura propia. */
+export function getReleasesFeedUrl(githubUrl: string): string | null {
+  const parsed = parseGithubUrl(githubUrl);
+  return parsed ? `https://github.com/${parsed.owner}/${parsed.repo}/releases.atom` : null;
 }
 
 /** locale es opcional y por defecto "es" para no romper otras llamadas existentes. */

@@ -581,6 +581,21 @@ const es = {
     downloadButton: "Descargar docker-compose.yml",
     switchToYamlHint: "¿Tienes también el archivo? Pégalo aquí para un diagnóstico más completo.",
   },
+  updateChecker: {
+    title: "🔄 ¿Es seguro actualizar?",
+    latestVersionLabel: "Última versión publicada",
+    noReleaseData: "No hemos podido leer la última versión desde GitHub ahora mismo.",
+    viewReleaseNotesLink: "Ver las notas de esta versión →",
+    checklistTitle: "Antes de actualizar, siempre:",
+    checklistBackup: "Hazte una copia de seguridad de tus datos — nunca actualices sin backup.",
+    checklistChangelog: "Lee las notas de la versión: algunas cambian variables de entorno o piden un paso previo antes de hacer pull.",
+    checklistNoAutomation: "No automatices las actualizaciones a ciegas — herramientas tipo Watchtower pueden romper tu stack un domingo por la noche sin avisar.",
+    safeUpdateCommandTitle: "Comando de actualización con backup preventivo",
+    rssTitle: "Avisos de nuevas versiones, sin spam",
+    rssDesc: "GitHub ofrece un feed RSS real y gratuito con las versiones de esta herramienta — sin cuenta y sin pasar por nuestra web.",
+    rssLink: "Suscribirme al feed RSS →",
+    rssToDiscordHint: "¿Prefieres Discord o Telegram? Conecta este mismo feed RSS con un puente gratuito externo (IFTTT, un bot de RSS a Discord, RSS Bridge...) — nosotros no lo intermediamos.",
+  },
 };
 
 export type Dictionary = typeof es;
