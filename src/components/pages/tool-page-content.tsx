@@ -28,6 +28,7 @@ import { getOgImageUrl } from "@/lib/og-image";
 import { siteConfig } from "@/lib/site-config";
 import { difficultyMeta, formatMinRam, resolveToolResourceProfile } from "@/lib/tool-difficulty";
 import { detectGpuRequirement } from "@/lib/tool-hardware";
+import { getToolComparison } from "@/lib/tool-comparison";
 import { slugify, cn, getHostname } from "@/lib/utils";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { localeHref } from "@/lib/locale-href";
@@ -53,6 +54,7 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
     difficulty === "beginner" ? t.difficulty.beginnerBadge : difficulty === "intermediate" ? t.difficulty.intermediateBadge : t.difficulty.advancedBadge;
   const port = extractDefaultPort(tool.dockerCompose ?? "");
   const gpuRequired = detectGpuRequirement(tool.dockerCompose ?? "");
+  const comparison = getToolComparison(tool, locale);
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
@@ -319,6 +321,17 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
                     locale={locale}
                     trigger={t.howToDeploy.trigger}
                   />
+                  <div className="mb-4 rounded-xl border border-emerald-200 bg-emerald-50/60 p-4">
+                    <p className="mb-2 text-sm font-semibold text-slate-900">{t.toolPage.comparisonTitle}</p>
+                    <ul className="space-y-1 text-sm text-slate-700">
+                      <li>
+                        <span className="font-medium text-slate-900">{t.toolPage.comparisonCloudLabel}</span> {comparison.cloud}.
+                      </li>
+                      <li>
+                        <span className="font-medium text-emerald-700">{t.toolPage.comparisonSelfHostedLabel}</span> {comparison.selfHosted}.
+                      </li>
+                    </ul>
+                  </div>
                   <DockerComposeBlock code={tool.dockerCompose} t={t.dockerBlock} />
                   {isComposeFile(tool.dockerCompose) && (
                     <div className="mt-4">
