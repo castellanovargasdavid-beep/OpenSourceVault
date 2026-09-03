@@ -51,13 +51,11 @@ export function HostingTierRecommendation({
           const specLine = tier ? `${formatMinRam(tier.ramMb)} / ${tier.vcpu} vCPU · $${tier.monthlyUsdApprox}${t.perMonth}` : null;
           return (
             <div key={provider.id} className="rounded-lg border border-slate-200 p-3">
-              <div className="flex min-w-0 items-center gap-2">
+              <div className="flex items-center gap-2">
                 <LogoImage domain={provider.domain} label={provider.name} size={20} className="shrink-0 rounded" fallbackGradient="from-blue-500 to-blue-600" />
-                <div className="min-w-0">
-                  <p className="truncate text-sm font-medium text-slate-900">{provider.name}</p>
-                  {specLine ? <p className="text-xs text-slate-500">{specLine}</p> : <p className="text-xs text-rose-600">{t.exceedsAllTiersNote}</p>}
-                </div>
+                <p className="text-sm font-medium text-slate-900">{provider.name}</p>
               </div>
+              {specLine ? <p className="mt-1 text-xs text-slate-500">{specLine}</p> : <p className="mt-1 text-xs text-rose-600">{t.exceedsAllTiersNote}</p>}
               {tier && (
                 <a
                   href={provider.affiliateUrl}
