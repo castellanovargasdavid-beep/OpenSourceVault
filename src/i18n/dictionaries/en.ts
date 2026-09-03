@@ -532,6 +532,13 @@ const en: Dictionary = {
     importSaveButton: "Save to My Stack",
     viewCatalog: "Browse the catalog →",
     ramNote: "Rough estimate: adds up each tool's own recommended minimum RAM. Sharing libraries between containers can lower real usage.",
+    oneCommandTitle: "🚀 Deploy in 1 command",
+    oneCommandBadge: "Recommended for beginners",
+    oneCommandDesc:
+      "Copy this single command and paste it into your freshly created VPS's console (Vultr, DigitalOcean...). It installs Docker if needed, writes the files with secrets already generated, and starts everything — no nano, no pasting code blocks.",
+    oneCommandCopyButton: "Copy command",
+    oneCommandCopied: "Command copied!",
+    viewScriptLink: "See what this script does →",
   },
 };
 

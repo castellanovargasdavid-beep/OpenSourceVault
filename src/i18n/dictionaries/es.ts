@@ -530,6 +530,13 @@ const es = {
     importSaveButton: "Guardar en mi Stack",
     viewCatalog: "Explorar catálogo →",
     ramNote: "Estimación orientativa: suma la RAM mínima recomendada de cada herramienta por separado. Compartir librerías entre contenedores puede reducir el uso real.",
+    oneCommandTitle: "🚀 Despliegue en 1 comando",
+    oneCommandBadge: "Recomendado para novatos",
+    oneCommandDesc:
+      "Copia este único comando y pégalo en la consola de tu VPS recién creado (Vultr, DigitalOcean...). Instala Docker si hace falta, crea los archivos con los secretos ya generados y arranca todo — sin nano, sin copiar y pegar bloques de código.",
+    oneCommandCopyButton: "Copiar comando",
+    oneCommandCopied: "¡Comando copiado!",
+    viewScriptLink: "Ver qué hace este script →",
   },
 };
 

@@ -87,8 +87,19 @@ function rewriteVolumeMounts(bodyLines: string[], volumeRenameMap: Map<string, s
   });
 }
 
-/** Reasigna el puerto de host de una línea `- "HOST:CONTAINER"` si ya está en uso por otra herramienta del stack. */
-function rewritePorts(bodyLines: string[], usedHostPorts: Set<string>, warnings: string[], toolName: string): string[] {
+/**
+ * Reasigna el puerto de host de una línea `- "HOST:CONTAINER"` si ya está en
+ * uso por otra herramienta del stack. `firstPort` recibe el primer puerto de
+ * host visto en este bloque (ya con la reasignación aplicada), para poder
+ * imprimir un resumen "herramienta → URL" después de fusionar.
+ */
+function rewritePorts(
+  bodyLines: string[],
+  usedHostPorts: Set<string>,
+  warnings: string[],
+  toolName: string,
+  firstPort: { value: string | null }
+): string[] {
   return bodyLines.map((line) => {
     const m = line.match(/^(\s*-\s*)"?(\d{2,5}):(\d{1,5}(?:\/(?:tcp|udp))?)"?\s*$/);
     if (!m) return line;
@@ -101,6 +112,7 @@ function rewritePorts(bodyLines: string[], usedHostPorts: Set<string>, warnings:
       warnings.push(`${toolName}: puerto ${hostPort} ya usado por otra herramienta del stack → reasignado a ${finalPort}.`);
     }
     usedHostPorts.add(finalPort);
+    if (!firstPort.value) firstPort.value = finalPort;
     return `${prefix}"${finalPort}:${rest}"`;
   });
 }
@@ -111,6 +123,13 @@ export interface StackMergeInput {
   dockerCompose: string;
 }
 
+export interface StackMergeToolSummary {
+  name: string;
+  slug: string;
+  /** Primer puerto de host detectado para esta herramienta, ya con la reasignación por colisión aplicada — null si no se encontró ninguno. */
+  port: string | null;
+}
+
 export interface StackMergeResult {
   /** El docker-compose.yml combinado, listo para `docker compose up -d`. Vacío si ninguna herramienta era fusionable. */
   yaml: string;
@@ -118,6 +137,8 @@ export interface StackMergeResult {
   warnings: string[];
   /** Nombres de herramientas sin docker-compose.yml combinable (instaladores por script) — no entran en el archivo. */
   skippedTools: string[];
+  /** Una entrada por herramienta incluida en el archivo, en el mismo orden — para imprimir un resumen "herramienta → URL". */
+  toolSummaries: StackMergeToolSummary[];
 }
 
 export function mergeDockerComposeFiles(tools: StackMergeInput[]): StackMergeResult {
@@ -128,6 +149,7 @@ export function mergeDockerComposeFiles(tools: StackMergeInput[]): StackMergeRes
   const skippedTools: string[] = [];
   const serviceLines: string[] = [];
   const volumeLines: string[] = [];
+  const toolSummaries: StackMergeToolSummary[] = [];
 
   for (const tool of tools) {
     if (!tool.dockerCompose || !isComposeFile(tool.dockerCompose)) {
@@ -140,6 +162,8 @@ export function mergeDockerComposeFiles(tools: StackMergeInput[]): StackMergeRes
       skippedTools.push(tool.name);
       continue;
     }
+
+    const firstPort: { value: string | null } = { value: null };
 
     const renameMap = new Map<string, string>();
     const volumeRenameMap = new Map<string, string>();
@@ -180,7 +204,7 @@ export function mergeDockerComposeFiles(tools: StackMergeInput[]): StackMergeRes
       const finalName = finalServiceNames.get(svc.name)!;
       let body = rewriteDependsOn(svc.bodyLines, renameMap);
       body = rewriteVolumeMounts(body, volumeRenameMap);
-      body = rewritePorts(body, usedHostPorts, warnings, tool.name);
+      body = rewritePorts(body, usedHostPorts, warnings, tool.name, firstPort);
       serviceLines.push(`  ${finalName}:`, ...body);
     }
 
@@ -188,10 +212,12 @@ export function mergeDockerComposeFiles(tools: StackMergeInput[]): StackMergeRes
       const finalName = finalVolumeNames.get(vol.name)!;
       volumeLines.push(`  ${finalName}:`, ...vol.bodyLines);
     }
+
+    toolSummaries.push({ name: tool.name, slug: tool.slug, port: firstPort.value });
   }
 
   if (serviceLines.length === 0) {
-    return { yaml: "", warnings, skippedTools };
+    return { yaml: "", warnings, skippedTools, toolSummaries };
   }
 
   const header = [
@@ -208,5 +234,5 @@ export function mergeDockerComposeFiles(tools: StackMergeInput[]): StackMergeRes
     body.push("", "volumes:", ...volumeLines);
   }
 
-  return { yaml: body.join("\n"), warnings, skippedTools };
+  return { yaml: body.join("\n"), warnings, skippedTools, toolSummaries };
 }
