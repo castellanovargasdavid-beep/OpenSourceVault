@@ -596,6 +596,34 @@ const es = {
     rssLink: "Suscribirme al feed RSS →",
     rssToDiscordHint: "¿Prefieres Discord o Telegram? Conecta este mismo feed RSS con un puente gratuito externo (IFTTT, un bot de RSS a Discord, RSS Bridge...) — nosotros no lo intermediamos.",
   },
+  saasExitPage: {
+    metaTitle: "Calculadora: cuánto gastas en SaaS al año (y cuánto ahorras migrando)",
+    metaDescription:
+      "Marca las suscripciones que pagas hoy (Notion, Airtable, Mailchimp, Zapier, Dropbox...) y descubre en segundos cuánto gastas al año y cuánto ahorrarías auto-hospedando el equivalente open source en un único VPS.",
+    badge: "Auditoría SaaS",
+    title: "¿Cuánto te está costando tu stack de SaaS?",
+    subtitle:
+      "Marca lo que pagas hoy, indica el tamaño de tu equipo, y te decimos cuánto gastas al año — y cuánto te ahorrarías auto-hospedando el equivalente open source en un único servidor.",
+  },
+  saasExit: {
+    navLabel: "Auditoría SaaS",
+    teamSizeLabel: "Tamaño de tu equipo",
+    checklistTitle: "¿Qué pagas hoy?",
+    flatPlanNote: "precio de plan, no por asiento",
+    verdictTitle: "Veredicto financiero",
+    annualSaasCostLabel: "Gasto actual en SaaS",
+    annualSelfHostLabel: "Coste estimado auto-hospedado",
+    annualSelfHostNote: "Desde el plan VPS de entrada de un proveedor — revisa la RAM exacta que necesitas más abajo.",
+    netSavingsLabel: "Ahorro neto estimado",
+    netSavingsSuffix: "% de ahorro",
+    emptyStateTitle: "Marca al menos una herramienta de la lista para ver tu ahorro.",
+    replacementToolsTitle: "Tu stack de reemplazo",
+    loadIntoBuilderButton: "🚀 Cargar este stack en el Stack Builder",
+    loadIntoBuilderHint: "Se abre el Stack Builder con estas herramientas ya seleccionadas — listo para generar el docker-compose y desplegar.",
+    shareButton: "Copiar resumen para compartir",
+    shareCopied: "¡Copiado!",
+    disclaimer: "Precios de lista aproximados a fecha de redacción — cada proveedor los cambia con frecuencia. Revisa el precio vigente en su web antes de decidir.",
+  },
 };
 
 export type Dictionary = typeof es;

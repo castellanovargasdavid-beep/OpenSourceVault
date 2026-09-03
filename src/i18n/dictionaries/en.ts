@@ -598,6 +598,34 @@ const en: Dictionary = {
     rssLink: "Subscribe to the RSS feed →",
     rssToDiscordHint: "Prefer Discord or Telegram? Wire this same RSS feed through a free external bridge (IFTTT, a Discord RSS bot, RSS Bridge...) — we don't sit in the middle of it.",
   },
+  saasExitPage: {
+    metaTitle: "Calculator: how much your SaaS stack costs per year (and how much you'd save)",
+    metaDescription:
+      "Check off the subscriptions you pay for today (Notion, Airtable, Mailchimp, Zapier, Dropbox...) and see in seconds how much you spend per year — and how much you'd save self-hosting the open source equivalent on a single VPS.",
+    badge: "SaaS Audit",
+    title: "How much is your SaaS stack really costing you?",
+    subtitle:
+      "Check off what you pay for today, enter your team size, and we'll show you the annual spend — and how much you'd save self-hosting the open source equivalent on a single server.",
+  },
+  saasExit: {
+    navLabel: "SaaS Audit",
+    teamSizeLabel: "Your team size",
+    checklistTitle: "What are you paying for today?",
+    flatPlanNote: "flat plan price, not per seat",
+    verdictTitle: "Financial verdict",
+    annualSaasCostLabel: "Current SaaS spend",
+    annualSelfHostLabel: "Estimated self-hosted cost",
+    annualSelfHostNote: "Based on a provider's entry-level VPS plan — check the exact RAM you'll need below.",
+    netSavingsLabel: "Estimated net savings",
+    netSavingsSuffix: "% saved",
+    emptyStateTitle: "Check off at least one tool from the list to see your savings.",
+    replacementToolsTitle: "Your replacement stack",
+    loadIntoBuilderButton: "🚀 Load this stack into the Stack Builder",
+    loadIntoBuilderHint: "Opens the Stack Builder with these tools already selected — ready to generate the docker-compose and deploy.",
+    shareButton: "Copy summary to share",
+    shareCopied: "Copied!",
+    disclaimer: "Approximate list prices as of writing — every provider changes these often. Check their current price on their website before deciding.",
+  },
 };
 
 export default en;

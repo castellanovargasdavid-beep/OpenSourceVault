@@ -45,6 +45,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ["/stacks", "weekly", 0.8],
     ["/stacks/builder", "weekly", 0.7],
     ["/doctor", "weekly", 0.8],
+    ["/saas-exit", "weekly", 0.9],
     ["/hosting-deals", "monthly", 0.7],
     ["/promote", "monthly", 0.5],
     ["/privacy", "yearly", 0.2],
