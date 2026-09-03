@@ -21,7 +21,7 @@ export default function StackBuilderPage() {
   const toolCards = tools.map(toToolCardData);
   return (
     <Suspense>
-      <StackBuilderContent tools={toolCards} locale="es" t={t.stackBuilder} hardwareT={t.hardwareFit} />
+      <StackBuilderContent tools={toolCards} locale="es" t={t.stackBuilder} hardwareT={t.hardwareFit} hostingTierT={t.hostingTier} />
     </Suspense>
   );
 }

@@ -558,6 +558,17 @@ const en: Dictionary = {
     armWarningBody:
       "Most modern Docker images ship an arm64 build, but not all of them. Before deploying on a Raspberry Pi, check on Docker Hub that each image supports arm64/aarch64.",
   },
+  hostingTier: {
+    title: "💡 Recommended server for this stack",
+    categoryBasicLabel: "🟢 Basic plan",
+    categoryBasicDesc: "Plenty for a lightweight stack.",
+    categoryProLabel: "🟡 Pro VPS",
+    categoryProDesc: "Recommended for production with no memory bottlenecks.",
+    categoryDedicatedLabel: "🔴 High-performance VPS",
+    categoryDedicatedDesc: "Your stack is demanding — a large plan or a dedicated server will avoid lockups.",
+    perMonth: "/mo",
+    exceedsAllTiersNote: "None of these standard plans reach the RAM you need — look for a bigger plan or a dedicated server directly on the provider's site.",
+  },
   composeDoctorPage: {
     metaTitle: "Compose Doctor: validate and fix your docker-compose.yml for free",
     metaDescription:

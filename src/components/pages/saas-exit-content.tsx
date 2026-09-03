@@ -6,6 +6,7 @@ import { DollarSign, TrendingDown, Rocket, Share2, Check, Server } from "lucide-
 import type { SaasExitItem } from "@/lib/saas-exit";
 import { hostingProviders } from "@/data/hosting-providers";
 import { HardwareFitPanel } from "@/components/site/hardware-fit-panel";
+import { HostingTierRecommendation } from "@/components/site/hosting-tier-recommendation";
 import { Button } from "@/components/ui/button";
 import { localeHref } from "@/lib/locale-href";
 import { cn } from "@/lib/utils";
@@ -24,11 +25,13 @@ export function SaasExitContent({
   locale = "es",
   t,
   hardwareT,
+  hostingTierT,
 }: {
   catalog: SaasExitItem[];
   locale?: Locale;
   t: Dictionary["saasExit"];
   hardwareT: Dictionary["hardwareFit"];
+  hostingTierT: Dictionary["hostingTier"];
 }) {
   const [checked, setChecked] = React.useState<Set<string>>(new Set());
   const [teamSize, setTeamSize] = React.useState(5);
@@ -202,7 +205,10 @@ export function SaasExitContent({
         </div>
 
         {checkedItems.length > 0 && (
-          <HardwareFitPanel totalMinRamMb={totalMinRamMb} gpuRequiredToolNames={[]} t={hardwareT} />
+          <>
+            <HardwareFitPanel totalMinRamMb={totalMinRamMb} gpuRequiredToolNames={[]} t={hardwareT} />
+            <HostingTierRecommendation totalMinRamMb={totalMinRamMb} locale={locale} t={hostingTierT} />
+          </>
         )}
 
         <p className="text-xs text-slate-500">{t.disclaimer}</p>

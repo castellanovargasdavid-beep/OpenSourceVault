@@ -1,6 +1,13 @@
 import { affiliateLinks } from "@/lib/site-config";
 import { hostingProvidersEn } from "./hosting-providers.en";
 
+export interface HostingTier {
+  ramMb: number;
+  vcpu: number;
+  /** Precio mensual aproximado en USD de este plan concreto — lista pública, orientativo. */
+  monthlyUsdApprox: number;
+}
+
 export interface HostingProvider {
   id: string;
   name: string;
@@ -8,13 +15,20 @@ export interface HostingProvider {
   domain: string;
   tagline: string;
   startingPrice: string;
-  /** Precio mensual aproximado en USD, solo para la calculadora de ahorro */
+  /** Precio mensual aproximado en USD del plan de entrada — solo para la calculadora de ahorro de un único servidor pequeño. */
   monthlyUsdApprox: number;
   freeCredit?: string;
   bestFor: string;
   features: string[];
   affiliateUrl: string;
   ctaLabel: string;
+  /**
+   * Escalera de planes reales por RAM, para recomendar el tamaño de VPS
+   * exacto que necesita un stack concreto (ver src/lib/hosting-tier.ts).
+   * Ordenada de menor a mayor. Ausente en proveedores cuyo precio no depende
+   * de un tamaño de servidor fijo (ej. Railway, que cobra por uso).
+   */
+  tiers?: HostingTier[];
 }
 
 export const hostingProviders: HostingProvider[] = [
@@ -36,6 +50,13 @@ export const hostingProviders: HostingProvider[] = [
     ],
     affiliateUrl: affiliateLinks.digitalOceanUrl,
     ctaLabel: "Obtener $200 de crédito gratis",
+    tiers: [
+      { ramMb: 512, vcpu: 1, monthlyUsdApprox: 4 },
+      { ramMb: 1024, vcpu: 1, monthlyUsdApprox: 6 },
+      { ramMb: 2048, vcpu: 1, monthlyUsdApprox: 12 },
+      { ramMb: 4096, vcpu: 2, monthlyUsdApprox: 24 },
+      { ramMb: 8192, vcpu: 4, monthlyUsdApprox: 48 },
+    ],
   },
   {
     id: "vultr",
@@ -54,6 +75,12 @@ export const hostingProviders: HostingProvider[] = [
     ],
     affiliateUrl: affiliateLinks.vultrUrl,
     ctaLabel: "Desplegar en Vultr",
+    tiers: [
+      { ramMb: 1024, vcpu: 1, monthlyUsdApprox: 6 },
+      { ramMb: 2048, vcpu: 1, monthlyUsdApprox: 12 },
+      { ramMb: 4096, vcpu: 2, monthlyUsdApprox: 24 },
+      { ramMb: 8192, vcpu: 4, monthlyUsdApprox: 48 },
+    ],
   },
   {
     id: "railway",

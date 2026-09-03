@@ -26,6 +26,7 @@ import { getSaasPricing } from "@/data/saas-pricing";
 import { formatMinRam } from "@/lib/tool-difficulty";
 import { AddToStackButton } from "@/components/site/add-to-stack-button";
 import { HardwareFitPanel } from "@/components/site/hardware-fit-panel";
+import { HostingTierRecommendation } from "@/components/site/hosting-tier-recommendation";
 import { LogoImage } from "@/components/site/logo-image";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -55,11 +56,13 @@ export function StackBuilderContent({
   locale = "es",
   t,
   hardwareT,
+  hostingTierT,
 }: {
   tools: ToolCardData[];
   locale?: Locale;
   t: Dictionary["stackBuilder"];
   hardwareT: Dictionary["hardwareFit"];
+  hostingTierT: Dictionary["hostingTier"];
 }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -430,7 +433,10 @@ export function StackBuilderContent({
 
         <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
           {selectedTools.length > 0 && (
-            <HardwareFitPanel totalMinRamMb={totalMinRamMb} gpuRequiredToolNames={gpuRequiredToolNames} t={hardwareT} />
+            <>
+              <HardwareFitPanel totalMinRamMb={totalMinRamMb} gpuRequiredToolNames={gpuRequiredToolNames} t={hardwareT} />
+              <HostingTierRecommendation totalMinRamMb={totalMinRamMb} locale={locale} t={hostingTierT} />
+            </>
           )}
 
           <div className="rounded-xl border border-slate-200 p-6">

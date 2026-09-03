@@ -28,7 +28,7 @@ export default function EnglishSaasExitPage() {
         <p className="mt-4 max-w-2xl text-lg text-slate-600">{t.saasExitPage.subtitle}</p>
       </header>
 
-      <SaasExitContent catalog={catalog} locale="en" t={t.saasExit} hardwareT={t.hardwareFit} />
+      <SaasExitContent catalog={catalog} locale="en" t={t.saasExit} hardwareT={t.hardwareFit} hostingTierT={t.hostingTier} />
     </div>
   );
 }
