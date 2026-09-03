@@ -5,7 +5,7 @@ const en: Dictionary = {
     "Discover open source, self-hostable alternatives to the most popular SaaS software. Compare licenses, check the docker-compose and deploy in minutes.",
   header: {
     categorias: "Categories",
-    stacks: "Stacks",
+    stacks: "Ready-made Packs",
     calculadora: "Calculator",
     guiaDespliegue: "Docker Guide",
     hosting: "Hosting",
@@ -15,7 +15,7 @@ const en: Dictionary = {
   footer: {
     categorias: "Categories",
     recursos: "Resources",
-    stacks: "Stacks",
+    stacks: "Ready-made Packs",
     calculadora: "Savings calculator",
     guiaDespliegue: "Deployment guide",
     hostingDescuentos: "Hosting & Deals",
