@@ -189,89 +189,6 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
       <div className="grid gap-10 lg:grid-cols-3">
         <div className="space-y-10 lg:col-span-2">
           <section>
-            <h2 className="mb-4 text-xl font-semibold text-slate-900">{t.toolPage.fichaTecnica}</h2>
-            <dl className={cn("grid grid-cols-2 gap-4 rounded-xl border p-6 sm:grid-cols-3", palette.soft, palette.border)}>
-              <div>
-                <dt className="text-xs uppercase tracking-wide text-slate-600">{t.toolPage.fieldLicense}</dt>
-                <dd className="mt-1 font-medium text-slate-900">{tool.license}</dd>
-              </div>
-              <div>
-                <dt className="text-xs uppercase tracking-wide text-slate-600">{t.toolPage.fieldCategory}</dt>
-                <dd className="mt-1 font-medium text-slate-900">{category.label}</dd>
-              </div>
-              <div>
-                <dt className="text-xs uppercase tracking-wide text-slate-600">{t.toolPage.fieldReplaces}</dt>
-                <dd className="mt-1 font-medium text-slate-900">{tool.replaces.join(", ")}</dd>
-              </div>
-              <div className="col-span-2 sm:col-span-3">
-                <dt className="text-xs uppercase tracking-wide text-slate-600">{t.toolPage.fieldStack}</dt>
-                <dd className="mt-1 flex flex-wrap gap-1.5">
-                  {tool.techStack.map((tech) => (
-                    <Badge key={tech} variant="outline">
-                      {tech}
-                    </Badge>
-                  ))}
-                </dd>
-              </div>
-            </dl>
-          </section>
-
-          {(tool.database || tool.language || (tool.platforms && tool.platforms.length > 0)) && (
-            <section>
-              <h2 className="mb-4 text-xl font-semibold text-slate-900">{t.toolPage.underTheHoodTitle}</h2>
-              <div className="grid gap-5 rounded-xl border border-slate-200 p-6 sm:grid-cols-3">
-                {tool.database && (
-                  <div className="flex items-start gap-2.5">
-                    <Database size={18} className="mt-0.5 shrink-0 text-slate-500" />
-                    <div>
-                      <p className="text-xs uppercase tracking-wide text-slate-600">{t.toolPage.underTheHoodDatabase}</p>
-                      <p className="mt-0.5 text-sm font-medium text-slate-900">{tool.database}</p>
-                    </div>
-                  </div>
-                )}
-                {tool.language && (
-                  <div className="flex items-start gap-2.5">
-                    <Code2 size={18} className="mt-0.5 shrink-0 text-slate-500" />
-                    <div>
-                      <p className="text-xs uppercase tracking-wide text-slate-600">{t.toolPage.underTheHoodLanguage}</p>
-                      <p className="mt-0.5 text-sm font-medium text-slate-900">{tool.language}</p>
-                    </div>
-                  </div>
-                )}
-                {tool.platforms && tool.platforms.length > 0 && (
-                  <div className="flex items-start gap-2.5">
-                    <MonitorSmartphone size={18} className="mt-0.5 shrink-0 text-slate-500" />
-                    <div>
-                      <p className="text-xs uppercase tracking-wide text-slate-600">{t.toolPage.underTheHoodPlatforms}</p>
-                      <p className="mt-0.5 text-sm font-medium text-slate-900">{tool.platforms.join(" · ")}</p>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </section>
-          )}
-
-          {ogImageUrl && (
-            <section>
-              <h2 className="mb-4 text-xl font-semibold text-slate-900">{t.toolPage.preview}</h2>
-              <ToolPreviewImage src={ogImageUrl} alt={`${tool.name} interface preview`} />
-              <p className="mt-2 text-xs text-slate-600">{t.toolPage.previewCaption(tool.name)}</p>
-            </section>
-          )}
-
-          <section>
-            <h2 className="mb-4 text-xl font-semibold text-slate-900">{t.toolPage.features}</h2>
-            <ul className="grid gap-2 sm:grid-cols-2">
-              {tool.features.map((feature) => (
-                <li key={feature} className="flex items-start gap-2 text-sm text-slate-700">
-                  <Check size={16} className="mt-0.5 shrink-0 text-emerald-600" />
-                  {feature}
-                </li>
-              ))}
-            </ul>
-          </section>
-
-          <section>
             <h2 className="mb-4 text-xl font-semibold text-slate-900">{t.toolPage.vs(tool.name, tool.replaces[0])}</h2>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-5">
@@ -353,6 +270,89 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
                   </a>
                 </>
               )}
+            </section>
+          )}
+
+          <section>
+            <h2 className="mb-4 text-xl font-semibold text-slate-900">{t.toolPage.fichaTecnica}</h2>
+            <dl className={cn("grid grid-cols-2 gap-4 rounded-xl border p-6 sm:grid-cols-3", palette.soft, palette.border)}>
+              <div>
+                <dt className="text-xs uppercase tracking-wide text-slate-600">{t.toolPage.fieldLicense}</dt>
+                <dd className="mt-1 font-medium text-slate-900">{tool.license}</dd>
+              </div>
+              <div>
+                <dt className="text-xs uppercase tracking-wide text-slate-600">{t.toolPage.fieldCategory}</dt>
+                <dd className="mt-1 font-medium text-slate-900">{category.label}</dd>
+              </div>
+              <div>
+                <dt className="text-xs uppercase tracking-wide text-slate-600">{t.toolPage.fieldReplaces}</dt>
+                <dd className="mt-1 font-medium text-slate-900">{tool.replaces.join(", ")}</dd>
+              </div>
+              <div className="col-span-2 sm:col-span-3">
+                <dt className="text-xs uppercase tracking-wide text-slate-600">{t.toolPage.fieldStack}</dt>
+                <dd className="mt-1 flex flex-wrap gap-1.5">
+                  {tool.techStack.map((tech) => (
+                    <Badge key={tech} variant="outline">
+                      {tech}
+                    </Badge>
+                  ))}
+                </dd>
+              </div>
+            </dl>
+          </section>
+
+          {(tool.database || tool.language || (tool.platforms && tool.platforms.length > 0)) && (
+            <section>
+              <h2 className="mb-4 text-xl font-semibold text-slate-900">{t.toolPage.underTheHoodTitle}</h2>
+              <div className="grid gap-5 rounded-xl border border-slate-200 p-6 sm:grid-cols-3">
+                {tool.database && (
+                  <div className="flex items-start gap-2.5">
+                    <Database size={18} className="mt-0.5 shrink-0 text-slate-500" />
+                    <div>
+                      <p className="text-xs uppercase tracking-wide text-slate-600">{t.toolPage.underTheHoodDatabase}</p>
+                      <p className="mt-0.5 text-sm font-medium text-slate-900">{tool.database}</p>
+                    </div>
+                  </div>
+                )}
+                {tool.language && (
+                  <div className="flex items-start gap-2.5">
+                    <Code2 size={18} className="mt-0.5 shrink-0 text-slate-500" />
+                    <div>
+                      <p className="text-xs uppercase tracking-wide text-slate-600">{t.toolPage.underTheHoodLanguage}</p>
+                      <p className="mt-0.5 text-sm font-medium text-slate-900">{tool.language}</p>
+                    </div>
+                  </div>
+                )}
+                {tool.platforms && tool.platforms.length > 0 && (
+                  <div className="flex items-start gap-2.5">
+                    <MonitorSmartphone size={18} className="mt-0.5 shrink-0 text-slate-500" />
+                    <div>
+                      <p className="text-xs uppercase tracking-wide text-slate-600">{t.toolPage.underTheHoodPlatforms}</p>
+                      <p className="mt-0.5 text-sm font-medium text-slate-900">{tool.platforms.join(" · ")}</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </section>
+          )}
+
+          <section>
+            <h2 className="mb-4 text-xl font-semibold text-slate-900">{t.toolPage.features}</h2>
+            <ul className="grid gap-2 sm:grid-cols-2">
+              {tool.features.map((feature) => (
+                <li key={feature} className="flex items-start gap-2 text-sm text-slate-700">
+                  <Check size={16} className="mt-0.5 shrink-0 text-emerald-600" />
+                  {feature}
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          {ogImageUrl && (
+            <section>
+              <h2 className="mb-4 text-xl font-semibold text-slate-900">{t.toolPage.preview}</h2>
+              <ToolPreviewImage src={ogImageUrl} alt={`${tool.name} interface preview`} className="max-h-56" />
+              <p className="mt-2 text-xs text-slate-600">{t.toolPage.previewCaption(tool.name)}</p>
             </section>
           )}
 
