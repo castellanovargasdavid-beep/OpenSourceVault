@@ -14,6 +14,7 @@ import { LogoImage } from "@/components/site/logo-image";
 import { getSaasDomain } from "@/lib/saas-domains";
 import { categoryColors } from "@/lib/category-colors";
 import { difficultyMeta, formatMinRam } from "@/lib/tool-difficulty";
+import { AddToStackButton } from "@/components/site/add-to-stack-button";
 import { cn, formatStars, getHostname } from "@/lib/utils";
 import { localeHref } from "@/lib/locale-href";
 import type { Locale } from "@/i18n/config";
@@ -31,6 +32,7 @@ export function ToolCard({
   t,
   comingSoonBadge,
   difficultyT,
+  stackBuilderT,
 }: {
   tool: ToolCardData;
   locale?: Locale;
@@ -40,6 +42,8 @@ export function ToolCard({
   comingSoonBadge: string;
   /** t.difficulty ya resuelto — labels del badge de dificultad/RAM. */
   difficultyT: Dictionary["difficulty"];
+  /** t.stackBuilder ya resuelto — labels del botón "+ Añadir a mi Stack". */
+  stackBuilderT: Dictionary["stackBuilder"];
 }) {
   const tool = getLocalizedToolCardData(rawTool, locale);
   const [modalOpen, setModalOpen] = React.useState(false);
@@ -161,16 +165,24 @@ export function ToolCard({
         </div>
 
         {published ? (
-          <Link
-            href={localeHref(`/tool/${tool.slug}`, locale)}
-            className={cn(
-              "mt-auto inline-flex items-center justify-center gap-1.5 rounded-lg bg-gradient-to-r px-4 py-2 text-sm font-medium text-white shadow-sm transition-opacity hover:opacity-90",
-              palette.gradient
-            )}
-          >
-            {t.cta}
-            <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
-          </Link>
+          <div className="mt-auto flex items-center gap-2">
+            <Link
+              href={localeHref(`/tool/${tool.slug}`, locale)}
+              className={cn(
+                "flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-gradient-to-r px-4 py-2 text-sm font-medium text-white shadow-sm transition-opacity hover:opacity-90",
+                palette.gradient
+              )}
+            >
+              {t.cta}
+              <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
+            </Link>
+            <AddToStackButton
+              toolSlug={tool.slug}
+              addLabel={stackBuilderT.addButton}
+              addedLabel={stackBuilderT.addedButton}
+              compact
+            />
+          </div>
         ) : (
           <button
             type="button"

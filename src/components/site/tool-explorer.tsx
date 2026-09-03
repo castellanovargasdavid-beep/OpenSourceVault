@@ -20,6 +20,7 @@ export function ToolExplorer({
   toolCardT,
   comingSoonBadge,
   difficultyT,
+  stackBuilderT,
 }: {
   tools: ToolCardData[];
   locale?: Locale;
@@ -28,6 +29,7 @@ export function ToolExplorer({
   toolCardT: Dictionary["toolCard"];
   comingSoonBadge: string;
   difficultyT: Dictionary["difficulty"];
+  stackBuilderT: Dictionary["stackBuilder"];
 }) {
   const quickTags: { id: ToolTag; label: string }[] = [
     { id: "docker-ready", label: t.tagDockerReady },
@@ -165,7 +167,15 @@ export function ToolExplorer({
       {filtered.length > 0 ? (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((tool) => (
-            <ToolCard key={tool.id} tool={tool} locale={locale} t={toolCardT} comingSoonBadge={comingSoonBadge} difficultyT={difficultyT} />
+            <ToolCard
+              key={tool.id}
+              tool={tool}
+              locale={locale}
+              t={toolCardT}
+              comingSoonBadge={comingSoonBadge}
+              difficultyT={difficultyT}
+              stackBuilderT={stackBuilderT}
+            />
           ))}
         </div>
       ) : (

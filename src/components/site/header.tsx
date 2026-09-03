@@ -13,6 +13,7 @@ export function Header({ locale = "es" }: { locale?: Locale }) {
   const navLinks = [
     { href: localeHref("/#categorias", locale), label: t.header.categorias },
     { href: localeHref("/stacks", locale), label: t.header.stacks },
+    { href: localeHref("/stacks/builder", locale), label: t.stackBuilder.navLabel },
     { href: getSavingsCalculatorHref(locale), label: t.header.calculadora },
     { href: getDeployGuideHref(locale), label: t.header.guiaDespliegue },
     { href: localeHref("/hosting-deals", locale), label: t.header.hosting },

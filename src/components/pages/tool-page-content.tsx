@@ -7,6 +7,7 @@ import { getAlternativeHref } from "@/lib/alternatives";
 import { getMigrationGuideHref, getDeployGuideHref, getCompareHref } from "@/lib/routes";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
+import { AddToStackButton } from "@/components/site/add-to-stack-button";
 import { AffiliateHostingWidget } from "@/components/site/affiliate-hosting-widget";
 import { DockerComposeBlock } from "@/components/site/docker-compose-block";
 import { OneClickDeploy } from "@/components/site/one-click-deploy";
@@ -137,6 +138,10 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
               {t.toolPage.replacesBadge(saas)}
             </Link>
           ))}
+        </div>
+
+        <div className="mt-4">
+          <AddToStackButton toolSlug={tool.slug} addLabel={t.stackBuilder.addButton} addedLabel={t.stackBuilder.addedButton} />
         </div>
 
         <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-slate-600">

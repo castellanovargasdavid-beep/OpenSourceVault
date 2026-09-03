@@ -42,6 +42,7 @@ export function FeaturedTools({ locale = "es" }: { locale?: Locale }) {
               t={t.toolCard}
               comingSoonBadge={t.comingSoon.badge}
               difficultyT={t.difficulty}
+              stackBuilderT={t.stackBuilder}
             />
           ))}
         </div>

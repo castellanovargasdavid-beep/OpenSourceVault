@@ -1,0 +1,27 @@
+import type { Metadata } from "next";
+import { Suspense } from "react";
+import { siteConfig } from "@/lib/site-config";
+import { getDictionary } from "@/i18n/get-dictionary";
+import { tools } from "@/data/tools";
+import { toToolCardData } from "@/lib/tool-card-data";
+import { StackBuilderContent } from "@/components/pages/stack-builder-content";
+
+const t = getDictionary("es");
+
+export const metadata: Metadata = {
+  title: t.stackBuilder.metaTitle,
+  description: t.stackBuilder.metaDescription,
+  alternates: {
+    canonical: `${siteConfig.url}/stacks/builder`,
+    languages: { es: `${siteConfig.url}/stacks/builder`, en: `${siteConfig.url}/en/stacks/builder` },
+  },
+};
+
+export default function StackBuilderPage() {
+  const toolCards = tools.map(toToolCardData);
+  return (
+    <Suspense>
+      <StackBuilderContent tools={toolCards} locale="es" t={t.stackBuilder} />
+    </Suspense>
+  );
+}

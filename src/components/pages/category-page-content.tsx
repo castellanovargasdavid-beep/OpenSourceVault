@@ -51,6 +51,7 @@ export function CategoryPageContent({
               t={t.toolCard}
               comingSoonBadge={t.comingSoon.badge}
               difficultyT={t.difficulty}
+              stackBuilderT={t.stackBuilder}
             />
           ))}
         </div>

@@ -43,6 +43,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticPaths: [string, MetadataRoute.Sitemap[number]["changeFrequency"], number][] = [
     ["/", "weekly", 1],
     ["/stacks", "weekly", 0.8],
+    ["/stacks/builder", "weekly", 0.7],
     ["/hosting-deals", "monthly", 0.7],
     ["/promote", "monthly", 0.5],
     ["/privacy", "yearly", 0.2],
