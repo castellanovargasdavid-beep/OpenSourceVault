@@ -556,6 +556,31 @@ const es = {
     armWarningBody:
       "La mayoría de imágenes Docker modernas incluyen una versión para arm64, pero no todas. Antes de desplegar en una Raspberry Pi, comprueba en Docker Hub que cada imagen tenga soporte arm64/aarch64.",
   },
+  composeDoctorPage: {
+    metaTitle: "Doctor Compose: valida y repara tu docker-compose.yml gratis",
+    metaDescription:
+      "Pega tu docker-compose.yml o el error exacto de tu terminal (yaml: line X: did not find expected key, mapping values are not allowed...) y te decimos qué falla, en lenguaje humano, con reparación automática en 1 clic.",
+    badge: "Doctor Compose",
+    title: "¿Tu docker-compose.yml da error?",
+    subtitle:
+      "Pega el archivo que has modificado a mano, o directamente el mensaje de error que te soltó la terminal (\"yaml: line 14: did not find expected key\", \"mapping values are not allowed here\"...). Te decimos qué falla, sin tecnicismos, y te lo reparamos con un clic.",
+  },
+  composeDoctor: {
+    navLabel: "Doctor Compose",
+    placeholder: "Pega aquí tu docker-compose.yml, o el mensaje de error de tu terminal...",
+    detectedYaml: "📄 Analizando tu docker-compose.yml",
+    detectedError: "🩺 Analizando un mensaje de error de terminal",
+    emptyState: "Pega tu archivo o el error de tu terminal arriba para empezar el diagnóstico.",
+    findingsTitle: "Diagnóstico",
+    fixButton: "Reparar automáticamente",
+    fixedTitle: "Archivo reparado",
+    changesTitle: "Qué se ha cambiado",
+    noChanges: "No hemos tenido que tocar nada — tu archivo ya estaba limpio.",
+    copyButton: "Copiar",
+    copiedLabel: "Copiado",
+    downloadButton: "Descargar docker-compose.yml",
+    switchToYamlHint: "¿Tienes también el archivo? Pégalo aquí para un diagnóstico más completo.",
+  },
 };
 
 export type Dictionary = typeof es;

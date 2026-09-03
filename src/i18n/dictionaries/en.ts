@@ -558,6 +558,31 @@ const en: Dictionary = {
     armWarningBody:
       "Most modern Docker images ship an arm64 build, but not all of them. Before deploying on a Raspberry Pi, check on Docker Hub that each image supports arm64/aarch64.",
   },
+  composeDoctorPage: {
+    metaTitle: "Compose Doctor: validate and fix your docker-compose.yml for free",
+    metaDescription:
+      "Paste your docker-compose.yml or the exact error from your terminal (yaml: line X: did not find expected key, mapping values are not allowed...) and get a plain-language diagnosis, with a 1-click auto-fix.",
+    badge: "Compose Doctor",
+    title: "Is your docker-compose.yml throwing an error?",
+    subtitle:
+      "Paste the file you edited by hand, or the exact error your terminal gave you (\"yaml: line 14: did not find expected key\", \"mapping values are not allowed here\"...). We'll tell you what's wrong in plain language, and fix it with one click.",
+  },
+  composeDoctor: {
+    navLabel: "Compose Doctor",
+    placeholder: "Paste your docker-compose.yml here, or your terminal's error message...",
+    detectedYaml: "📄 Analyzing your docker-compose.yml",
+    detectedError: "🩺 Analyzing a terminal error message",
+    emptyState: "Paste your file or terminal error above to start the diagnosis.",
+    findingsTitle: "Diagnosis",
+    fixButton: "Auto-fix it",
+    fixedTitle: "Fixed file",
+    changesTitle: "What changed",
+    noChanges: "Nothing needed fixing — your file was already clean.",
+    copyButton: "Copy",
+    copiedLabel: "Copied",
+    downloadButton: "Download docker-compose.yml",
+    switchToYamlHint: "Have the file too? Paste it here for a fuller diagnosis.",
+  },
 };
 
 export default en;

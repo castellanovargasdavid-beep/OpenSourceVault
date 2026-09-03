@@ -14,6 +14,7 @@ export function Header({ locale = "es" }: { locale?: Locale }) {
     { href: localeHref("/#categorias", locale), label: t.header.categorias },
     { href: localeHref("/stacks", locale), label: t.header.stacks },
     { href: localeHref("/stacks/builder", locale), label: t.stackBuilder.navLabel },
+    { href: localeHref("/doctor", locale), label: t.composeDoctor.navLabel },
     { href: getSavingsCalculatorHref(locale), label: t.header.calculadora },
     { href: getDeployGuideHref(locale), label: t.header.guiaDespliegue },
     { href: localeHref("/hosting-deals", locale), label: t.header.hosting },
