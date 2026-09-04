@@ -264,15 +264,53 @@ function placeholderFinding(t: (typeof STRINGS)["es"], line: number, key: string
 }
 
 interface PortOccurrence {
-  hostPort: string;
+  /** null = solo puerto de contenedor (sin puerto de host fijo) — Docker le asigna uno efímero, así que no puede colisionar. */
+  hostPort: string | null;
   containerPart: string;
   lineNo: number;
   serviceName: string;
 }
 
-const PORT_LINE_PATTERN = /^(\s*-\s*)"?(\d{2,5}):(\d{1,5}(?:\/(?:tcp|udp))?)"?(\s*)$/;
+/** Línea de lista `- valor` (con o sin comillas), capturando el valor tal cual para parsearlo aparte. */
+const PORT_LIST_ITEM_PATTERN = /^(\s*-\s*)"?([^"\s]+)"?(\s*)$/;
 
-/** Recorre `services:` llevando la cuenta de en qué servicio está cada línea `- "HOST:CONTAINER"`, para poder nombrar los servicios en conflicto. */
+interface ParsedPortSpec {
+  /** IP de bind explícita en el formato "IP:HOST:CONTAINER" (ej. "127.0.0.1") — null si no se especifica. */
+  ip: string | null;
+  hostPort: string | null;
+  containerPart: string;
+}
+
+/**
+ * Parsea el valor de una entrada de `ports:` en formato corto de Compose:
+ * "CONTAINER" (puerto efímero, sin host fijo), "HOST:CONTAINER" o
+ * "IP:HOST:CONTAINER" — con sufijo opcional "/tcp" o "/udp" en la parte de
+ * contenedor. Devuelve null si el valor no encaja con ninguna de esas
+ * formas (ej. un montaje de volumen "nombre:/ruta", que usa la misma forma
+ * "X:Y" pero no son puertos numéricos).
+ */
+function parsePortSpec(raw: string): ParsedPortSpec | null {
+  const parts = raw.split(":");
+  const containerPattern = /^\d{1,5}(\/(?:tcp|udp))?$/;
+
+  if (parts.length === 1) {
+    if (!containerPattern.test(parts[0])) return null;
+    return { ip: null, hostPort: null, containerPart: parts[0] };
+  }
+  if (parts.length === 2) {
+    const [host, container] = parts;
+    if (!/^\d{1,5}$/.test(host) || !containerPattern.test(container)) return null;
+    return { ip: null, hostPort: host, containerPart: container };
+  }
+  if (parts.length === 3) {
+    const [ip, host, container] = parts;
+    if (!/^\d{1,5}$/.test(host) || !containerPattern.test(container)) return null;
+    return { ip, hostPort: host, containerPart: container };
+  }
+  return null;
+}
+
+/** Recorre `services:` llevando la cuenta de en qué servicio está cada línea `- "puerto..."`, para poder nombrar los servicios en conflicto. */
 function scanPortOccurrences(lines: string[]): PortOccurrence[] {
   const occurrences: PortOccurrence[] = [];
   let inServices = false;
@@ -297,8 +335,11 @@ function scanPortOccurrences(lines: string[]): PortOccurrence[] {
       return;
     }
 
-    const m = line.match(PORT_LINE_PATTERN);
-    if (m) occurrences.push({ hostPort: m[2], containerPart: m[3], lineNo: idx + 1, serviceName: currentService ?? "?" });
+    const itemMatch = line.match(PORT_LIST_ITEM_PATTERN);
+    if (!itemMatch) return;
+    const spec = parsePortSpec(itemMatch[2]);
+    if (!spec) return;
+    occurrences.push({ hostPort: spec.hostPort, containerPart: spec.containerPart, lineNo: idx + 1, serviceName: currentService ?? "?" });
   });
 
   return occurrences;
@@ -307,10 +348,11 @@ function scanPortOccurrences(lines: string[]): PortOccurrence[] {
 function scanPorts(lines: string[], locale: Locale): DoctorFinding[] {
   const t = STRINGS[locale];
   const occurrences = scanPortOccurrences(lines);
-  if (occurrences.length === 0) return [{ severity: "info", message: t.noPorts }];
+  const withHostPort = occurrences.filter((o): o is PortOccurrence & { hostPort: string } => o.hostPort !== null);
+  if (withHostPort.length === 0) return [{ severity: "info", message: t.noPorts }];
 
-  const byHostPort = new Map<string, PortOccurrence[]>();
-  for (const occ of occurrences) {
+  const byHostPort = new Map<string, typeof withHostPort>();
+  for (const occ of withHostPort) {
     byHostPort.set(occ.hostPort, [...(byHostPort.get(occ.hostPort) ?? []), occ]);
   }
 
@@ -475,10 +517,11 @@ function generateSecret(length = 32): string {
 }
 
 /**
- * Reasigna al siguiente puerto libre cualquier `- "HOST:CONTAINER"` cuyo
- * HOST ya esté en uso por un servicio anterior del mismo archivo — mismo
- * enfoque que ya usa src/lib/stack-merge.ts para fusionar varios
- * docker-compose.yml sin que colisionen sus puertos.
+ * Reasigna al siguiente puerto libre cualquier entrada de `ports:` cuyo
+ * puerto de host ya esté en uso por un servicio anterior del mismo archivo
+ * — soporta "HOST:CONTAINER" e "IP:HOST:CONTAINER" por igual, preservando
+ * la IP si la había. Mismo enfoque que ya usa src/lib/stack-merge.ts para
+ * fusionar varios docker-compose.yml sin que colisionen sus puertos.
  */
 function reassignCollidingPorts(text: string): { text: string; count: number } {
   const lines = text.split("\n");
@@ -497,18 +540,22 @@ function reassignCollidingPorts(text: string): { text: string; count: number } {
     }
     if (!inServices) return line;
 
-    const m = line.match(PORT_LINE_PATTERN);
-    if (!m) return line;
-    const [, prefix, hostPort, rest, trailing] = m;
-    let finalPort = hostPort;
+    const itemMatch = line.match(PORT_LIST_ITEM_PATTERN);
+    if (!itemMatch) return line;
+    const [, prefix, rawValue, trailing] = itemMatch;
+    const spec = parsePortSpec(rawValue);
+    if (!spec || spec.hostPort === null) return line;
+
+    let finalPort = spec.hostPort;
     if (usedHostPorts.has(finalPort)) {
-      let candidate = parseInt(hostPort, 10) + 1;
+      let candidate = parseInt(spec.hostPort, 10) + 1;
       while (usedHostPorts.has(String(candidate))) candidate++;
       finalPort = String(candidate);
       count++;
     }
     usedHostPorts.add(finalPort);
-    return `${prefix}"${finalPort}:${rest}"${trailing}`;
+    const newValue = spec.ip ? `${spec.ip}:${finalPort}:${spec.containerPart}` : `${finalPort}:${spec.containerPart}`;
+    return `${prefix}"${newValue}"${trailing}`;
   });
 
   return { text: newLines.join("\n"), count };
