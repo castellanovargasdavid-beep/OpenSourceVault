@@ -11,6 +11,8 @@ const en: Dictionary = {
     hosting: "Hosting",
     verOfertas: "See hosting deals",
     github: "Contribute",
+    abrirMenu: "Open menu",
+    cerrarMenu: "Close menu",
   },
   footer: {
     categorias: "Categories",

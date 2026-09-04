@@ -9,6 +9,8 @@ const es = {
     hosting: "Hosting",
     verOfertas: "Ver ofertas de hosting",
     github: "Contribuir",
+    abrirMenu: "Abrir menú",
+    cerrarMenu: "Cerrar menú",
   },
   footer: {
     categorias: "Categorías",

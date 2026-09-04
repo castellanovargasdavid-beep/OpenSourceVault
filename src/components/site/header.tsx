@@ -6,6 +6,7 @@ import { localeHref } from "@/lib/locale-href";
 import type { Locale } from "@/i18n/config";
 import { LanguageSwitcher } from "@/components/site/language-switcher";
 import { GithubIcon } from "@/components/icons/github-icon";
+import { MobileNav } from "@/components/site/mobile-nav";
 
 export function Header({ locale = "es" }: { locale?: Locale }) {
   const t = getDictionary(locale);
@@ -38,6 +39,15 @@ export function Header({ locale = "es" }: { locale?: Locale }) {
           ))}
         </nav>
         <div className="flex items-center gap-3">
+          <MobileNav
+            navLinks={navLinks}
+            githubHref={siteConfig.links.github}
+            githubLabel={t.header.github}
+            hostingHref={localeHref("/hosting-deals", locale)}
+            hostingLabel={t.header.verOfertas}
+            menuLabel={t.header.abrirMenu}
+            closeLabel={t.header.cerrarMenu}
+          />
           <LanguageSwitcher locale={locale} />
           <a
             href={siteConfig.links.github}
