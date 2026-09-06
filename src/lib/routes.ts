@@ -25,3 +25,7 @@ export function getSavingsCalculatorHref(locale: Locale): string {
 export function getHostingGuideHref(provider: string, locale: Locale): string {
   return locale === "en" ? `/en/guides/hosting/${provider}` : `/guias/hosting/${provider}`;
 }
+
+export function getHowWeAuditHref(locale: Locale): string {
+  return locale === "en" ? "/en/how-we-audit" : "/como-auditamos";
+}

@@ -5,7 +5,14 @@ import { categories } from "@/data/categories";
 import { categoriesEn } from "@/data/categories.en";
 import { getAllSaasSlugs } from "@/lib/alternatives";
 import { getAllComparisonSlugs } from "@/lib/comparisons";
-import { getCompareHref, getDeployGuideHref, getHostingGuideHref, getMigrationGuideHref, getSavingsCalculatorHref } from "@/lib/routes";
+import {
+  getCompareHref,
+  getDeployGuideHref,
+  getHostingGuideHref,
+  getHowWeAuditHref,
+  getMigrationGuideHref,
+  getSavingsCalculatorHref,
+} from "@/lib/routes";
 import { siteConfig } from "@/lib/site-config";
 import { slugify } from "@/lib/utils";
 
@@ -132,6 +139,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const savingsCalcEnUrl = `${siteConfig.url}${getSavingsCalculatorHref("en")}`;
   const savingsCalcAlternates = { languages: { es: savingsCalcEsUrl, en: savingsCalcEnUrl } };
 
+  const howWeAuditEsUrl = `${siteConfig.url}${getHowWeAuditHref("es")}`;
+  const howWeAuditEnUrl = `${siteConfig.url}${getHowWeAuditHref("en")}`;
+  const howWeAuditAlternates = { languages: { es: howWeAuditEsUrl, en: howWeAuditEnUrl } };
+
   return [
     ...allPaths.map(([path, freq, priority]) => entry(path, freq, priority)),
     ...allPaths.map(([path, freq, priority]) => entryEn(path, freq, priority)),
@@ -144,5 +155,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: deployGuideEnUrl, changeFrequency: "monthly", priority: 0.7, alternates: deployGuideAlternates },
     { url: savingsCalcEsUrl, changeFrequency: "monthly", priority: 0.8, alternates: savingsCalcAlternates },
     { url: savingsCalcEnUrl, changeFrequency: "monthly", priority: 0.8, alternates: savingsCalcAlternates },
+    { url: howWeAuditEsUrl, changeFrequency: "yearly", priority: 0.3, alternates: howWeAuditAlternates },
+    { url: howWeAuditEnUrl, changeFrequency: "yearly", priority: 0.3, alternates: howWeAuditAlternates },
   ];
 }

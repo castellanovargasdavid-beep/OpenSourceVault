@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { SearchBar } from "@/components/site/search-bar";
 import { RotatingExamples } from "@/components/site/rotating-examples";
 import { AnimatedCounter } from "@/components/site/animated-counter";
@@ -5,6 +6,7 @@ import { LogoImage } from "@/components/site/logo-image";
 import { categories } from "@/data/categories";
 import { getSaasDomain } from "@/lib/saas-domains";
 import { getDictionary } from "@/i18n/get-dictionary";
+import { getHowWeAuditHref } from "@/lib/routes";
 import type { Locale } from "@/i18n/config";
 import type { ToolCardData } from "@/lib/types";
 
@@ -32,9 +34,12 @@ export function Hero({ tools, locale = "es" }: { tools: ToolCardData[]; locale?:
       </div>
 
       <div className="mx-auto max-w-4xl px-4 py-20 text-center sm:px-6 lg:px-8">
-        <span className="inline-flex items-center rounded-full border border-emerald-200 bg-emerald-100 px-3 py-1 text-xs font-medium text-emerald-800">
+        <Link
+          href={getHowWeAuditHref(locale)}
+          className="inline-flex items-center rounded-full border border-emerald-200 bg-emerald-100 px-3 py-1 text-xs font-medium text-emerald-800 transition-colors hover:bg-emerald-200"
+        >
           {t.hero.badge(tools.length)}
-        </span>
+        </Link>
         <h1 className="mt-6 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
           {t.hero.titlePrefix}{" "}
           <RotatingExamples

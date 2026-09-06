@@ -26,6 +26,7 @@ const es = {
     privacidad: "Privacidad",
     terminos: "Términos de uso",
     divulgacionAfiliados: "Divulgación de afiliados",
+    comoAuditamos: "Cómo auditamos",
   },
   hero: {
     badge: (count: number) => `+${count} alternativas open source auditadas`,

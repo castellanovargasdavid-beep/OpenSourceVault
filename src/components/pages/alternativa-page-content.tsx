@@ -11,6 +11,7 @@ import { getSaasDomain } from "@/lib/saas-domains";
 import { siteConfig } from "@/lib/site-config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { localeHref } from "@/lib/locale-href";
+import { getHowWeAuditHref } from "@/lib/routes";
 import type { Locale } from "@/i18n/config";
 
 function formatPrice(price: number): string {
@@ -83,9 +84,12 @@ export function AlternativaPageContent({ group, locale }: { group: SaasAlternati
             fallbackGradient="from-slate-400 to-slate-500"
             className="rounded-xl grayscale"
           />
-          <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700">
+          <Link
+            href={getHowWeAuditHref(locale)}
+            className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700 transition-colors hover:bg-emerald-100"
+          >
             {group.tools.length} {t.alternativaPage.verified(group.tools.length)}
-          </span>
+          </Link>
         </div>
         <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
           {t.alternativaPage.h1(group.saasName, siteConfig.year)}

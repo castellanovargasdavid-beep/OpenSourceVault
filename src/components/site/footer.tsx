@@ -4,7 +4,7 @@ import { categories, getCategoryHref } from "@/data/categories";
 import { categoriesEn } from "@/data/categories.en";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { localeHref } from "@/lib/locale-href";
-import { getSavingsCalculatorHref, getDeployGuideHref } from "@/lib/routes";
+import { getSavingsCalculatorHref, getDeployGuideHref, getHowWeAuditHref } from "@/lib/routes";
 import type { Locale } from "@/i18n/config";
 import { GithubIcon } from "@/components/icons/github-icon";
 
@@ -90,6 +90,9 @@ export function Footer({ locale = "es" }: { locale?: Locale }) {
             </Link>
             <Link href={localeHref("/affiliate-disclosure", locale)} className="hover:text-emerald-700">
               {t.footer.divulgacionAfiliados}
+            </Link>
+            <Link href={getHowWeAuditHref(locale)} className="hover:text-emerald-700">
+              {t.footer.comoAuditamos}
             </Link>
           </div>
         </div>

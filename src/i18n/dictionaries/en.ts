@@ -28,6 +28,7 @@ const en: Dictionary = {
     privacidad: "Privacy",
     terminos: "Terms of use",
     divulgacionAfiliados: "Affiliate disclosure",
+    comoAuditamos: "How we audit",
   },
   hero: {
     badge: (count: number) => `+${count} vetted open source alternatives`,
