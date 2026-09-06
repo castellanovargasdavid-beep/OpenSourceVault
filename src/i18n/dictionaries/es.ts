@@ -363,8 +363,19 @@ const es = {
         : `${fossCount} de ${total} son 100% FOSS. Las demás son Open-Core: el núcleo es gratis y auto-hospedable, pero alguna función avanzada puede seguir de pago — lo indicamos en cada ficha.`,
   },
   categoryPage: {
-    metaTitle: (label: string) => `Alternativas Open Source de ${label}`,
+    metaTitle: (label: string, year: number) => `Las mejores alternativas Open Source de ${label} en ${year}`,
+    h1: (label: string, year: number) => `Las mejores alternativas Open Source de ${label} en ${year}`,
     emptyState: "Todavía no tenemos herramientas publicadas en esta categoría.",
+    faqFossQ: (label: string) => `¿Cuáles herramientas de ${label} son 100% gratis?`,
+    faqFossA: (fossCount: number, total: number) =>
+      fossCount === total
+        ? `Las ${total} herramientas de esta categoría son 100% FOSS: sin plan de pago ni funciones bloqueadas.`
+        : `${fossCount} de ${total} son 100% FOSS. Las demás son Open-Core: el núcleo es gratis, pero alguna función avanzada puede seguir de pago — lo indicamos en cada ficha.`,
+    faqGpuQ: "¿Necesito una GPU para usar estas herramientas?",
+    faqGpuA: (gpuCount: number, total: number) =>
+      gpuCount === 0
+        ? `No, ninguna de las ${total} herramientas de esta categoría necesita GPU — todas funcionan bien solo con CPU.`
+        : `${gpuCount} de ${total} recomiendan GPU para un rendimiento razonable (normalmente las que ejecutan modelos de IA localmente); el resto funciona bien solo con CPU.`,
   },
   stacksPage: {
     metaTitle: "Curated Stacks: packs de herramientas open source por caso de uso",

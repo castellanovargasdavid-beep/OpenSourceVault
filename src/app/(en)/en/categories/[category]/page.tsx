@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!category) return {};
 
   const t = getDictionary("en");
-  const title = t.categoryPage.metaTitle(category.label);
+  const title = t.categoryPage.metaTitle(category.label, siteConfig.year);
   const description = category.description;
   const url = `${siteConfig.url}/en/categories/${category.slug}`;
   const esSlug = categories.find((c) => c.id === category.id)!.slug;

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { categories, getCategoryBySlug } from "@/data/categories";
+import { categories, getCategoryBySlug, getCategoryHref } from "@/data/categories";
 import { getToolsByCategoryAll } from "@/data/tools";
 import { siteConfig } from "@/lib/site-config";
 import { getDictionary } from "@/i18n/get-dictionary";
@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!category) return {};
 
   const t = getDictionary("es");
-  const title = t.categoryPage.metaTitle(category.label);
+  const title = t.categoryPage.metaTitle(category.label, siteConfig.year);
   const description = category.description;
   const url = `${siteConfig.url}/categoria/${category.slug}`;
 
@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     description,
     alternates: {
       canonical: url,
-      languages: { es: url, en: `${siteConfig.url}/en/categoria/${category.slug}` },
+      languages: { es: url, en: `${siteConfig.url}${getCategoryHref(category.id, "en")}` },
     },
     openGraph: { title, description, url },
     twitter: { card: "summary_large_image", title, description },

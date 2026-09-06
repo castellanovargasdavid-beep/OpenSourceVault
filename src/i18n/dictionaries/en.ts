@@ -365,8 +365,19 @@ const en: Dictionary = {
         : `${fossCount} out of ${total} are 100% FOSS. The rest are Open-Core: the core is free and self-hostable, but some advanced feature may stay paid — we call it out on each tool's page.`,
   },
   categoryPage: {
-    metaTitle: (label: string) => `Open Source ${label} Alternatives`,
+    metaTitle: (label: string, year: number) => `The best Open Source ${label} alternatives in ${year}`,
+    h1: (label: string, year: number) => `The best Open Source ${label} alternatives in ${year}`,
     emptyState: "We don't have any tools published in this category yet.",
+    faqFossQ: (label: string) => `Which ${label} tools are 100% free?`,
+    faqFossA: (fossCount: number, total: number) =>
+      fossCount === total
+        ? `All ${total} tools in this category are 100% FOSS: no paid plan or locked features.`
+        : `${fossCount} out of ${total} are 100% FOSS. The rest are Open-Core: the core is free, but some advanced feature may stay paid — we call it out on each tool's page.`,
+    faqGpuQ: "Do I need a GPU to use these tools?",
+    faqGpuA: (gpuCount: number, total: number) =>
+      gpuCount === 0
+        ? `No, none of the ${total} tools in this category need a GPU — they all run fine on CPU alone.`
+        : `${gpuCount} out of ${total} recommend a GPU for reasonable performance (typically the ones running AI models locally); the rest run fine on CPU alone.`,
   },
   stacksPage: {
     metaTitle: "Curated Stacks: open source tool packs by use case",
