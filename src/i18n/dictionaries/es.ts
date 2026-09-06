@@ -326,6 +326,40 @@ const es = {
     h1: (saas: string, year: number) => `Las mejores alternativas Open Source a ${saas} en ${year}`,
     subtitle: (count: number) =>
       `Comparamos ${count} ${count === 1 ? "herramienta auto-hospedable" : "herramientas auto-hospedables"} que puedes desplegar en tu propio servidor en minutos, con licencia, stack técnico y docker-compose listo para copiar.`,
+    tableTitle: "Comparativa rápida",
+    sortNote: "Ordenado por destacadas primero y estrellas de GitHub como desempate — mismo criterio que usamos en toda la web.",
+    tableHeaders: {
+      tool: "Herramienta",
+      license: "Licencia",
+      ram: "RAM mínima",
+      docker: "Docker",
+      stars: "GitHub",
+    },
+    badgeLightestRam: "La más ligera",
+    badgeMostPopular: "Más popular en GitHub",
+    detailedCardsTitle: "Ficha detallada de cada alternativa",
+    costTitle: (saas: string) => `¿Cuánto cuesta ${saas} y cuánto te ahorras?`,
+    costWithPrice: (saas: string, price: string) =>
+      `${saas} cuesta ${price}. Auto-hospedando la alternativa solo pagas el servidor — normalmente unos pocos dólares al mes.`,
+    costWithoutPrice: (saas: string) =>
+      `${saas} cobra una cuota mensual recurrente. Auto-hospedando la alternativa solo pagas el servidor — normalmente unos pocos dólares al mes.`,
+    costCta: "Calcula tu ahorro exacto en la Auditoría SaaS",
+    buildStackTitle: "¿Ya sabes cuál quieres?",
+    buildStackBody: (tool: string) => `Añade ${tool} al Stack Builder y genera un docker-compose.yml listo para desplegar, solo o junto con el resto de tu stack.`,
+    buildStackCta: "Construir mi stack",
+    faqTitle: "Preguntas frecuentes",
+    faqDockerQ: (saas: string) => `¿Necesito Docker para auto-hospedar una alternativa a ${saas}?`,
+    faqDockerA: (dockerCount: number, total: number) =>
+      dockerCount === total
+        ? `Sí para las ${total}: todas tienen un docker-compose.yml listo para copiar. No hace falta instalar nada más que Docker en tu servidor.`
+        : `${dockerCount} de ${total} tienen un docker-compose.yml listo para copiar; el resto usa su propio instalador (verás cuál es cuál en la ficha de cada una).`,
+    faqRamQ: "¿Cuánta RAM necesito como mínimo?",
+    faqRamA: (ram: string, name: string) => `La opción más ligera de esta lista es ${name}, que arranca con ${ram} de RAM — suficiente para un VPS económico.`,
+    faqFreeQ: (saas: string) => `¿Son todas 100% gratis, o hay funciones de pago como en ${saas}?`,
+    faqFreeA: (fossCount: number, total: number) =>
+      fossCount === total
+        ? `Sí, las ${total} son 100% FOSS: sin plan de pago ni funciones bloqueadas al auto-hospedarlas.`
+        : `${fossCount} de ${total} son 100% FOSS. Las demás son Open-Core: el núcleo es gratis y auto-hospedable, pero alguna función avanzada puede seguir de pago — lo indicamos en cada ficha.`,
   },
   categoryPage: {
     metaTitle: (label: string) => `Alternativas Open Source de ${label}`,

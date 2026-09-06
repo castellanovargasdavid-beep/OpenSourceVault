@@ -328,6 +328,40 @@ const en: Dictionary = {
     h1: (saas: string, year: number) => `The best Open Source alternatives to ${saas} in ${year}`,
     subtitle: (count: number) =>
       `We compare ${count} self-hostable ${count === 1 ? "tool" : "tools"} you can deploy on your own server in minutes, with license, tech stack and a ready-to-copy docker-compose.`,
+    tableTitle: "Quick comparison",
+    sortNote: "Sorted by featured first, then GitHub stars as a tiebreaker — the same rule we use across the whole site.",
+    tableHeaders: {
+      tool: "Tool",
+      license: "License",
+      ram: "Minimum RAM",
+      docker: "Docker",
+      stars: "GitHub",
+    },
+    badgeLightestRam: "Lightest option",
+    badgeMostPopular: "Most popular on GitHub",
+    detailedCardsTitle: "Detailed profile of each alternative",
+    costTitle: (saas: string) => `How much does ${saas} cost, and how much can you save?`,
+    costWithPrice: (saas: string, price: string) =>
+      `${saas} costs ${price}. Self-hosting the alternative, you only pay for the server — usually a few dollars a month.`,
+    costWithoutPrice: (saas: string) =>
+      `${saas} charges a recurring monthly fee. Self-hosting the alternative, you only pay for the server — usually a few dollars a month.`,
+    costCta: "Calculate your exact savings in the SaaS Audit",
+    buildStackTitle: "Already know which one you want?",
+    buildStackBody: (tool: string) => `Add ${tool} to the Stack Builder and generate a ready-to-deploy docker-compose.yml, alone or alongside the rest of your stack.`,
+    buildStackCta: "Build my stack",
+    faqTitle: "Frequently asked questions",
+    faqDockerQ: (saas: string) => `Do I need Docker to self-host a ${saas} alternative?`,
+    faqDockerA: (dockerCount: number, total: number) =>
+      dockerCount === total
+        ? `Yes, for all ${total}: each one has a ready-to-copy docker-compose.yml. You just need Docker installed on your server.`
+        : `${dockerCount} out of ${total} have a ready-to-copy docker-compose.yml; the rest use their own installer (each tool's page says which).`,
+    faqRamQ: "How much RAM do I need at minimum?",
+    faqRamA: (ram: string, name: string) => `The lightest option on this list is ${name}, which runs on as little as ${ram} of RAM — enough for a cheap VPS.`,
+    faqFreeQ: (saas: string) => `Are they all 100% free, or are there paid features like on ${saas}?`,
+    faqFreeA: (fossCount: number, total: number) =>
+      fossCount === total
+        ? `Yes, all ${total} are 100% FOSS: no paid plan or locked features when self-hosted.`
+        : `${fossCount} out of ${total} are 100% FOSS. The rest are Open-Core: the core is free and self-hostable, but some advanced feature may stay paid — we call it out on each tool's page.`,
   },
   categoryPage: {
     metaTitle: (label: string) => `Open Source ${label} Alternatives`,
