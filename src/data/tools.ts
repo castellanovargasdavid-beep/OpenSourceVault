@@ -5652,7 +5652,6 @@ volumes: {}
     pros: ["El más maduro y probado en entornos empresariales"],
     cons: ["Consumo de memoria alto comparado con alternativas más ligeras"],
     tags: ["docker-ready", "permissive-license"],
-    status: "coming_soon",
   },
   {
     id: "authentik",
@@ -5697,7 +5696,6 @@ volumes:
     pros: ["Interfaz mucho más moderna que la competencia open source"],
     cons: ["Requiere Postgres y Redis además del propio servidor"],
     tags: ["docker-ready", "permissive-license"],
-    status: "coming_soon",
   },
   {
     id: "ory",
@@ -5736,7 +5734,8 @@ volumes:
     pros: ["Máxima flexibilidad para construir tu propio frontend de login"],
     cons: ["Curva de aprendizaje más alta al no traer UI lista"],
     tags: ["docker-ready", "permissive-license"],
-    status: "coming_soon",
+    status: "scheduled",
+    publishDate: "2026-09-23",
   },
   {
     id: "zitadel",
@@ -5771,7 +5770,8 @@ volumes:
     pros: ["Pensado desde cero para SaaS multi-cliente"],
     cons: ["Documentación más escueta que Keycloak en casos avanzados", "Licencia AGPL-3.0: revisa implicaciones si ofreces el servicio a terceros"],
     tags: ["docker-ready"],
-    status: "coming_soon",
+    status: "scheduled",
+    publishDate: "2026-09-23",
   },
   {
     id: "supertokens",
@@ -5806,7 +5806,8 @@ volumes:
     pros: ["Integración muy rápida gracias a los SDKs"],
     cons: ["Menos flexible que Ory/Keycloak para flujos muy custom"],
     tags: ["docker-ready", "permissive-license"],
-    status: "coming_soon",
+    status: "scheduled",
+    publishDate: "2026-09-23",
   },
   {
     id: "logto",
@@ -5842,7 +5843,8 @@ volumes:
     pros: ["La experiencia de uso más cercana a un producto SaaS pulido"],
     cons: ["Comunidad más pequeña que Keycloak o Authentik"],
     tags: ["docker-ready"],
-    status: "coming_soon",
+    status: "scheduled",
+    publishDate: "2026-09-23",
   },
 
   // ---------- Despliegue, PaaS & Hosting (coming_soon) ----------
@@ -5870,7 +5872,6 @@ curl -fsSL https://cdn.coollabs.io/coolify/install.sh | bash
     pros: ["La alternativa open source más pulida a Vercel/Heroku"],
     cons: ["Se instala sobre el servidor completo, no encaja en un docker-compose de una sola app"],
     tags: [],
-    status: "coming_soon",
   },
   {
     id: "caprover",
@@ -5904,7 +5905,8 @@ volumes:
     pros: ["Muy ligero, funciona bien en un VPS de 1-2GB de RAM"],
     cons: ["Menos funcionalidades avanzadas que Coolify"],
     tags: ["docker-ready", "permissive-license"],
-    status: "coming_soon",
+    status: "scheduled",
+    publishDate: "2026-09-23",
   },
   {
     id: "dokku",
@@ -5931,7 +5933,8 @@ sudo DOKKU_TAG=v0.35.15 bash bootstrap.sh
     pros: ["El más simple y minimalista de todo el grupo PaaS"],
     cons: ["Sin panel web oficial (existen plugins de terceros)"],
     tags: ["permissive-license"],
-    status: "coming_soon",
+    status: "scheduled",
+    publishDate: "2026-09-30",
   },
   {
     id: "casaos",
@@ -5956,7 +5959,8 @@ curl -fsSL https://get.casaos.io | sudo bash
     pros: ["La forma más sencilla de convertir un Pi en un NAS personal"],
     cons: ["Menos pensado para producción que para uso doméstico"],
     tags: [],
-    status: "coming_soon",
+    status: "scheduled",
+    publishDate: "2026-09-30",
   },
 
   // ---------- Monitoreo, Logs & Errores (coming_soon) ----------
@@ -5985,7 +5989,6 @@ cd self-hosted && ./install.sh
     pros: ["Es el producto original, sin recortes de funciones"],
     cons: ["Stack pesado: requiere bastante RAM y varios servicios"],
     tags: ["docker-ready"],
-    status: "coming_soon",
   },
   {
     id: "glitchtip",
@@ -6031,7 +6034,8 @@ cd self-hosted && ./install.sh
     pros: ["El equilibrio ideal entre ligero y compatible con Sentry"],
     cons: ["Menos funciones avanzadas que Sentry (sin performance tracing completo)"],
     tags: ["docker-ready", "permissive-license"],
-    status: "coming_soon",
+    status: "scheduled",
+    publishDate: "2026-09-30",
   },
   {
     id: "signoz",
@@ -6057,7 +6061,8 @@ cd signoz/deploy && ./install.sh
     pros: ["Estándar OpenTelemetry evita atarte a un SDK propietario"],
     cons: ["ClickHouse añade complejidad operativa"],
     tags: ["permissive-license"],
-    status: "coming_soon",
+    status: "scheduled",
+    publishDate: "2026-09-30",
   },
   {
     id: "beszel",
@@ -6088,7 +6093,8 @@ volumes:
     pros: ["El setup más rápido de todo el grupo de monitoreo"],
     cons: ["No hace rastreo de errores de aplicación, solo infraestructura"],
     tags: ["docker-ready", "permissive-license"],
-    status: "coming_soon",
+    status: "scheduled",
+    publishDate: "2026-09-30",
   },
 
   // ---------- Herramientas Dev adicionales (coming_soon) ----------
@@ -6125,7 +6131,8 @@ volumes:
     pros: ["Muy rápido para prototipar paneles internos"],
     cons: ["Licencia GPL-3.0, revisa implicaciones si lo redistribuyes modificado"],
     tags: ["docker-ready"],
-    status: "coming_soon",
+    status: "scheduled",
+    publishDate: "2026-10-07",
   },
   {
     id: "appsmith",
@@ -6157,7 +6164,8 @@ volumes:
     pros: ["La curva de aprendizaje más suave si ya conoces Retool"],
     cons: ["Requiere bastante RAM en instancias pequeñas"],
     tags: ["docker-ready", "permissive-license"],
-    status: "coming_soon",
+    status: "scheduled",
+    publishDate: "2026-10-07",
   },
   {
     id: "stirling-pdf",
@@ -6189,7 +6197,8 @@ volumes:
     pros: ["Tus documentos nunca salen de tu propio servidor"],
     cons: ["La interfaz es funcional pero menos pulida que herramientas comerciales"],
     tags: ["docker-ready", "permissive-license"],
-    status: "coming_soon",
+    status: "scheduled",
+    publishDate: "2026-10-07",
   },
   {
     id: "forgejo",
@@ -6224,7 +6233,6 @@ volumes:
     pros: ["Alternativa a Gitea para quien prefiere un proyecto sin respaldo corporativo"],
     cons: ["Comunidad y ecosistema de plugins más pequeños que GitLab", "Recientemente pasó de MIT a GPL-3.0+ (agosto 2024): revisa las implicaciones si distribuyes una versión modificada"],
     tags: ["docker-ready"],
-    status: "coming_soon",
   },
   {
     id: "infisical",
@@ -6264,7 +6272,8 @@ volumes:
     pros: ["Mucho más rápido de poner en marcha que HashiCorp Vault"],
     cons: ["Menos funciones avanzadas de PKI/certificados que Vault"],
     tags: ["docker-ready", "permissive-license"],
-    status: "coming_soon",
+    status: "scheduled",
+    publishDate: "2026-10-07",
   },
 
   // ---------- Marketing, Formularios & Emailing (coming_soon) ----------
@@ -6293,7 +6302,8 @@ cd dub && pnpm install && pnpm build
     pros: ["La interfaz y analíticas más modernas del grupo de acortadores open source"],
     cons: ["Auto-hospedarlo es más laborioso que un simple docker-compose"],
     tags: [],
-    status: "coming_soon",
+    status: "scheduled",
+    publishDate: "2026-10-07",
   },
   {
     id: "formbricks",
@@ -6329,7 +6339,8 @@ cd dub && pnpm install && pnpm build
     pros: ["Pensado específicamente para research de producto, no solo formularios genéricos"],
     cons: ["Licencia AGPL-3.0: revisa implicaciones si ofreces el servicio a terceros"],
     tags: ["docker-ready"],
-    status: "coming_soon",
+    status: "scheduled",
+    publishDate: "2026-10-14",
   },
   {
     id: "ghost",
@@ -6368,7 +6379,8 @@ cd dub && pnpm install && pnpm build
     pros: ["El más maduro y usado en producción de todo este lote"],
     cons: ["MySQL como dependencia añade algo de peso frente a opciones SQLite"],
     tags: ["docker-ready", "permissive-license"],
-    status: "coming_soon",
+    status: "scheduled",
+    publishDate: "2026-10-14",
   },
 
   // ---------- Añadidas para los "Curated Stacks" ----------
