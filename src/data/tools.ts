@@ -5844,7 +5844,7 @@ volumes:
     cons: ["Comunidad más pequeña que Keycloak o Authentik"],
     tags: ["docker-ready"],
     status: "scheduled",
-    publishDate: "2026-09-23",
+    publishDate: "2026-09-26",
   },
 
   // ---------- Despliegue, PaaS & Hosting (coming_soon) ----------
@@ -5906,7 +5906,7 @@ volumes:
     cons: ["Menos funcionalidades avanzadas que Coolify"],
     tags: ["docker-ready", "permissive-license"],
     status: "scheduled",
-    publishDate: "2026-09-23",
+    publishDate: "2026-09-26",
   },
   {
     id: "dokku",
@@ -5934,7 +5934,7 @@ sudo DOKKU_TAG=v0.35.15 bash bootstrap.sh
     cons: ["Sin panel web oficial (existen plugins de terceros)"],
     tags: ["permissive-license"],
     status: "scheduled",
-    publishDate: "2026-09-30",
+    publishDate: "2026-09-26",
   },
   {
     id: "casaos",
@@ -5960,7 +5960,7 @@ curl -fsSL https://get.casaos.io | sudo bash
     cons: ["Menos pensado para producción que para uso doméstico"],
     tags: [],
     status: "scheduled",
-    publishDate: "2026-09-30",
+    publishDate: "2026-09-29",
   },
 
   // ---------- Monitoreo, Logs & Errores (coming_soon) ----------
@@ -6035,7 +6035,7 @@ cd self-hosted && ./install.sh
     cons: ["Menos funciones avanzadas que Sentry (sin performance tracing completo)"],
     tags: ["docker-ready", "permissive-license"],
     status: "scheduled",
-    publishDate: "2026-09-30",
+    publishDate: "2026-09-29",
   },
   {
     id: "signoz",
@@ -6062,7 +6062,7 @@ cd signoz/deploy && ./install.sh
     cons: ["ClickHouse añade complejidad operativa"],
     tags: ["permissive-license"],
     status: "scheduled",
-    publishDate: "2026-09-30",
+    publishDate: "2026-09-29",
   },
   {
     id: "beszel",
@@ -6094,7 +6094,7 @@ volumes:
     cons: ["No hace rastreo de errores de aplicación, solo infraestructura"],
     tags: ["docker-ready", "permissive-license"],
     status: "scheduled",
-    publishDate: "2026-09-30",
+    publishDate: "2026-10-02",
   },
 
   // ---------- Herramientas Dev adicionales (coming_soon) ----------
@@ -6132,7 +6132,7 @@ volumes:
     cons: ["Licencia GPL-3.0, revisa implicaciones si lo redistribuyes modificado"],
     tags: ["docker-ready"],
     status: "scheduled",
-    publishDate: "2026-10-07",
+    publishDate: "2026-10-02",
   },
   {
     id: "appsmith",
@@ -6165,7 +6165,7 @@ volumes:
     cons: ["Requiere bastante RAM en instancias pequeñas"],
     tags: ["docker-ready", "permissive-license"],
     status: "scheduled",
-    publishDate: "2026-10-07",
+    publishDate: "2026-10-02",
   },
   {
     id: "stirling-pdf",
@@ -6198,7 +6198,7 @@ volumes:
     cons: ["La interfaz es funcional pero menos pulida que herramientas comerciales"],
     tags: ["docker-ready", "permissive-license"],
     status: "scheduled",
-    publishDate: "2026-10-07",
+    publishDate: "2026-10-05",
   },
   {
     id: "forgejo",
@@ -6273,7 +6273,7 @@ volumes:
     cons: ["Menos funciones avanzadas de PKI/certificados que Vault"],
     tags: ["docker-ready", "permissive-license"],
     status: "scheduled",
-    publishDate: "2026-10-07",
+    publishDate: "2026-10-05",
   },
 
   // ---------- Marketing, Formularios & Emailing (coming_soon) ----------
@@ -6303,7 +6303,7 @@ cd dub && pnpm install && pnpm build
     cons: ["Auto-hospedarlo es más laborioso que un simple docker-compose"],
     tags: [],
     status: "scheduled",
-    publishDate: "2026-10-07",
+    publishDate: "2026-10-05",
   },
   {
     id: "formbricks",
@@ -6340,7 +6340,7 @@ cd dub && pnpm install && pnpm build
     cons: ["Licencia AGPL-3.0: revisa implicaciones si ofreces el servicio a terceros"],
     tags: ["docker-ready"],
     status: "scheduled",
-    publishDate: "2026-10-14",
+    publishDate: "2026-10-08",
   },
   {
     id: "ghost",
@@ -6380,7 +6380,7 @@ cd dub && pnpm install && pnpm build
     cons: ["MySQL como dependencia añade algo de peso frente a opciones SQLite"],
     tags: ["docker-ready", "permissive-license"],
     status: "scheduled",
-    publishDate: "2026-10-14",
+    publishDate: "2026-10-08",
   },
 
   // ---------- Añadidas para los "Curated Stacks" ----------
@@ -7211,7 +7211,7 @@ volumes:
     cons: ["Necesitas configurar indexadores y un cliente de descarga por separado (o usar Prowlarr)"],
     tags: ["docker-ready"],
     status: "scheduled",
-    publishDate: "2026-10-21",
+    publishDate: "2026-10-08",
   },
   {
     id: "sonarr",
@@ -7254,7 +7254,7 @@ volumes:
     cons: ["Necesitas configurar indexadores y un cliente de descarga por separado (o usar Prowlarr)"],
     tags: ["docker-ready"],
     status: "scheduled",
-    publishDate: "2026-10-21",
+    publishDate: "2026-10-11",
   },
   {
     id: "prowlarr",
@@ -7295,7 +7295,7 @@ volumes:
     cons: ["Solo tiene sentido si ya usas Radarr/Sonarr/Lidarr — no es una app independiente"],
     tags: ["docker-ready"],
     status: "scheduled",
-    publishDate: "2026-10-21",
+    publishDate: "2026-10-11",
   },
   {
     id: "paperless-ngx",
@@ -7352,7 +7352,7 @@ volumes:
     cons: ["El OCR consume CPU; en documentos muy largos puede tardar"],
     tags: ["docker-ready"],
     status: "scheduled",
-    publishDate: "2026-10-21",
+    publishDate: "2026-10-11",
   },
   {
     id: "home-assistant",
@@ -7390,7 +7390,7 @@ volumes:
     cons: ["network_mode: host y privileged: true dan bastante acceso al contenedor — revisa la seguridad de tu red", "Curva de aprendizaje real al principio, aunque hay muchas guías"],
     tags: ["docker-ready", "permissive-license"],
     status: "scheduled",
-    publishDate: "2026-10-21",
+    publishDate: "2026-10-14",
   },
   {
     id: "overseerr",
@@ -7430,7 +7430,7 @@ volumes:
     cons: ["Necesita Radarr/Sonarr ya funcionando detrás — no descarga nada por sí solo"],
     tags: ["docker-ready", "permissive-license"],
     status: "scheduled",
-    publishDate: "2026-10-28",
+    publishDate: "2026-10-14",
   },
   {
     id: "frigate",
@@ -7471,7 +7471,7 @@ volumes:
     cons: ["Recomienda un acelerador de IA (Coral USB o GPU) para fluidez con varias cámaras"],
     tags: ["docker-ready", "permissive-license"],
     status: "scheduled",
-    publishDate: "2026-10-28",
+    publishDate: "2026-10-14",
   },
   {
     id: "homepage",
@@ -7507,7 +7507,7 @@ volumes:
     cons: ["La configuración es por YAML, no hay editor visual"],
     tags: ["docker-ready"],
     status: "scheduled",
-    publishDate: "2026-10-28",
+    publishDate: "2026-10-17",
   },
   {
     id: "mealie",
@@ -7547,7 +7547,7 @@ volumes:
     cons: ["La importación automática no siempre funciona con webs que bloquean el scraping"],
     tags: ["docker-ready"],
     status: "scheduled",
-    publishDate: "2026-10-28",
+    publishDate: "2026-10-17",
   },
   {
     id: "navidrome",
@@ -7587,7 +7587,7 @@ volumes:
     cons: ["Necesitas tener ya tu música en archivos (no descarga ni sugiere música nueva)"],
     tags: ["docker-ready"],
     status: "scheduled",
-    publishDate: "2026-10-28",
+    publishDate: "2026-10-17",
   },
   {
     id: "audiobookshelf",
@@ -7628,7 +7628,7 @@ volumes:
     cons: ["No incluye ni vende audiolibros — necesitas traer tus propios archivos"],
     tags: ["docker-ready"],
     status: "scheduled",
-    publishDate: "2026-11-04",
+    publishDate: "2026-10-20",
   },
   {
     id: "firefly-iii",
@@ -7682,7 +7682,7 @@ volumes:
     cons: ["La configuración inicial de reglas de importación lleva algo de tiempo"],
     tags: ["docker-ready"],
     status: "scheduled",
-    publishDate: "2026-11-04",
+    publishDate: "2026-10-20",
   },
   {
     id: "excalidraw",
@@ -7715,7 +7715,7 @@ volumes:
     cons: ["La colaboración en tiempo real completa (salas compartidas) requiere montar el servidor de colaboración por separado"],
     tags: ["docker-ready", "permissive-license"],
     status: "scheduled",
-    publishDate: "2026-11-04",
+    publishDate: "2026-10-20",
   },
   {
     id: "penpot",
@@ -7747,7 +7747,7 @@ docker compose -p penpot up -d
     cons: ["El ecosistema de plugins es aún más pequeño que el de Figma"],
     tags: ["permissive-license"],
     status: "scheduled",
-    publishDate: "2026-11-04",
+    publishDate: "2026-10-23",
   },
   {
     id: "homarr",
@@ -7787,7 +7787,7 @@ volumes:
     cons: ["Al tener más funciones integradas, consume algo más de recursos que Homepage"],
     tags: ["docker-ready", "permissive-license"],
     status: "scheduled",
-    publishDate: "2026-11-04",
+    publishDate: "2026-10-23",
   },
   {
     id: "netdata",
@@ -7838,7 +7838,7 @@ volumes:
     cons: ["Requiere bastantes permisos de sistema (host network, ptrace) para ver todo lo que ve"],
     tags: ["docker-ready"],
     status: "scheduled",
-    publishDate: "2026-11-11",
+    publishDate: "2026-10-23",
   },
   {
     id: "matrix-synapse",
@@ -7889,7 +7889,7 @@ volumes:
     cons: ["Synapse en sí es pesado en RAM; para instancias grandes se recomienda el 'worker mode'"],
     tags: ["docker-ready"],
     status: "scheduled",
-    publishDate: "2026-11-11",
+    publishDate: "2026-10-26",
   },
   {
     id: "tautulli",
@@ -7930,7 +7930,7 @@ volumes:
     cons: ["Necesita Plex o Jellyfin ya funcionando — no es un servidor de medios por sí solo"],
     tags: ["docker-ready"],
     status: "scheduled",
-    publishDate: "2026-11-11",
+    publishDate: "2026-10-26",
   },
   {
     id: "kavita",
@@ -7968,7 +7968,7 @@ volumes:
     cons: ["No vende ni descarga contenido — necesitas tus propios archivos"],
     tags: ["docker-ready"],
     status: "scheduled",
-    publishDate: "2026-11-11",
+    publishDate: "2026-10-26",
   },
   {
     id: "authelia",
@@ -8005,7 +8005,7 @@ volumes:
     cons: ["No es un servidor de identidad completo (sin gestión de usuarios avanzada tipo Keycloak)"],
     tags: ["docker-ready", "permissive-license"],
     status: "scheduled",
-    publishDate: "2026-11-11",
+    publishDate: "2026-10-29",
   },
   {
     id: "calibre-web",
@@ -8047,7 +8047,7 @@ volumes:
     cons: ["La edición de metadatos avanzada sigue dependiendo del Calibre de escritorio"],
     tags: ["docker-ready"],
     status: "scheduled",
-    publishDate: "2026-11-18",
+    publishDate: "2026-10-29",
   },
   {
     id: "actual-budget",
@@ -8084,7 +8084,7 @@ volumes:
     cons: ["La conexión directa a bancos depende de servicios de terceros (GoCardless/SimpleFIN) según tu país"],
     tags: ["docker-ready", "permissive-license"],
     status: "scheduled",
-    publishDate: "2026-11-18",
+    publishDate: "2026-10-29",
   },
   {
     id: "freshrss",
@@ -8125,7 +8125,7 @@ volumes:
     cons: ["La interfaz web es funcional pero menos moderna visualmente que Miniflux"],
     tags: ["docker-ready"],
     status: "scheduled",
-    publishDate: "2026-11-18",
+    publishDate: "2026-11-01",
   },
   {
     id: "ntfy",
@@ -8164,7 +8164,7 @@ volumes:
     cons: ["Para notificaciones fiables en iOS en segundo plano conviene usar su servidor público o configurar bien el propio"],
     tags: ["docker-ready", "permissive-license"],
     status: "scheduled",
-    publishDate: "2026-11-18",
+    publishDate: "2026-11-01",
   },
   {
     id: "zabbix",
@@ -8224,7 +8224,7 @@ volumes:
     cons: ["Curva de aprendizaje pronunciada comparado con Uptime Kuma o Netdata"],
     tags: ["docker-ready"],
     status: "scheduled",
-    publishDate: "2026-11-18",
+    publishDate: "2026-11-01",
   },
   {
     id: "homebridge",
@@ -8260,7 +8260,7 @@ volumes:
     cons: ["network_mode: host es necesario para el descubrimiento, lo que reduce el aislamiento del contenedor"],
     tags: ["docker-ready", "permissive-license"],
     status: "scheduled",
-    publishDate: "2026-11-25",
+    publishDate: "2026-11-04",
   },
   {
     id: "litellm",
@@ -8308,7 +8308,7 @@ volumes:
     cons: ["Algunas funciones de administración avanzada (SSO, presupuestos por equipo) están en el plan Enterprise de pago"],
     tags: ["docker-ready", "permissive-license"],
     status: "scheduled",
-    publishDate: "2026-11-25",
+    publishDate: "2026-11-04",
   },
   {
     id: "karakeep",
@@ -8358,7 +8358,7 @@ volumes:
     cons: ["El etiquetado automático por IA necesita configurar una clave de un proveedor de IA (local o externo) para funcionar"],
     tags: ["docker-ready"],
     status: "scheduled",
-    publishDate: "2026-11-25",
+    publishDate: "2026-11-04",
   },
   {
     id: "jan",
@@ -8389,7 +8389,7 @@ volumes:
     cons: ["El rendimiento y calidad dependen totalmente del modelo local que elijas y del hardware disponible"],
     tags: [],
     status: "scheduled",
-    publishDate: "2026-11-25",
+    publishDate: "2026-11-07",
   },
   {
     id: "coder",
@@ -8436,7 +8436,7 @@ volumes:
     cons: ["Funciones de gobernanza empresarial (SSO avanzado, cuotas por equipo) requieren la licencia Enterprise de pago"],
     tags: ["docker-ready"],
     status: "scheduled",
-    publishDate: "2026-11-25",
+    publishDate: "2026-11-07",
   },
   {
     id: "gotify",
@@ -8473,7 +8473,7 @@ volumes:
     cons: ["Sin app oficial de iOS (a diferencia de ntfy)"],
     tags: ["docker-ready", "permissive-license"],
     status: "scheduled",
-    publishDate: "2026-12-02",
+    publishDate: "2026-11-07",
   },
   {
     id: "openhands",
@@ -8511,7 +8511,7 @@ volumes:
     cons: ["Necesita acceso al socket de Docker para crear sus sandboxes — revisa las implicaciones de seguridad"],
     tags: ["docker-ready", "permissive-license"],
     status: "scheduled",
-    publishDate: "2026-12-02",
+    publishDate: "2026-11-10",
   },
   {
     id: "openhab",
@@ -8553,7 +8553,7 @@ volumes:
     cons: ["Curva de aprendizaje más pronunciada que Home Assistant, interfaz menos moderna"],
     tags: ["docker-ready"],
     status: "scheduled",
-    publishDate: "2026-12-02",
+    publishDate: "2026-11-10",
   },
   {
     id: "miniflux",
@@ -8603,7 +8603,7 @@ volumes:
     cons: ["La interfaz es deliberadamente austera — no es para quien busca algo visual como Feedly"],
     tags: ["docker-ready", "permissive-license"],
     status: "scheduled",
-    publishDate: "2026-12-02",
+    publishDate: "2026-11-10",
   },
   {
     id: "homebox",
@@ -8642,7 +8642,7 @@ volumes:
     cons: ["Cargar el inventario inicial de toda una casa lleva su tiempo, como cualquier app de este tipo"],
     tags: ["docker-ready", "permissive-license"],
     status: "scheduled",
-    publishDate: "2026-12-02",
+    publishDate: "2026-11-13",
   },
   {
     id: "wallos",
@@ -8681,7 +8681,7 @@ volumes:
     cons: ["Es solo para seguimiento manual — no se conecta a tu banco para detectar cargos automáticamente"],
     tags: ["docker-ready"],
     status: "scheduled",
-    publishDate: "2026-12-09",
+    publishDate: "2026-11-13",
   },
   {
     id: "tandoor-recipes",
@@ -8734,7 +8734,7 @@ volumes:
     cons: ["Su licencia AGPL-3.0 incluye una 'Commons Clause' que restringe ofrecerlo como servicio de pago a terceros"],
     tags: ["docker-ready"],
     status: "scheduled",
-    publishDate: "2026-12-09",
+    publishDate: "2026-11-13",
   },
   {
     id: "changedetection-io",
@@ -8771,7 +8771,7 @@ volumes:
     cons: ["Vigilar páginas con mucho JavaScript requiere activar el modo navegador headless, que consume más recursos"],
     tags: ["docker-ready", "permissive-license"],
     status: "scheduled",
-    publishDate: "2026-12-09",
+    publishDate: "2026-11-16",
   },
   {
     id: "firecrawl",
@@ -8804,7 +8804,7 @@ docker compose up -d
     cons: ["Algunas funciones avanzadas (extracción con IA integrada, proxies rotativos) están pensadas para su versión cloud de pago"],
     tags: ["permissive-license"],
     status: "scheduled",
-    publishDate: "2026-12-09",
+    publishDate: "2026-11-16",
   },
   {
     id: "memos",
@@ -8841,7 +8841,7 @@ volumes:
     cons: ["No pretende sustituir un wiki completo — es deliberadamente simple"],
     tags: ["docker-ready", "permissive-license"],
     status: "scheduled",
-    publishDate: "2026-12-09",
+    publishDate: "2026-11-16",
   },
   {
     id: "revolt",
@@ -8874,7 +8874,7 @@ cd self-hosted
     cons: ["Comunidad y ecosistema de bots aún mucho más pequeño que el de Discord"],
     tags: [],
     status: "scheduled",
-    publishDate: "2026-12-16",
+    publishDate: "2026-11-19",
   },
   {
     id: "speedtest-tracker",
@@ -8916,7 +8916,7 @@ volumes:
     cons: ["Cada test de velocidad consume algo de tu ancho de banda mientras se ejecuta"],
     tags: ["docker-ready"],
     status: "scheduled",
-    publishDate: "2026-12-16",
+    publishDate: "2026-11-19",
   },
   {
     id: "pocket-id",
@@ -8956,7 +8956,7 @@ volumes:
     cons: ["Al depender de passkeys, necesitas dispositivos compatibles (la mayoría de móviles y ordenadores recientes lo son)"],
     tags: ["docker-ready"],
     status: "scheduled",
-    publishDate: "2026-12-16",
+    publishDate: "2026-11-19",
   },
   {
     id: "silverbullet",
@@ -8993,7 +8993,7 @@ volumes:
     cons: ["El lenguaje de plantillas/consultas tiene su propia curva de aprendizaje"],
     tags: ["docker-ready", "permissive-license"],
     status: "scheduled",
-    publishDate: "2026-12-16",
+    publishDate: "2026-11-22",
   },
   {
     id: "wger",
@@ -9044,7 +9044,7 @@ volumes:
     cons: ["La base de datos de alimentos es más pequeña que la de MyFitnessPal — puede que tengas que añadir alimentos locales a mano"],
     tags: ["docker-ready"],
     status: "scheduled",
-    publishDate: "2026-12-16",
+    publishDate: "2026-11-22",
   },
   {
     id: "kestra",
@@ -9093,7 +9093,7 @@ volumes:
     cons: ["Para pipelines muy simples puede ser más de lo que necesitas — n8n es más rápido de empezar"],
     tags: ["docker-ready", "permissive-license"],
     status: "scheduled",
-    publishDate: "2026-12-23",
+    publishDate: "2026-11-22",
   },
   {
     id: "kopia",
@@ -9136,7 +9136,7 @@ volumes:
     cons: ["La interfaz web es funcional pero minimalista, pensada para usuarios técnicos"],
     tags: ["docker-ready", "permissive-license"],
     status: "scheduled",
-    publishDate: "2026-12-23",
+    publishDate: "2026-11-25",
   },
   {
     id: "uptrace",
@@ -9181,7 +9181,7 @@ volumes:
     cons: ["ClickHouse añade una pieza más de infraestructura que mantener frente a soluciones todo-en-uno más simples"],
     tags: ["docker-ready"],
     status: "scheduled",
-    publishDate: "2026-12-23",
+    publishDate: "2026-11-25",
   },
   {
     id: "scrutiny",
@@ -9227,7 +9227,7 @@ volumes:
     cons: ["Necesita acceso directo a los dispositivos de disco (cap_add SYS_RAWIO), no funciona bien en algunos NAS con almacenamiento virtualizado"],
     tags: ["docker-ready", "permissive-license"],
     status: "scheduled",
-    publishDate: "2026-12-23",
+    publishDate: "2026-11-25",
   },
   {
     id: "faster-whisper-server",
@@ -9264,7 +9264,7 @@ volumes:
     cons: ["Sin GPU, transcribir audio largo puede ser notablemente más lento que la API en la nube"],
     tags: ["docker-ready", "permissive-license"],
     status: "scheduled",
-    publishDate: "2026-12-23",
+    publishDate: "2026-11-28",
   },
 ];
 
