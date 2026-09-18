@@ -11,7 +11,10 @@ export type ToolCategory =
   | "AuthIdentity"
   | "CloudPaas"
   | "MonitoringLogs"
-  | "MarketingForms";
+  | "MarketingForms"
+  | "SmartHome"
+  | "MediaAutomation"
+  | "PersonalFinance";
 
 export type ToolTag = "docker-ready" | "1-click-deploy" | "permissive-license";
 

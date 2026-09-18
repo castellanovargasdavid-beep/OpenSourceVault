@@ -20,7 +20,10 @@ export interface CategoryMeta {
     | "shield-check"
     | "cloud"
     | "activity"
-    | "megaphone";
+    | "megaphone"
+    | "home"
+    | "film"
+    | "wallet";
 }
 
 export const categories: CategoryMeta[] = [
@@ -117,6 +120,27 @@ export const categories: CategoryMeta[] = [
     label: "Marketing, Formularios & Emailing",
     description: "Encuestas, formularios, newsletters y enlaces cortos con tus propios datos.",
     icon: "megaphone",
+  },
+  {
+    id: "SmartHome",
+    slug: "hogar-inteligente",
+    label: "Hogar Inteligente",
+    description: "Automatización del hogar, cámaras y dispositivos IoT bajo tu propio control, sin nube de terceros.",
+    icon: "home",
+  },
+  {
+    id: "MediaAutomation",
+    slug: "automatizacion-de-medios",
+    label: "Automatización de Medios",
+    description: "Organiza y gestiona tu biblioteca de películas, series, música y libros de forma automática.",
+    icon: "film",
+  },
+  {
+    id: "PersonalFinance",
+    slug: "finanzas-personales",
+    label: "Finanzas Personales",
+    description: "Controla tu presupuesto, gastos y suscripciones sin ceder tus datos bancarios a una app de terceros.",
+    icon: "wallet",
   },
 ];
 

@@ -1343,4 +1343,404 @@ export const toolsEn: Record<string, ToolTranslation> = {
     pros: ["Much simpler onboarding than running your own Kubernetes", "Very active development and fast-growing community"],
     cons: ["Dokploy Cloud (the managed version) is paid; self-hosting requires your own server", "Younger project than Coolify or CapRover, with less time in production"],
   },
+  radarr: {
+    description:
+      "Radarr automatically searches for, downloads and organizes your movie collection, renaming and moving files into your Jellyfin or Plex library so you don't have to do it by hand.",
+    shortDescription: "Automatic movie management for your media server.",
+    features: ["Automatic search and download of new movies", "File renaming and organization", "Integrates with Jellyfin, Plex and Prowlarr"],
+    pros: ["The de facto standard for automating a movie library", "Huge community, tons of guides available"],
+    cons: ["You need to set up indexers and a download client separately (or use Prowlarr)"],
+  },
+  sonarr: {
+    description:
+      "Sonarr is Radarr's counterpart for TV shows: it tracks your shows, downloads new episodes as soon as they air, and organizes them into your library automatically.",
+    shortDescription: "Automatic TV show management for your media server.",
+    features: ["Tracks shows and downloads new episodes automatically", "Quality and wanted-list management", "Integrates with Jellyfin, Plex and Prowlarr"],
+    pros: ["Same proven engine as Radarr, with years in production", "Very active, frequent updates"],
+    cons: ["You need to set up indexers and a download client separately (or use Prowlarr)"],
+  },
+  prowlarr: {
+    description:
+      "Prowlarr centralizes indexer management for Radarr, Sonarr and the rest of the 'Arr Stack': set up each indexer once and Prowlarr syncs it across all your apps.",
+    shortDescription: "Central indexer manager for Radarr, Sonarr and friends.",
+    features: ["Syncs indexers across all your *arr apps at once", "Supports public and private trackers", "Usage stats per indexer"],
+    pros: ["Avoids configuring each indexer app by app", "From the same team as Radarr/Sonarr, same integration quality"],
+    cons: ["Only makes sense if you already use Radarr/Sonarr/Lidarr — not a standalone app"],
+  },
+  "paperless-ngx": {
+    description:
+      "Paperless-ngx digitizes, archives and makes all your paperwork searchable: scan or upload a document and it indexes it by text (OCR), tags and dates automatically, so you never lose an invoice again.",
+    shortDescription: "Digital document archive with OCR, no paid scanning app subscription needed.",
+    features: ["Automatic OCR with text and language recognition", "Automatic tagging and correspondent matching by rules", "'Consume' folder to scan and forget"],
+    pros: ["Turns years of physical paperwork into something searchable in seconds", "Very active community, integrates well with network scanners"],
+    cons: ["OCR is CPU-intensive; very long documents can take a while"],
+  },
+  "home-assistant": {
+    description:
+      "Home Assistant is the de facto standard for home automation: it connects thousands of different device brands under a single dashboard, with all automations running on your own network, with no dependency on the manufacturer's cloud.",
+    shortDescription: "The open source standard for home automation, no brand cloud required.",
+    features: ["Compatible with thousands of brands and integrations (Zigbee, Z-Wave, Matter...)", "Local automations, no dependency on the manufacturer's cloud", "Official mobile app with geofencing"],
+    pros: ["The largest and most active home automation project that exists", "None of your sensor data leaves your network unless you want it to"],
+    cons: ["network_mode: host and privileged: true give the container fairly broad access — review your network security", "Real learning curve at the start, though guides are plentiful"],
+  },
+  overseerr: {
+    description:
+      "Overseerr gives your family or friends a simple interface to request movies and shows, connecting to Radarr and Sonarr to download them automatically — without them touching the technical configuration.",
+    shortDescription: "Content requests for Jellyfin/Plex, connected to Radarr and Sonarr.",
+    features: ["Simple request interface for the whole family", "Connects directly to Radarr/Sonarr", "Per-user permission management"],
+    pros: ["The missing piece to let non-technical people use your 'Arr Stack'", "Very polished interface, feels like a commercial app"],
+    cons: ["Needs Radarr/Sonarr already running behind it — doesn't download anything on its own"],
+  },
+  frigate: {
+    description:
+      "Frigate turns regular IP cameras into a real-time AI object-detection NVR system (people, cars, packages...), with no monthly Ring or Nest subscription and with video that never leaves your network.",
+    shortDescription: "AI object-detection NVR, a subscription-free alternative to Ring/Nest Cam.",
+    features: ["AI object detection (people, cars, animals...)", "Continuous or event-only recording", "Notifications with a snapshot of the detected object"],
+    pros: ["No monthly cloud fee, unlike Ring/Nest/Arlo", "The object detector avoids false alarms from branches or shadows"],
+    cons: ["An AI accelerator (Coral USB or GPU) is recommended for smooth performance with several cameras"],
+  },
+  homepage: {
+    description:
+      "Homepage is a customizable start page for your HomeLab: it groups links and live-status widgets for all your self-hosted services on a single screen, configured through YAML files.",
+    shortDescription: "Start page for your HomeLab with live status of your services.",
+    features: ["100+ integrations with live status widgets", "Automatically detects Docker containers", "Fully configurable via YAML, no database"],
+    pros: ["Very quick to set up as your browser's start page", "Huge and active integrations catalog"],
+    cons: ["Configuration is YAML-based, no visual editor"],
+  },
+  mealie: {
+    description:
+      "Mealie stores your recipes (automatically importing them from almost any website by just pasting the URL), plans your weekly menu and generates your shopping list — all on your own server.",
+    shortDescription: "Recipes, weekly menu and shopping list, an alternative to paid recipe apps.",
+    features: ["Automatically imports recipes by pasting a URL from almost any site", "Drag-and-drop weekly meal planner", "Generates a shopping list from your meal plan"],
+    pros: ["One of the best-polished apps in the whole self-hosted ecosystem", "An app for the whole family, not just whoever installed it"],
+    cons: ["Automatic import doesn't always work on sites that block scraping"],
+  },
+  navidrome: {
+    description:
+      "Navidrome turns your local music collection into a personal streaming service, compatible with existing Subsonic apps, so you can listen to your own music from any device without depending on Spotify.",
+    shortDescription: "Stream your own music, a self-hosted alternative to Spotify.",
+    features: ["Compatible with existing Subsonic/Airsonic apps (iOS/Android)", "Automatic scanning of your music library", "Streaming with on-the-fly transcoding"],
+    pros: ["Very lightweight — runs fine on a Raspberry Pi", "Modern web UI, doesn't feel like an abandoned project"],
+    cons: ["You need to already have your music as files (it doesn't download or suggest new music)"],
+  },
+  audiobookshelf: {
+    description:
+      "Audiobookshelf organizes and plays your audiobook and podcast collection with progress tracking, bookmarks and native mobile apps — no monthly Audible subscription needed.",
+    shortDescription: "Audiobook and podcast server, an alternative to the Audible subscription.",
+    features: ["Syncs listening progress across devices", "Automatic download of new podcast episodes", "Native iOS and Android apps"],
+    pros: ["Very polished interface and mobile apps for a FOSS project", "Supports both your own audiobooks and podcasts"],
+    cons: ["Doesn't include or sell audiobooks — you need to bring your own files"],
+  },
+  "firefly-iii": {
+    description:
+      "Firefly III is a complete personal finance manager: accounts, budgets, recurring bills and automatic categorization rules, with your banking data stored only on your own server.",
+    shortDescription: "A complete personal finance manager, no third party gets your banking data.",
+    features: ["Budgets, recurring bills and automatic rules", "Bank transaction import (CSV, Nordigen/GoCardless)", "Reports and spending charts by category"],
+    pros: ["The most complete and mature self-hosted personal finance manager", "Nobody else sees your bank transactions"],
+    cons: ["Setting up import rules initially takes some time"],
+  },
+  excalidraw: {
+    description:
+      "Excalidraw is a collaborative whiteboard with a deliberately hand-drawn look, great for quick diagrams, wireframes and explaining ideas as a team — self-hostable instead of relying on Miro.",
+    shortDescription: "Hand-drawn-style collaborative whiteboard, an alternative to Miro.",
+    features: ["Distinctive hand-drawn style, widely used for technical diagrams", "Exports to PNG/SVG with transparent background", "Real-time collaboration mode"],
+    pros: ["One of the most popular and beloved open source projects out there", "Integrates as a plugin into Obsidian, VS Code and other apps"],
+    cons: ["Full real-time collaboration (shared rooms) requires setting up the collaboration server separately"],
+  },
+  penpot: {
+    description:
+      "Penpot is an interface design and collaborative prototyping tool, the most direct open source alternative to Figma, with native SVG support and no proprietary file format locking you in.",
+    shortDescription: "Interface design and prototyping, the open source alternative to Figma.",
+    features: ["Interface design and prototyping based on standard SVG", "Design systems and reusable components", "Imports existing Figma files"],
+    pros: ["Backed by a company (Kaleidos) with active, funded development", "Since it uses SVG, your designs never get trapped in a proprietary format"],
+    cons: ["Plugin ecosystem is still smaller than Figma's"],
+  },
+  homarr: {
+    description:
+      "Homarr is another HomeLab start page, with drag-and-drop configuration instead of YAML files, built-in authentication and over 20,000 icons included out of the box.",
+    shortDescription: "HomeLab start page with drag-and-drop visual configuration.",
+    features: ["Drag-and-drop visual configuration, no YAML", "Built-in user authentication out of the box", "20,000+ app icons included"],
+    pros: ["More approachable than Homepage for anyone who doesn't want to touch config files", "Very active development"],
+    cons: ["Having more built-in features means it uses somewhat more resources than Homepage"],
+  },
+  netdata: {
+    description:
+      "Netdata monitors every metric of your server (CPU, RAM, disk, network, hundreds of applications) in real time, per second, with a dashboard that configures itself on startup — no Datadog per-host bill.",
+    shortDescription: "Real-time infrastructure monitoring, a self-hosted alternative to Datadog.",
+    features: ["Thousands of metrics per second, no sampling", "Automatically detects what's running on the server", "Alerts preconfigured out of the box"],
+    pros: ["Zero configuration to start seeing useful metrics", "Per-second detail level is hard to match"],
+    cons: ["Requires fairly broad system permissions (host network, ptrace) to see everything it sees"],
+  },
+  "matrix-synapse": {
+    description:
+      "Synapse is the reference server of the Matrix protocol: federated, end-to-end encrypted chat, where your server can talk to any other organization's server, with no single central provider like Slack or Discord.",
+    shortDescription: "Federated, end-to-end encrypted chat server, Matrix protocol, alternative to Slack/Discord.",
+    features: ["Real federation between servers, like email", "Built-in end-to-end encryption", "Compatible with the Element client and dozens of other clients"],
+    pros: ["Your team can chat with people from other organizations without leaving the protocol", "No central provider can read your encrypted messages or shut down your account"],
+    cons: ["Synapse itself is RAM-heavy; large instances are recommended to use 'worker mode'"],
+  },
+  tautulli: {
+    description:
+      "Tautulli monitors your Plex or Jellyfin server: who's watching what, when and from where, with historical stats, notifications and usage charts for your library.",
+    shortDescription: "Usage stats and monitoring for your Plex/Jellyfin server.",
+    features: ["Complete playback history per user", "Notifications when someone starts watching something", "Usage charts by day, user and device"],
+    pros: ["An essential companion if you share your server with others", "Very lightweight, barely uses any resources"],
+    cons: ["Needs Plex or Jellyfin already running — not a media server on its own"],
+  },
+  kavita: {
+    description:
+      "Kavita is a reading server for comics, manga and ebooks, with progress tracking, collection lists and native reading apps — your own digital library, without a closed store's restrictions.",
+    shortDescription: "Comics, manga and ebook server, an alternative to Comixology/Kindle.",
+    features: ["Reader optimized for comics/manga and ebooks on the same server", "Reading progress tracking per device", "Automatic library scanning"],
+    pros: ["Very polished reading interface, specifically built for comics", "Very active development with broad format support (CBZ, CBR, EPUB, PDF)"],
+    cons: ["Doesn't sell or download content — you need your own files"],
+  },
+  authelia: {
+    description:
+      "Authelia adds a single sign-on and two-factor verification layer in front of any service already sitting behind a reverse proxy (Nginx, Traefik, Caddy), without having to reprogram each app separately.",
+    shortDescription: "SSO and 2FA layer for your reverse proxy, a lightweight alternative to Okta.",
+    features: ["SSO and 2FA in front of any app, without touching its code", "Integrates with Traefik, Nginx and Caddy", "Granular access policies per domain/group"],
+    pros: ["Much lighter to set up than Keycloak/Authentik if you just need to protect a proxy", "Widely used alongside existing HomeLab stacks"],
+    cons: ["Not a full identity server (no advanced user management like Keycloak)"],
+  },
+  "calibre-web": {
+    description:
+      "Calibre-Web puts a modern web interface on top of your Calibre library, so you can read, download and manage your ebooks from the browser or send them by email to your Kindle, with no Amazon store in between.",
+    shortDescription: "Web interface for your ebook library, an alternative to the Kindle store.",
+    features: ["Built-in browser reader (EPUB, PDF, CBR/CBZ)", "Direct send-to-Kindle/Kobo by email", "Metadata and cover management"],
+    pros: ["Reuses your existing Calibre library without duplicating files", "Very lightweight, runs fine on any NAS or Raspberry Pi"],
+    cons: ["Advanced metadata editing still depends on the desktop Calibre app"],
+  },
+  "actual-budget": {
+    description:
+      "Actual Budget is a personal budget based on the envelope budgeting method, with sync across devices, very much in the spirit of YNAB but self-hosted and with no monthly fee.",
+    shortDescription: "Envelope budgeting, a subscription-free alternative to YNAB.",
+    features: ["Envelope budgeting method", "Encrypted sync across all your devices", "Bank import via file or API"],
+    pros: ["Very fast, polished interface, almost identical in philosophy to YNAB", "No YNAB monthly fee (~$100-150/year)"],
+    cons: ["Direct bank connections depend on third-party services (GoCardless/SimpleFIN) depending on your country"],
+  },
+  freshrss: {
+    description:
+      "FreshRSS is a lightweight, highly configurable RSS reader, with extension support, multiple users and mobile app compatibility via the Google Reader API — a mature, self-hosted alternative to Feedly.",
+    shortDescription: "Self-hosted, multi-user RSS reader, an alternative to Feedly.",
+    features: ["Multi-user, each with their own feeds", "Compatible with mobile apps via the Google Reader API", "Custom extensions and filters"],
+    pros: ["Very mature and stable, with years in production", "Runs well even on very modest hardware"],
+    cons: ["The web interface is functional but visually less modern than Miniflux"],
+  },
+  ntfy: {
+    description:
+      "ntfy sends push notifications to your phone or desktop from scripts, apps or HomeLab services with a simple HTTP request — no account, no artificial message limit, and no dependency on Pushover.",
+    shortDescription: "Push notifications via HTTP for your scripts and services, an alternative to Pushover.",
+    features: ["Send notifications with a simple curl/HTTP POST", "Native iOS/Android apps and a web app too", "Public or private authenticated topics"],
+    pros: ["Integrating it into any script takes literally one line of curl", "No artificial message limit and no account required"],
+    cons: ["For reliable background iOS notifications it's best to use their public server or configure your own well"],
+  },
+  zabbix: {
+    description:
+      "Zabbix is an enterprise-grade infrastructure monitoring platform: servers, networks, applications and cloud services, with alerting and dashboards, without the per-host cost of SaaS platforms.",
+    shortDescription: "Enterprise-grade infrastructure monitoring, a self-hosted alternative to Datadog.",
+    features: ["Monitors servers, network, apps and cloud in one platform", "Lightweight agents for thousands of hosts", "Configurable alerting and auto-remediation"],
+    pros: ["Enterprise-level depth, with over 20 years of development", "No per-host cost, unlike Datadog/New Relic"],
+    cons: ["Steep learning curve compared to Uptime Kuma or Netdata"],
+  },
+  homebridge: {
+    description:
+      "Homebridge bridges devices that aren't natively compatible with Apple HomeKit (proprietary brands, older protocols) into Apple's Home app, through hundreds of community plugins.",
+    shortDescription: "Bridge to bring non-compatible devices into Apple HomeKit.",
+    features: ["Hundreds of community plugins for non-HomeKit-compatible brands", "Web configuration interface (Config UI X)", "Integrates directly into Apple's Home app"],
+    pros: ["The simplest way to get a 'weird' device into HomeKit", "Huge and very active plugin ecosystem"],
+    cons: ["network_mode: host is required for discovery, which reduces the container's isolation"],
+  },
+  litellm: {
+    description:
+      "LiteLLM is a unified gateway/proxy for 100+ LLM providers (OpenAI, Anthropic, local models via Ollama...) with a single OpenAI-format-compatible API, spend limits and centralized logs.",
+    shortDescription: "Unified gateway for LLM APIs, with spend control and centralized logs.",
+    features: ["A single OpenAI-compatible API for 100+ providers", "Spend limits and per-team/project keys", "Load balancing and fallback between models"],
+    pros: ["Avoids vendor lock-in from depending on a single AI provider", "The proxy core is free; the enterprise dashboard is the paid part"],
+    cons: ["Some advanced admin features (SSO, per-team budgets) are in the paid Enterprise plan"],
+  },
+  karakeep: {
+    description:
+      "Karakeep (formerly Hoarder) saves links, notes and images with automatic AI tagging and full-text search, even inside saved screenshots — your own smart bookmark manager.",
+    shortDescription: "Bookmark manager with automatic AI tagging, an alternative to Raindrop.io.",
+    features: ["Automatic AI tagging of links and notes", "Full-text search inside saved screenshots", "Browser extension and mobile apps"],
+    pros: ["AI tagging saves a lot of manual organization time", "Very young project but with very active development"],
+    cons: ["Automatic AI tagging needs an AI provider key (local or external) configured to work"],
+  },
+  jan: {
+    description:
+      "Jan is a desktop app with a ChatGPT-style interface for running language models locally on your own computer, with no internet connection or account required, plus extension support and a local API server.",
+    shortDescription: "Chat with local AI models on your desktop, no account or connection, an alternative to ChatGPT.",
+    features: ["ChatGPT-style interface over models running 100% on your machine", "Local API server compatible with the OpenAI format", "Works fully offline"],
+    pros: ["Nothing you type ever leaves your computer", "Doesn't require a powerful GPU for smaller models"],
+    cons: ["Performance and quality depend entirely on the local model you pick and your available hardware"],
+  },
+  coder: {
+    description:
+      "Coder spins up remote, reproducible development environments on your own infrastructure, which your team connects to from the browser or their local editor — the self-hosted alternative to GitHub Codespaces.",
+    shortDescription: "Remote development environments on your own infrastructure, an alternative to GitHub Codespaces.",
+    features: ["Reproducible dev environments as code (Terraform)", "Connect from the browser or local VS Code/JetBrains", "Auto-shutdown of idle environments to save resources"],
+    pros: ["Runs on your own cloud or server, no per-hour Codespaces bill", "The core is free with no user limit for the community edition"],
+    cons: ["Enterprise governance features (advanced SSO, per-team quotas) require the paid Enterprise license"],
+  },
+  gotify: {
+    description:
+      "Gotify is a simple, lightweight push notification server for your own scripts and applications, with a minimalist REST API and an Android app — the simplest option if you don't need everything ntfy offers.",
+    shortDescription: "Minimalist push notification server, an alternative to Pushover.",
+    features: ["Simple REST API to send notifications from any script", "Official Android app", "Plugins to extend functionality"],
+    pros: ["Extremely lightweight and simple to understand", "Great if you only need basic notifications with no frills"],
+    cons: ["No official iOS app (unlike ntfy)"],
+  },
+  openhands: {
+    description:
+      "OpenHands is an autonomous coding agent that can write code, run commands and browse the web inside a sandbox to complete development tasks end to end — the open alternative to Devin.",
+    shortDescription: "Autonomous AI coding agent in a sandbox, an open alternative to Devin.",
+    features: ["Writes, runs and debugs code autonomously in a sandbox", "Can browse the web and use terminal tools", "Compatible with local models or external APIs (you pick the model)"],
+    pros: ["You're not locked into a single model provider — you choose which to use", "Extremely active development, one of the most followed open source coding agents"],
+    cons: ["Needs access to the Docker socket to create its sandboxes — review the security implications"],
+  },
+  openhab: {
+    description:
+      "openHAB is a home automation platform focused on interoperability across protocols and manufacturers, with a powerful rules engine aimed at users who want fine-grained control over every automation.",
+    shortDescription: "Home automation focused on interoperability, an alternative to Home Assistant.",
+    features: ["Very powerful rules engine for complex automations", "Supports hundreds of protocols and bindings (KNX, Z-Wave, MQTT...)", "Configurable historical state persistence"],
+    pros: ["Especially strong for 'serious' home automation installs (KNX, built-in wiring)", "Veteran, highly technical community"],
+    cons: ["Steeper learning curve than Home Assistant, less modern interface"],
+  },
+  miniflux: {
+    description:
+      "Miniflux is a minimalist, fast, distraction-free RSS reader, built for reading lots of feeds with no visual clutter — the lightest self-hosted alternative to Feedly.",
+    shortDescription: "Minimalist, very fast RSS reader, an alternative to Feedly.",
+    features: ["Minimalist interface built for fast reading, no distractions", "Supports filtering and content-blocking rules", "API compatible with third-party apps (Reeder, etc.)"],
+    pros: ["Extremely fast even with thousands of unread articles", "A single binary, very easy to maintain"],
+    cons: ["The interface is deliberately plain — not for anyone looking for something visual like Feedly"],
+  },
+  homebox: {
+    description:
+      "Homebox is a home inventory: what you own, where it's stored and what it cost, with printable QR labels for every box or shelf — so you never have to ask yourself where you put something again.",
+    shortDescription: "Home inventory with QR labels, an alternative to paid inventory apps.",
+    features: ["Printable QR labels to locate any item", "Warranty and purchase-value tracking", "Installable web app on your phone (PWA)"],
+    pros: ["Very lightweight and quick to set up for a full home inventory", "Free compared to subscription-based inventory apps"],
+    cons: ["Loading the initial inventory of a whole house takes time, like with any app of this kind"],
+  },
+  wallos: {
+    description:
+      "Wallos tracks all your recurring subscriptions (streaming, software, gym...) in one place, with reminders before every charge and charts of how much that 'silent spending' is costing you each month.",
+    shortDescription: "Recurring subscription tracking, an alternative to Rocket Money.",
+    features: ["Calendar view of all upcoming charges", "Notifications before every renewal", "Monthly/yearly spending charts by category"],
+    pros: ["Helps spot forgotten subscriptions you're still paying for", "Very simple to install, no heavy dependencies"],
+    cons: ["Manual tracking only — it doesn't connect to your bank to detect charges automatically"],
+  },
+  "tandoor-recipes": {
+    description:
+      "Tandoor Recipes manages recipes, meal planning and shopping lists with a strong focus on shared family cookbooks and automatic quantity scaling.",
+    shortDescription: "Recipes, weekly menu and shared cookbooks, an alternative to Paprika.",
+    features: ["Cookbooks shared between several users/family", "Automatic ingredient scaling by number of servings", "Import from hundreds of recipe websites"],
+    pros: ["Much more geared toward shared/family use than Mealie", "Active community with lots of integrations"],
+    cons: ["Its AGPL-3.0 license includes a 'Commons Clause' that restricts offering it as a paid service to third parties"],
+  },
+  "changedetection-io": {
+    description:
+      "changedetection.io watches any webpage and alerts you the moment a price, stock availability or any text you care about changes, with no limit on how many sites you watch like Visualping's free plans have.",
+    shortDescription: "Website change monitoring, an alternative to Visualping.",
+    features: ["Watches prices, stock or any text/CSS on a page", "Notifications to dozens of different services", "Supports JavaScript-heavy pages (via headless browser)"],
+    pros: ["No artificial limit on how many sites you watch", "Widely used to catch price drops and restocks"],
+    cons: ["Watching JavaScript-heavy pages requires enabling headless browser mode, which uses more resources"],
+  },
+  firecrawl: {
+    description:
+      "Firecrawl turns any website into clean Markdown or JSON, ready to feed an AI or RAG pipeline, handling JavaScript, pagination and whole-site crawling for you.",
+    shortDescription: "Web scraping for AI pipelines, a self-hosted alternative to Apify.",
+    features: ["Converts any website to clean Markdown/JSON for LLMs", "Full-site crawling with depth control", "Renders JavaScript via built-in Playwright"],
+    pros: ["Saves a huge amount of manual scraping time for AI/RAG pipelines", "The self-hosted core is free; you only pay if you use their cloud API"],
+    cons: ["Some advanced features (built-in AI extraction, rotating proxies) are geared toward their paid cloud version"],
+  },
+  memos: {
+    description:
+      "Memos is a lightweight, quick-note app, like a private wall of sticky notes: write, tag with #hashtags and you're done, without the overhead of a full productivity app.",
+    shortDescription: "Lightweight quick notes with hashtags, a minimalist alternative to Notion.",
+    features: ["Quick notes with #hashtags for on-the-fly organization", "Open, extensible API", "Private or public per note"],
+    pros: ["A single lightweight binary, starts in seconds", "Great for capturing ideas fast with no friction"],
+    cons: ["Not meant to replace a full wiki — it's deliberately simple"],
+  },
+  revolt: {
+    description:
+      "Revolt is a chat platform with servers, voice channels and bots very similar to Discord in user experience, but open source and self-hostable on your own infrastructure.",
+    shortDescription: "Discord-style server and voice chat, fully open source and self-hostable.",
+    features: ["Servers, text and voice channels, just like Discord", "Bots and a public API for integrations", "Web, mobile and desktop clients"],
+    pros: ["Very familiar experience for anyone coming from Discord", "100% of your servers and messages under your control"],
+    cons: ["Bot ecosystem and community are still much smaller than Discord's"],
+  },
+  "speedtest-tracker": {
+    description:
+      "Speedtest Tracker runs internet speed tests on the schedule you define and keeps the history in charts, so you have real proof if you ever need to complain to your ISP about a slow connection.",
+    shortDescription: "Automatic history of your internet connection speed.",
+    features: ["Scheduled tests (hourly, daily...)", "Historical upload/download speed charts", "Alerts if speed drops below a threshold"],
+    pros: ["Objective, dated proof if your ISP isn't delivering the speed you're paying for", "Very lightweight, runs well on any NAS"],
+    cons: ["Each speed test uses some of your bandwidth while it runs"],
+  },
+  "pocket-id": {
+    description:
+      "Pocket ID is a lightweight identity server focused on passkeys (passwordless authentication via fingerprint/Face ID/security key), built to protect your own HomeLab services with OIDC.",
+    shortDescription: "Lightweight OIDC server focused on passkeys, no passwords.",
+    features: ["Login with passkeys only, no passwords to leak", "Standard OIDC protocol, compatible with most apps", "Simple admin panel, built for a single user/family"],
+    pros: ["Much lighter than Keycloak/Authentik if you just need basic OIDC with passkeys", "Removes the risk of reused or weak passwords"],
+    cons: ["Relying on passkeys means you need compatible devices (most recent phones and computers are)"],
+  },
+  silverbullet: {
+    description:
+      "SilverBullet is a personal knowledge base in plain Markdown text, with an editor that behaves more like a programming language for notes (templates, live queries) than a regular text editor.",
+    shortDescription: "Personal Markdown knowledge base with templates and live queries.",
+    features: ["Everything is stored as plain Markdown files, no database", "Live query language inside your own notes", "Works offline as a PWA"],
+    pros: ["Your notes are plain text files — you're never trapped in a proprietary format", "Very lightweight, a single container with no database"],
+    cons: ["The templating/query language has its own learning curve"],
+  },
+  wger: {
+    description:
+      "wger is a workout and nutrition manager: exercise routines, body weight tracking and a meal diary with an exercise and ingredient database, with no ads or subscription.",
+    shortDescription: "Workout and nutrition tracking, an ad-free alternative to MyFitnessPal.",
+    features: ["Exercise database with videos and illustrations", "Nutrition diary with a food database", "Routine planning by weeks/mesocycles"],
+    pros: ["No ads or features locked behind a subscription", "Official mobile app in addition to the web"],
+    cons: ["The food database is smaller than MyFitnessPal's — you may need to add local foods by hand"],
+  },
+  kestra: {
+    description:
+      "Kestra orchestrates data pipelines and complex workflows defined in YAML, with a live visual editor and hundreds of plugins — a self-hosted alternative to managed orchestration platforms like Prefect Cloud.",
+    shortDescription: "Workflow and data pipeline orchestration, an alternative to Prefect Cloud.",
+    features: ["Declarative YAML workflows with a live visual editor", "Hundreds of plugins (databases, APIs, AI, cloud...)", "Retries, cron scheduling and event triggers"],
+    pros: ["Not as heavy as infrastructure-as-code nor as limited as drag-and-drop — a comfortable middle ground", "Very active development and good documentation"],
+    cons: ["Overkill for very simple pipelines — n8n is faster to get started with"],
+  },
+  kopia: {
+    description:
+      "Kopia makes encrypted, deduplicated backups of your files to whatever destination you want (local disk, NAS, S3, Backblaze B2...), with a web UI to manage and restore snapshots.",
+    shortDescription: "Encrypted, deduplicated backups to any destination, an alternative to paid backup services.",
+    features: ["Deduplication and compression to save backup space", "End-to-end encryption before anything is uploaded", "Supports S3, Backblaze B2, SFTP, local disk and more as a destination"],
+    pros: ["You choose the final destination — no dependency on one provider", "Restoring snapshots is as simple as mounting them as a drive"],
+    cons: ["The web UI is functional but minimalist, built for technical users"],
+  },
+  uptrace: {
+    description:
+      "Uptrace is an OpenTelemetry-native observability platform (traces, metrics and logs in one place) built on ClickHouse, designed as a self-hosted alternative to Datadog or New Relic.",
+    shortDescription: "OpenTelemetry observability (traces, metrics, logs), an alternative to Datadog.",
+    features: ["Traces, metrics and logs unified in one dashboard", "100% compatible with the OpenTelemetry standard", "Built on ClickHouse for very fast queries at scale"],
+    pros: ["Being OpenTelemetry-native, you don't rewrite instrumentation if you switch backends", "Much better query performance than Elasticsearch-based solutions at this data volume"],
+    cons: ["ClickHouse adds one more piece of infrastructure to maintain compared to simpler all-in-one solutions"],
+  },
+  scrutiny: {
+    description:
+      "Scrutiny monitors the S.M.A.R.T. health of your hard drives and SSDs, with a visual dashboard and alerts before a drive fails — so you don't lose data to a 'surprise' that was actually announced in advance.",
+    shortDescription: "S.M.A.R.T. health monitoring for hard drives and SSDs, with early failure alerts.",
+    features: ["Visual dashboard of each disk's S.M.A.R.T. health", "Historical temperature and key metrics over time", "Notifications when a S.M.A.R.T. attribute worsens"],
+    pros: ["Translates cryptic S.M.A.R.T. data into an easy-to-understand traffic light", "Can warn of a disk failure weeks in advance"],
+    cons: ["Needs direct access to disk devices (cap_add SYS_RAWIO), doesn't work well on some NAS with virtualized storage"],
+  },
+  "faster-whisper-server": {
+    description:
+      "faster-whisper-server exposes a local Whisper speech-to-text model through an OpenAI-format-compatible API, so you can transcribe audio without sending it to the cloud or paying per token.",
+    shortDescription: "Local speech-to-text transcription, OpenAI Whisper-compatible API.",
+    features: ["API compatible with OpenAI's transcription endpoint", "Uses faster-whisper (CTranslate2) to transcribe faster than the original Whisper", "Supports GPU (separate image) or CPU"],
+    pros: ["None of the audio you transcribe ever leaves your server", "No per-minute cost, unlike the OpenAI API"],
+    cons: ["Without a GPU, transcribing long audio can be noticeably slower than the cloud API"],
+  },
 };

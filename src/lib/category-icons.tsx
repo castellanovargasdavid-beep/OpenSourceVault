@@ -12,6 +12,9 @@ import {
   Cloud,
   Activity,
   Megaphone,
+  Home,
+  Film,
+  Wallet,
   type LucideIcon,
 } from "lucide-react";
 
@@ -29,4 +32,7 @@ export const categoryIconMap: Record<string, LucideIcon> = {
   cloud: Cloud,
   activity: Activity,
   megaphone: Megaphone,
+  home: Home,
+  film: Film,
+  wallet: Wallet,
 };

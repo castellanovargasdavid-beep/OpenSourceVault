@@ -73,4 +73,19 @@ export const categoriesEn: Record<ToolCategory, CategoryTranslation> = {
     description: "Surveys, forms, newsletters and short links with your own data.",
     slug: "marketing-forms-email",
   },
+  SmartHome: {
+    label: "Smart Home",
+    description: "Home automation, cameras and IoT devices under your own control, with no third-party cloud.",
+    slug: "smart-home",
+  },
+  MediaAutomation: {
+    label: "Media Automation",
+    description: "Organize and manage your movie, TV, music and book library automatically.",
+    slug: "media-automation",
+  },
+  PersonalFinance: {
+    label: "Personal Finance",
+    description: "Track your budget, expenses and subscriptions without handing your banking data to a third-party app.",
+    slug: "personal-finance",
+  },
 };
