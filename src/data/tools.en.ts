@@ -1455,14 +1455,6 @@ export const toolsEn: Record<string, ToolTranslation> = {
     pros: ["Backed by a company (Kaleidos) with active, funded development", "Since it uses SVG, your designs never get trapped in a proprietary format"],
     cons: ["Plugin ecosystem is still smaller than Figma's"],
   },
-  homarr: {
-    description:
-      "Homarr is another HomeLab start page, with drag-and-drop configuration instead of YAML files, built-in authentication and over 20,000 icons included out of the box.",
-    shortDescription: "HomeLab start page with drag-and-drop visual configuration.",
-    features: ["Drag-and-drop visual configuration, no YAML", "Built-in user authentication out of the box", "20,000+ app icons included"],
-    pros: ["More approachable than Homepage for anyone who doesn't want to touch config files", "Very active development"],
-    cons: ["Having more built-in features means it uses somewhat more resources than Homepage"],
-  },
   netdata: {
     description:
       "Netdata monitors every metric of your server (CPU, RAM, disk, network, hundreds of applications) in real time, per second, with a dashboard that configures itself on startup — no Datadog per-host bill.",
@@ -1478,14 +1470,6 @@ export const toolsEn: Record<string, ToolTranslation> = {
     features: ["Real federation between servers, like email", "Built-in end-to-end encryption", "Compatible with the Element client and dozens of other clients"],
     pros: ["Your team can chat with people from other organizations without leaving the protocol", "No central provider can read your encrypted messages or shut down your account"],
     cons: ["Synapse itself is RAM-heavy; large instances are recommended to use 'worker mode'"],
-  },
-  tautulli: {
-    description:
-      "Tautulli monitors your Plex or Jellyfin server: who's watching what, when and from where, with historical stats, notifications and usage charts for your library.",
-    shortDescription: "Usage stats and monitoring for your Plex/Jellyfin server.",
-    features: ["Complete playback history per user", "Notifications when someone starts watching something", "Usage charts by day, user and device"],
-    pros: ["An essential companion if you share your server with others", "Very lightweight, barely uses any resources"],
-    cons: ["Needs Plex or Jellyfin already running — not a media server on its own"],
   },
   kavita: {
     description:
@@ -1535,22 +1519,6 @@ export const toolsEn: Record<string, ToolTranslation> = {
     pros: ["Integrating it into any script takes literally one line of curl", "No artificial message limit and no account required"],
     cons: ["For reliable background iOS notifications it's best to use their public server or configure your own well"],
   },
-  zabbix: {
-    description:
-      "Zabbix is an enterprise-grade infrastructure monitoring platform: servers, networks, applications and cloud services, with alerting and dashboards, without the per-host cost of SaaS platforms.",
-    shortDescription: "Enterprise-grade infrastructure monitoring, a self-hosted alternative to Datadog.",
-    features: ["Monitors servers, network, apps and cloud in one platform", "Lightweight agents for thousands of hosts", "Configurable alerting and auto-remediation"],
-    pros: ["Enterprise-level depth, with over 20 years of development", "No per-host cost, unlike Datadog/New Relic"],
-    cons: ["Steep learning curve compared to Uptime Kuma or Netdata"],
-  },
-  homebridge: {
-    description:
-      "Homebridge bridges devices that aren't natively compatible with Apple HomeKit (proprietary brands, older protocols) into Apple's Home app, through hundreds of community plugins.",
-    shortDescription: "Bridge to bring non-compatible devices into Apple HomeKit.",
-    features: ["Hundreds of community plugins for non-HomeKit-compatible brands", "Web configuration interface (Config UI X)", "Integrates directly into Apple's Home app"],
-    pros: ["The simplest way to get a 'weird' device into HomeKit", "Huge and very active plugin ecosystem"],
-    cons: ["network_mode: host is required for discovery, which reduces the container's isolation"],
-  },
   litellm: {
     description:
       "LiteLLM is a unified gateway/proxy for 100+ LLM providers (OpenAI, Anthropic, local models via Ollama...) with a single OpenAI-format-compatible API, spend limits and centralized logs.",
@@ -1567,14 +1535,6 @@ export const toolsEn: Record<string, ToolTranslation> = {
     pros: ["AI tagging saves a lot of manual organization time", "Very young project but with very active development"],
     cons: ["Automatic AI tagging needs an AI provider key (local or external) configured to work"],
   },
-  jan: {
-    description:
-      "Jan is a desktop app with a ChatGPT-style interface for running language models locally on your own computer, with no internet connection or account required, plus extension support and a local API server.",
-    shortDescription: "Chat with local AI models on your desktop, no account or connection, an alternative to ChatGPT.",
-    features: ["ChatGPT-style interface over models running 100% on your machine", "Local API server compatible with the OpenAI format", "Works fully offline"],
-    pros: ["Nothing you type ever leaves your computer", "Doesn't require a powerful GPU for smaller models"],
-    cons: ["Performance and quality depend entirely on the local model you pick and your available hardware"],
-  },
   coder: {
     description:
       "Coder spins up remote, reproducible development environments on your own infrastructure, which your team connects to from the browser or their local editor — the self-hosted alternative to GitHub Codespaces.",
@@ -1583,14 +1543,6 @@ export const toolsEn: Record<string, ToolTranslation> = {
     pros: ["Runs on your own cloud or server, no per-hour Codespaces bill", "The core is free with no user limit for the community edition"],
     cons: ["Enterprise governance features (advanced SSO, per-team quotas) require the paid Enterprise license"],
   },
-  gotify: {
-    description:
-      "Gotify is a simple, lightweight push notification server for your own scripts and applications, with a minimalist REST API and an Android app — the simplest option if you don't need everything ntfy offers.",
-    shortDescription: "Minimalist push notification server, an alternative to Pushover.",
-    features: ["Simple REST API to send notifications from any script", "Official Android app", "Plugins to extend functionality"],
-    pros: ["Extremely lightweight and simple to understand", "Great if you only need basic notifications with no frills"],
-    cons: ["No official iOS app (unlike ntfy)"],
-  },
   openhands: {
     description:
       "OpenHands is an autonomous coding agent that can write code, run commands and browse the web inside a sandbox to complete development tasks end to end — the open alternative to Devin.",
@@ -1598,22 +1550,6 @@ export const toolsEn: Record<string, ToolTranslation> = {
     features: ["Writes, runs and debugs code autonomously in a sandbox", "Can browse the web and use terminal tools", "Compatible with local models or external APIs (you pick the model)"],
     pros: ["You're not locked into a single model provider — you choose which to use", "Extremely active development, one of the most followed open source coding agents"],
     cons: ["Needs access to the Docker socket to create its sandboxes — review the security implications"],
-  },
-  openhab: {
-    description:
-      "openHAB is a home automation platform focused on interoperability across protocols and manufacturers, with a powerful rules engine aimed at users who want fine-grained control over every automation.",
-    shortDescription: "Home automation focused on interoperability, an alternative to Home Assistant.",
-    features: ["Very powerful rules engine for complex automations", "Supports hundreds of protocols and bindings (KNX, Z-Wave, MQTT...)", "Configurable historical state persistence"],
-    pros: ["Especially strong for 'serious' home automation installs (KNX, built-in wiring)", "Veteran, highly technical community"],
-    cons: ["Steeper learning curve than Home Assistant, less modern interface"],
-  },
-  miniflux: {
-    description:
-      "Miniflux is a minimalist, fast, distraction-free RSS reader, built for reading lots of feeds with no visual clutter — the lightest self-hosted alternative to Feedly.",
-    shortDescription: "Minimalist, very fast RSS reader, an alternative to Feedly.",
-    features: ["Minimalist interface built for fast reading, no distractions", "Supports filtering and content-blocking rules", "API compatible with third-party apps (Reeder, etc.)"],
-    pros: ["Extremely fast even with thousands of unread articles", "A single binary, very easy to maintain"],
-    cons: ["The interface is deliberately plain — not for anyone looking for something visual like Feedly"],
   },
   homebox: {
     description:
@@ -1630,14 +1566,6 @@ export const toolsEn: Record<string, ToolTranslation> = {
     features: ["Calendar view of all upcoming charges", "Notifications before every renewal", "Monthly/yearly spending charts by category"],
     pros: ["Helps spot forgotten subscriptions you're still paying for", "Very simple to install, no heavy dependencies"],
     cons: ["Manual tracking only — it doesn't connect to your bank to detect charges automatically"],
-  },
-  "tandoor-recipes": {
-    description:
-      "Tandoor Recipes manages recipes, meal planning and shopping lists with a strong focus on shared family cookbooks and automatic quantity scaling.",
-    shortDescription: "Recipes, weekly menu and shared cookbooks, an alternative to Paprika.",
-    features: ["Cookbooks shared between several users/family", "Automatic ingredient scaling by number of servings", "Import from hundreds of recipe websites"],
-    pros: ["Much more geared toward shared/family use than Mealie", "Active community with lots of integrations"],
-    cons: ["Its AGPL-3.0 license includes a 'Commons Clause' that restricts offering it as a paid service to third parties"],
   },
   "changedetection-io": {
     description:
@@ -1663,14 +1591,6 @@ export const toolsEn: Record<string, ToolTranslation> = {
     pros: ["A single lightweight binary, starts in seconds", "Great for capturing ideas fast with no friction"],
     cons: ["Not meant to replace a full wiki — it's deliberately simple"],
   },
-  revolt: {
-    description:
-      "Revolt is a chat platform with servers, voice channels and bots very similar to Discord in user experience, but open source and self-hostable on your own infrastructure.",
-    shortDescription: "Discord-style server and voice chat, fully open source and self-hostable.",
-    features: ["Servers, text and voice channels, just like Discord", "Bots and a public API for integrations", "Web, mobile and desktop clients"],
-    pros: ["Very familiar experience for anyone coming from Discord", "100% of your servers and messages under your control"],
-    cons: ["Bot ecosystem and community are still much smaller than Discord's"],
-  },
   "speedtest-tracker": {
     description:
       "Speedtest Tracker runs internet speed tests on the schedule you define and keeps the history in charts, so you have real proof if you ever need to complain to your ISP about a slow connection.",
@@ -1695,14 +1615,6 @@ export const toolsEn: Record<string, ToolTranslation> = {
     pros: ["Your notes are plain text files — you're never trapped in a proprietary format", "Very lightweight, a single container with no database"],
     cons: ["The templating/query language has its own learning curve"],
   },
-  wger: {
-    description:
-      "wger is a workout and nutrition manager: exercise routines, body weight tracking and a meal diary with an exercise and ingredient database, with no ads or subscription.",
-    shortDescription: "Workout and nutrition tracking, an ad-free alternative to MyFitnessPal.",
-    features: ["Exercise database with videos and illustrations", "Nutrition diary with a food database", "Routine planning by weeks/mesocycles"],
-    pros: ["No ads or features locked behind a subscription", "Official mobile app in addition to the web"],
-    cons: ["The food database is smaller than MyFitnessPal's — you may need to add local foods by hand"],
-  },
   kestra: {
     description:
       "Kestra orchestrates data pipelines and complex workflows defined in YAML, with a live visual editor and hundreds of plugins — a self-hosted alternative to managed orchestration platforms like Prefect Cloud.",
@@ -1726,14 +1638,6 @@ export const toolsEn: Record<string, ToolTranslation> = {
     features: ["Traces, metrics and logs unified in one dashboard", "100% compatible with the OpenTelemetry standard", "Built on ClickHouse for very fast queries at scale"],
     pros: ["Being OpenTelemetry-native, you don't rewrite instrumentation if you switch backends", "Much better query performance than Elasticsearch-based solutions at this data volume"],
     cons: ["ClickHouse adds one more piece of infrastructure to maintain compared to simpler all-in-one solutions"],
-  },
-  scrutiny: {
-    description:
-      "Scrutiny monitors the S.M.A.R.T. health of your hard drives and SSDs, with a visual dashboard and alerts before a drive fails — so you don't lose data to a 'surprise' that was actually announced in advance.",
-    shortDescription: "S.M.A.R.T. health monitoring for hard drives and SSDs, with early failure alerts.",
-    features: ["Visual dashboard of each disk's S.M.A.R.T. health", "Historical temperature and key metrics over time", "Notifications when a S.M.A.R.T. attribute worsens"],
-    pros: ["Translates cryptic S.M.A.R.T. data into an easy-to-understand traffic light", "Can warn of a disk failure weeks in advance"],
-    cons: ["Needs direct access to disk devices (cap_add SYS_RAWIO), doesn't work well on some NAS with virtualized storage"],
   },
   "faster-whisper-server": {
     description:

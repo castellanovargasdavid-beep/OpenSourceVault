@@ -7750,46 +7750,6 @@ docker compose -p penpot up -d
     publishDate: "2026-10-23",
   },
   {
-    id: "homarr",
-    name: "Homarr",
-    slug: "homarr",
-    replaces: ["Notion"],
-    category: "DevTools",
-    description:
-      "Homarr es otro panel de inicio para tu HomeLab, con configuración por arrastrar-y-soltar en vez de archivos YAML, autenticación integrada y más de 20.000 iconos ya incluidos.",
-    shortDescription: "Panel de inicio para tu HomeLab con configuración visual por arrastrar y soltar.",
-    websiteUrl: "https://homarr.dev",
-    githubUrl: "https://github.com/homarr-labs/homarr",
-    starsCount: 10500,
-    license: "Apache-2.0",
-    database: "SQLite",
-    language: "TypeScript (Next.js)",
-    platforms: ["Web"],
-    fossModel: "FOSS",
-    dockerCompose: `services:
-  homarr:
-    image: ghcr.io/homarr-labs/homarr:latest
-    ports:
-      - "7575:7575"
-    environment:
-      - SECRET_ENCRYPTION_KEY=change-me-64-char-hex-string
-    volumes:
-      - homarr_data:/appdata
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    restart: unless-stopped
-volumes:
-  homarr_data: {}
-`,
-    affiliateLinks,
-    features: ["Configuración visual por arrastrar y soltar, sin YAML", "Autenticación de usuarios integrada de fábrica", "Más de 20.000 iconos de apps incluidos"],
-    techStack: ["TypeScript", "Next.js", "SQLite"],
-    pros: ["Más accesible que Homepage para quien no quiere tocar archivos de configuración", "Desarrollo muy activo"],
-    cons: ["Al tener más funciones integradas, consume algo más de recursos que Homepage"],
-    tags: ["docker-ready", "permissive-license"],
-    status: "scheduled",
-    publishDate: "2026-10-23",
-  },
-  {
     id: "netdata",
     name: "Netdata",
     slug: "netdata",
@@ -7889,48 +7849,7 @@ volumes:
     cons: ["Synapse en sí es pesado en RAM; para instancias grandes se recomienda el 'worker mode'"],
     tags: ["docker-ready"],
     status: "scheduled",
-    publishDate: "2026-10-26",
-  },
-  {
-    id: "tautulli",
-    name: "Tautulli",
-    slug: "tautulli",
-    replaces: ["Netflix"],
-    category: "MediaAutomation",
-    description:
-      "Tautulli monitoriza tu servidor Plex o Jellyfin: quién ve qué, cuándo y desde dónde, con estadísticas históricas, notificaciones y gráficas de uso de tu biblioteca.",
-    shortDescription: "Estadísticas y monitoreo de uso para tu servidor Plex/Jellyfin.",
-    websiteUrl: "https://tautulli.com",
-    githubUrl: "https://github.com/Tautulli/Tautulli",
-    starsCount: 5100,
-    license: "GPL-3.0",
-    database: "SQLite",
-    language: "Python",
-    platforms: ["Web"],
-    fossModel: "FOSS",
-    dockerCompose: `services:
-  tautulli:
-    image: lscr.io/linuxserver/tautulli:latest
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Etc/UTC
-    volumes:
-      - tautulli_config:/config
-    ports:
-      - "8181:8181"
-    restart: unless-stopped
-volumes:
-  tautulli_config: {}
-`,
-    affiliateLinks,
-    features: ["Historial completo de reproducciones por usuario", "Notificaciones cuando alguien empieza a ver algo", "Gráficas de uso por día, usuario y dispositivo"],
-    techStack: ["Python", "SQLite"],
-    pros: ["Complemento imprescindible si compartes tu servidor con más gente", "Muy ligero, casi no consume recursos"],
-    cons: ["Necesita Plex o Jellyfin ya funcionando — no es un servidor de medios por sí solo"],
-    tags: ["docker-ready"],
-    status: "scheduled",
-    publishDate: "2026-10-26",
+    publishDate: "2026-10-23",
   },
   {
     id: "kavita",
@@ -8005,7 +7924,7 @@ volumes:
     cons: ["No es un servidor de identidad completo (sin gestión de usuarios avanzada tipo Keycloak)"],
     tags: ["docker-ready", "permissive-license"],
     status: "scheduled",
-    publishDate: "2026-10-29",
+    publishDate: "2026-10-26",
   },
   {
     id: "calibre-web",
@@ -8047,7 +7966,7 @@ volumes:
     cons: ["La edición de metadatos avanzada sigue dependiendo del Calibre de escritorio"],
     tags: ["docker-ready"],
     status: "scheduled",
-    publishDate: "2026-10-29",
+    publishDate: "2026-10-26",
   },
   {
     id: "actual-budget",
@@ -8125,7 +8044,7 @@ volumes:
     cons: ["La interfaz web es funcional pero menos moderna visualmente que Miniflux"],
     tags: ["docker-ready"],
     status: "scheduled",
-    publishDate: "2026-11-01",
+    publishDate: "2026-10-29",
   },
   {
     id: "ntfy",
@@ -8164,103 +8083,7 @@ volumes:
     cons: ["Para notificaciones fiables en iOS en segundo plano conviene usar su servidor público o configurar bien el propio"],
     tags: ["docker-ready", "permissive-license"],
     status: "scheduled",
-    publishDate: "2026-11-01",
-  },
-  {
-    id: "zabbix",
-    name: "Zabbix",
-    slug: "zabbix",
-    replaces: ["Datadog"],
-    category: "MonitoringLogs",
-    description:
-      "Zabbix es una plataforma de monitoreo de infraestructura de nivel empresarial: servidores, redes, aplicaciones y servicios en la nube, con alertas y dashboards, sin el coste por host de las plataformas SaaS.",
-    shortDescription: "Monitoreo de infraestructura de nivel empresarial, alternativa auto-hospedada a Datadog.",
-    websiteUrl: "https://www.zabbix.com",
-    githubUrl: "https://github.com/zabbix/zabbix",
-    starsCount: 3500,
-    license: "GPL-2.0",
-    database: "PostgreSQL",
-    language: "C / PHP",
-    platforms: ["Web"],
-    fossModel: "FOSS",
-    dockerCompose: `services:
-  db:
-    image: postgres:16
-    environment:
-      POSTGRES_USER: zabbix
-      POSTGRES_PASSWORD: change-me
-      POSTGRES_DB: zabbix
-    volumes:
-      - zabbix_db:/var/lib/postgresql/data
-  server:
-    image: zabbix/zabbix-server-pgsql:latest
-    depends_on:
-      - db
-    environment:
-      DB_SERVER_HOST: db
-      POSTGRES_USER: zabbix
-      POSTGRES_PASSWORD: change-me
-    ports:
-      - "10051:10051"
-  web:
-    image: zabbix/zabbix-web-nginx-pgsql:latest
-    depends_on:
-      - server
-      - db
-    environment:
-      DB_SERVER_HOST: db
-      POSTGRES_USER: zabbix
-      POSTGRES_PASSWORD: change-me
-      ZBX_SERVER_HOST: server
-    ports:
-      - "8080:8080"
-volumes:
-  zabbix_db: {}
-`,
-    affiliateLinks,
-    features: ["Monitoreo de servidores, red, apps y nube en una sola plataforma", "Agentes ligeros para miles de hosts", "Alertas y auto-remediación configurables"],
-    techStack: ["C", "PHP", "PostgreSQL"],
-    pros: ["Nivel de profundidad de nivel empresarial, con más de 20 años de desarrollo", "Sin coste por host, a diferencia de Datadog/New Relic"],
-    cons: ["Curva de aprendizaje pronunciada comparado con Uptime Kuma o Netdata"],
-    tags: ["docker-ready"],
-    status: "scheduled",
-    publishDate: "2026-11-01",
-  },
-  {
-    id: "homebridge",
-    name: "Homebridge",
-    slug: "homebridge",
-    replaces: ["SmartThings"],
-    category: "SmartHome",
-    description:
-      "Homebridge conecta dispositivos que no son compatibles con Apple HomeKit de forma nativa (marcas propietarias, protocolos antiguos) a la app Casa de Apple, mediante cientos de plugins de la comunidad.",
-    shortDescription: "Puente para llevar dispositivos no compatibles a Apple HomeKit.",
-    websiteUrl: "https://homebridge.io",
-    githubUrl: "https://github.com/homebridge/homebridge",
-    starsCount: 21500,
-    license: "Apache-2.0",
-    database: "None / File-based",
-    language: "Node.js",
-    platforms: ["Web", "Mobile (iOS/Android)"],
-    fossModel: "FOSS",
-    dockerCompose: `services:
-  homebridge:
-    image: homebridge/homebridge:latest
-    network_mode: host # necesario para el descubrimiento HomeKit/mDNS
-    volumes:
-      - homebridge_data:/homebridge
-    restart: unless-stopped
-volumes:
-  homebridge_data: {}
-`,
-    affiliateLinks,
-    features: ["Cientos de plugins comunitarios para marcas no compatibles con HomeKit", "Interfaz web de configuración (Config UI X)", "Se integra directamente en la app Casa de Apple"],
-    techStack: ["Node.js"],
-    pros: ["La forma más sencilla de meter un dispositivo 'raro' dentro de HomeKit", "Ecosistema de plugins enorme y muy activo"],
-    cons: ["network_mode: host es necesario para el descubrimiento, lo que reduce el aislamiento del contenedor"],
-    tags: ["docker-ready", "permissive-license"],
-    status: "scheduled",
-    publishDate: "2026-11-04",
+    publishDate: "2026-10-29",
   },
   {
     id: "litellm",
@@ -8308,7 +8131,7 @@ volumes:
     cons: ["Algunas funciones de administración avanzada (SSO, presupuestos por equipo) están en el plan Enterprise de pago"],
     tags: ["docker-ready", "permissive-license"],
     status: "scheduled",
-    publishDate: "2026-11-04",
+    publishDate: "2026-11-01",
   },
   {
     id: "karakeep",
@@ -8358,38 +8181,7 @@ volumes:
     cons: ["El etiquetado automático por IA necesita configurar una clave de un proveedor de IA (local o externo) para funcionar"],
     tags: ["docker-ready"],
     status: "scheduled",
-    publishDate: "2026-11-04",
-  },
-  {
-    id: "jan",
-    name: "Jan",
-    slug: "jan",
-    replaces: ["ChatGPT"],
-    category: "AI",
-    description:
-      "Jan es una app de escritorio con interfaz tipo ChatGPT para correr modelos de lenguaje localmente en tu propio ordenador, sin conexión a internet ni cuenta, con soporte de extensiones y servidor API local.",
-    shortDescription: "Chat con modelos de IA locales en tu escritorio, sin cuenta ni conexión, alternativa a ChatGPT.",
-    websiteUrl: "https://jan.ai",
-    githubUrl: "https://github.com/janhq/jan",
-    starsCount: 27000,
-    license: "AGPL-3.0",
-    database: "None / File-based",
-    language: "TypeScript / Rust",
-    platforms: ["Desktop (Mac/Win/Linux)"],
-    fossModel: "FOSS",
-    dockerCompose: `# Jan es una app de escritorio (Mac/Windows/Linux), no un servicio Docker:
-# se descarga e instala directamente desde su web oficial.
-# Quien quiera exponerlo como servidor API puede activar su "Local API Server"
-# integrado una vez instalado, sin necesidad de contenedores.
-`,
-    affiliateLinks,
-    features: ["Interfaz tipo ChatGPT sobre modelos que corren 100% en tu máquina", "Servidor API local compatible con el formato de OpenAI", "Funciona sin conexión a internet"],
-    techStack: ["TypeScript", "Rust"],
-    pros: ["Nada de lo que escribas sale de tu ordenador", "No requiere GPU potente para modelos pequeños"],
-    cons: ["El rendimiento y calidad dependen totalmente del modelo local que elijas y del hardware disponible"],
-    tags: [],
-    status: "scheduled",
-    publishDate: "2026-11-07",
+    publishDate: "2026-11-01",
   },
   {
     id: "coder",
@@ -8436,44 +8228,7 @@ volumes:
     cons: ["Funciones de gobernanza empresarial (SSO avanzado, cuotas por equipo) requieren la licencia Enterprise de pago"],
     tags: ["docker-ready"],
     status: "scheduled",
-    publishDate: "2026-11-07",
-  },
-  {
-    id: "gotify",
-    name: "Gotify",
-    slug: "gotify",
-    replaces: ["Pushover"],
-    category: "DevTools",
-    description:
-      "Gotify es un servidor de notificaciones push simple y ligero para tus propios scripts y aplicaciones, con una API REST minimalista y una app Android — la opción más sencilla si no necesitas todas las funciones de ntfy.",
-    shortDescription: "Servidor de notificaciones push minimalista, alternativa a Pushover.",
-    websiteUrl: "https://gotify.net",
-    githubUrl: "https://github.com/gotify/server",
-    starsCount: 9200,
-    license: "MIT",
-    database: "SQLite",
-    language: "Go",
-    platforms: ["Web", "Mobile (iOS/Android)"],
-    fossModel: "FOSS",
-    dockerCompose: `services:
-  gotify:
-    image: gotify/server:latest
-    ports:
-      - "80:80"
-    volumes:
-      - gotify_data:/app/data
-    restart: unless-stopped
-volumes:
-  gotify_data: {}
-`,
-    affiliateLinks,
-    features: ["API REST simple para enviar notificaciones desde cualquier script", "App Android oficial", "Plugins para extender funcionalidad"],
-    techStack: ["Go", "SQLite"],
-    pros: ["Extremadamente ligero y simple de entender", "Ideal si solo necesitas notificaciones básicas sin florituras"],
-    cons: ["Sin app oficial de iOS (a diferencia de ntfy)"],
-    tags: ["docker-ready", "permissive-license"],
-    status: "scheduled",
-    publishDate: "2026-11-07",
+    publishDate: "2026-11-01",
   },
   {
     id: "openhands",
@@ -8511,99 +8266,7 @@ volumes:
     cons: ["Necesita acceso al socket de Docker para crear sus sandboxes — revisa las implicaciones de seguridad"],
     tags: ["docker-ready", "permissive-license"],
     status: "scheduled",
-    publishDate: "2026-11-10",
-  },
-  {
-    id: "openhab",
-    name: "openHAB",
-    slug: "openhab",
-    replaces: ["SmartThings"],
-    category: "SmartHome",
-    description:
-      "openHAB es una plataforma de automatización del hogar centrada en la interoperabilidad entre protocolos y fabricantes, con un motor de reglas potente pensado para usuarios que quieren control fino sobre cada automatización.",
-    shortDescription: "Automatización del hogar centrada en interoperabilidad, alternativa a Home Assistant.",
-    websiteUrl: "https://www.openhab.org",
-    githubUrl: "https://github.com/openhab/openhab-core",
-    starsCount: 700,
-    license: "EPL-2.0",
-    database: "None / File-based",
-    language: "Java",
-    platforms: ["Web", "Mobile (iOS/Android)"],
-    fossModel: "FOSS",
-    dockerCompose: `services:
-  openhab:
-    image: openhab/openhab:latest
-    network_mode: host # necesario para el descubrimiento automático de dispositivos
-    volumes:
-      - openhab_addons:/openhab/addons
-      - openhab_conf:/openhab/conf
-      - openhab_userdata:/openhab/userdata
-    environment:
-      - TZ=Etc/UTC
-    restart: unless-stopped
-volumes:
-  openhab_addons: {}
-  openhab_conf: {}
-  openhab_userdata: {}
-`,
-    affiliateLinks,
-    features: ["Motor de reglas muy potente para automatizaciones complejas", "Soporta cientos de protocolos y bindings (KNX, Z-Wave, MQTT...)", "Persistencia histórica de estados configurable"],
-    techStack: ["Java"],
-    pros: ["Especialmente fuerte en instalaciones domóticas 'serias' (KNX, domótica de obra)", "Comunidad veterana, muy técnica"],
-    cons: ["Curva de aprendizaje más pronunciada que Home Assistant, interfaz menos moderna"],
-    tags: ["docker-ready"],
-    status: "scheduled",
-    publishDate: "2026-11-10",
-  },
-  {
-    id: "miniflux",
-    name: "Miniflux",
-    slug: "miniflux",
-    replaces: ["Feedly"],
-    category: "Productivity",
-    description:
-      "Miniflux es un lector de RSS minimalista, rápido y sin distracciones, pensado para leer muchas fuentes sin ruido visual — la alternativa auto-hospedada más ligera a Feedly.",
-    shortDescription: "Lector de RSS minimalista y muy rápido, alternativa a Feedly.",
-    websiteUrl: "https://miniflux.app",
-    githubUrl: "https://github.com/miniflux/v2",
-    starsCount: 7600,
-    license: "Apache-2.0",
-    database: "PostgreSQL",
-    language: "Go",
-    platforms: ["Web", "Mobile (iOS/Android)"],
-    fossModel: "FOSS",
-    dockerCompose: `services:
-  db:
-    image: postgres:16
-    environment:
-      POSTGRES_USER: miniflux
-      POSTGRES_PASSWORD: change-me
-      POSTGRES_DB: miniflux
-    volumes:
-      - miniflux_db:/var/lib/postgresql/data
-  miniflux:
-    image: miniflux/miniflux:latest
-    depends_on:
-      - db
-    ports:
-      - "8080:8080"
-    environment:
-      - DATABASE_URL=postgres://miniflux:change-me@db/miniflux?sslmode=disable
-      - RUN_MIGRATIONS=1
-      - CREATE_ADMIN=1
-      - ADMIN_USERNAME=admin
-      - ADMIN_PASSWORD=change-me-super-secret
-volumes:
-  miniflux_db: {}
-`,
-    affiliateLinks,
-    features: ["Interfaz minimalista pensada para leer rápido, sin distracciones", "Soporta reglas de filtrado y bloqueo de contenido", "API compatible con apps de terceros (Reeder, etc.)"],
-    techStack: ["Go", "PostgreSQL"],
-    pros: ["Extremadamente rápido incluso con miles de artículos sin leer", "Un solo binario, muy fácil de mantener"],
-    cons: ["La interfaz es deliberadamente austera — no es para quien busca algo visual como Feedly"],
-    tags: ["docker-ready", "permissive-license"],
-    status: "scheduled",
-    publishDate: "2026-11-10",
+    publishDate: "2026-11-04",
   },
   {
     id: "homebox",
@@ -8642,7 +8305,7 @@ volumes:
     cons: ["Cargar el inventario inicial de toda una casa lleva su tiempo, como cualquier app de este tipo"],
     tags: ["docker-ready", "permissive-license"],
     status: "scheduled",
-    publishDate: "2026-11-13",
+    publishDate: "2026-11-04",
   },
   {
     id: "wallos",
@@ -8681,60 +8344,7 @@ volumes:
     cons: ["Es solo para seguimiento manual — no se conecta a tu banco para detectar cargos automáticamente"],
     tags: ["docker-ready"],
     status: "scheduled",
-    publishDate: "2026-11-13",
-  },
-  {
-    id: "tandoor-recipes",
-    name: "Tandoor Recipes",
-    slug: "tandoor-recipes",
-    replaces: ["Paprika Recipe Manager"],
-    category: "Productivity",
-    description:
-      "Tandoor Recipes gestiona recetas, planificación de comidas y listas de la compra con un fuerte enfoque en libros de recetas compartidos en familia y escalado automático de cantidades.",
-    shortDescription: "Recetas, menú semanal y libros de cocina compartidos, alternativa a Paprika.",
-    websiteUrl: "https://tandoor.dev",
-    githubUrl: "https://github.com/TandoorRecipes/recipes",
-    starsCount: 6200,
-    license: "AGPL-3.0",
-    database: "PostgreSQL",
-    language: "Python (Django)",
-    platforms: ["Web", "Mobile (iOS/Android)"],
-    fossModel: "OpenCore",
-    dockerCompose: `services:
-  db:
-    image: postgres:16
-    environment:
-      POSTGRES_DB: tandoor
-      POSTGRES_USER: tandoor
-      POSTGRES_PASSWORD: change-me
-    volumes:
-      - tandoor_db:/var/lib/postgresql/data
-  web:
-    image: vabene1111/recipes:latest
-    depends_on:
-      - db
-    ports:
-      - "8090:80"
-    environment:
-      - SECRET_KEY=change-me-super-secret
-      - DB_ENGINE=django.db.backends.postgresql
-      - POSTGRES_HOST=db
-      - POSTGRES_USER=tandoor
-      - POSTGRES_PASSWORD=change-me
-    volumes:
-      - tandoor_media:/opt/recipes/mediafiles
-volumes:
-  tandoor_db: {}
-  tandoor_media: {}
-`,
-    affiliateLinks,
-    features: ["Libros de recetas compartidos entre varios usuarios/familia", "Escalado automático de ingredientes por número de comensales", "Importación desde cientos de webs de recetas"],
-    techStack: ["Python", "Django", "PostgreSQL"],
-    pros: ["Muy orientado a uso familiar/compartido, más que Mealie", "Comunidad activa con soporte de muchas integraciones"],
-    cons: ["Su licencia AGPL-3.0 incluye una 'Commons Clause' que restringe ofrecerlo como servicio de pago a terceros"],
-    tags: ["docker-ready"],
-    status: "scheduled",
-    publishDate: "2026-11-13",
+    publishDate: "2026-11-04",
   },
   {
     id: "changedetection-io",
@@ -8771,7 +8381,7 @@ volumes:
     cons: ["Vigilar páginas con mucho JavaScript requiere activar el modo navegador headless, que consume más recursos"],
     tags: ["docker-ready", "permissive-license"],
     status: "scheduled",
-    publishDate: "2026-11-16",
+    publishDate: "2026-11-07",
   },
   {
     id: "firecrawl",
@@ -8804,7 +8414,7 @@ docker compose up -d
     cons: ["Algunas funciones avanzadas (extracción con IA integrada, proxies rotativos) están pensadas para su versión cloud de pago"],
     tags: ["permissive-license"],
     status: "scheduled",
-    publishDate: "2026-11-16",
+    publishDate: "2026-11-07",
   },
   {
     id: "memos",
@@ -8841,40 +8451,7 @@ volumes:
     cons: ["No pretende sustituir un wiki completo — es deliberadamente simple"],
     tags: ["docker-ready", "permissive-license"],
     status: "scheduled",
-    publishDate: "2026-11-16",
-  },
-  {
-    id: "revolt",
-    name: "Revolt",
-    slug: "revolt",
-    replaces: ["Discord"],
-    category: "Productivity",
-    description:
-      "Revolt es una plataforma de chat con servidores, canales de voz y bots muy parecida a Discord en experiencia de usuario, pero open source y auto-hospedable en tu propia infraestructura.",
-    shortDescription: "Chat con servidores y voz al estilo Discord, 100% open source y auto-hospedable.",
-    websiteUrl: "https://revolt.chat",
-    githubUrl: "https://github.com/revoltchat/backend",
-    starsCount: 6100,
-    license: "AGPL-3.0",
-    database: "MongoDB",
-    language: "Rust",
-    platforms: ["Web", "Mobile (iOS/Android)", "Desktop (Mac/Win/Linux)"],
-    fossModel: "FOSS",
-    dockerCompose: `# El stack completo de Revolt (backend, base de datos, búsqueda y bucket
-# de archivos) se despliega oficialmente con su propio script/compose,
-# porque son varios servicios coordinados:
-git clone https://github.com/revoltchat/self-hosted.git
-cd self-hosted
-./install-revolt.sh
-`,
-    affiliateLinks,
-    features: ["Servidores, canales de texto y voz, igual que Discord", "Bots y API pública para integraciones", "Cliente web, móvil y de escritorio"],
-    techStack: ["Rust", "MongoDB"],
-    pros: ["Experiencia muy familiar para quien viene de Discord", "100% de tus servidores y mensajes bajo tu control"],
-    cons: ["Comunidad y ecosistema de bots aún mucho más pequeño que el de Discord"],
-    tags: [],
-    status: "scheduled",
-    publishDate: "2026-11-19",
+    publishDate: "2026-11-07",
   },
   {
     id: "speedtest-tracker",
@@ -8916,7 +8493,7 @@ volumes:
     cons: ["Cada test de velocidad consume algo de tu ancho de banda mientras se ejecuta"],
     tags: ["docker-ready"],
     status: "scheduled",
-    publishDate: "2026-11-19",
+    publishDate: "2026-11-10",
   },
   {
     id: "pocket-id",
@@ -8956,7 +8533,7 @@ volumes:
     cons: ["Al depender de passkeys, necesitas dispositivos compatibles (la mayoría de móviles y ordenadores recientes lo son)"],
     tags: ["docker-ready"],
     status: "scheduled",
-    publishDate: "2026-11-19",
+    publishDate: "2026-11-10",
   },
   {
     id: "silverbullet",
@@ -8993,58 +8570,7 @@ volumes:
     cons: ["El lenguaje de plantillas/consultas tiene su propia curva de aprendizaje"],
     tags: ["docker-ready", "permissive-license"],
     status: "scheduled",
-    publishDate: "2026-11-22",
-  },
-  {
-    id: "wger",
-    name: "wger",
-    slug: "wger",
-    replaces: ["MyFitnessPal"],
-    category: "Productivity",
-    description:
-      "wger es un gestor de entrenamientos y nutrición: rutinas de ejercicio, seguimiento de peso corporal y diario de comidas con base de datos de ejercicios e ingredientes, sin anuncios ni suscripción.",
-    shortDescription: "Seguimiento de entrenamientos y nutrición, alternativa sin anuncios a MyFitnessPal.",
-    websiteUrl: "https://wger.de",
-    githubUrl: "https://github.com/wger-project/wger",
-    starsCount: 2400,
-    license: "AGPL-3.0",
-    database: "PostgreSQL",
-    language: "Python (Django)",
-    platforms: ["Web", "Mobile (iOS/Android)"],
-    fossModel: "FOSS",
-    dockerCompose: `services:
-  db:
-    image: postgres:16
-    environment:
-      POSTGRES_DB: wger
-      POSTGRES_USER: wger
-      POSTGRES_PASSWORD: change-me
-    volumes:
-      - wger_db:/var/lib/postgresql/data
-  web:
-    image: wger/server:latest
-    depends_on:
-      - db
-    ports:
-      - "80:80"
-    environment:
-      - DJANGO_DB_HOST=db
-      - DJANGO_DB_USER=wger
-      - DJANGO_DB_PASSWORD=change-me
-    volumes:
-      - wger_media:/home/wger/media
-volumes:
-  wger_db: {}
-  wger_media: {}
-`,
-    affiliateLinks,
-    features: ["Base de datos de ejercicios con vídeos e ilustraciones", "Diario nutricional con base de datos de alimentos", "Planificación de rutinas por semanas/mesociclos"],
-    techStack: ["Python", "Django", "PostgreSQL"],
-    pros: ["Sin anuncios ni funciones bloqueadas detrás de una suscripción", "App móvil oficial además de la web"],
-    cons: ["La base de datos de alimentos es más pequeña que la de MyFitnessPal — puede que tengas que añadir alimentos locales a mano"],
-    tags: ["docker-ready"],
-    status: "scheduled",
-    publishDate: "2026-11-22",
+    publishDate: "2026-11-10",
   },
   {
     id: "kestra",
@@ -9093,7 +8619,7 @@ volumes:
     cons: ["Para pipelines muy simples puede ser más de lo que necesitas — n8n es más rápido de empezar"],
     tags: ["docker-ready", "permissive-license"],
     status: "scheduled",
-    publishDate: "2026-11-22",
+    publishDate: "2026-11-13",
   },
   {
     id: "kopia",
@@ -9136,7 +8662,7 @@ volumes:
     cons: ["La interfaz web es funcional pero minimalista, pensada para usuarios técnicos"],
     tags: ["docker-ready", "permissive-license"],
     status: "scheduled",
-    publishDate: "2026-11-25",
+    publishDate: "2026-11-13",
   },
   {
     id: "uptrace",
@@ -9181,53 +8707,7 @@ volumes:
     cons: ["ClickHouse añade una pieza más de infraestructura que mantener frente a soluciones todo-en-uno más simples"],
     tags: ["docker-ready"],
     status: "scheduled",
-    publishDate: "2026-11-25",
-  },
-  {
-    id: "scrutiny",
-    name: "Scrutiny",
-    slug: "scrutiny",
-    replaces: ["Datadog"],
-    category: "MonitoringLogs",
-    description:
-      "Scrutiny monitoriza la salud S.M.A.R.T. de tus discos duros y SSD, con un dashboard visual y alertas antes de que un disco falle — para no perder datos por una sorpresa que en realidad estaba anunciada.",
-    shortDescription: "Monitoreo de salud S.M.A.R.T. de discos duros y SSD, con alertas tempranas de fallo.",
-    websiteUrl: "https://github.com/AnalogJ/scrutiny",
-    githubUrl: "https://github.com/AnalogJ/scrutiny",
-    starsCount: 8200,
-    license: "MIT",
-    database: "InfluxDB",
-    language: "Go",
-    platforms: ["Web"],
-    fossModel: "FOSS",
-    dockerCompose: `services:
-  scrutiny:
-    image: ghcr.io/analogj/scrutiny:master-omnibus
-    cap_add:
-      - SYS_RAWIO
-      - SYS_ADMIN
-    ports:
-      - "8080:8080"
-    volumes:
-      - scrutiny_config:/opt/scrutiny/config
-      - scrutiny_influxdb:/opt/scrutiny/influxdb
-      - /run/udev:/run/udev:ro
-    devices:
-      - /dev/sda
-      - /dev/sdb
-    restart: unless-stopped
-volumes:
-  scrutiny_config: {}
-  scrutiny_influxdb: {}
-`,
-    affiliateLinks,
-    features: ["Dashboard visual de la salud S.M.A.R.T. de cada disco", "Histórico de temperatura y métricas clave a lo largo del tiempo", "Notificaciones cuando un atributo S.M.A.R.T. empeora"],
-    techStack: ["Go", "InfluxDB"],
-    pros: ["Traduce datos S.M.A.R.T. crípticos en un semáforo fácil de entender", "Puede avisar de un fallo de disco con semanas de antelación"],
-    cons: ["Necesita acceso directo a los dispositivos de disco (cap_add SYS_RAWIO), no funciona bien en algunos NAS con almacenamiento virtualizado"],
-    tags: ["docker-ready", "permissive-license"],
-    status: "scheduled",
-    publishDate: "2026-11-25",
+    publishDate: "2026-11-13",
   },
   {
     id: "faster-whisper-server",
@@ -9264,7 +8744,7 @@ volumes:
     cons: ["Sin GPU, transcribir audio largo puede ser notablemente más lento que la API en la nube"],
     tags: ["docker-ready", "permissive-license"],
     status: "scheduled",
-    publishDate: "2026-11-28",
+    publishDate: "2026-11-16",
   },
 ];
 
