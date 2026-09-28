@@ -198,10 +198,11 @@ volumes:
     language: "Node.js",
     platforms: ["Web"],
     fossModel: "OpenCore",
+    dockerStatus: "VERIFIED_PINNED",
     dockerCompose: `version: "3.9"
 services:
   nocodb:
-    image: nocodb/nocodb:latest
+    image: nocodb/nocodb:2026.08.1
     restart: unless-stopped
     ports:
       - "8080:8080"
@@ -543,10 +544,11 @@ volumes:
     language: "TypeScript (Node.js)",
     platforms: ["Web"],
     fossModel: "OpenCore",
+    dockerStatus: "VERIFIED_PINNED",
     dockerCompose: `version: "3.9"
 services:
   calcom:
-    image: calcom/cal.com:latest
+    image: calcom/cal.com:v6.2.0
     restart: unless-stopped
     ports:
       - "3000:3000"
@@ -701,10 +703,11 @@ volumes:
     language: "TypeScript (NestJS)",
     platforms: ["Web"],
     fossModel: "OpenCore",
+    dockerStatus: "VERIFIED_PINNED",
     dockerCompose: `version: "3.9"
 services:
   twenty:
-    image: twentycrm/twenty-front:latest
+    image: twentycrm/twenty:v2.40.0
     restart: unless-stopped
     ports:
       - "3000:3000"
@@ -754,10 +757,11 @@ volumes:
     language: "Ruby on Rails",
     platforms: ["Web", "Mobile (iOS/Android)"],
     fossModel: "OpenCore",
+    dockerStatus: "VERIFIED_PINNED",
     dockerCompose: `version: "3.9"
 services:
   chatwoot:
-    image: chatwoot/chatwoot:latest
+    image: chatwoot/chatwoot:v4.18.0
     restart: unless-stopped
     ports:
       - "3000:3000"
@@ -870,10 +874,11 @@ volumes:
     language: "PHP",
     platforms: ["Web"],
     fossModel: "FOSS",
+    dockerStatus: "VERIFIED_PINNED",
     dockerCompose: `version: "3.9"
 services:
   appwrite:
-    image: appwrite/appwrite:latest
+    image: appwrite/appwrite:1.9.5
     restart: unless-stopped
     ports:
       - "80:80"
@@ -1666,7 +1671,15 @@ volumes:
     language: "Python (Django)",
     platforms: ["Web", "Desktop (Mac/Win/Linux)", "Mobile (iOS/Android)"],
     fossModel: "FOSS",
+    dockerStatus: "LEGACY_IMAGE",
     dockerCompose: `version: "3.9"
+# NOTA: zulip/docker-zulip (Docker Hub) es la vía "legacy" — sigue soportada
+# para Zulip Server 11.x, pero Zulip 12.x+ solo se publica en
+# ghcr.io/zulip/zulip-server, con variables de entorno renombradas
+# (DB_HOST, DISABLE_HTTPS, NGINX_WORKERS...). No cambiamos aquí la imagen
+# porque migrar requiere también reescribir esas variables, y no queremos
+# publicar un docker-compose con nombres de variable sin verificar contra
+# la versión real del rework — mejor dejar la vía legacy que sí funciona.
 services:
   zulip:
     image: zulip/docker-zulip:latest
@@ -1944,10 +1957,11 @@ volumes:
     language: "Clojure",
     platforms: ["Web"],
     fossModel: "OpenCore",
+    dockerStatus: "VERIFIED_PINNED",
     dockerCompose: `version: "3.9"
 services:
   metabase:
-    image: metabase/metabase:latest
+    image: metabase/metabase:v0.64.x
     restart: unless-stopped
     ports:
       - "3000:3000"
@@ -2524,10 +2538,11 @@ volumes:
     language: "Node.js",
     platforms: ["Web"],
     fossModel: "OpenCore",
+    dockerStatus: "VERIFIED_PINNED",
     dockerCompose: `version: "3.9"
 services:
   directus:
-    image: directus/directus:latest
+    image: directus/directus:12.4.1
     restart: unless-stopped
     ports:
       - "8055:8055"
@@ -5637,9 +5652,10 @@ volumes: {}
     starsCount: 36500,
     license: "Apache-2.0",
     fossModel: "FOSS",
+    dockerStatus: "VERIFIED_PINNED",
     dockerCompose: `services:
   keycloak:
-    image: quay.io/keycloak/keycloak:latest
+    image: quay.io/keycloak/keycloak:26.7.4
     command: start-dev
     environment:
       KEYCLOAK_ADMIN: admin
@@ -6871,9 +6887,10 @@ volumes:
     language: "Shell / PHP",
     platforms: ["Web"],
     fossModel: "FOSS",
+    dockerStatus: "VERIFIED_PINNED",
     dockerCompose: `services:
   pihole:
-    image: pihole/pihole:latest
+    image: pihole/pihole:2026.09.0
     restart: unless-stopped
     ports:
       - "53:53/tcp"
@@ -6922,9 +6939,10 @@ volumes:
     language: "Go",
     platforms: ["Web"],
     fossModel: "FOSS",
+    dockerStatus: "VERIFIED_PINNED",
     dockerCompose: `services:
   adguardhome:
-    image: adguard/adguardhome:latest
+    image: adguard/adguardhome:v0.107.77
     restart: unless-stopped
     ports:
       - "53:53/tcp"

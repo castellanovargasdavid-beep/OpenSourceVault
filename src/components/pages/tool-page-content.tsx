@@ -263,6 +263,11 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
                       </li>
                     </ul>
                   </div>
+                  {(tool.dockerStatus === "ARCHIVED_UPSTREAM" || tool.dockerStatus === "LEGACY_IMAGE") && (
+                    <p className="mb-3 rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-900">
+                      {tool.dockerStatus === "ARCHIVED_UPSTREAM" ? t.toolPage.dockerStatusArchivedWarning : t.toolPage.dockerStatusLegacyWarning}
+                    </p>
+                  )}
                   <DockerComposeBlock code={tool.dockerCompose} t={t.dockerBlock} />
                   {isComposeFile(tool.dockerCompose) && (
                     <div className="mt-4">

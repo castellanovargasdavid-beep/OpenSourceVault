@@ -318,6 +318,8 @@ const en: Dictionary = {
     comparisonSelfHostedLabel: "On your own VPS:",
     dockerComposeSourceActive: (date: string) => `✓ Official Docker image from an actively maintained project — last commit ${date}.`,
     dockerComposeSourceGeneric: "Official Docker image, as published by the project itself.",
+    dockerStatusArchivedWarning: "⚠️ This tool's Docker image was archived/discontinued by the project on its origin registry. Check the official repo before deploying — there may be a replacement image.",
+    dockerStatusLegacyWarning: "⚠️ This image is the legacy path: it still works, but the project now publishes a newer image on another registry/repo. Check the comment in the docker-compose before deploying.",
     reportIssueLink: "This docker-compose not working for you? Report it on GitHub →",
     reportIssueTitle: (tool: string) => `${tool}'s docker-compose isn't working`,
     otherAlternatives: "Other alternatives to the same tool",

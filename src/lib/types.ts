@@ -62,6 +62,21 @@ export interface OneClickDeployTarget {
  */
 export type ToolStatus = "published" | "coming_soon" | "scheduled";
 
+/**
+ * Fiabilidad de la imagen Docker referenciada en `dockerCompose`, verificada
+ * a mano contra el registro real (Docker Hub/GHCR/Quay) — nunca inferida.
+ * 'VERIFIED_PINNED': imagen oficial en un tag estable y versionado (no
+ * "latest"), confirmado en el registro en el momento de la verificación.
+ * 'LATEST_ONLY': el proyecto oficial solo publica/recomienda "latest" o un
+ * tag rolling — no existe un tag versionado estable al que fijar.
+ * 'ARCHIVED_UPSTREAM': el repositorio de la imagen fue archivado o marcado
+ * "deprecated/do not use" en el registro de origen.
+ * 'LEGACY_IMAGE': el proyecto migró su imagen oficial a otro registro o
+ * repositorio; esta sigue funcionando para versiones antiguas pero ya no es
+ * la ruta recomendada para una instalación nueva.
+ */
+export type DockerImageStatus = "VERIFIED_PINNED" | "LATEST_ONLY" | "ARCHIVED_UPSTREAM" | "LEGACY_IMAGE";
+
 export interface OpenSourceTool {
   id: string;
   name: string;
@@ -98,6 +113,8 @@ export interface OpenSourceTool {
   platforms?: string[];
   /** Transparencia de licencia estilo Awesome-Selfhosted: ver FossModel. */
   fossModel?: FossModel;
+  /** Ausente = no auditado todavía. Ver DockerImageStatus. */
+  dockerStatus?: DockerImageStatus;
   /**
    * Override explícito del nivel de dificultad/recursos. Si se omite, se
    * infiere de dockerCompose + database vía resolveToolResourceProfile() en

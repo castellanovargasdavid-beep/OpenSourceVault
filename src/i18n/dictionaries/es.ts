@@ -316,6 +316,8 @@ const es = {
     comparisonSelfHostedLabel: "En tu propio VPS:",
     dockerComposeSourceActive: (date: string) => `✓ Imagen Docker oficial de un proyecto con actividad reciente — último commit ${date}.`,
     dockerComposeSourceGeneric: "Imagen Docker oficial, tal como la publica el propio proyecto.",
+    dockerStatusArchivedWarning: "⚠️ La imagen de Docker de esta herramienta fue archivada/descontinuada por el proyecto en su registro de origen. Revisa el repositorio oficial antes de desplegar — puede haber una imagen de sustitución.",
+    dockerStatusLegacyWarning: "⚠️ Esta imagen es la vía legacy: sigue funcionando, pero el proyecto ya publica una imagen más nueva en otro registro/repositorio. Revisa el comentario en el docker-compose antes de desplegar.",
     reportIssueLink: "¿Este docker-compose no te funciona? Repórtalo en GitHub →",
     reportIssueTitle: (tool: string) => `El docker-compose de ${tool} no funciona`,
     otherAlternatives: "Otras alternativas a lo mismo",
