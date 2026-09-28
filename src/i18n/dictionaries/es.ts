@@ -584,6 +584,8 @@ const es = {
     skippedTitle: "No incluidas en el archivo — se instalan con su propio script, no con docker-compose",
     importBannerTitle: "Estás viendo un stack compartido",
     importBannerBody: "Guárdalo en tu navegador para seguir editándolo, o modifícalo libremente — no afecta al de quien lo compartió.",
+    importBannerNotFoundOne: "1 herramienta de este enlace ya no está en el catálogo (puede haberse retirado) y no aparece abajo.",
+    importBannerNotFoundMany: "herramientas de este enlace ya no están en el catálogo (pueden haberse retirado) y no aparecen abajo.",
     importSaveButton: "Guardar en mi Stack",
     viewCatalog: "Explorar catálogo →",
     ramNote: "Estimación orientativa: suma la RAM mínima recomendada de cada herramienta por separado. Compartir librerías entre contenedores puede reducir el uso real.",

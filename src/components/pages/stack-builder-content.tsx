@@ -80,6 +80,7 @@ export function StackBuilderContent({
 
   const displayedSlugs = isPreviewingShared ? sharedSlugs! : builder.activeStack.toolSlugs;
   const selectedTools = displayedSlugs.map((slug) => toolsBySlug.get(slug)).filter((x): x is ToolCardData => x !== undefined);
+  const sharedNotFoundCount = isPreviewingShared ? sharedSlugs!.length - selectedTools.length : 0;
 
   const totalMinRamMb = selectedTools.reduce((sum, tool) => sum + tool.minRamMb, 0);
   const gpuRequiredToolNames = selectedTools.filter((tool) => tool.gpuRequired).map((tool) => tool.name);
@@ -211,6 +212,11 @@ export function StackBuilderContent({
             <FolderInput size={18} /> {t.importBannerTitle}
           </p>
           <p className="mt-1.5 text-sm text-violet-800">{t.importBannerBody}</p>
+          {sharedNotFoundCount > 0 && (
+            <p className="mt-1.5 text-sm font-medium text-amber-700">
+              {sharedNotFoundCount === 1 ? t.importBannerNotFoundOne : `${sharedNotFoundCount} ${t.importBannerNotFoundMany}`}
+            </p>
+          )}
           <div className="mt-4 flex flex-wrap gap-2">
             <Button onClick={handleSaveShared}>{t.importSaveButton}</Button>
             <Button variant="outline" onClick={handleDismissShared}>

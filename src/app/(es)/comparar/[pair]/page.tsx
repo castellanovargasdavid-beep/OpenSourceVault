@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getAllComparisonSlugs, getComparisonBySlug } from "@/lib/comparisons";
+import { getCompareHref } from "@/lib/routes";
 import { siteConfig } from "@/lib/site-config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { ComparisonPageContent } from "@/components/pages/comparison-page-content";
@@ -29,7 +30,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     description,
     alternates: {
       canonical: url,
-      languages: { es: url, en: `${siteConfig.url}/en/comparar/${comparison.pairSlug}` },
+      languages: { es: url, en: `${siteConfig.url}${getCompareHref(comparison.pairSlug, "en")}` },
     },
     openGraph: { title, description, url, type: "article" },
     twitter: { card: "summary_large_image", title, description },

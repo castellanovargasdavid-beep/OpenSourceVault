@@ -586,6 +586,8 @@ const en: Dictionary = {
     skippedTitle: "Not included in the file — these install via their own script, not docker-compose",
     importBannerTitle: "You're viewing a shared stack",
     importBannerBody: "Save it to your browser to keep editing it, or change it freely — it won't affect the person who shared it.",
+    importBannerNotFoundOne: "1 tool from this link is no longer in the catalog (it may have been removed) and isn't shown below.",
+    importBannerNotFoundMany: "tools from this link are no longer in the catalog (they may have been removed) and aren't shown below.",
     importSaveButton: "Save to My Stack",
     viewCatalog: "Browse the catalog →",
     ramNote: "Rough estimate: adds up each tool's own recommended minimum RAM. Sharing libraries between containers can lower real usage.",

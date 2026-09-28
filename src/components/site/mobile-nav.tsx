@@ -28,18 +28,29 @@ export function MobileNav({
   closeLabel: string;
 }) {
   const [open, setOpen] = React.useState(false);
+  const triggerRef = React.useRef<HTMLButtonElement>(null);
+  const panelRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
     if (!open) return;
+    const trigger = triggerRef.current;
     document.body.style.overflow = "hidden";
+    panelRef.current?.focus();
+    function handleKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setOpen(false);
+    }
+    document.addEventListener("keydown", handleKey);
     return () => {
       document.body.style.overflow = "";
+      document.removeEventListener("keydown", handleKey);
+      trigger?.focus();
     };
   }, [open]);
 
   return (
     <div className="lg:hidden">
       <button
+        ref={triggerRef}
         type="button"
         onClick={() => setOpen(true)}
         aria-label={menuLabel}
@@ -57,7 +68,14 @@ export function MobileNav({
             className="absolute inset-0 bg-slate-900/40"
             onClick={() => setOpen(false)}
           />
-          <div className="absolute right-0 top-0 flex h-full w-72 max-w-[85vw] flex-col overflow-y-auto bg-white p-4 shadow-xl">
+          <div
+            ref={panelRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label={menuLabel}
+            tabIndex={-1}
+            className="absolute right-0 top-0 flex h-full w-72 max-w-[85vw] flex-col overflow-y-auto bg-white p-4 shadow-xl outline-none"
+          >
             <div className="mb-2 flex items-center justify-end">
               <button
                 type="button"

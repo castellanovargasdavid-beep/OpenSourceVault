@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { tools, getToolBySlug } from "@/data/tools";
+import { getMigrationGuideHref } from "@/lib/routes";
 import { siteConfig } from "@/lib/site-config";
 import { slugify } from "@/lib/utils";
 import { getDictionary } from "@/i18n/get-dictionary";
@@ -43,7 +44,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     description,
     alternates: {
       canonical: url,
-      languages: { es: url, en: `${siteConfig.url}/en/guias/migrar/${from}/${to}` },
+      languages: { es: url, en: `${siteConfig.url}${getMigrationGuideHref(from, to, "en")}` },
     },
     openGraph: { title, description, url, type: "article" },
     twitter: { card: "summary_large_image", title, description },
