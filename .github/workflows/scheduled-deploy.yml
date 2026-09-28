@@ -1,0 +1,30 @@
+name: Scheduled Vercel deploy
+
+# Publica automáticamente las herramientas cuya fecha (status: "scheduled" +
+# publishDate en src/data/tools.ts) ya haya llegado. Publicar una fecha en el
+# dato NO hace que aparezca sola en la web: hace falta un build nuevo en o
+# después de esa fecha (ver isPublished() en src/lib/types.ts). Este workflow
+# es ese build automático, para no depender de acordarse de darle a
+# "Redeploy" en Vercel a mano.
+#
+# Se dispara todos los días (no solo cada 3) porque el calendario de
+# publicación ya ha cambiado dos veces en este proyecto — un cron diario
+# sigue funcionando sin tocarlo pase lo que pase con el ritmo de publicación,
+# mientras que intentar alinear un cron con "cada 3 días desde una fecha
+# concreta" se rompería en cuanto cambiara el plan otra vez.
+on:
+  schedule:
+    - cron: "0 6 * * *" # 06:00 UTC todos los días
+  workflow_dispatch: {} # permite lanzarlo a mano desde la pestaña Actions
+
+jobs:
+  trigger-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Llamar al Deploy Hook de Vercel
+        run: |
+          if [ -z "${{ secrets.VERCEL_DEPLOY_HOOK_URL }}" ]; then
+            echo "Falta el secreto VERCEL_DEPLOY_HOOK_URL (Settings > Secrets and variables > Actions)." >&2
+            exit 1
+          fi
+          curl -fsS -X POST "${{ secrets.VERCEL_DEPLOY_HOOK_URL }}"
