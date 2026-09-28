@@ -684,6 +684,8 @@ const es = {
   saasExit: {
     navLabel: "Auditoría SaaS",
     teamSizeLabel: "Tamaño de tu equipo",
+    quickSelectTitle: "Selección rápida",
+    quickSelectHint: "Toca las que uses — se marcan también en la lista de abajo.",
     searchPlaceholder: "Buscar tu herramienta (Notion, Zapier, Dropbox...)",
     searchNoResults: "No hay ninguna herramienta que coincida.",
     checklistTitle: "¿Qué pagas hoy?",

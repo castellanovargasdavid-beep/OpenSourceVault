@@ -9,10 +9,35 @@ import { HardwareFitPanel } from "@/components/site/hardware-fit-panel";
 import { HostingTierRecommendation } from "@/components/site/hosting-tier-recommendation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { LogoImage } from "@/components/site/logo-image";
+import { getSaasDomain } from "@/lib/saas-domains";
 import { localeHref } from "@/lib/locale-href";
 import { cn } from "@/lib/utils";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries/es";
+
+/**
+ * Orden del selector rápido: los SaaS más reconocibles primero, para que el
+ * usuario no tenga que buscar en la lista completa. Es un orden curado por
+ * reconocibilidad de marca, no un ranking de volumen de búsqueda real — solo
+ * incluye nombres que ya existen en `catalog` (precio verificado + al menos
+ * una alternativa real en el catálogo), así que nunca puede mostrar una
+ * tarjeta que lleve a un callejón sin salida.
+ */
+const POPULAR_SAAS_ORDER = [
+  "Notion",
+  "Slack",
+  "Airtable",
+  "1Password",
+  "Jira",
+  "Trello",
+  "Dropbox",
+  "Asana",
+  "Zapier",
+  "HubSpot",
+  "Salesforce",
+  "Zendesk",
+];
 
 const formatUsd = (value: number, locale: Locale) =>
   new Intl.NumberFormat(locale === "en" ? "en-US" : "es-ES", {
@@ -53,6 +78,10 @@ export function SaasExitContent({
   }
 
   const checkedItems = catalog.filter((item) => checked.has(item.saasSlug));
+
+  const popularTiles = POPULAR_SAAS_ORDER.map((name) => catalog.find((item) => item.saasName === name)).filter(
+    (item): item is SaasExitItem => item !== undefined
+  );
 
   let saasAnnual = 0;
   for (const item of checkedItems) {
@@ -104,6 +133,46 @@ export function SaasExitContent({
             className="h-11 w-32 rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
           />
         </div>
+
+        {popularTiles.length > 0 && (
+          <div>
+            <h2 className="mb-1 text-lg font-semibold text-slate-900">{t.quickSelectTitle}</h2>
+            <p className="mb-3 text-sm text-slate-600">{t.quickSelectHint}</p>
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
+              {popularTiles.map((item) => {
+                const isChecked = checked.has(item.saasSlug);
+                return (
+                  <button
+                    key={item.saasSlug}
+                    type="button"
+                    onClick={() => toggle(item.saasSlug)}
+                    aria-pressed={isChecked}
+                    className={cn(
+                      "flex flex-col items-center gap-2 rounded-xl border px-3 py-4 text-center transition-colors",
+                      isChecked ? "border-emerald-400 bg-emerald-50 ring-1 ring-emerald-400" : "border-slate-200 bg-white hover:border-slate-300"
+                    )}
+                  >
+                    <span className="relative">
+                      <LogoImage
+                        domain={getSaasDomain(item.saasName)}
+                        label={item.saasName}
+                        size={32}
+                        fallbackGradient="from-slate-300 to-slate-400"
+                        className="rounded-lg"
+                      />
+                      {isChecked && (
+                        <span className="absolute -right-1.5 -top-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-emerald-600 text-white">
+                          <Check size={10} />
+                        </span>
+                      )}
+                    </span>
+                    <span className="text-xs font-medium text-slate-900">{item.saasName}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         <div>
           <h2 className="mb-3 text-lg font-semibold text-slate-900">{t.checklistTitle}</h2>

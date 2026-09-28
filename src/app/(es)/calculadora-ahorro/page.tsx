@@ -3,6 +3,7 @@ import { Calculator } from "lucide-react";
 import { SavingsCalculator } from "@/components/site/savings-calculator";
 import { siteConfig } from "@/lib/site-config";
 import { getDictionary } from "@/i18n/get-dictionary";
+import { getSavingsCalculatorHref } from "@/lib/routes";
 
 const t = getDictionary("es");
 
@@ -12,8 +13,8 @@ export const metadata: Metadata = {
   alternates: {
     canonical: `${siteConfig.url}/calculadora-ahorro`,
     languages: {
-      es: `${siteConfig.url}/calculadora-ahorro`,
-      en: `${siteConfig.url}/en/calculadora-ahorro`,
+      es: `${siteConfig.url}${getSavingsCalculatorHref("es")}`,
+      en: `${siteConfig.url}${getSavingsCalculatorHref("en")}`,
     },
   },
 };
