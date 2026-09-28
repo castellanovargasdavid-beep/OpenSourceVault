@@ -145,7 +145,14 @@ export function ToolCard({
                 tool.fossModel === "FOSS" ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-800"
               )}
             >
-              {tool.fossModel === "FOSS" ? t.fossModelFoss : t.fossModelOpenCore}
+              {
+                {
+                  FOSS: t.fossModelFoss,
+                  OpenCore: t.fossModelOpenCore,
+                  FairCode: t.fossModelFairCode,
+                  SourceAvailable: t.fossModelSourceAvailable,
+                }[tool.fossModel]
+              }
             </span>
           )}
           <span

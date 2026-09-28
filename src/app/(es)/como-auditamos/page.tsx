@@ -16,6 +16,8 @@ export const metadata: Metadata = {
 
 const fossCount = tools.filter((t) => t.fossModel === "FOSS").length;
 const openCoreCount = tools.filter((t) => t.fossModel === "OpenCore").length;
+const fairCodeCount = tools.filter((t) => t.fossModel === "FairCode").length;
+const sourceAvailableCount = tools.filter((t) => t.fossModel === "SourceAvailable").length;
 const dockerCount = tools.filter((t) => t.tags.includes("docker-ready")).length;
 
 export default function ComoAuditamosPage() {
@@ -45,12 +47,15 @@ export default function ComoAuditamosPage() {
               </p>
             </li>
             <li>
-              <p className="font-medium text-slate-900">✅ FOSS vs. Open-Core</p>
+              <p className="font-medium text-slate-900">✅ FOSS, Open-Core, Fair-code y Source-available</p>
               <p>
-                Distinguimos explícitamente entre software 100% libre (&quot;FOSS&quot;, {fossCount} herramientas
-                del catálogo) y proyectos donde el núcleo es libre pero hay funciones avanzadas o planes
-                empresariales de pago (&quot;Open-Core&quot;, {openCoreCount} herramientas). No mezclamos ambos bajo
-                la misma promesa de &quot;100% gratis&quot;.
+                Distinguimos cuatro modelos de licencia y no los mezclamos bajo la misma promesa de
+                &quot;100% gratis&quot;: software 100% libre con licencia OSI (&quot;FOSS&quot;, {fossCount} herramientas),
+                núcleo libre con funciones avanzadas o planes empresariales de pago (&quot;Open-Core&quot;,{" "}
+                {openCoreCount} herramientas), código público sin límites de uso pero con una licencia no-OSI
+                que prohíbe revenderlo como SaaS (&quot;Fair-code&quot;, {fairCodeCount} herramientas), y código
+                público gratis para auto-hospedar bajo otra licencia no-OSI (&quot;Source-available&quot;,{" "}
+                {sourceAvailableCount} herramientas).
               </p>
             </li>
             <li>

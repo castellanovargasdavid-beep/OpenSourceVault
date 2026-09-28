@@ -40,6 +40,18 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
   const t = getDictionary(locale);
   const category = getCategoryMetaLocalized(tool.category, locale);
   const palette = categoryColors[tool.category];
+  const fossModelLabel = {
+    FOSS: t.toolPage.fossModelFoss,
+    OpenCore: t.toolPage.fossModelOpenCore,
+    FairCode: t.toolPage.fossModelFairCode,
+    SourceAvailable: t.toolPage.fossModelSourceAvailable,
+  } as const;
+  const fossModelCaption = {
+    FOSS: undefined,
+    OpenCore: t.toolPage.fossModelOpenCoreCaption,
+    FairCode: t.toolPage.fossModelFairCodeCaption,
+    SourceAvailable: t.toolPage.fossModelSourceAvailableCaption,
+  } as const;
   const comparisons: ToolComparison[] = getComparisonsForTool(tool.slug).slice(0, 5);
   const migrationFromSaas = tool.replaces[0];
   const migrationGuideHref = getMigrationGuideHref(slugify(migrationFromSaas), tool.slug, locale);
@@ -111,7 +123,7 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
           ))}
           {tool.fossModel && (
             <span
-              title={tool.fossModel === "OpenCore" ? t.toolPage.fossModelOpenCoreCaption : undefined}
+              title={fossModelCaption[tool.fossModel]}
               className={cn(
                 "inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-xs font-medium",
                 tool.fossModel === "FOSS"
@@ -120,7 +132,7 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
               )}
             >
               {tool.fossModel === "FOSS" ? <Check size={12} /> : <TriangleAlert size={12} />}
-              {tool.fossModel === "FOSS" ? t.toolPage.fossModelFoss : t.toolPage.fossModelOpenCore}
+              {fossModelLabel[tool.fossModel]}
             </span>
           )}
           <span
@@ -134,7 +146,9 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
           {t.toolPage.h1(tool.name, tool.replaces[0], siteConfig.year)}
         </h1>
         <p className="mt-4 max-w-3xl text-lg text-slate-600">{tool.description}</p>
-        {tool.fossModel === "OpenCore" && <p className="mt-2 text-sm text-amber-800">{t.toolPage.fossModelOpenCoreCaption}</p>}
+        {tool.fossModel && tool.fossModel !== "FOSS" && (
+          <p className="mt-2 text-sm text-amber-800">{fossModelCaption[tool.fossModel]}</p>
+        )}
 
         <div className="mt-5 flex flex-wrap gap-2" aria-label={t.toolPage.replacesAriaLabel}>
           {tool.replaces.map((saas) => (

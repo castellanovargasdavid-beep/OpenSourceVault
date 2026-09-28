@@ -16,6 +16,8 @@ export const metadata: Metadata = {
 
 const fossCount = tools.filter((t) => t.fossModel === "FOSS").length;
 const openCoreCount = tools.filter((t) => t.fossModel === "OpenCore").length;
+const fairCodeCount = tools.filter((t) => t.fossModel === "FairCode").length;
+const sourceAvailableCount = tools.filter((t) => t.fossModel === "SourceAvailable").length;
 const dockerCount = tools.filter((t) => t.tags.includes("docker-ready")).length;
 
 export default function HowWeAuditPage() {
@@ -45,12 +47,15 @@ export default function HowWeAuditPage() {
               </p>
             </li>
             <li>
-              <p className="font-medium text-slate-900">✅ FOSS vs. Open-Core</p>
+              <p className="font-medium text-slate-900">✅ FOSS, Open-Core, Fair-code and Source-available</p>
               <p>
-                We explicitly distinguish between 100% free software (&quot;FOSS&quot;, {fossCount} tools
-                in the catalog) and projects where the core is free but advanced features or enterprise
-                plans stay paid (&quot;Open-Core&quot;, {openCoreCount} tools). We never blend the two
-                under the same &quot;100% free&quot; claim.
+                We distinguish four license models and never blend them under the same &quot;100% free&quot;
+                claim: 100% free software under an OSI license (&quot;FOSS&quot;, {fossCount} tools),
+                a free core with advanced features or enterprise plans staying paid (&quot;Open-Core&quot;,{" "}
+                {openCoreCount} tools), public code with no usage limits but a non-OSI license that bans
+                reselling it as a SaaS (&quot;Fair-code&quot;, {fairCodeCount} tools), and public code that&apos;s
+                free to self-host under another non-OSI license (&quot;Source-available&quot;,{" "}
+                {sourceAvailableCount} tools).
               </p>
             </li>
             <li>

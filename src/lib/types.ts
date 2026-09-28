@@ -19,12 +19,21 @@ export type ToolCategory =
 export type ToolTag = "docker-ready" | "1-click-deploy" | "permissive-license";
 
 /**
- * 'FOSS': 100% software libre, sin funciones detrás de un plan de pago.
- * 'OpenCore': el núcleo es open source, pero hay funciones avanzadas o
- * planes empresariales de pago (o una licencia que restringe el uso
- * comercial/reventa, como el fair-code de n8n).
+ * 'FOSS': 100% software libre (licencia OSI), sin funciones detrás de un
+ * plan de pago.
+ * 'OpenCore': el núcleo tiene una licencia OSI real, pero hay funciones
+ * avanzadas o planes empresariales de pago solo disponibles como add-on.
+ * 'FairCode': el código es público y sin límites de uso al auto-hospedarlo,
+ * pero la licencia (ej. Sustainable Use License de n8n) no es OSI porque
+ * prohíbe revenderlo u ofrecerlo como tu propio SaaS de pago.
+ * 'SourceAvailable': el código es público y gratis para auto-hospedar, pero
+ * la licencia (ej. Elastic License, BSL, SSPL) no es open source: además de
+ * la restricción de reventa, puede imponer otras condiciones no cubiertas
+ * por 'FairCode'.
+ * No usar 'FOSS'/'OpenCore' para una herramienta con licencia no-OSI solo
+ * porque el código sea público — ver `license` para el texto exacto.
  */
-export type FossModel = "FOSS" | "OpenCore";
+export type FossModel = "FOSS" | "OpenCore" | "FairCode" | "SourceAvailable";
 
 /** Plataformas con plantilla oficial de despliegue en 1 clic verificable por URL. */
 export type DeployPlatform = "Railway" | "Coolify" | "Render" | "Elestio" | "Portainer";

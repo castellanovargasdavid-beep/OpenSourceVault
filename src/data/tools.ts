@@ -1033,7 +1033,7 @@ volumes:
     database: "SQLite / PostgreSQL",
     language: "TypeScript (Node.js)",
     platforms: ["Web"],
-    fossModel: "OpenCore",
+    fossModel: "FairCode",
     dockerCompose: `version: "3.9"
 services:
   n8n:
@@ -6400,7 +6400,7 @@ cd dub && pnpm install && pnpm build
     database: "MySQL",
     language: "PHP (Laravel)",
     platforms: ["Web", "Mobile (iOS/Android)"],
-    fossModel: "OpenCore",
+    fossModel: "SourceAvailable",
     dockerCompose: `services:
   app:
     image: invoiceninja/invoiceninja:5
