@@ -83,6 +83,7 @@ export function StackBuilderContent({
   const sharedNotFoundCount = isPreviewingShared ? sharedSlugs!.length - selectedTools.length : 0;
 
   const totalMinRamMb = selectedTools.reduce((sum, tool) => sum + tool.minRamMb, 0);
+  const anyRamEstimated = selectedTools.some((tool) => tool.isEstimated);
   const gpuRequiredToolNames = selectedTools.filter((tool) => tool.gpuRequired).map((tool) => tool.name);
   const savings = { monthly: 0, matched: 0 };
   for (const tool of selectedTools) {
@@ -270,7 +271,7 @@ export function StackBuilderContent({
                           <span className="flex min-w-0 items-center gap-2">
                             <LogoImage domain={getHostname(tool.websiteUrl)} label={tool.name} size={24} fallbackGradient="from-slate-300 to-slate-400" />
                             <span className="truncate text-sm font-medium text-slate-900">{tool.name}</span>
-                            <span className="shrink-0 text-xs text-slate-500">{formatMinRam(tool.minRamMb)}</span>
+                            <span className="shrink-0 text-xs text-slate-500">{formatMinRam(tool.minRamMb, tool.isEstimated)}</span>
                           </span>
                           <AddToStackButton toolSlug={tool.slug} addLabel={t.addButton} addedLabel={t.addedButton} compact />
                         </li>
@@ -302,7 +303,7 @@ export function StackBuilderContent({
                       <LogoImage domain={getHostname(tool.websiteUrl)} label={tool.name} size={32} fallbackGradient="from-slate-300 to-slate-400" />
                       <span className="min-w-0">
                         <span className="block truncate font-medium text-slate-900 hover:text-emerald-700">{tool.name}</span>
-                        <span className="text-xs text-slate-500">{formatMinRam(tool.minRamMb)} RAM</span>
+                        <span className="text-xs text-slate-500">{formatMinRam(tool.minRamMb, tool.isEstimated)} RAM</span>
                       </span>
                     </Link>
                     {!isPreviewingShared && (
@@ -401,7 +402,7 @@ export function StackBuilderContent({
               <Cpu size={18} className="mt-0.5 shrink-0 text-slate-500" />
               <div>
                 <p className="text-xs uppercase tracking-wide text-slate-600">{t.ramLabel}</p>
-                <p className="mt-0.5 text-xl font-bold text-slate-900">{formatMinRam(totalMinRamMb)}</p>
+                <p className="mt-0.5 text-xl font-bold text-slate-900">{formatMinRam(totalMinRamMb, anyRamEstimated)}</p>
                 <p className="mt-1 text-xs text-slate-500">{t.ramNote}</p>
               </div>
             </div>

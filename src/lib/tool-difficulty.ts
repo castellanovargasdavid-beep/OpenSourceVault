@@ -32,15 +32,17 @@ const FILE_BASED_DB_PATTERN = /sqlite|none|embedded|file-based|p2p/i;
 /**
  * Resuelve el nivel de dificultad y la RAM mínima recomendada de una
  * herramienta. Usa `difficulty`/`minRamMb` si ya vienen fijados a mano en el
- * catálogo; si no, los infiere de la cantidad de servicios en su
- * docker-compose.yml y de su motor de base de datos — así el catálogo entero
- * queda tipado sin tener que anotar a mano cada una de las ~150 herramientas.
+ * catálogo (isEstimated: false); si no, los infiere de la cantidad de
+ * servicios en su docker-compose.yml y de su motor de base de datos
+ * (isEstimated: true) — así el catálogo entero queda tipado sin tener que
+ * anotar a mano cada una de las ~150 herramientas. `isEstimated` deja que la
+ * UI distinga un valor verificado a mano de una heurística.
  */
 export function resolveToolResourceProfile(
   tool: Pick<OpenSourceTool, "dockerCompose" | "database" | "difficulty" | "minRamMb">
-): { difficulty: ToolDifficulty; minRamMb: number } {
+): { difficulty: ToolDifficulty; minRamMb: number; isEstimated: boolean } {
   if (tool.difficulty && tool.minRamMb) {
-    return { difficulty: tool.difficulty, minRamMb: tool.minRamMb };
+    return { difficulty: tool.difficulty, minRamMb: tool.minRamMb, isEstimated: false };
   }
 
   const services = countComposeServices(tool.dockerCompose);
@@ -50,17 +52,17 @@ export function resolveToolResourceProfile(
     // Sin docker-compose "simple": instaladores por script propio (Coolify,
     // Dokku, Sentry self-hosted, SigNoz...) que gestionan su propia
     // plataforma Docker/host — siempre la opción más pesada del catálogo.
-    return { difficulty: "advanced", minRamMb: 4096 };
+    return { difficulty: "advanced", minRamMb: 4096, isEstimated: true };
   }
   if (heavyDb || services >= 3) {
-    return { difficulty: "advanced", minRamMb: 2048 };
+    return { difficulty: "advanced", minRamMb: 2048, isEstimated: true };
   }
   if (services === 2) {
-    return { difficulty: "intermediate", minRamMb: 1024 };
+    return { difficulty: "intermediate", minRamMb: 1024, isEstimated: true };
   }
 
   const isFileBasedDb = !tool.database || FILE_BASED_DB_PATTERN.test(tool.database);
-  return { difficulty: "beginner", minRamMb: isFileBasedDb ? 256 : 512 };
+  return { difficulty: "beginner", minRamMb: isFileBasedDb ? 256 : 512, isEstimated: true };
 }
 
 export const difficultyMeta: Record<ToolDifficulty, { emoji: string; badgeClass: string; pillActiveClass: string }> = {
@@ -81,9 +83,8 @@ export const difficultyMeta: Record<ToolDifficulty, { emoji: string; badgeClass:
   },
 };
 
-/** 256 -> "256MB", 1024 -> "1GB", 1536 -> "1.5GB". */
-export function formatMinRam(minRamMb: number): string {
-  if (minRamMb < 1024) return `${minRamMb}MB`;
-  const gb = minRamMb / 1024;
-  return `${Number.isInteger(gb) ? gb : gb.toFixed(1)}GB`;
+/** 256 -> "256MB", 1024 -> "1GB", 1536 -> "1.5GB". Con isEstimated: true antepone "~" (heurística, no un dato fijado a mano). */
+export function formatMinRam(minRamMb: number, isEstimated = false): string {
+  const value = minRamMb < 1024 ? `${minRamMb}MB` : `${Number.isInteger(minRamMb / 1024) ? minRamMb / 1024 : (minRamMb / 1024).toFixed(1)}GB`;
+  return isEstimated ? `~${value}` : value;
 }

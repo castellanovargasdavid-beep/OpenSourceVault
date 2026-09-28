@@ -26,10 +26,16 @@ function StackToolProfile({ tool: rawTool, locale }: { tool: OpenSourceTool; loc
   const t = getDictionary(locale);
   const category = getCategoryMetaLocalized(tool.category, locale);
   const palette = categoryColors[tool.category];
-  const { difficulty, minRamMb } = resolveToolResourceProfile(tool);
+  const { difficulty, minRamMb, isEstimated } = resolveToolResourceProfile(tool);
   const difficultyStyle = difficultyMeta[difficulty];
   const difficultyLabel =
     difficulty === "beginner" ? t.difficulty.beginnerBadge : difficulty === "intermediate" ? t.difficulty.intermediateBadge : t.difficulty.advancedBadge;
+  const fossModelLabel = {
+    FOSS: t.toolPage.fossModelFoss,
+    OpenCore: t.toolPage.fossModelOpenCore,
+    FairCode: t.toolPage.fossModelFairCode,
+    SourceAvailable: t.toolPage.fossModelSourceAvailable,
+  } as const;
 
   return (
     <div className={cn("rounded-xl border p-6", palette.soft, palette.border)}>
@@ -53,14 +59,14 @@ function StackToolProfile({ tool: rawTool, locale }: { tool: OpenSourceTool; loc
               )}
             >
               {tool.fossModel === "FOSS" ? <Check size={11} /> : <TriangleAlert size={11} />}
-              {tool.fossModel === "FOSS" ? t.toolPage.fossModelFoss : t.toolPage.fossModelOpenCore}
+              {fossModelLabel[tool.fossModel]}
             </span>
           )}
           <span
-            title={`${t.difficulty.ramBadgePrefix} ${formatMinRam(minRamMb)}`}
+            title={`${t.difficulty.ramBadgePrefix} ${formatMinRam(minRamMb)}${isEstimated ? t.difficulty.ramEstimatedNote : ""}`}
             className={cn("inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] font-medium", difficultyStyle.badgeClass)}
           >
-            {difficultyStyle.emoji} {difficultyLabel} · {formatMinRam(minRamMb)}
+            {difficultyStyle.emoji} {difficultyLabel} · {formatMinRam(minRamMb, isEstimated)}
           </span>
         </div>
       </div>

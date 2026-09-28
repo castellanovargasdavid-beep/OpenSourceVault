@@ -5636,6 +5636,7 @@ volumes: {}
     githubUrl: "https://github.com/keycloak/keycloak",
     starsCount: 36500,
     license: "Apache-2.0",
+    fossModel: "FOSS",
     dockerCompose: `services:
   keycloak:
     image: quay.io/keycloak/keycloak:latest
@@ -5666,6 +5667,7 @@ volumes: {}
     githubUrl: "https://github.com/goauthentik/authentik",
     starsCount: 25300,
     license: "MIT",
+    fossModel: "OpenCore",
     dockerCompose: `services:
   postgresql:
     image: postgres:16-alpine
@@ -5710,6 +5712,7 @@ volumes:
     githubUrl: "https://github.com/ory/kratos",
     starsCount: 13900,
     license: "Apache-2.0",
+    fossModel: "FOSS",
     dockerCompose: `services:
   kratos:
     image: oryd/kratos:latest
@@ -5750,6 +5753,7 @@ volumes:
     githubUrl: "https://github.com/zitadel/zitadel",
     starsCount: 14900,
     license: "AGPL-3.0 (con excepciones Apache-2.0/MIT en algunos directorios)",
+    fossModel: "FOSS",
     dockerCompose: `services:
   zitadel:
     image: ghcr.io/zitadel/zitadel:latest
@@ -5786,6 +5790,7 @@ volumes:
     githubUrl: "https://github.com/supertokens/supertokens-core",
     starsCount: 15300,
     license: "Apache-2.0",
+    fossModel: "OpenCore",
     dockerCompose: `services:
   supertokens:
     image: registry.supertokens.io/supertokens/supertokens-postgresql:latest
@@ -5822,6 +5827,7 @@ volumes:
     githubUrl: "https://github.com/logto-io/logto",
     starsCount: 14500,
     license: "MPL-2.0",
+    fossModel: "FOSS",
     dockerCompose: `services:
   logto:
     image: svhd/logto:latest
@@ -5861,6 +5867,7 @@ volumes:
     githubUrl: "https://github.com/coollabsio/coolify",
     starsCount: 61300,
     license: "Apache-2.0",
+    fossModel: "FOSS",
     dockerCompose: `# Coolify se instala oficialmente con un script (no un docker-compose.yml
 # simple), porque despliega y gestiona su propia infraestructura de
 # contenedores sobre tu servidor:
@@ -5886,6 +5893,7 @@ curl -fsSL https://cdn.coollabs.io/coolify/install.sh | bash
     githubUrl: "https://github.com/caprover/caprover",
     starsCount: 15200,
     license: "Apache-2.0",
+    fossModel: "OpenCore",
     dockerCompose: `services:
   captain:
     image: caprover/caprover:latest
@@ -5921,6 +5929,7 @@ volumes:
     githubUrl: "https://github.com/dokku/dokku",
     starsCount: 32100,
     license: "MIT",
+    fossModel: "FOSS",
     dockerCompose: `# Dokku se instala con su script oficial de bootstrap directamente sobre
 # el servidor (gestiona el Docker del host), no mediante un
 # docker-compose.yml:
@@ -5949,6 +5958,7 @@ sudo DOKKU_TAG=v0.35.15 bash bootstrap.sh
     githubUrl: "https://github.com/IceWhaleTech/CasaOS",
     starsCount: 37200,
     license: "Apache-2.0",
+    fossModel: "FOSS",
     dockerCompose: `# CasaOS se instala con su script oficial directamente sobre el servidor
 # (es un panel para gestionar Docker/tu NAS, no una app dentro de Docker):
 curl -fsSL https://get.casaos.io | sudo bash
@@ -5977,6 +5987,7 @@ curl -fsSL https://get.casaos.io | sudo bash
     githubUrl: "https://github.com/getsentry/self-hosted",
     starsCount: 9500,
     license: "FSL-1.1 (pasa a Apache-2.0 a los 2 años)",
+    fossModel: "SourceAvailable",
     dockerCompose: `# Sentry self-hosted se instala clonando su repo oficial y ejecutando
 # install.sh, que genera un docker-compose.yml completo (Postgres, Redis,
 # Kafka, ClickHouse...):
@@ -6003,6 +6014,7 @@ cd self-hosted && ./install.sh
     githubUrl: "https://gitlab.com/glitchtip/glitchtip-backend",
     starsCount: 2500,
     license: "MIT",
+    fossModel: "FOSS",
     dockerCompose: `services:
   postgres:
     image: postgres:16-alpine
@@ -6050,6 +6062,7 @@ cd self-hosted && ./install.sh
     githubUrl: "https://github.com/SigNoz/signoz",
     starsCount: 32000,
     license: "MIT",
+    fossModel: "OpenCore",
     dockerCompose: `# SigNoz recomienda su script oficial (levanta ClickHouse, el
 # query-service y el frontend juntos con la configuración correcta):
 git clone -b main https://github.com/SigNoz/signoz.git
@@ -6077,6 +6090,7 @@ cd signoz/deploy && ./install.sh
     githubUrl: "https://github.com/henrygd/beszel",
     starsCount: 25000,
     license: "MIT",
+    fossModel: "FOSS",
     dockerCompose: `services:
   beszel:
     image: henrygd/beszel:latest
@@ -6111,6 +6125,7 @@ volumes:
     githubUrl: "https://github.com/Budibase/budibase",
     starsCount: 28200,
     license: "GPL-3.0",
+    fossModel: "OpenCore",
     dockerCompose: `services:
   budibase:
     image: budibase/budibase:latest
@@ -6147,6 +6162,7 @@ volumes:
     githubUrl: "https://github.com/appsmithorg/appsmith",
     starsCount: 40800,
     license: "Apache-2.0",
+    fossModel: "OpenCore",
     dockerCompose: `services:
   appsmith:
     image: appsmith/appsmith-ce:latest
@@ -6180,6 +6196,7 @@ volumes:
     githubUrl: "https://github.com/Stirling-Tools/Stirling-PDF",
     starsCount: 91100,
     license: "MIT",
+    fossModel: "OpenCore",
     dockerCompose: `services:
   stirling-pdf:
     image: stirlingtools/stirling-pdf:latest
@@ -6213,6 +6230,7 @@ volumes:
     githubUrl: "https://codeberg.org/forgejo/forgejo",
     starsCount: 6000,
     license: "GPL-3.0-or-later",
+    fossModel: "FOSS",
     dockerCompose: `services:
   forgejo:
     image: codeberg.org/forgejo/forgejo:latest
@@ -6247,6 +6265,7 @@ volumes:
     githubUrl: "https://github.com/Infisical/infisical",
     starsCount: 29100,
     license: "MIT",
+    fossModel: "OpenCore",
     dockerCompose: `services:
   infisical:
     image: infisical/infisical:latest
@@ -6290,6 +6309,7 @@ volumes:
     githubUrl: "https://github.com/dubinc/dub",
     starsCount: 24600,
     license: "AGPL-3.0",
+    fossModel: "OpenCore",
     dockerCompose: `# Dub es una app Next.js pensada principalmente para su nube gestionada;
 # auto-hospedarla implica clonar el repo y configurar Postgres + Redis
 # manualmente (no publican todavía una imagen Docker oficial única):
@@ -6318,6 +6338,7 @@ cd dub && pnpm install && pnpm build
     githubUrl: "https://github.com/formbricks/formbricks",
     starsCount: 12900,
     license: "AGPL-3.0",
+    fossModel: "OpenCore",
     dockerCompose: `services:
   formbricks:
     image: formbricks/formbricks:latest
@@ -6355,6 +6376,7 @@ cd dub && pnpm install && pnpm build
     githubUrl: "https://github.com/TryGhost/Ghost",
     starsCount: 55100,
     license: "MIT",
+    fossModel: "FOSS",
     dockerCompose: `services:
   ghost:
     image: ghost:5-alpine
@@ -6631,6 +6653,7 @@ volumes:
     database: "PostgreSQL",
     language: "TypeScript (Next.js)",
     platforms: ["Web", "Mobile (iOS/Android)", "Desktop (browser extension)"],
+    fossModel: "FOSS",
     dockerCompose: `services:
   linkwarden:
     image: ghcr.io/linkwarden/linkwarden:latest
@@ -6795,6 +6818,7 @@ volumes:
     database: "None / File-based",
     language: "Node.js / Vue.js",
     platforms: ["Web"],
+    fossModel: "FOSS",
     dockerCompose: `services:
   wg-easy:
     image: ghcr.io/wg-easy/wg-easy:latest
@@ -6999,6 +7023,7 @@ volumes:
     database: "PostgreSQL",
     language: "Ruby on Rails",
     platforms: ["Web", "Mobile (iOS/Android)"],
+    fossModel: "FOSS",
     dockerCompose: `# Discourse se instala oficialmente con su propio script "launcher" y un
 # archivo app.yml (no un docker-compose.yml estándar):
 git clone https://github.com/discourse/discourse_docker.git /var/discourse

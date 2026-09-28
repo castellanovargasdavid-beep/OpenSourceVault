@@ -19,7 +19,7 @@ import type { Locale } from "@/i18n/config";
  * desde allí, aunque no la use.
  */
 export function toToolCardData(tool: OpenSourceTool): ToolCardData {
-  const { difficulty, minRamMb } = resolveToolResourceProfile(tool);
+  const { difficulty, minRamMb, isEstimated } = resolveToolResourceProfile(tool);
   return {
     id: tool.id,
     slug: tool.slug,
@@ -37,6 +37,7 @@ export function toToolCardData(tool: OpenSourceTool): ToolCardData {
     publishDate: tool.publishDate,
     difficulty,
     minRamMb,
+    isEstimated,
     gpuRequired: detectGpuRequirement(tool.dockerCompose),
   };
 }

@@ -118,6 +118,7 @@ const en: Dictionary = {
     intermediateBadge: "Standard",
     advancedBadge: "Full",
     ramBadgePrefix: "Min. RAM",
+    ramEstimatedNote: " (estimated from its docker-compose, not measured in production)",
   },
   affiliateWidget: {
     title: (name: string) => `Deploy ${name} in minutes`,

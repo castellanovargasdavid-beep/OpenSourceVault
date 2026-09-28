@@ -116,6 +116,7 @@ const es = {
     intermediateBadge: "Estándar",
     advancedBadge: "Completo",
     ramBadgePrefix: "RAM mín.",
+    ramEstimatedNote: " (estimado a partir de su docker-compose, no medido en producción)",
   },
   affiliateWidget: {
     title: (name: string) => `Despliega ${name} en minutos`,

@@ -112,7 +112,7 @@ export function AlternativaPageContent({ group, locale }: { group: SaasAlternati
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {rows.map(({ tool, minRamMb, dockerReady, difficulty, badgeCodes }) => (
+              {rows.map(({ tool, minRamMb, isEstimated, dockerReady, difficulty, badgeCodes }) => (
                 <tr key={tool.id}>
                   <td className="px-4 py-3">
                     <Link href={localeHref(`/tool/${tool.slug}`, locale)} className="font-medium text-slate-900 hover:text-emerald-700">
@@ -145,8 +145,11 @@ export function AlternativaPageContent({ group, locale }: { group: SaasAlternati
                   </td>
                   <td className="px-4 py-3 text-slate-600">{tool.license}</td>
                   <td className="px-4 py-3 text-slate-600">
-                    <span className={`rounded border px-1.5 py-0.5 text-xs ${difficultyMeta[difficulty].badgeClass}`}>
-                      {formatMinRam(minRamMb)}
+                    <span
+                      title={isEstimated ? t.difficulty.ramEstimatedNote : undefined}
+                      className={`rounded border px-1.5 py-0.5 text-xs ${difficultyMeta[difficulty].badgeClass}`}
+                    >
+                      {formatMinRam(minRamMb, isEstimated)}
                     </span>
                   </td>
                   <td className="px-4 py-3">{dockerReady ? "✅" : "—"}</td>

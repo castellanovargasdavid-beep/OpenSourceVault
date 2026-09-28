@@ -147,6 +147,8 @@ export interface ToolCardData {
   difficulty: ToolDifficulty;
   /** RAM mínima recomendada en MB. Ver difficulty. */
   minRamMb: number;
+  /** true si minRamMb es una heurística (sin dockerCompose "difficulty"/"minRamMb" fijados a mano), no un dato verificado. */
+  isEstimated: boolean;
   /** true si el docker-compose reserva una GPU NVIDIA real. Ver detectGpuRequirement() en src/lib/tool-hardware.ts. */
   gpuRequired: boolean;
 }

@@ -67,6 +67,8 @@ export interface AlternativeTableRow {
   tool: OpenSourceTool;
   difficulty: ToolDifficulty;
   minRamMb: number;
+  /** true si minRamMb es una heurística, no un dato verificado. Ver resolveToolResourceProfile(). */
+  isEstimated: boolean;
   dockerReady: boolean;
   badgeCodes: AlternativeBadgeCode[];
 }
@@ -89,12 +91,12 @@ export function buildAlternativeTableRows(list: OpenSourceTool[]): AlternativeTa
   const minRam = Math.min(...profiles.map((p) => p.minRamMb));
   const maxStars = Math.max(...sorted.map((tool) => tool.starsCount ?? 0));
 
-  return profiles.map(({ tool, difficulty, minRamMb }) => {
+  return profiles.map(({ tool, difficulty, minRamMb, isEstimated }) => {
     const badgeCodes: AlternativeBadgeCode[] = [];
     if (minRamMb === minRam) badgeCodes.push("lightestRam");
     if (tool.fossModel === "FOSS") badgeCodes.push("pureFoss");
     if (maxStars > 0 && (tool.starsCount ?? 0) === maxStars) badgeCodes.push("mostPopular");
     if (tool.tags.includes("1-click-deploy")) badgeCodes.push("oneClickDeploy");
-    return { tool, difficulty, minRamMb, dockerReady: tool.tags.includes("docker-ready"), badgeCodes };
+    return { tool, difficulty, minRamMb, isEstimated, dockerReady: tool.tags.includes("docker-ready"), badgeCodes };
   });
 }

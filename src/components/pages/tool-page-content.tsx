@@ -60,7 +60,7 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
   const releasesUrl = getReleasesPageUrl(tool.githubUrl);
   const releasesFeedUrl = getReleasesFeedUrl(tool.githubUrl);
   const ogImageUrl = await getOgImageUrl(tool.websiteUrl);
-  const { difficulty, minRamMb } = resolveToolResourceProfile(tool);
+  const { difficulty, minRamMb, isEstimated } = resolveToolResourceProfile(tool);
   const difficultyStyle = difficultyMeta[difficulty];
   const difficultyLabel =
     difficulty === "beginner" ? t.difficulty.beginnerBadge : difficulty === "intermediate" ? t.difficulty.intermediateBadge : t.difficulty.advancedBadge;
@@ -136,10 +136,10 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
             </span>
           )}
           <span
-            title={`${t.difficulty.ramBadgePrefix} ${formatMinRam(minRamMb)}`}
+            title={`${t.difficulty.ramBadgePrefix} ${formatMinRam(minRamMb)}${isEstimated ? t.difficulty.ramEstimatedNote : ""}`}
             className={cn("inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-xs font-medium", difficultyStyle.badgeClass)}
           >
-            {difficultyStyle.emoji} {difficultyLabel} · {formatMinRam(minRamMb)}
+            {difficultyStyle.emoji} {difficultyLabel} · {formatMinRam(minRamMb, isEstimated)}
           </span>
         </div>
         <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
