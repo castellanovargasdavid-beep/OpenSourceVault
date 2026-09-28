@@ -1,0 +1,39 @@
+name: CI
+
+# Gate mínimo para cualquier PR/push a main: si esto falla, no se hace merge
+# ni se despliega. No sustituye una revisión humana de los datos (una
+# licencia mal puesta pasa el build igual si el campo está bien formado),
+# pero sí evita el error de siempre en un proyecto de datos abiertos a la
+# comunidad: un PR que rompe el build, un id/slug duplicado, o un
+# docker-compose.yml con un puerto imposible.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Comprobar tipos
+        run: npm run typecheck
+
+      - name: Linter
+        run: npm run lint
+
+      - name: Validar integridad del catálogo
+        run: npm run validate:data
+
+      - name: Build de producción
+        run: npm run build

@@ -66,6 +66,8 @@ const en: Dictionary = {
     searchPlaceholder: "Search by name or SaaS (e.g. Slack, Airtable...)",
     allCategories: "All categories",
     categoryFilterLabel: "Filter by category",
+    licenseFilterLabel: "License",
+    allLicenses: "All",
     clearFilters: "Clear filters",
     noResults: "No tools match those filters.",
     tagDockerReady: "Docker Ready",

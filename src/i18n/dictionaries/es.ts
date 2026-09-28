@@ -64,6 +64,8 @@ const es = {
     searchPlaceholder: "Buscar por nombre o SaaS (ej. Slack, Airtable...)",
     allCategories: "Todas las categorías",
     categoryFilterLabel: "Filtrar por categoría",
+    licenseFilterLabel: "Licencia",
+    allLicenses: "Todas",
     clearFilters: "Limpiar filtros",
     noResults: "No hay herramientas que coincidan con esos filtros.",
     tagDockerReady: "Docker Ready",

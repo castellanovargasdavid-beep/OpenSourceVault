@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { ToolCard } from "@/components/site/tool-card";
 import { difficultyMeta } from "@/lib/tool-difficulty";
 import { cn } from "@/lib/utils";
-import type { ToolCardData, ToolDifficulty, ToolTag } from "@/lib/types";
+import type { FossModel, ToolCardData, ToolDifficulty, ToolTag } from "@/lib/types";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries/es";
 
@@ -43,10 +43,18 @@ export function ToolExplorer({
     { id: "advanced", label: difficultyT.advancedFilter, hint: difficultyT.advancedFilterHint },
   ];
 
+  const fossModelOptions: { id: FossModel; label: string }[] = [
+    { id: "FOSS", label: toolCardT.fossModelFoss },
+    { id: "OpenCore", label: toolCardT.fossModelOpenCore },
+    { id: "FairCode", label: toolCardT.fossModelFairCode },
+    { id: "SourceAvailable", label: toolCardT.fossModelSourceAvailable },
+  ];
+
   const [query, setQuery] = React.useState("");
   const [category, setCategory] = React.useState<string>("all");
   const [activeTags, setActiveTags] = React.useState<ToolTag[]>([]);
   const [difficultyFilter, setDifficultyFilter] = React.useState<ToolDifficulty | "all">("all");
+  const [fossModelFilter, setFossModelFilter] = React.useState<FossModel | "all">("all");
 
   function toggleTag(tag: ToolTag) {
     setActiveTags((prev) =>
@@ -58,11 +66,16 @@ export function ToolExplorer({
     setDifficultyFilter((prev) => (prev === difficulty ? "all" : difficulty));
   }
 
+  function toggleFossModel(fossModel: FossModel) {
+    setFossModelFilter((prev) => (prev === fossModel ? "all" : fossModel));
+  }
+
   function clearFilters() {
     setQuery("");
     setCategory("all");
     setActiveTags([]);
     setDifficultyFilter("all");
+    setFossModelFilter("all");
   }
 
   const filtered = React.useMemo(() => {
@@ -75,11 +88,13 @@ export function ToolExplorer({
       const matchesCategory = category === "all" || tool.category === category;
       const matchesTags = activeTags.every((tag) => tool.tags.includes(tag));
       const matchesDifficulty = difficultyFilter === "all" || tool.difficulty === difficultyFilter;
-      return matchesQuery && matchesCategory && matchesTags && matchesDifficulty;
+      const matchesFossModel = fossModelFilter === "all" || tool.fossModel === fossModelFilter;
+      return matchesQuery && matchesCategory && matchesTags && matchesDifficulty && matchesFossModel;
     });
-  }, [allTools, query, category, activeTags, difficultyFilter]);
+  }, [allTools, query, category, activeTags, difficultyFilter, fossModelFilter]);
 
-  const hasActiveFilters = query !== "" || category !== "all" || activeTags.length > 0 || difficultyFilter !== "all";
+  const hasActiveFilters =
+    query !== "" || category !== "all" || activeTags.length > 0 || difficultyFilter !== "all" || fossModelFilter !== "all";
 
   return (
     <section id="explorador" className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
@@ -158,6 +173,40 @@ export function ToolExplorer({
               >
                 {option.label}
                 <span className={cn("ml-1", active ? "text-white/80" : "text-slate-400")}>{option.hint}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-xs font-medium text-slate-600">{t.licenseFilterLabel}:</span>
+          <button
+            type="button"
+            onClick={() => setFossModelFilter("all")}
+            className={cn(
+              "rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
+              fossModelFilter === "all"
+                ? "border-slate-900 bg-slate-900 text-white"
+                : "border-slate-300 bg-white text-slate-600 hover:border-slate-400"
+            )}
+          >
+            {t.allLicenses}
+          </button>
+          {fossModelOptions.map((option) => {
+            const active = fossModelFilter === option.id;
+            return (
+              <button
+                key={option.id}
+                type="button"
+                onClick={() => toggleFossModel(option.id)}
+                className={cn(
+                  "rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
+                  active
+                    ? "border-emerald-600 bg-emerald-600 text-white"
+                    : "border-slate-300 bg-white text-slate-600 hover:border-emerald-400 hover:text-emerald-700"
+                )}
+              >
+                {option.label}
               </button>
             );
           })}
