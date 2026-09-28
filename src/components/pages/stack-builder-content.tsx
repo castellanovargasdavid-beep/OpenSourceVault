@@ -43,6 +43,21 @@ interface MergeResponse {
   toolCount: number;
 }
 
+function generateSecret(length = 32): string {
+  const bytes = new Uint8Array(length);
+  crypto.getRandomValues(bytes);
+  return Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("").slice(0, length);
+}
+
+/** Mismo enfoque que randomizeSecrets() en docker-compose-block.tsx, aplicado aquí al YAML ya fusionado del stack. */
+function randomizeSecrets(yaml: string): string {
+  const generated = new Map<string, string>();
+  return yaml.replace(/change-me[A-Za-z0-9-]*/g, (match) => {
+    if (!generated.has(match)) generated.set(match, generateSecret(32));
+    return generated.get(match)!;
+  });
+}
+
 const formatUsd = (value: number, locale: Locale) =>
   new Intl.NumberFormat(locale === "en" ? "en-US" : "es-ES", {
     style: "currency",
@@ -111,10 +126,13 @@ export function StackBuilderContent({
   const [mergeError, setMergeError] = React.useState(false);
   const [copied, setCopied] = React.useState(false);
   const [shareCopied, setShareCopied] = React.useState(false);
+  const [randomizedYaml, setRandomizedYaml] = React.useState<string | null>(null);
 
   const displayedSlugsKey = displayedSlugs.join(",");
   const mergeStale = merge !== null && mergeKey !== displayedSlugsKey;
   const deployApiPath = `/api/deploy?stack=${encodeURIComponent(displayedSlugsKey)}&locale=${locale}`;
+  const displayYaml = randomizedYaml ?? merge?.yaml ?? "";
+  const hasPlaceholders = Boolean(merge?.yaml && /change-me/.test(merge.yaml));
 
   async function handleGenerate() {
     setMergeLoading(true);
@@ -125,6 +143,7 @@ export function StackBuilderContent({
       const data = (await res.json()) as MergeResponse;
       setMerge(data);
       setMergeKey(displayedSlugsKey);
+      setRandomizedYaml(null);
     } catch {
       setMergeError(true);
     } finally {
@@ -132,9 +151,14 @@ export function StackBuilderContent({
     }
   }
 
-  function handleDownload() {
+  function handleRandomizeSecrets() {
     if (!merge?.yaml) return;
-    const blob = new Blob([merge.yaml], { type: "text/yaml" });
+    setRandomizedYaml(randomizeSecrets(merge.yaml));
+  }
+
+  function handleDownload() {
+    if (!displayYaml) return;
+    const blob = new Blob([displayYaml], { type: "text/yaml" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -146,9 +170,9 @@ export function StackBuilderContent({
   }
 
   async function handleCopy() {
-    if (!merge?.yaml) return;
+    if (!displayYaml) return;
     try {
-      await navigator.clipboard.writeText(merge.yaml);
+      await navigator.clipboard.writeText(displayYaml);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
@@ -366,9 +390,14 @@ export function StackBuilderContent({
                     </div>
                   )}
                   <pre className="max-h-96 overflow-auto rounded-lg bg-slate-900 p-4 text-xs text-emerald-300">
-                    <code>{merge.yaml}</code>
+                    <code>{displayYaml}</code>
                   </pre>
                   <div className="flex flex-wrap gap-2">
+                    {hasPlaceholders && (
+                      <Button variant="outline" onClick={handleRandomizeSecrets} className="gap-1.5">
+                        {randomizedYaml ? t.regenerateSecretsButton : t.randomizeSecretsButton}
+                      </Button>
+                    )}
                     <Button onClick={handleDownload} className="gap-1.5">
                       <Download size={15} /> {t.downloadButton}
                     </Button>
@@ -377,6 +406,11 @@ export function StackBuilderContent({
                       {copied ? t.copiedLabel : t.copyButton}
                     </Button>
                   </div>
+                  {randomizedYaml && (
+                    <p className="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs text-emerald-800">
+                      {t.randomizedSecretsNote}
+                    </p>
+                  )}
                 </div>
               )}
             </div>

@@ -205,7 +205,7 @@ export function mergeDockerComposeFiles(tools: StackMergeInput[]): StackMergeRes
       let body = rewriteDependsOn(svc.bodyLines, renameMap);
       body = rewriteVolumeMounts(body, volumeRenameMap);
       body = rewritePorts(body, usedHostPorts, warnings, tool.name, firstPort);
-      serviceLines.push(`  ${finalName}:`, ...body);
+      serviceLines.push(`  ${finalName}:`, ...body, "    networks:", "      - altfreestack-net");
     }
 
     for (const vol of volumes) {
@@ -233,6 +233,7 @@ export function mergeDockerComposeFiles(tools: StackMergeInput[]): StackMergeRes
   if (volumeLines.length > 0) {
     body.push("", "volumes:", ...volumeLines);
   }
+  body.push("", "networks:", "  altfreestack-net:", "    driver: bridge");
 
   return { yaml: body.join("\n"), warnings, skippedTools, toolSummaries };
 }
