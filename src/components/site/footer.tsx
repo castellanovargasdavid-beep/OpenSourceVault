@@ -4,7 +4,7 @@ import { categories, getCategoryHref } from "@/data/categories";
 import { categoriesEn } from "@/data/categories.en";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { localeHref } from "@/lib/locale-href";
-import { getSavingsCalculatorHref, getDeployGuideHref, getHowWeAuditHref, getContributeHref } from "@/lib/routes";
+import { getSavingsCalculatorHref, getCostCalculatorHref, getDeployGuideHref, getHowWeAuditHref, getContributeHref } from "@/lib/routes";
 import type { Locale } from "@/i18n/config";
 import { GithubIcon } from "@/components/icons/github-icon";
 
@@ -44,6 +44,11 @@ export function Footer({ locale = "es" }: { locale?: Locale }) {
             <li>
               <Link href={getSavingsCalculatorHref(locale)} className="text-sm text-slate-600 hover:text-emerald-700">
                 {t.footer.calculadora}
+              </Link>
+            </li>
+            <li>
+              <Link href={getCostCalculatorHref(locale)} className="text-sm text-slate-600 hover:text-emerald-700">
+                {t.footer.calculadoraCostes}
               </Link>
             </li>
             <li>

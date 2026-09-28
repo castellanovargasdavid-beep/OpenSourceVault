@@ -11,3 +11,13 @@ const GPU_RESERVATION_PATTERN = /driver:\s*nvidia|capabilities:\s*\[[^\]]*gpu[^\
 export function detectGpuRequirement(dockerCompose: string): boolean {
   return GPU_RESERVATION_PATTERN.test(dockerCompose);
 }
+
+/**
+ * Usa `gpuRequired` si está fijado a mano en el catálogo (ver OpenSourceTool
+ * en src/lib/types.ts); si no, infiere de dockerCompose vía
+ * detectGpuRequirement() — mismo patrón override-o-infiere que
+ * resolveToolResourceProfile() en tool-difficulty.ts.
+ */
+export function resolveGpuRequirement(tool: { dockerCompose: string; gpuRequired?: boolean }): boolean {
+  return tool.gpuRequired ?? detectGpuRequirement(tool.dockerCompose);
+}

@@ -4,7 +4,7 @@ import type { OpenSourceTool } from "@/lib/types";
 import { getToolsByCategory } from "@/data/tools";
 import { buildAlternativeTableRows } from "@/lib/alternatives";
 import { formatMinRam, difficultyMeta } from "@/lib/tool-difficulty";
-import { detectGpuRequirement } from "@/lib/tool-hardware";
+import { resolveGpuRequirement } from "@/lib/tool-hardware";
 import { ToolCard } from "@/components/site/tool-card";
 import { toToolCardData } from "@/lib/tool-card-data";
 import { JsonLd } from "@/components/site/json-ld";
@@ -37,7 +37,7 @@ export function CategoryPageContent({
   const primaryTool = rows[0]?.tool;
 
   const fossCount = rows.filter((r) => r.tool.fossModel === "FOSS").length;
-  const gpuRows = rows.map((r) => ({ ...r, gpuRequired: detectGpuRequirement(r.tool.dockerCompose) }));
+  const gpuRows = rows.map((r) => ({ ...r, gpuRequired: resolveGpuRequirement(r.tool) }));
   const gpuCount = gpuRows.filter((r) => r.gpuRequired).length;
   const lightestRow = rows.find((r) => r.badgeCodes.includes("lightestRam")) ?? rows[0];
 

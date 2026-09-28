@@ -27,7 +27,7 @@ import { getGithubStats, getLatestRelease, getReleasesPageUrl, getReleasesFeedUr
 import { getOgImageUrl } from "@/lib/og-image";
 import { siteConfig } from "@/lib/site-config";
 import { difficultyMeta, formatMinRam, resolveToolResourceProfile } from "@/lib/tool-difficulty";
-import { detectGpuRequirement } from "@/lib/tool-hardware";
+import { resolveGpuRequirement } from "@/lib/tool-hardware";
 import { getToolComparison } from "@/lib/tool-comparison";
 import { slugify, cn, getHostname } from "@/lib/utils";
 import { getDictionary } from "@/i18n/get-dictionary";
@@ -65,7 +65,7 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
   const difficultyLabel =
     difficulty === "beginner" ? t.difficulty.beginnerBadge : difficulty === "intermediate" ? t.difficulty.intermediateBadge : t.difficulty.advancedBadge;
   const port = extractDefaultPort(tool.dockerCompose ?? "");
-  const gpuRequired = detectGpuRequirement(tool.dockerCompose ?? "");
+  const gpuRequired = resolveGpuRequirement(tool);
   const comparison = getToolComparison(tool, locale);
 
   return (
@@ -141,6 +141,14 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
           >
             {difficultyStyle.emoji} {difficultyLabel} · {formatMinRam(minRamMb, isEstimated)}
           </span>
+          {tool.storageGb !== undefined && (
+            <span
+              title={t.difficulty.storageBadgePrefix}
+              className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-slate-50 px-2.5 py-0.5 text-xs font-medium text-slate-700"
+            >
+              💾 {t.difficulty.storageBadgePrefix} {tool.storageGb}GB
+            </span>
+          )}
         </div>
         <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
           {t.toolPage.h1(tool.name, tool.replaces[0], siteConfig.year)}
@@ -148,6 +156,9 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
         <p className="mt-4 max-w-3xl text-lg text-slate-600">{tool.description}</p>
         {tool.fossModel && tool.fossModel !== "FOSS" && (
           <p className="mt-2 text-sm text-amber-800">{fossModelCaption[tool.fossModel]}</p>
+        )}
+        {tool.notes && (
+          <p className="mt-2 rounded-lg border border-sky-200 bg-sky-50 px-3 py-2 text-sm text-sky-800">ℹ️ {tool.notes}</p>
         )}
 
         <div className="mt-5 flex flex-wrap gap-2" aria-label={t.toolPage.replacesAriaLabel}>

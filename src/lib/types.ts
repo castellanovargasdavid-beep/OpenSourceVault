@@ -124,6 +124,25 @@ export interface OpenSourceTool {
   difficulty?: ToolDifficulty;
   /** Override explícito de la RAM mínima recomendada, en MB. Ver difficulty. */
   minRamMb?: number;
+  /** Almacenamiento base recomendado, en GB. Estimación orientativa (logs, uploads, base de datos) — no hay una talla única, así que solo se fija cuando el proyecto documenta un mínimo real. */
+  storageGb?: number;
+  /**
+   * Override explícito de si necesita GPU dedicada para funcionar (no solo
+   * "va más rápido con una"). Si se omite, se infiere de `dockerCompose` vía
+   * resolveGpuRequirement()/detectGpuRequirement() en src/lib/tool-hardware.ts
+   * — fíjalo a mano solo cuando sepas que el requisito real no coincide con
+   * lo que hay en el docker-compose (ej. un bloque de reserva de GPU opcional
+   * comentado, o un requisito documentado que el compose no refleja).
+   */
+  gpuRequired?: boolean;
+  /**
+   * Aviso contextual libre, ej. sobre consumo de APIs de modelos externos
+   * (una herramienta de IA "local" que por defecto llama a OpenAI/Anthropic
+   * si no configuras un modelo local, y por tanto puede generarte factura
+   * aunque el propio contenedor sea ligero). Se muestra en la ficha si está
+   * presente — nunca se rellena por rellenar.
+   */
+  notes?: string;
   featured?: boolean;
   /**
    * Marca un listado como patrocinado (listing pagado por el propio

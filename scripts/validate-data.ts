@@ -38,6 +38,7 @@ const VALID_DIFFICULTIES = new Set(["beginner", "intermediate", "advanced"]);
 const VALID_STATUSES = new Set(["published", "coming_soon", "scheduled", undefined]);
 
 const MAX_SANE_RAM_MB = 131072; // 128GB — techo generoso, solo para atrapar valores absurdos (negativos, 0, typos con ceros de más).
+const MAX_SANE_STORAGE_GB = 102400; // 100TB — mismo criterio que MAX_SANE_RAM_MB, para storageGb.
 const MAX_PORT = 65535;
 
 interface ValidationError {
@@ -147,6 +148,19 @@ function validateTool(tool: OpenSourceTool, errors: ValidationError[]): void {
 
   if (tool.starsCount !== undefined && (!Number.isFinite(tool.starsCount) || tool.starsCount < 0)) {
     push(`\`starsCount\` no es un número válido: ${tool.starsCount}`);
+  }
+
+  // --- Campos opcionales del modelo extensible de recursos (Sección 8):
+  // nunca obligatorios, pero si están puestos deben tener un valor plausible. ---
+  if (tool.storageGb !== undefined) {
+    if (!Number.isFinite(tool.storageGb) || tool.storageGb <= 0) {
+      push(`\`storageGb\` no es un número positivo válido: ${tool.storageGb}`);
+    } else if (tool.storageGb > MAX_SANE_STORAGE_GB) {
+      push(`\`storageGb\` es un valor implausible (> ${MAX_SANE_STORAGE_GB} GB): ${tool.storageGb}`);
+    }
+  }
+  if (tool.notes !== undefined && !isNonEmptyString(tool.notes)) {
+    push("`notes` está definido pero vacío — quítalo o rellénalo");
   }
 }
 

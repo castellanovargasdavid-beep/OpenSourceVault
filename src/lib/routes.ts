@@ -33,3 +33,7 @@ export function getHowWeAuditHref(locale: Locale): string {
 export function getContributeHref(locale: Locale): string {
   return locale === "en" ? "/en/contribute" : "/contribuir";
 }
+
+export function getCostCalculatorHref(locale: Locale): string {
+  return locale === "en" ? "/en/cost-calculator" : "/calculadora-costes";
+}

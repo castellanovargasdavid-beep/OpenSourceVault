@@ -8,6 +8,7 @@ import { getAllComparisonSlugs } from "@/lib/comparisons";
 import {
   getCompareHref,
   getContributeHref,
+  getCostCalculatorHref,
   getDeployGuideHref,
   getHostingGuideHref,
   getHowWeAuditHref,
@@ -148,6 +149,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const contributeEnUrl = `${siteConfig.url}${getContributeHref("en")}`;
   const contributeAlternates = { languages: { es: contributeEsUrl, en: contributeEnUrl } };
 
+  const costCalcEsUrl = `${siteConfig.url}${getCostCalculatorHref("es")}`;
+  const costCalcEnUrl = `${siteConfig.url}${getCostCalculatorHref("en")}`;
+  const costCalcAlternates = { languages: { es: costCalcEsUrl, en: costCalcEnUrl } };
+
   return [
     ...allPaths.map(([path, freq, priority]) => entry(path, freq, priority)),
     ...allPaths.map(([path, freq, priority]) => entryEn(path, freq, priority)),
@@ -164,5 +169,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: howWeAuditEnUrl, changeFrequency: "yearly", priority: 0.3, alternates: howWeAuditAlternates },
     { url: contributeEsUrl, changeFrequency: "yearly", priority: 0.4, alternates: contributeAlternates },
     { url: contributeEnUrl, changeFrequency: "yearly", priority: 0.4, alternates: contributeAlternates },
+    { url: costCalcEsUrl, changeFrequency: "monthly", priority: 0.8, alternates: costCalcAlternates },
+    { url: costCalcEnUrl, changeFrequency: "monthly", priority: 0.8, alternates: costCalcAlternates },
   ];
 }
