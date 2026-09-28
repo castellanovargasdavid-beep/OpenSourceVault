@@ -29,3 +29,7 @@ export function getHostingGuideHref(provider: string, locale: Locale): string {
 export function getHowWeAuditHref(locale: Locale): string {
   return locale === "en" ? "/en/how-we-audit" : "/como-auditamos";
 }
+
+export function getContributeHref(locale: Locale): string {
+  return locale === "en" ? "/en/contribute" : "/contribuir";
+}

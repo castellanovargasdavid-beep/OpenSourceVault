@@ -112,7 +112,9 @@ A few things that make a submission easy to merge:
 - Don't invent a `starsCount` or claim a license you haven't verified against the repo's actual `LICENSE` file.
 - If the project offers a genuine one-click deploy template (Railway, Coolify, etc.), add its URL as `deployUrl` — otherwise leave it out.
 
-Bug fixes, UI improvements, and correcting outdated info (a license that changed, a stale star count) are just as welcome — no special process, just open a PR.
+Bug fixes, UI improvements, and correcting outdated info (a license that changed, a stale star count, a Docker image still on `:latest` that should be pinned) are just as welcome — no special process, just open a PR, or an issue using the **[Report outdated data](.github/ISSUE_TEMPLATE/report_outdated_data.md)** template if you'd rather not fix it yourself.
+
+The site's own [/contribute](https://altfreestack.com/en/contribute) page covers the same ground with the exact fields the `OpenSourceTool` type expects.
 
 ## License
 

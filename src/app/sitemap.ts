@@ -7,6 +7,7 @@ import { getAllSaasSlugs } from "@/lib/alternatives";
 import { getAllComparisonSlugs } from "@/lib/comparisons";
 import {
   getCompareHref,
+  getContributeHref,
   getDeployGuideHref,
   getHostingGuideHref,
   getHowWeAuditHref,
@@ -143,6 +144,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const howWeAuditEnUrl = `${siteConfig.url}${getHowWeAuditHref("en")}`;
   const howWeAuditAlternates = { languages: { es: howWeAuditEsUrl, en: howWeAuditEnUrl } };
 
+  const contributeEsUrl = `${siteConfig.url}${getContributeHref("es")}`;
+  const contributeEnUrl = `${siteConfig.url}${getContributeHref("en")}`;
+  const contributeAlternates = { languages: { es: contributeEsUrl, en: contributeEnUrl } };
+
   return [
     ...allPaths.map(([path, freq, priority]) => entry(path, freq, priority)),
     ...allPaths.map(([path, freq, priority]) => entryEn(path, freq, priority)),
@@ -157,5 +162,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: savingsCalcEnUrl, changeFrequency: "monthly", priority: 0.8, alternates: savingsCalcAlternates },
     { url: howWeAuditEsUrl, changeFrequency: "yearly", priority: 0.3, alternates: howWeAuditAlternates },
     { url: howWeAuditEnUrl, changeFrequency: "yearly", priority: 0.3, alternates: howWeAuditAlternates },
+    { url: contributeEsUrl, changeFrequency: "yearly", priority: 0.4, alternates: contributeAlternates },
+    { url: contributeEnUrl, changeFrequency: "yearly", priority: 0.4, alternates: contributeAlternates },
   ];
 }
