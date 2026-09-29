@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { CategoryMeta } from "@/data/categories";
 import type { OpenSourceTool } from "@/lib/types";
 import { getToolsByCategory } from "@/data/tools";
+import { getCategoryFaqs } from "@/data/category-faqs";
 import { buildAlternativeTableRows } from "@/lib/alternatives";
 import { formatMinRam, difficultyMeta } from "@/lib/tool-difficulty";
 import { resolveGpuRequirement } from "@/lib/tool-hardware";
@@ -41,7 +42,13 @@ export function CategoryPageContent({
   const gpuCount = gpuRows.filter((r) => r.gpuRequired).length;
   const lightestRow = rows.find((r) => r.badgeCodes.includes("lightestRam")) ?? rows[0];
 
-  const faqs =
+  // FAQs técnicas fijas (servidor mínimo, backups, exposición a internet,
+  // coste vs SaaS) para las categorías donde ya redactamos respuestas
+  // propias — ver src/data/category-faqs.ts. El resto de categorías no
+  // tiene entrada ahí y sigue mostrando solo las FAQ genéricas de abajo.
+  const technicalFaqs = getCategoryFaqs(category.id, locale);
+
+  const genericFaqs =
     rows.length > 0
       ? [
           { q: t.categoryPage.faqFossQ(category.label), a: t.categoryPage.faqFossA(fossCount, rows.length) },
@@ -49,6 +56,8 @@ export function CategoryPageContent({
           { q: t.alternativaPage.faqRamQ, a: t.alternativaPage.faqRamA(formatMinRam(lightestRow.minRamMb), lightestRow.tool.name) },
         ]
       : [];
+
+  const faqs = [...technicalFaqs, ...genericFaqs];
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
@@ -189,12 +198,17 @@ export function CategoryPageContent({
       {faqs.length > 0 && (
         <section>
           <h2 className="mb-4 text-xl font-semibold text-slate-900">{t.alternativaPage.faqTitle}</h2>
-          <div className="space-y-4">
+          <div className="divide-y divide-slate-200 rounded-xl border border-slate-200 bg-white">
             {faqs.map(({ q, a }) => (
-              <div key={q} className="rounded-xl border border-slate-200 bg-white p-4">
-                <p className="mb-1 text-sm font-semibold text-slate-900">{q}</p>
-                <p className="text-sm text-slate-600">{a}</p>
-              </div>
+              <details key={q} className="group p-4 open:pb-4 [&:not(:first-of-type)]:pt-4">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-sm font-semibold text-slate-900 marker:content-none">
+                  {q}
+                  <span aria-hidden className="shrink-0 text-slate-400 transition-transform group-open:rotate-45">
+                    +
+                  </span>
+                </summary>
+                <p className="mt-2 text-sm text-slate-600">{a}</p>
+              </details>
             ))}
           </div>
         </section>
