@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { inheritedSocialImages } from "@/lib/metadata";
 import { notFound } from "next/navigation";
 import { getAllReplaceSlugs, getReplaceMapping } from "@/lib/replace";
 import { siteConfig } from "@/lib/site-config";
@@ -15,7 +16,7 @@ export function generateStaticParams() {
   return getAllReplaceSlugs().map((slug) => ({ slug }));
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps, parent: ResolvingMetadata): Promise<Metadata> {
   const { slug } = await params;
   const mapping = getReplaceMapping(slug, "es");
   if (!mapping) return {};
@@ -25,6 +26,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const description = t.replacePage.metaDescription(mapping.saasName, mapping.entries.length);
   const url = `${siteConfig.url}/replace/${mapping.saasSlug}`;
 
+  const { openGraphImages, twitterImages } = await inheritedSocialImages(parent);
   return {
     title,
     description,
@@ -32,8 +34,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       canonical: url,
       languages: { es: url, en: `${siteConfig.url}/en/replace/${mapping.saasSlug}` },
     },
-    openGraph: { title, description, url, type: "article" },
-    twitter: { card: "summary_large_image", title, description },
+    openGraph: { title, description, url, type: "article", images: openGraphImages },
+    twitter: { card: "summary_large_image", title, description, images: twitterImages },
   };
 }
 

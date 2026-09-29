@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { inheritedSocialImages } from "@/lib/metadata";
 import { notFound } from "next/navigation";
 import { HostingGuideContent, getHostingGuideMeta, type HostingProviderId } from "@/components/pages/hosting-guide-content";
 import { siteConfig } from "@/lib/site-config";
@@ -22,7 +23,7 @@ function isValidProvider(value: string): value is HostingProviderId {
   return (providers as string[]).includes(value);
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps, parent: ResolvingMetadata): Promise<Metadata> {
   const { provider } = await params;
   if (!isValidProvider(provider)) return {};
 
@@ -32,6 +33,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const description = t.hostingGuidePage.metaDescription(meta.name);
   const url = `${siteConfig.url}${getHostingGuideHref(provider, "en")}`;
 
+  const { openGraphImages, twitterImages } = await inheritedSocialImages(parent);
   return {
     title,
     description,
@@ -39,8 +41,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       canonical: url,
       languages: { es: `${siteConfig.url}${getHostingGuideHref(provider, "es")}`, en: url },
     },
-    openGraph: { title, description, url },
-    twitter: { card: "summary_large_image", title, description },
+    openGraph: { title, description, url, images: openGraphImages },
+    twitter: { card: "summary_large_image", title, description, images: twitterImages },
   };
 }
 

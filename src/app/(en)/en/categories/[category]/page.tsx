@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { inheritedSocialImages } from "@/lib/metadata";
 import { notFound } from "next/navigation";
 import { categories, getCategoryBySlugLocalized } from "@/data/categories";
 import { categoriesEn } from "@/data/categories.en";
@@ -19,7 +20,7 @@ export function generateStaticParams() {
   return categories.map((category) => ({ category: categoriesEn[category.id].slug }));
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps, parent: ResolvingMetadata): Promise<Metadata> {
   const { category: categorySlug } = await params;
   const category = getCategoryBySlugLocalized(categorySlug, "en");
   if (!category) return {};
@@ -34,6 +35,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   // necesita noindex explícito aquí.
   const hasPublishedTools = catalogStats.toolCountByCategory[category.id] > 0;
 
+  const { openGraphImages, twitterImages } = await inheritedSocialImages(parent);
   return {
     title,
     description,
@@ -41,8 +43,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       canonical: url,
       languages: { es: `${siteConfig.url}/categoria/${esSlug}`, en: url },
     },
-    openGraph: { title, description, url },
-    twitter: { card: "summary_large_image", title, description },
+    openGraph: { title, description, url, images: openGraphImages },
+    twitter: { card: "summary_large_image", title, description, images: twitterImages },
     robots: hasPublishedTools ? undefined : { index: false, follow: true },
   };
 }

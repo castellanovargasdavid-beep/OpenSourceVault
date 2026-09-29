@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { inheritedSocialImages } from "@/lib/metadata";
 import { notFound } from "next/navigation";
 import { getAllSaasSlugs, getSaasAlternatives } from "@/lib/alternatives";
 import { siteConfig } from "@/lib/site-config";
@@ -16,7 +17,7 @@ export function generateStaticParams() {
   return getAllSaasSlugs().map((slug) => ({ slug }));
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps, parent: ResolvingMetadata): Promise<Metadata> {
   const { slug } = await params;
   const group = getSaasAlternatives(slug);
   if (!group) return {};
@@ -26,6 +27,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const description = t.alternativaPage.metaDescription(group.tools.length, group.saasName);
   const url = `${siteConfig.url}/en/alternatives/${group.saasSlug}`;
 
+  const { openGraphImages, twitterImages } = await inheritedSocialImages(parent);
   return {
     title,
     description,
@@ -33,8 +35,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       canonical: url,
       languages: { es: `${siteConfig.url}/alternativas/${group.saasSlug}`, en: url },
     },
-    openGraph: { title, description, url, type: "article" },
-    twitter: { card: "summary_large_image", title, description },
+    openGraph: { title, description, url, type: "article", images: openGraphImages },
+    twitter: { card: "summary_large_image", title, description, images: twitterImages },
   };
 }
 

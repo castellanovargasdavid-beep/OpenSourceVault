@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { inheritedSocialImages } from "@/lib/metadata";
 import { notFound } from "next/navigation";
 import { categories, getCategoryBySlug, getCategoryHref } from "@/data/categories";
 import { getToolsByCategoryAll } from "@/data/tools";
@@ -18,7 +19,7 @@ export function generateStaticParams() {
   return categories.map((category) => ({ category: category.slug }));
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps, parent: ResolvingMetadata): Promise<Metadata> {
   const { category: categorySlug } = await params;
   const category = getCategoryBySlug(categorySlug);
   if (!category) return {};
@@ -33,6 +34,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   // ese enlace aunque no apareciera en el sitemap.
   const hasPublishedTools = catalogStats.toolCountByCategory[category.id] > 0;
 
+  const { openGraphImages, twitterImages } = await inheritedSocialImages(parent);
   return {
     title,
     description,
@@ -40,8 +42,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       canonical: url,
       languages: { es: url, en: `${siteConfig.url}${getCategoryHref(category.id, "en")}` },
     },
-    openGraph: { title, description, url },
-    twitter: { card: "summary_large_image", title, description },
+    openGraph: { title, description, url, images: openGraphImages },
+    twitter: { card: "summary_large_image", title, description, images: twitterImages },
     robots: hasPublishedTools ? undefined : { index: false, follow: true },
   };
 }

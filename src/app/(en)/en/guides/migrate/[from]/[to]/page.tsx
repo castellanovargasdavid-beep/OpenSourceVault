@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
+import { inheritedSocialImages } from "@/lib/metadata";
 import { notFound } from "next/navigation";
 import { tools, getToolBySlug } from "@/data/tools";
 import { siteConfig } from "@/lib/site-config";
@@ -27,7 +28,7 @@ function resolveGuide(from: string, to: string) {
   return { tool, fromName };
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps, parent: ResolvingMetadata): Promise<Metadata> {
   const { from, to } = await params;
   const resolved = resolveGuide(from, to);
   if (!resolved) return {};
@@ -38,6 +39,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const description = t.migrationGuidePage.metaDescription(fromName, tool.name);
   const url = `${siteConfig.url}/en/guides/migrate/${from}/${to}`;
 
+  const { openGraphImages, twitterImages } = await inheritedSocialImages(parent);
   return {
     title,
     description,
@@ -45,8 +47,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       canonical: url,
       languages: { es: `${siteConfig.url}/guias/migrar/${from}/${to}`, en: url },
     },
-    openGraph: { title, description, url, type: "article" },
-    twitter: { card: "summary_large_image", title, description },
+    openGraph: { title, description, url, type: "article", images: openGraphImages },
+    twitter: { card: "summary_large_image", title, description, images: twitterImages },
   };
 }
 
