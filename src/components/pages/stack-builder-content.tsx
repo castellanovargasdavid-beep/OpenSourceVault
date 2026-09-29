@@ -199,7 +199,7 @@ export function StackBuilderContent({
     setMergeLoading(true);
     setMergeError(false);
     try {
-      const res = await fetch(`/api/stack-compose?tools=${encodeURIComponent(displayedSlugsKey)}`);
+      const res = await fetch(`/api/stack-compose?tools=${encodeURIComponent(displayedSlugsKey)}&locale=${locale}`);
       if (!res.ok) throw new Error("bad_response");
       const data = (await res.json()) as MergeResponse;
       setMerge(data);

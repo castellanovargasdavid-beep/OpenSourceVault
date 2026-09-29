@@ -15,6 +15,7 @@ const MAX_TOOLS = 20;
  */
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
+  const locale: "es" | "en" = searchParams.get("locale") === "en" ? "en" : "es";
   const raw = searchParams.get("tools") ?? "";
   const slugs = raw
     .split(",")
@@ -42,7 +43,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "unknown_tools", notFound }, { status: 404 });
   }
 
-  const { yaml, warnings, skippedTools } = mergeDockerComposeFiles(tools);
+  const { yaml, warnings, skippedTools } = mergeDockerComposeFiles(tools, locale);
 
   return NextResponse.json({
     yaml,

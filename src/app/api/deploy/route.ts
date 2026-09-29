@@ -71,7 +71,7 @@ export async function GET(request: Request) {
     return new Response(errorScript(locale, message), { headers: TEXT_HEADERS });
   }
 
-  const merged = mergeDockerComposeFiles(tools);
+  const merged = mergeDockerComposeFiles(tools, locale);
 
   if (!merged.yaml) {
     const message =
@@ -85,6 +85,7 @@ export async function GET(request: Request) {
     yaml: merged.yaml,
     toolSummaries: merged.toolSummaries,
     skippedTools: merged.skippedTools,
+    warnings: merged.warnings,
     locale,
   });
 
