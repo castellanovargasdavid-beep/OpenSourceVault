@@ -32,8 +32,14 @@ jobs:
       - name: Linter
         run: npm run lint
 
+      - name: Tests unitarios
+        run: npm test
+
       - name: Validar integridad del catálogo
         run: npm run validate:data
+
+      - name: Auditoría de seguridad de despliegue
+        run: npm run audit:deployment
 
       - name: Build de producción
         run: npm run build
