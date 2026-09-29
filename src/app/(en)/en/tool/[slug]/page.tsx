@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { tools, getToolBySlug } from "@/data/tools";
+import { tools, getToolBySlug, getLocalizedTool } from "@/data/tools";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { siteConfig } from "@/lib/site-config";
 import { ToolPageContent } from "@/components/pages/tool-page-content";
@@ -21,8 +21,9 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const tool = getToolBySlug(slug);
-  if (!tool) return {};
+  const rawTool = getToolBySlug(slug);
+  if (!rawTool) return {};
+  const tool = getLocalizedTool(rawTool, "en");
 
   const t = getDictionary("en");
   const mainSaas = tool.replaces[0];
