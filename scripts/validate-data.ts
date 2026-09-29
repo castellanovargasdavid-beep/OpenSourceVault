@@ -9,7 +9,12 @@
  * tiempo de ejecución — si se añade un valor nuevo a esos tipos en
  * src/lib/types.ts, hay que añadirlo también aquí.
  */
-import { allTools } from "../src/data/tools";
+import { allTools, tools } from "../src/data/tools";
+import { toolsEn } from "../src/data/tools.en";
+import { stacks } from "../src/data/stacks";
+import { stacksEn } from "../src/data/stacks.en";
+import { pairOverrides } from "../src/lib/migration-pair-overrides";
+import { catalogStats } from "../src/lib/catalog-stats";
 import type { OpenSourceTool } from "../src/lib/types";
 
 const VALID_CATEGORIES = new Set([
@@ -76,6 +81,19 @@ function extractHostPorts(dockerCompose: string): number[] {
   return ports;
 }
 
+/** Extrae cada valor de `image:` de un docker-compose.yml (sin comillas). Vacío si el compose no declara ninguna (p.ej. herramientas que se instalan con un script propio, no un compose inline — ver comentario en resolveToolResourceProfile). */
+function extractDockerImages(dockerCompose: string): string[] {
+  const images: string[] = [];
+  for (const line of dockerCompose.split("\n")) {
+    const m = line.match(/^\s*image:\s*(.+?)\s*(#.*)?$/);
+    if (m) images.push(m[1].replace(/^["']|["']$/g, ""));
+  }
+  return images;
+}
+
+/** Marcadores de licencias que, por definición, NO son OSI/open-source real — si aparecen, la herramienta nunca debería estar clasificada como `fossModel: "FOSS"` (ver Fase 3: no asumir Open-Core/Source-available = FOSS). */
+const NON_OSI_LICENSE_MARKERS = ["BUSL", "FSL-", "Elastic License", "Source-available", "Sustainable Use", "SSPL", "Commons Clause"];
+
 function validateTool(tool: OpenSourceTool, errors: ValidationError[]): void {
   const push = (message: string) => errors.push({ toolId: tool.id || "(sin id)", message });
 
@@ -93,12 +111,43 @@ function validateTool(tool: OpenSourceTool, errors: ValidationError[]): void {
     push(`\`fossModel\` tiene un valor no reconocido: "${tool.fossModel}"`);
   }
 
+  // --- Licencia: ni vacía/placeholder ni contradictoria con fossModel. No
+  // asumimos que Open-Core/Fair-code/Source-available "son básicamente
+  // FOSS" — si el texto de la licencia lleva un marcador claramente no-OSI
+  // pero fossModel dice "FOSS", es una mala clasificación real (Fase 3). ---
+  if (isNonEmptyString(tool.license)) {
+    const looksLikePlaceholder = /^(unknown|tbd|n\/a|todo|pending)$/i.test(tool.license.trim());
+    if (looksLikePlaceholder) push(`\`license\` parece un placeholder, no una licencia real: "${tool.license}"`);
+
+    const looksNonOsi = NON_OSI_LICENSE_MARKERS.some((marker) => tool.license.includes(marker));
+    if (looksNonOsi && tool.fossModel === "FOSS") {
+      push(`\`fossModel\` es "FOSS" pero \`license\` ("${tool.license}") tiene pinta de licencia no-OSI — revisar clasificación`);
+    }
+  }
+
   if (tool.category && !VALID_CATEGORIES.has(tool.category)) {
     push(`\`category\` tiene un valor no reconocido: "${tool.category}"`);
   }
 
   if (tool.dockerStatus && !VALID_DOCKER_STATUSES.has(tool.dockerStatus)) {
     push(`\`dockerStatus\` tiene un valor no reconocido: "${tool.dockerStatus}"`);
+  }
+
+  // --- Imagen Docker mal formada / inconsistente con dockerStatus. Sin
+  // "image:" en absoluto es válido (instaladores por script propio, p.ej.
+  // Coolify/Dokku/Penpot — ver resolveToolResourceProfile), así que solo se
+  // valida el formato de las que SÍ declaran una. ---
+  if (isNonEmptyString(tool.dockerCompose)) {
+    for (const image of extractDockerImages(tool.dockerCompose)) {
+      if (!image || /\s/.test(image)) {
+        push(`\`dockerCompose\` declara una imagen Docker mal formada: "${image}"`);
+        continue;
+      }
+      const usesLatestOrNoTag = /:latest$/.test(image) || !image.includes(":");
+      if (tool.dockerStatus === "VERIFIED_PINNED" && usesLatestOrNoTag) {
+        push(`\`dockerStatus\` es "VERIFIED_PINNED" pero la imagen "${image}" usa \`latest\` o no tiene tag — no está realmente fijada`);
+      }
+    }
   }
 
   if (tool.difficulty && !VALID_DIFFICULTIES.has(tool.difficulty)) {
@@ -185,7 +234,71 @@ function main(): void {
     if (count > 1) errors.push({ toolId: slug, message: `\`slug\` duplicado: aparece ${count} veces en el catálogo` });
   }
 
-  console.log(`Validando ${allTools.length} herramientas del catálogo...\n`);
+  // --- Referencias rotas hacia el catálogo desde datasets "paralelos"
+  // (stacks, traducciones, guías de migración) — cada uno de estos vive en
+  // su propio archivo y puede quedar desincronizado si una herramienta se
+  // renombra o se elimina sin actualizar quien la referencia. ---
+  const allIds = new Set(allTools.map((t) => t.id));
+  const publishedIds = new Set(tools.map((t) => t.id));
+
+  for (const stack of stacks) {
+    for (const toolId of stack.tools) {
+      if (!allIds.has(toolId)) {
+        errors.push({ toolId: stack.slug, message: `el stack "${stack.slug}" referencia el id de herramienta "${toolId}", que no existe en el catálogo` });
+      } else if (!publishedIds.has(toolId)) {
+        errors.push({ toolId: stack.slug, message: `el stack "${stack.slug}" referencia "${toolId}", que existe pero no está publicada (rompería la ficha del stack)` });
+      }
+    }
+  }
+
+  const stackSlugs = new Set(stacks.map((s) => s.slug));
+  for (const slug of Object.keys(stacksEn)) {
+    if (!stackSlugs.has(slug)) {
+      errors.push({ toolId: slug, message: `stacks.en.ts tiene una traducción para "${slug}", que no existe (o ya no existe) en stacks.ts` });
+    }
+  }
+
+  for (const id of Object.keys(toolsEn)) {
+    if (!allIds.has(id)) {
+      errors.push({ toolId: id, message: `tools.en.ts tiene una traducción para "${id}", que no existe (o ya no existe) en tools.ts` });
+    }
+  }
+
+  const allSlugs = new Set(allTools.map((t) => t.slug));
+  for (const key of Object.keys(pairOverrides)) {
+    const toolSlug = key.slice(key.indexOf("→") + 1);
+    if (!allSlugs.has(toolSlug)) {
+      errors.push({ toolId: key, message: `migration-pair-overrides.ts tiene la clave "${key}", cuyo slug de destino "${toolSlug}" no existe en el catálogo` });
+    }
+  }
+
+  // --- Estadísticas inconsistentes: catalogStats es la única fuente de
+  // verdad (ver src/lib/catalog-stats.ts) — estos invariantes matemáticos
+  // deben cumplirse siempre por construcción; si alguno falla, alguien
+  // rompió esa invariante al tocar catalog-stats.ts. ---
+  const fossSum =
+    catalogStats.totalFoss + catalogStats.totalOpenCore + catalogStats.totalFairCode + catalogStats.totalSourceAvailable + catalogStats.totalUnknownLicenseModel;
+  if (fossSum !== catalogStats.totalTools) {
+    errors.push({
+      toolId: "catalogStats",
+      message: `el desglose por fossModel suma ${fossSum} pero totalTools es ${catalogStats.totalTools} — deberían ser iguales`,
+    });
+  }
+  const categorySum = Object.values(catalogStats.toolCountByCategory).reduce((a, b) => a + b, 0);
+  if (categorySum !== catalogStats.totalTools) {
+    errors.push({
+      toolId: "catalogStats",
+      message: `la suma de toolCountByCategory es ${categorySum} pero totalTools es ${catalogStats.totalTools} — deberían ser iguales`,
+    });
+  }
+  if (catalogStats.totalTools + catalogStats.totalNotYetPublished !== catalogStats.totalInCatalogFile) {
+    errors.push({
+      toolId: "catalogStats",
+      message: "totalTools + totalNotYetPublished no suma totalInCatalogFile",
+    });
+  }
+
+  console.log(`Validando ${allTools.length} herramientas del catálogo (${catalogStats.totalTools} publicadas)...\n`);
 
   if (errors.length === 0) {
     console.log(`\x1b[32m✔ Todo correcto — ${allTools.length}/${allTools.length} herramientas pasan la validación.\x1b[0m`);

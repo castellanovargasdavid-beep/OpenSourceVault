@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { categories, getCategoryHref } from "@/data/categories";
 import { categoriesEn } from "@/data/categories.en";
-import { allTools } from "@/data/tools";
+import { catalogStats } from "@/lib/catalog-stats";
 import { categoryColors } from "@/lib/category-colors";
 import { categoryIconMap } from "@/lib/category-icons";
 import { cn } from "@/lib/utils";
@@ -21,7 +21,12 @@ export function CategoryGrid({ locale = "es" }: { locale?: Locale }) {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {categories.map((category) => {
           const Icon = categoryIconMap[category.icon];
-          const count = allTools.filter((tl) => tl.category === category.id).length;
+          // Antes esto contaba sobre `allTools` (incluye herramientas
+          // "scheduled" aún no publicadas) mientras el resto de la home
+          // (Hero) contaba solo publicadas — dos totales distintos en la
+          // misma página. Ahora ambos leen de la misma fuente única
+          // (catalogStats, ver src/lib/catalog-stats.ts).
+          const count = catalogStats.toolCountByCategory[category.id];
           const palette = categoryColors[category.id];
           const label = locale === "en" ? categoriesEn[category.id].label : category.label;
           const description = locale === "en" ? categoriesEn[category.id].description : category.description;

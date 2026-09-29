@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { tools } from "@/data/tools";
 import { saasPricing } from "@/data/saas-pricing";
 import { siteConfig } from "@/lib/site-config";
+import { catalogStats } from "@/lib/catalog-stats";
 
 export const metadata: Metadata = {
   title: "Cómo auditamos cada herramienta",
@@ -14,11 +14,17 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-const fossCount = tools.filter((t) => t.fossModel === "FOSS").length;
-const openCoreCount = tools.filter((t) => t.fossModel === "OpenCore").length;
-const fairCodeCount = tools.filter((t) => t.fossModel === "FairCode").length;
-const sourceAvailableCount = tools.filter((t) => t.fossModel === "SourceAvailable").length;
-const dockerCount = tools.filter((t) => t.tags.includes("docker-ready")).length;
+// Antes cada página (esta y su versión en inglés) recalculaba estos cinco
+// conteos a mano con su propio tools.filter(...) — misma lógica duplicada
+// dos veces, con el riesgo de que alguien actualizara una copia y no la
+// otra. Ahora ambas leen de catalogStats (src/lib/catalog-stats.ts), la
+// misma fuente que usa el resto del sitio (Hero, CategoryGrid...).
+const fossCount = catalogStats.totalFoss;
+const openCoreCount = catalogStats.totalOpenCore;
+const fairCodeCount = catalogStats.totalFairCode;
+const sourceAvailableCount = catalogStats.totalSourceAvailable;
+const dockerCount = catalogStats.totalDockerReady;
+const totalTools = catalogStats.totalTools;
 
 export default function ComoAuditamosPage() {
   return (
@@ -61,7 +67,7 @@ export default function ComoAuditamosPage() {
             <li>
               <p className="font-medium text-slate-900">✅ Docker Ready</p>
               <p>
-                {dockerCount} de {tools.length} herramientas incluyen un docker-compose.yml real en su ficha.
+                {dockerCount} de {totalTools} herramientas incluyen un docker-compose.yml real en su ficha.
                 Comprobamos que su sintaxis sea válida con nuestra propia herramienta{" "}
                 <Link href="/doctor" className="font-medium text-emerald-700 hover:underline">
                   Doctor Compose
@@ -113,7 +119,7 @@ export default function ComoAuditamosPage() {
             promesa vacía:
           </p>
           <ul className="list-disc space-y-1 pl-5">
-            <li>No hemos desplegado en producción real las {tools.length} herramientas del catálogo nosotros mismos.</li>
+            <li>No hemos desplegado en producción real las {totalTools} herramientas del catálogo nosotros mismos.</li>
             <li>No auditamos el código fuente en busca de vulnerabilidades de seguridad.</li>
             <li>No garantizamos que un docker-compose.yml funcione sin ajustes en cualquier entorno o versión de Docker.</li>
             <li>No aceptamos pagos de los proyectos listados a cambio de aparecer o de una valoración más favorable.</li>

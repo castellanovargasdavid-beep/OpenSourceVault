@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { tools } from "@/data/tools";
 import { saasPricing } from "@/data/saas-pricing";
 import { siteConfig } from "@/lib/site-config";
+import { catalogStats } from "@/lib/catalog-stats";
 
 export const metadata: Metadata = {
   title: "How we audit each tool",
@@ -14,11 +14,13 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-const fossCount = tools.filter((t) => t.fossModel === "FOSS").length;
-const openCoreCount = tools.filter((t) => t.fossModel === "OpenCore").length;
-const fairCodeCount = tools.filter((t) => t.fossModel === "FairCode").length;
-const sourceAvailableCount = tools.filter((t) => t.fossModel === "SourceAvailable").length;
-const dockerCount = tools.filter((t) => t.tags.includes("docker-ready")).length;
+// Same single source as the Spanish version — see catalog-stats.ts.
+const fossCount = catalogStats.totalFoss;
+const openCoreCount = catalogStats.totalOpenCore;
+const fairCodeCount = catalogStats.totalFairCode;
+const sourceAvailableCount = catalogStats.totalSourceAvailable;
+const dockerCount = catalogStats.totalDockerReady;
+const totalTools = catalogStats.totalTools;
 
 export default function HowWeAuditPage() {
   return (
@@ -61,7 +63,7 @@ export default function HowWeAuditPage() {
             <li>
               <p className="font-medium text-slate-900">✅ Docker Ready</p>
               <p>
-                {dockerCount} out of {tools.length} tools ship a real docker-compose.yml on their page. We
+                {dockerCount} out of {totalTools} tools ship a real docker-compose.yml on their page. We
                 check that its syntax is valid with our own{" "}
                 <Link href="/en/doctor" className="font-medium text-emerald-700 hover:underline">
                   Doctor Compose
@@ -110,7 +112,7 @@ export default function HowWeAuditPage() {
           <h2 className="mb-3 text-xl font-semibold text-slate-900">What we don&apos;t do</h2>
           <p className="mb-2">Just as important as the above — so &quot;audited&quot; doesn&apos;t become an empty promise:</p>
           <ul className="list-disc space-y-1 pl-5">
-            <li>We haven&apos;t deployed all {tools.length} tools in the catalog to real production ourselves.</li>
+            <li>We haven&apos;t deployed all {totalTools} tools in the catalog to real production ourselves.</li>
             <li>We don&apos;t audit source code for security vulnerabilities.</li>
             <li>We don&apos;t guarantee a docker-compose.yml works unmodified on every environment or Docker version.</li>
             <li>We don&apos;t accept payment from listed projects in exchange for inclusion or a more favorable review.</li>

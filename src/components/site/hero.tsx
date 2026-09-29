@@ -4,9 +4,9 @@ import { RotatingExamples } from "@/components/site/rotating-examples";
 import { AnimatedCounter } from "@/components/site/animated-counter";
 import { LogoImage } from "@/components/site/logo-image";
 import { FloatingHero } from "@/components/site/floating-hero";
-import { categories } from "@/data/categories";
 import { getSaasDomain } from "@/lib/saas-domains";
 import { getHeroFloatingData } from "@/lib/hero-floating-data";
+import { catalogStats } from "@/lib/catalog-stats";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { getHowWeAuditHref } from "@/lib/routes";
 import { localeHref } from "@/lib/locale-href";
@@ -28,7 +28,6 @@ const showcaseSaas = [
 
 export function Hero({ tools, locale = "es" }: { tools: ToolCardData[]; locale?: Locale }) {
   const t = getDictionary(locale);
-  const totalSaas = new Set(tools.flatMap((tool) => tool.replaces)).size;
   const floatingData = getHeroFloatingData(tools);
 
   return (
@@ -46,7 +45,7 @@ export function Hero({ tools, locale = "es" }: { tools: ToolCardData[]; locale?:
             href={getHowWeAuditHref(locale)}
             className="inline-flex items-center rounded-full border border-emerald-200 bg-emerald-100 px-3 py-1 text-xs font-medium text-emerald-800 transition-colors hover:bg-emerald-200"
           >
-            {t.hero.badge(tools.length)}
+            {t.hero.badge(catalogStats.totalTools)}
           </Link>
           <h1 className="mt-6 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
             {t.hero.titlePrefix}{" "}
@@ -94,19 +93,19 @@ export function Hero({ tools, locale = "es" }: { tools: ToolCardData[]; locale?:
           <div className="mx-auto mt-10 flex max-w-xl flex-wrap items-center justify-center gap-x-10 gap-y-4">
             <div>
               <p className="text-2xl font-bold text-slate-900">
-                <AnimatedCounter value={tools.length} suffix="+" />
+                <AnimatedCounter value={catalogStats.totalTools} suffix="+" />
               </p>
               <p className="text-xs text-slate-600">{t.hero.statTools}</p>
             </div>
             <div>
               <p className="text-2xl font-bold text-slate-900">
-                <AnimatedCounter value={totalSaas} suffix="+" />
+                <AnimatedCounter value={catalogStats.totalSaasReplaced} suffix="+" />
               </p>
               <p className="text-xs text-slate-600">{t.hero.statSaas}</p>
             </div>
             <div>
               <p className="text-2xl font-bold text-slate-900">
-                <AnimatedCounter value={categories.length} />
+                <AnimatedCounter value={catalogStats.totalCategories} />
               </p>
               <p className="text-xs text-slate-600">{t.hero.statCategories}</p>
             </div>
