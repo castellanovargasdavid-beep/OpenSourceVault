@@ -5409,7 +5409,11 @@ volumes:
     techStack: ["C++", "QML"],
     pros: ["Ningún servidor (ni siquiera propio) puede ver tus llamadas"],
     cons: ["No pensado para webinars o reuniones masivas de empresa"],
-    tags: [],
+    // `dockerCompose` es un docker-compose.yml real de un solo servicio, sin
+    // ningún matiz de instalador externo (a diferencia de bigbluebutton, que
+    // sí lo tiene) — le faltaba la etiqueta que ya llevan las otras 143
+    // herramientas publicadas cuyo despliegue es realmente "compose".
+    tags: ["docker-ready"],
   },
   {
     id: "neko",
