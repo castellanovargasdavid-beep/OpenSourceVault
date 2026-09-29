@@ -12,6 +12,8 @@ import { siteConfig } from "@/lib/site-config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { localeHref } from "@/lib/locale-href";
 import { getHowWeAuditHref } from "@/lib/routes";
+import { getReplaceMapping } from "@/lib/replace";
+import { cn } from "@/lib/utils";
 import type { Locale } from "@/i18n/config";
 
 function formatPrice(price: number): string {
@@ -22,6 +24,7 @@ export function AlternativaPageContent({ group, locale }: { group: SaasAlternati
   const t = getDictionary(locale);
   const rows = buildAlternativeTableRows(group.tools);
   const primaryTool = rows[0].tool;
+  const replaceMapping = getReplaceMapping(group.saasSlug, locale);
 
   const pricing = getSaasPricingLocalized(group.saasName, locale);
   const priceLabel = pricing
@@ -161,7 +164,19 @@ export function AlternativaPageContent({ group, locale }: { group: SaasAlternati
         </div>
       </section>
 
-      <section className="mb-12 grid gap-6 sm:grid-cols-2">
+      <section className={cn("mb-12 grid gap-6 sm:grid-cols-2", replaceMapping && "lg:grid-cols-3")}>
+        {replaceMapping && (
+          <div className="rounded-xl border border-slate-200 bg-white p-5">
+            <h2 className="mb-2 text-base font-semibold text-slate-900">{t.alternativaPage.replaceGuideTitle(group.saasName)}</h2>
+            <p className="mb-4 text-sm text-slate-600">{t.alternativaPage.replaceGuideBody(replaceMapping.entries.length)}</p>
+            <Link
+              href={localeHref(`/replace/${replaceMapping.saasSlug}`, locale)}
+              className="text-sm font-medium text-emerald-700 hover:text-emerald-800"
+            >
+              {t.alternativaPage.replaceGuideCta} →
+            </Link>
+          </div>
+        )}
         <div className="rounded-xl border border-slate-200 bg-white p-5">
           <h2 className="mb-2 text-base font-semibold text-slate-900">{t.alternativaPage.costTitle(group.saasName)}</h2>
           <p className="mb-4 text-sm text-slate-600">

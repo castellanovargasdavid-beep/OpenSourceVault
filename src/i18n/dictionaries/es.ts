@@ -4,6 +4,7 @@ const es = {
   header: {
     categorias: "Categorías",
     stacks: "Packs Listos",
+    toolsMenu: "Herramientas",
     calculadora: "Calculadora",
     guiaDespliegue: "Guía Docker",
     hosting: "Hosting",
@@ -364,6 +365,7 @@ const es = {
     reportIssueTitle: (tool: string) => `El docker-compose de ${tool} no funciona`,
     otherAlternatives: "Otras alternativas a lo mismo",
     viewAlternatives: (saas: string) => `Ver alternativas a ${saas}`,
+    replaceGuideLink: (saas: string) => `¿Cómo sustituyo ${saas}?`,
     migrationGuide: "Guía de migración",
     migrationLink: (from: string, tool: string) => `Cómo migrar de ${from} a ${tool}`,
     comparisons: "Comparativas cara a cara",
@@ -390,6 +392,9 @@ const es = {
     badgeLightestRam: "La más ligera",
     badgeMostPopular: "Más popular en GitHub",
     detailedCardsTitle: "Ficha detallada de cada alternativa",
+    replaceGuideTitle: (saas: string) => `¿Cómo sustituyo ${saas}?`,
+    replaceGuideBody: (count: number) => `Guía práctica con el caso de uso y la limitación real de cada una de las ${count} alternativas, para elegir la que mejor encaje.`,
+    replaceGuideCta: "Ver guía de sustitución",
     costTitle: (saas: string) => `¿Cuánto cuesta ${saas} y cuánto te ahorras?`,
     costWithPrice: (saas: string, price: string) =>
       `${saas} cuesta ${price}. Auto-hospedando la alternativa solo pagas el servidor — normalmente unos pocos dólares al mes.`,
@@ -422,6 +427,9 @@ const es = {
     pageTitle: (saas: string) => `¿Cómo sustituyo ${saas}?`,
     pageSubtitle: (saas: string, count: number) =>
       `${count} alternativas open source que pueden cubrir distintos casos de uso de ${saas} — cada una con su encaje real, no una promesa de "sustituye completamente".`,
+    buildStackTitle: "¿Ya sabes cuál quieres?",
+    buildStackBody: "Añádelas al Stack Builder y genera un docker-compose.yml listo para desplegar, solo o junto con el resto de tu stack.",
+    buildStackCta: "🚀 Construir mi Stack",
     viewAllAlternativesLink: (saas: string) => `Ver tabla comparativa completa de ${saas} →`,
     tryFullFlowTitle: "¿Usas más de un SaaS?",
     tryFullFlowBody: "Selecciona todos los que pagas hoy y construye tu stack completo de una vez.",

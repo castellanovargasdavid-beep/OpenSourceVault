@@ -20,6 +20,12 @@ import type { Dictionary } from "@/i18n/dictionaries/es";
  */
 export function ReplaceGuideContent({ mapping, locale = "es", dict }: { mapping: ReplaceMapping; locale?: Locale; dict: Dictionary }) {
   const t = dict.replacePage;
+  // Precarga las alternativas de "buen encaje" en el Stack Builder — si por
+  // lo que sea ninguna entrada llegara a ser "good" (no ocurre hoy con el
+  // contenido curado, pero no lo demos por hecho), cae a todas para que el
+  // CTA principal nunca enlace a un stack vacío.
+  const goodFitSlugs = mapping.entries.filter((e) => e.fit === "good").map((e) => e.tool.slug);
+  const buildStackSlugs = goodFitSlugs.length > 0 ? goodFitSlugs : mapping.entries.map((e) => e.tool.slug);
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
@@ -60,7 +66,18 @@ export function ReplaceGuideContent({ mapping, locale = "es", dict }: { mapping:
         ))}
       </div>
 
-      <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mt-8 rounded-xl border-2 border-emerald-300 bg-emerald-50/40 p-6">
+        <p className="text-base font-semibold text-slate-900">{t.buildStackTitle}</p>
+        <p className="mt-1 text-sm text-slate-600">{t.buildStackBody}</p>
+        <Link
+          href={`${localeHref("/stacks/builder", locale)}?tools=${encodeURIComponent(buildStackSlugs.join(","))}`}
+          className="mt-4 inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+        >
+          {t.buildStackCta}
+        </Link>
+      </div>
+
+      <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <Link href={getAlternativeHref(mapping.saasName, locale)} className="text-sm font-medium text-slate-600 hover:text-emerald-700">
           {t.viewAllAlternativesLink(mapping.saasName)}
         </Link>

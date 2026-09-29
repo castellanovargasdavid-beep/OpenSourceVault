@@ -7,14 +7,29 @@ import type { Locale } from "@/i18n/config";
 import { LanguageSwitcher } from "@/components/site/language-switcher";
 import { GithubIcon } from "@/components/icons/github-icon";
 import { MobileNav } from "@/components/site/mobile-nav";
+import { NavDropdown } from "@/components/site/nav-dropdown";
 
 export function Header({ locale = "es" }: { locale?: Locale }) {
   const t = getDictionary(locale);
+  /**
+   * Stack Builder / Reemplaza mi SaaS / Auditoría SaaS agrupadas bajo un
+   * desplegable "Herramientas" en escritorio (ver <NavDropdown>) — a
+   * 1024px (breakpoint `lg` donde aparece este nav) el margen disponible
+   * entre el nav y el bloque de idioma/GitHub/hosting era de solo 18-31px
+   * según el idioma, insuficiente para un enlace de texto más. Agrupar en
+   * vez de añadir un enlace plano libera espacio en vez de consumirlo.
+   * MobileNav sigue recibiendo las 6 rutas en plano — el menú móvil no
+   * tiene ese problema de espacio.
+   */
+  const toolsMenuLinks = [
+    { href: localeHref("/stacks/builder", locale), label: t.stackBuilder.navLabel },
+    { href: localeHref("/replace", locale), label: t.replaceFlow.navLabel },
+    { href: localeHref("/saas-exit", locale), label: t.saasExit.navLabel },
+  ];
   const navLinks = [
     { href: localeHref("/#categorias", locale), label: t.header.categorias },
     { href: localeHref("/stacks", locale), label: t.header.stacks },
-    { href: localeHref("/stacks/builder", locale), label: t.stackBuilder.navLabel },
-    { href: localeHref("/saas-exit", locale), label: t.saasExit.navLabel },
+    ...toolsMenuLinks,
     { href: localeHref("/doctor", locale), label: t.composeDoctor.navLabel },
   ];
 
@@ -28,15 +43,16 @@ export function Header({ locale = "es" }: { locale?: Locale }) {
           <span>{siteConfig.name}</span>
         </Link>
         <nav className="hidden items-center gap-5 lg:flex">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="whitespace-nowrap text-sm font-medium text-slate-600 transition-colors hover:text-slate-900"
-            >
-              {link.label}
-            </Link>
-          ))}
+          <Link href={localeHref("/#categorias", locale)} className="whitespace-nowrap text-sm font-medium text-slate-600 transition-colors hover:text-slate-900">
+            {t.header.categorias}
+          </Link>
+          <Link href={localeHref("/stacks", locale)} className="whitespace-nowrap text-sm font-medium text-slate-600 transition-colors hover:text-slate-900">
+            {t.header.stacks}
+          </Link>
+          <NavDropdown label={t.header.toolsMenu} items={toolsMenuLinks} />
+          <Link href={localeHref("/doctor", locale)} className="whitespace-nowrap text-sm font-medium text-slate-600 transition-colors hover:text-slate-900">
+            {t.composeDoctor.navLabel}
+          </Link>
         </nav>
         <div className="flex items-center gap-3">
           <MobileNav

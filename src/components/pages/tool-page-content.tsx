@@ -4,6 +4,7 @@ import { getLocalizedTool } from "@/data/tools";
 import { getCategoryMetaLocalized, getCategoryHref } from "@/data/categories";
 import { getStacksForTool, getLocalizedStack } from "@/data/stacks";
 import { getAlternativeHref } from "@/lib/alternatives";
+import { getReplaceMapping } from "@/lib/replace";
 import { getMigrationGuideHref, getDeployGuideHref, getCompareHref } from "@/lib/routes";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
@@ -553,6 +554,20 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
                   <ExternalLink size={14} className="shrink-0" />
                 </Link>
               ))}
+              {tool.replaces.map((saas) => {
+                const replaceMapping = getReplaceMapping(slugify(saas), locale);
+                if (!replaceMapping) return null;
+                return (
+                  <Link
+                    key={`replace-${saas}`}
+                    href={localeHref(`/replace/${replaceMapping.saasSlug}`, locale)}
+                    className={cn(buttonVariants({ variant: "outline", size: "sm" }), "h-auto min-h-8 justify-between whitespace-normal py-1.5 text-left")}
+                  >
+                    {t.toolPage.replaceGuideLink(saas)}
+                    <ExternalLink size={14} className="shrink-0" />
+                  </Link>
+                );
+              })}
             </div>
           </div>
 

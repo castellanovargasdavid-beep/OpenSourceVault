@@ -6,6 +6,7 @@ const en: Dictionary = {
   header: {
     categorias: "Categories",
     stacks: "Ready-made Packs",
+    toolsMenu: "Tools",
     calculadora: "Calculator",
     guiaDespliegue: "Docker Guide",
     hosting: "Hosting",
@@ -366,6 +367,7 @@ const en: Dictionary = {
     reportIssueTitle: (tool: string) => `${tool}'s docker-compose isn't working`,
     otherAlternatives: "Other alternatives to the same tool",
     viewAlternatives: (saas: string) => `View alternatives to ${saas}`,
+    replaceGuideLink: (saas: string) => `How do I replace ${saas}?`,
     migrationGuide: "Migration guide",
     migrationLink: (from: string, tool: string) => `How to migrate from ${from} to ${tool}`,
     comparisons: "Head-to-head comparisons",
@@ -392,6 +394,9 @@ const en: Dictionary = {
     badgeLightestRam: "Lightest option",
     badgeMostPopular: "Most popular on GitHub",
     detailedCardsTitle: "Detailed profile of each alternative",
+    replaceGuideTitle: (saas: string) => `How do I replace ${saas}?`,
+    replaceGuideBody: (count: number) => `A practical guide with the real use case and limitation of each of the ${count} alternatives, to pick the one that fits best.`,
+    replaceGuideCta: "See replacement guide",
     costTitle: (saas: string) => `How much does ${saas} cost, and how much can you save?`,
     costWithPrice: (saas: string, price: string) =>
       `${saas} costs ${price}. Self-hosting the alternative, you only pay for the server — usually a few dollars a month.`,
@@ -424,6 +429,9 @@ const en: Dictionary = {
     pageTitle: (saas: string) => `How do I replace ${saas}?`,
     pageSubtitle: (saas: string, count: number) =>
       `${count} open source alternatives that can cover different use cases of ${saas} — each with its real fit, not a "replaces it completely" promise.`,
+    buildStackTitle: "Already know which one you want?",
+    buildStackBody: "Add them to the Stack Builder and generate a docker-compose.yml ready to deploy, alone or with the rest of your stack.",
+    buildStackCta: "🚀 Build My Stack",
     viewAllAlternativesLink: (saas: string) => `See the full ${saas} comparison table →`,
     tryFullFlowTitle: "Using more than one SaaS?",
     tryFullFlowBody: "Select everything you pay for today and build your whole stack at once.",
