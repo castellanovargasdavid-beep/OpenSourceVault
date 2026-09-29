@@ -14,10 +14,13 @@
  * dar una falsa sensación de que todo está verificado o es reproducible.
  *
  * Sale con código 1 si encuentra algo que sí es un problema real (secreto
- * con pinta de hardcodeado, `curl|bash` directo sin inspección, o un
- * docker-compose sin ninguna imagen declarada) — no falla solo por tener
- * tags móviles o por no tener `dockerStatus` fijado a mano, que son hechos
- * normales de la mayoría de proyectos upstream, no errores de este catálogo.
+ * con pinta de hardcodeado, `curl|bash` directo sin inspección, un
+ * docker-compose sin ninguna imagen declarada, o una herramienta que
+ * DECLARA `dockerStatus: "VERIFIED_PINNED"` sin que la evidencia DETECTADA
+ * automáticamente lo respalde — ver DECLARED/DETECTED/DERIVED en
+ * src/lib/deployment-audit.ts) — no falla solo por tener tags móviles o por
+ * no tener `dockerStatus` fijado a mano, que son hechos normales de la
+ * mayoría de proyectos upstream, no errores de este catálogo.
  */
 import { allTools } from "../src/data/tools";
 import { auditToolDeployment, findSuspiciousSecretAssignments } from "../src/lib/deployment-audit";
@@ -43,9 +46,33 @@ function main(): void {
     manual_setup: 0,
   };
 
+  // DECLARED / DETECTED / DERIVED — ver el bloque de comentarios de
+  // DeploymentVerificationState en deployment-audit.ts. Se resume aparte
+  // para que quede explícito que "declared" (lo que dice tools.ts) y
+  // "verified" (lo que este audit puede respaldar) no son la misma cosa.
+  let declaredVerifiedCount = 0;
+  let detectedMeetsCriteriaCount = 0;
+  let unsupportedDeclarations = 0;
+
   for (const tool of allTools) {
     const audit = auditToolDeployment(tool);
     stateCounts[audit.state]++;
+
+    if (audit.declared.dockerStatus === "VERIFIED_PINNED") declaredVerifiedCount++;
+    if (audit.method === "compose" && audit.detected.imageCount > 0 && audit.detected.allTagsPinnedOrDigest && audit.detected.hasIdentifiableSource && !audit.detected.hasSuspiciousSecrets) {
+      detectedMeetsCriteriaCount++;
+    }
+    if (audit.declaredVerifiedButUnsupported) {
+      unsupportedDeclarations++;
+      findings.push({
+        toolId: tool.id,
+        message:
+          "declara `dockerStatus: \"VERIFIED_PINNED\"` pero la evidencia detectada automáticamente no lo respalda del todo " +
+          `(imageCount=${audit.detected.imageCount}, allTagsPinnedOrDigest=${audit.detected.allTagsPinnedOrDigest}, ` +
+          `hasIdentifiableSource=${audit.detected.hasIdentifiableSource}, hasSuspiciousSecrets=${audit.detected.hasSuspiciousSecrets}) — ` +
+          "corrige el dato declarado o la evidencia, nunca al revés en la UI (ver Fase 3 del brief de endurecimiento)",
+      });
+    }
 
     if (audit.hasMutableTag) mutableTagTools++;
     if (audit.method === "compose" && audit.images.length > 0 && !audit.hasMutableTag && !audit.hasUnknownTag) {
@@ -84,6 +111,12 @@ function main(): void {
   console.log(`Partially verified deployments: ${stateCounts.partially_verified}`);
   console.log(`External script deployments (official installer, uses Docker): ${stateCounts.external_script}`);
   console.log(`Manual setup (no Docker at all): ${stateCounts.manual_setup}`);
+
+  console.log("\nDECLARED vs DETECTED vs DERIVED (evita ambigüedad sobre qué respalda \"Verified\"):");
+  console.log(`  Declared \`VERIFIED_PINNED\` in tools.ts: ${declaredVerifiedCount}`);
+  console.log(`  Detected as meeting all automatic verified criteria: ${detectedMeetsCriteriaCount}`);
+  console.log(`  Derived state = "verified": ${stateCounts.verified}`);
+  console.log(`  Declared VERIFIED_PINNED but NOT supported by detected evidence: ${unsupportedDeclarations}`);
 
   if (findings.length === 0) {
     console.log("\n\x1b[32m✔ Sin problemas bloqueantes.\x1b[0m");

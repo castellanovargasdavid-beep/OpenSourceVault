@@ -174,16 +174,38 @@ export function findSuspiciousSecretAssignments(dockerCompose: string): string[]
 // --- Estado de verificación del despliegue ---------------------------------
 
 /**
- * - "verified": `dockerStatus === "VERIFIED_PINNED"` — alguien comprobó a
- *   mano, contra el registro real, que la imagen existe en ese tag exacto y
- *   que el tag no es un alias móvil. El nivel de confianza más alto que
- *   ofrece este catálogo.
+ * DECLARED / DETECTED / DERIVED — separación explícita para que "verified"
+ * nunca dependa solo de una afirmación manual sin respaldo:
+ *
+ * - DECLARED (`declared`): el dato tal cual está escrito en tools.ts
+ *   (`dockerStatus`). Es una AFIRMACIÓN de quien editó el catálogo — nadie
+ *   automático la comprobó todavía en este punto. Puede ser correcta o
+ *   puede estar simplemente mal escrita.
+ * - DETECTED (`detected`): evidencia que este módulo puede confirmar por sí
+ *   mismo, solo a partir del texto de `dockerCompose`/`githubUrl` ya
+ *   presentes en el catálogo — sin tocar internet, sin inventar nada.
+ * - DERIVED (`state`): el resultado de combinar ambas. `declared` por sí
+ *   solo NUNCA es suficiente para "verified": si dice VERIFIED_PINNED pero
+ *   `detected` no lo respalda (imagen sin identificar, tag móvil, fuente no
+ *   identificable, o una señal de secreto hardcodeado), la afirmación queda
+ *   marcada como no respaldada (`declaredVerifiedButUnsupported: true`) y
+ *   el estado derivado cae a "partially_verified" — `npm run audit:deployment`
+ *   convierte ese caso en un error (ver scripts/deployment-audit.ts).
+ *
+ * Estados:
+ * - "verified": `declared.dockerStatus === "VERIFIED_PINNED"` Y todos los
+ *   criterios de `detected` lo respaldan (ver `meetsVerifiedCriteria`). El
+ *   nivel de confianza más alto que ofrece este catálogo — sigue sin ser una
+ *   auditoría de seguridad del software, solo confirma que la referencia a
+ *   la imagen está fijada y no contradice ninguna señal automática conocida.
  * - "partially_verified": o bien `dockerStatus` está fijado a mano pero con
- *   matices (`LATEST_ONLY`/`ARCHIVED_UPSTREAM`/`LEGACY_IMAGE` — alguien lo
- *   miró y hay algo que avisar), o bien nadie lo verificó a mano pero el
- *   texto de TODOS los tags ya tiene pinta de versión fija (no
- *   `latest`/`main`/sin tag) — un indicio razonable, no una confirmación.
- * - "unverified": no hay `dockerStatus` fijado a mano Y al menos un tag de
+ *   matices (`LATEST_ONLY`/`ARCHIVED_UPSTREAM`/`LEGACY_IMAGE`), o bien
+ *   `VERIFIED_PINNED` fue declarado pero `detected` no lo respalda del todo
+ *   (afirmación sin respaldo completo — no se descarta sin más, pero
+ *   tampoco se confía a ciegas), o bien nadie lo declaró pero el texto de
+ *   TODOS los tags ya tiene pinta de versión fija — un indicio razonable,
+ *   no una confirmación.
+ * - "unverified": no hay `dockerStatus` declarado Y al menos un tag de
  *   imagen es móvil o de forma no reconocible. El estado por defecto y más
  *   honesto para la mayoría del catálogo — no se afirma "verified" solo
  *   porque exista un docker-compose.
@@ -195,6 +217,51 @@ export function findSuspiciousSecretAssignments(dockerCompose: string): string[]
  */
 export type DeploymentVerificationState = "verified" | "partially_verified" | "unverified" | "manual_setup" | "external_script";
 
+/** El dato tal cual se declaró a mano en tools.ts — una afirmación, no una prueba. */
+export interface DeclaredDeploymentInfo {
+  dockerStatus: OpenSourceTool["dockerStatus"];
+}
+
+/**
+ * Evidencia que SÍ puede confirmarse automáticamente, solo a partir de los
+ * datos ya presentes en el catálogo (dockerCompose/githubUrl) — nunca
+ * consulta un registro real ni internet.
+ */
+export interface DetectedDeploymentEvidence {
+  imageCount: number;
+  /** true solo si hay >=1 imagen Y todas son "pinned" o "digest" (ninguna mutable/unknown). */
+  allTagsPinnedOrDigest: boolean;
+  hasMutableTag: boolean;
+  hasUnknownTag: boolean;
+  /** `githubUrl` es una URL http(s) con forma reconocible — no confirma que el repo exista, solo que el dato tiene forma de fuente identificable. */
+  hasIdentifiableSource: boolean;
+  /** true si `findSuspiciousSecretAssignments` encuentra algo en este compose — señal conocida de deployment inseguro. */
+  hasSuspiciousSecrets: boolean;
+}
+
+function hasIdentifiableSource(githubUrl: string | undefined): boolean {
+  if (!githubUrl) return false;
+  try {
+    const url = new URL(githubUrl);
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Los criterios mínimos que este módulo puede comprobar automáticamente
+ * para que una imagen "declarada" VERIFIED_PINNED merezca ese estado de
+ * verdad (Fase 3): imagen identificable, tag fijado/digest, fuente
+ * identificable, y ninguna señal conocida de deployment inseguro. Si falta
+ * cualquiera de estos, `declared.dockerStatus === "VERIFIED_PINNED"` queda
+ * como una afirmación SIN respaldo automático — nunca se traduce a
+ * "verified" solo porque el catálogo lo diga.
+ */
+function meetsVerifiedCriteria(detected: DetectedDeploymentEvidence): boolean {
+  return detected.imageCount > 0 && detected.allTagsPinnedOrDigest && detected.hasIdentifiableSource && !detected.hasSuspiciousSecrets;
+}
+
 export interface DeploymentAudit {
   method: DeploymentMethod;
   images: DockerImageRef[];
@@ -203,6 +270,10 @@ export interface DeploymentAudit {
   scriptOrigin?: ScriptOriginResult;
   usesDirectPipeToShell: boolean;
   state: DeploymentVerificationState;
+  declared: DeclaredDeploymentInfo;
+  detected: DetectedDeploymentEvidence;
+  /** true si el catálogo declara VERIFIED_PINNED pero la evidencia detectada no lo respalda — inconsistencia real de datos, no solo un matiz. `npm run audit:deployment` falla si encuentra alguna. */
+  declaredVerifiedButUnsupported: boolean;
 }
 
 /**
@@ -221,9 +292,18 @@ export function auditToolDeployment(
   tool: Pick<OpenSourceTool, "id" | "dockerCompose" | "dockerStatus" | "githubUrl" | "websiteUrl">
 ): DeploymentAudit {
   const method = getDeploymentMethod(tool);
+  const declared: DeclaredDeploymentInfo = { dockerStatus: tool.dockerStatus };
 
   if (method === "external_script") {
     const scriptOrigin = getScriptOrigin(tool);
+    const detected: DetectedDeploymentEvidence = {
+      imageCount: 0,
+      allTagsPinnedOrDigest: false,
+      hasMutableTag: false,
+      hasUnknownTag: false,
+      hasIdentifiableSource: hasIdentifiableSource(tool.githubUrl),
+      hasSuspiciousSecrets: findSuspiciousSecretAssignments(tool.dockerCompose).length > 0,
+    };
     return {
       method,
       images: [],
@@ -232,6 +312,10 @@ export function auditToolDeployment(
       scriptOrigin,
       usesDirectPipeToShell: usesDirectPipeToShell(tool.dockerCompose),
       state: NO_DOCKER_AT_ALL_TOOL_IDS.has(tool.id) ? "manual_setup" : "external_script",
+      declared,
+      detected,
+      // "verified" no existe para script/manual_setup — no aplica, nunca contradicho.
+      declaredVerifiedButUnsupported: false,
     };
   }
 
@@ -240,10 +324,31 @@ export function auditToolDeployment(
   const hasUnknownTag = images.some((i) => i.tagClass === "unknown");
   const allPinnedOrDigest = images.length > 0 && images.every((i) => i.tagClass === "pinned" || i.tagClass === "digest");
 
+  const detected: DetectedDeploymentEvidence = {
+    imageCount: images.length,
+    allTagsPinnedOrDigest: allPinnedOrDigest,
+    hasMutableTag,
+    hasUnknownTag,
+    hasIdentifiableSource: hasIdentifiableSource(tool.githubUrl),
+    hasSuspiciousSecrets: findSuspiciousSecretAssignments(tool.dockerCompose).length > 0,
+  };
+
+  const declaredVerified = declared.dockerStatus === "VERIFIED_PINNED";
+  const declaredVerifiedButUnsupported = declaredVerified && !meetsVerifiedCriteria(detected);
+
   let state: DeploymentVerificationState;
-  if (tool.dockerStatus === "VERIFIED_PINNED") {
+  if (declaredVerified && meetsVerifiedCriteria(detected)) {
+    // "verified" exige AMBAS cosas: la afirmación del catálogo Y que la
+    // evidencia detectada automáticamente la respalde — nunca solo la
+    // afirmación (ver meetsVerifiedCriteria y la Fase 3 del brief).
     state = "verified";
-  } else if (tool.dockerStatus === "LATEST_ONLY" || tool.dockerStatus === "ARCHIVED_UPSTREAM" || tool.dockerStatus === "LEGACY_IMAGE") {
+  } else if (declaredVerifiedButUnsupported) {
+    // Se declaró VERIFIED_PINNED pero la evidencia no lo respalda del todo:
+    // no se descarta sin más (alguien sí revisó algo), pero tampoco se
+    // confía a ciegas en la afirmación — cae a "partially_verified", y
+    // `npm run audit:deployment` convierte esto en un error de datos.
+    state = "partially_verified";
+  } else if (declared.dockerStatus === "LATEST_ONLY" || declared.dockerStatus === "ARCHIVED_UPSTREAM" || declared.dockerStatus === "LEGACY_IMAGE") {
     state = "partially_verified";
   } else if (allPinnedOrDigest) {
     state = "partially_verified";
@@ -251,5 +356,15 @@ export function auditToolDeployment(
     state = "unverified";
   }
 
-  return { method, images, hasMutableTag, hasUnknownTag, usesDirectPipeToShell: false, state };
+  return {
+    method,
+    images,
+    hasMutableTag,
+    hasUnknownTag,
+    usesDirectPipeToShell: false,
+    state,
+    declared,
+    detected,
+    declaredVerifiedButUnsupported,
+  };
 }
