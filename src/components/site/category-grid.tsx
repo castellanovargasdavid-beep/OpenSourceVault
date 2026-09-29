@@ -11,6 +11,13 @@ import type { Locale } from "@/i18n/config";
 
 export function CategoryGrid({ locale = "es" }: { locale?: Locale }) {
   const t = getDictionary(locale);
+  // Igual que sitemap.ts (Bloque 5): una categoría sin ninguna herramienta
+  // publicada todavía no tiene nada que mostrar detrás del enlace — aquí
+  // es aún más visible que en el sitemap, porque es la sección de
+  // descubrimiento más prominente de la home. Se sigue definiendo en
+  // categories.ts (la taxonomía no cambia), solo deja de listarse aquí
+  // hasta que tenga al menos 1 herramienta real.
+  const categoriesWithTools = categories.filter((category) => catalogStats.toolCountByCategory[category.id] > 0);
 
   return (
     <section id="categorias" className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
@@ -19,7 +26,7 @@ export function CategoryGrid({ locale = "es" }: { locale?: Locale }) {
         <p className="mt-2 text-slate-600">{t.categoryGrid.subtitle}</p>
       </div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {categories.map((category) => {
+        {categoriesWithTools.map((category) => {
           const Icon = categoryIconMap[category.icon];
           // Antes esto contaba sobre `allTools` (incluye herramientas
           // "scheduled" aún no publicadas) mientras el resto de la home

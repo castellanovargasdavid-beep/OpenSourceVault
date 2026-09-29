@@ -38,6 +38,7 @@ import { getCostCalculatorHref } from "@/lib/routes";
 import {
   aggregateStack,
   computeStackCheck,
+  findFunctionalOverlaps,
   type StackToolProfile,
   type DependencyKind,
   type StackCheckItem,
@@ -149,6 +150,7 @@ export function StackBuilderContent({
   );
   const aggregate = React.useMemo(() => aggregateStack(selectedProfiles), [selectedProfiles]);
   const stackCheck = React.useMemo(() => computeStackCheck(selectedProfiles, aggregate), [selectedProfiles, aggregate]);
+  const functionalOverlaps = React.useMemo(() => findFunctionalOverlaps(selectedTools), [selectedTools]);
   const [showDetails, setShowDetails] = React.useState(false);
 
   const nameOf = React.useCallback((slug: string) => toolsBySlug.get(slug)?.name ?? slug, [toolsBySlug]);
@@ -322,7 +324,9 @@ export function StackBuilderContent({
           {builder.stacks.map((stack) => (
             <button
               key={stack.id}
+              type="button"
               onClick={() => builder.setActiveStackId(stack.id)}
+              aria-pressed={stack.id === builder.activeStackId}
               className={cn(
                 "rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
                 stack.id === builder.activeStackId
@@ -430,6 +434,21 @@ export function StackBuilderContent({
                         <span className="text-slate-500"> — {namesOf(item.toolSlugs)}</span>
                       )}
                     </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {functionalOverlaps.length > 0 && (
+            <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
+              <p className="mb-1.5 flex items-center gap-2 font-semibold">
+                <AlertTriangle size={15} /> {t.overlapTitle}
+              </p>
+              <ul className="space-y-1">
+                {functionalOverlaps.map((overlap) => (
+                  <li key={overlap.saas}>
+                    {t.overlapPrefix} {overlap.saas}: {overlap.toolNames.join(", ")}. {t.overlapSuffix}
                   </li>
                 ))}
               </ul>

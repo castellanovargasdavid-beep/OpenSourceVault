@@ -12,25 +12,31 @@ import { NavDropdown } from "@/components/site/nav-dropdown";
 export function Header({ locale = "es" }: { locale?: Locale }) {
   const t = getDictionary(locale);
   /**
-   * Stack Builder / Reemplaza mi SaaS / Auditoría SaaS agrupadas bajo un
+   * Doctor Compose / Reemplaza mi SaaS / Auditoría SaaS agrupadas bajo un
    * desplegable "Herramientas" en escritorio (ver <NavDropdown>) — a
    * 1024px (breakpoint `lg` donde aparece este nav) el margen disponible
    * entre el nav y el bloque de idioma/GitHub/hosting era de solo 18-31px
    * según el idioma, insuficiente para un enlace de texto más. Agrupar en
    * vez de añadir un enlace plano libera espacio en vez de consumirlo.
-   * MobileNav sigue recibiendo las 6 rutas en plano — el menú móvil no
-   * tiene ese problema de espacio.
+   * Stack Builder ya NO está aquí dentro: es el paso "Construir" del
+   * funnel Descubrir→Decidir→Construir→Desplegar, así que se promueve a
+   * enlace plano junto a Categorías/Stacks en vez de compartir jerarquía
+   * con estas 3 utilidades secundarias — "Stack Builder" (13/13 car. en
+   * ES/EN) es más corto que "Doctor Compose"/"Compose Doctor" (14 car. en
+   * ambos), así que el swap no reintroduce el problema de espacio de
+   * arriba. MobileNav sigue recibiendo las 6 rutas en plano — el menú
+   * móvil no tiene ese problema de espacio.
    */
   const toolsMenuLinks = [
-    { href: localeHref("/stacks/builder", locale), label: t.stackBuilder.navLabel },
+    { href: localeHref("/doctor", locale), label: t.composeDoctor.navLabel },
     { href: localeHref("/replace", locale), label: t.replaceFlow.navLabel },
     { href: localeHref("/saas-exit", locale), label: t.saasExit.navLabel },
   ];
   const navLinks = [
     { href: localeHref("/#categorias", locale), label: t.header.categorias },
     { href: localeHref("/stacks", locale), label: t.header.stacks },
+    { href: localeHref("/stacks/builder", locale), label: t.stackBuilder.navLabel },
     ...toolsMenuLinks,
-    { href: localeHref("/doctor", locale), label: t.composeDoctor.navLabel },
   ];
 
   return (
@@ -49,10 +55,10 @@ export function Header({ locale = "es" }: { locale?: Locale }) {
           <Link href={localeHref("/stacks", locale)} className="whitespace-nowrap text-sm font-medium text-slate-600 transition-colors hover:text-slate-900">
             {t.header.stacks}
           </Link>
-          <NavDropdown label={t.header.toolsMenu} items={toolsMenuLinks} />
-          <Link href={localeHref("/doctor", locale)} className="whitespace-nowrap text-sm font-medium text-slate-600 transition-colors hover:text-slate-900">
-            {t.composeDoctor.navLabel}
+          <Link href={localeHref("/stacks/builder", locale)} className="whitespace-nowrap text-sm font-medium text-slate-600 transition-colors hover:text-slate-900">
+            {t.stackBuilder.navLabel}
           </Link>
+          <NavDropdown label={t.header.toolsMenu} items={toolsMenuLinks} />
         </nav>
         <div className="flex items-center gap-3">
           <MobileNav

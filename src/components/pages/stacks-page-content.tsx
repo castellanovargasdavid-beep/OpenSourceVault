@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { Layers } from "lucide-react";
-import { stacks } from "@/data/stacks";
+import { stacks, getLocalizedStack } from "@/data/stacks";
 import { StackCard } from "@/components/site/stack-card";
+import { JsonLd, buildBreadcrumbListSchema } from "@/components/site/json-ld";
+import { siteConfig } from "@/lib/site-config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { localeHref } from "@/lib/locale-href";
 import type { Locale } from "@/i18n/config";
@@ -11,6 +13,27 @@ export function StacksPageContent({ locale }: { locale: Locale }) {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+      <JsonLd
+        data={buildBreadcrumbListSchema([
+          { name: t.breadcrumb.home, url: `${siteConfig.url}${localeHref("/", locale)}` },
+          { name: t.stacksPage.badge, url: `${siteConfig.url}${localeHref("/stacks", locale)}` },
+        ])}
+      />
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          name: t.stacksPage.title,
+          description: t.stacksPage.subtitle,
+          itemListElement: stacks.map((stack, index) => ({
+            "@type": "ListItem",
+            position: index + 1,
+            name: getLocalizedStack(stack, locale).title,
+            url: `${siteConfig.url}${localeHref(`/stacks/${stack.slug}`, locale)}`,
+          })),
+        }}
+      />
+
       <nav className="mb-6 text-sm text-slate-600">
         <Link href={localeHref("/", locale)} className="hover:text-emerald-700">
           {t.breadcrumb.home}

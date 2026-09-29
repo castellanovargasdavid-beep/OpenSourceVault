@@ -715,6 +715,9 @@ const en: Dictionary = {
     stackCheckBackupNotDocumented: "Has persistent data — backup frequency isn't documented, decide your own",
     stackCheckSuspiciousSecret: "May contain a value that looks like a secret without a recognizable placeholder marker",
     configureVarsTitle: "Variables you need to configure before starting",
+    overlapTitle: "Overlapping tools",
+    overlapPrefix: "Alternatives to each other for",
+    overlapSuffix: "You may only need one of them.",
   },
   hardwareFit: {
     title: "Will my hardware handle it?",
@@ -754,6 +757,7 @@ const en: Dictionary = {
     title: "Is your docker-compose.yml throwing an error?",
     subtitle:
       "Paste the file you edited by hand, or the exact error your terminal gave you (\"yaml: line 14: did not find expected key\", \"mapping values are not allowed here\"...). We'll tell you what's wrong in plain language, and fix it with one click.",
+    afterFixCta: "Looking for another tool, or want to build your whole stack? Go to the Stack Builder →",
   },
   composeDoctor: {
     navLabel: "Compose Doctor",

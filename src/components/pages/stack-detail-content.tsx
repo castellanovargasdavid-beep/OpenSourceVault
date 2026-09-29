@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Check, Database, ExternalLink, Sparkles, TriangleAlert } from "lucide-react";
+import { Check, Cpu, Database, ExternalLink, Sparkles, TriangleAlert } from "lucide-react";
 import type { Stack, OpenSourceTool } from "@/lib/types";
 import { getLocalizedTool } from "@/data/tools";
 import { getCategoryMetaLocalized } from "@/data/categories";
@@ -14,6 +14,7 @@ import { JsonLd } from "@/components/site/json-ld";
 import { stackIconMap } from "@/lib/stack-icons";
 import { categoryColors } from "@/lib/category-colors";
 import { difficultyMeta, formatMinRam, resolveToolResourceProfile } from "@/lib/tool-difficulty";
+import { aggregateStack, findFunctionalOverlaps, toStackToolProfile } from "@/lib/stack-resources";
 import { getSaasDomain } from "@/lib/saas-domains";
 import { siteConfig } from "@/lib/site-config";
 import { cn, getHostname } from "@/lib/utils";
@@ -119,6 +120,8 @@ function StackToolProfile({ tool: rawTool, locale }: { tool: OpenSourceTool; loc
 export function StackDetailContent({ stack, stackTools, locale }: { stack: Stack; stackTools: OpenSourceTool[]; locale: Locale }) {
   const t = getDictionary(locale);
   const Icon = stackIconMap[stack.icon];
+  const aggregate = aggregateStack(stackTools.map(toStackToolProfile));
+  const functionalOverlaps = findFunctionalOverlaps(stackTools);
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
@@ -159,11 +162,20 @@ export function StackDetailContent({ stack, stackTools, locale }: { stack: Stack
         <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">{stack.title}</h1>
         <p className="mt-4 max-w-2xl text-lg text-slate-600">{stack.description}</p>
 
-        <div className="mt-6 flex items-start gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3">
-          <Sparkles size={18} className="mt-0.5 shrink-0 text-emerald-700" />
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-wide text-emerald-700">{t.stackDetailPage.savingsLabel}</p>
-            <p className="text-sm font-medium text-emerald-900">{stack.estimatedSavings}</p>
+        <div className="mt-6 grid gap-3 sm:grid-cols-2">
+          <div className="flex items-start gap-2 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
+            <Cpu size={18} className="mt-0.5 shrink-0 text-slate-600" />
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wide text-slate-600">{t.stackBuilder.ramLabel}</p>
+              <p className="text-sm font-medium text-slate-900">{formatMinRam(aggregate.totalApplicationRamMb, aggregate.isRamEstimated)}</p>
+            </div>
+          </div>
+          <div className="flex items-start gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3">
+            <Sparkles size={18} className="mt-0.5 shrink-0 text-emerald-700" />
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wide text-emerald-700">{t.stackDetailPage.savingsLabel}</p>
+              <p className="text-sm font-medium text-emerald-900">{stack.estimatedSavings}</p>
+            </div>
           </div>
         </div>
       </header>
@@ -177,6 +189,21 @@ export function StackDetailContent({ stack, stackTools, locale }: { stack: Stack
           {t.stackDetailPage.customizeInBuilder}
         </Link>
       </div>
+
+      {functionalOverlaps.length > 0 && (
+        <div className="mb-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
+          <p className="mb-1.5 flex items-center gap-2 font-semibold">
+            <TriangleAlert size={15} /> {t.stackBuilder.overlapTitle}
+          </p>
+          <ul className="space-y-1">
+            {functionalOverlaps.map((overlap) => (
+              <li key={overlap.saas}>
+                {t.stackBuilder.overlapPrefix} {overlap.saas}: {overlap.toolNames.join(", ")}. {t.stackBuilder.overlapSuffix}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       <section>
         <h2 className="mb-4 text-xl font-semibold text-slate-900">

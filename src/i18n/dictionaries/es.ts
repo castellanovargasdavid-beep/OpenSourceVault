@@ -713,6 +713,9 @@ const es = {
     stackCheckBackupNotDocumented: "Tiene datos persistentes — decide tú la frecuencia de backup, no está documentada",
     stackCheckSuspiciousSecret: "Puede contener un valor con pinta de secreto sin marcar como placeholder",
     configureVarsTitle: "Variables que debes configurar antes de arrancar",
+    overlapTitle: "Herramientas que se solapan",
+    overlapPrefix: "Alternativas entre sí a",
+    overlapSuffix: "Puede que solo necesites una.",
   },
   hardwareFit: {
     title: "¿Aguantará mi hardware?",
@@ -752,6 +755,7 @@ const es = {
     title: "¿Tu docker-compose.yml da error?",
     subtitle:
       "Pega el archivo que has modificado a mano, o directamente el mensaje de error que te soltó la terminal (\"yaml: line 14: did not find expected key\", \"mapping values are not allowed here\"...). Te decimos qué falla, sin tecnicismos, y te lo reparamos con un clic.",
+    afterFixCta: "¿Buscas otra herramienta o quieres construir tu stack completo? Ve al Stack Builder →",
   },
   composeDoctor: {
     navLabel: "Doctor Compose",

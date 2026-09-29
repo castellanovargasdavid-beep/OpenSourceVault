@@ -338,3 +338,34 @@ export function computeStackCheck(profiles: StackToolProfile[], aggregate: Stack
 
 /** Re-exportado para que la UI liste las variables a configurar en el compose combinado (Fase 10) sin duplicar el regex. */
 export { extractEnvPlaceholders };
+
+// --- Solapamiento funcional entre herramientas -------------------------------
+
+export interface FunctionalOverlapGroup {
+  saas: string;
+  toolNames: string[];
+}
+
+/**
+ * Detecta herramientas que son alternativas entre sí — nunca una heurística
+ * inventada de "compatibilidad": usa exclusivamente `replaces`, el mismo
+ * dato curado ya mostrado en cada ficha/badge del catálogo (qué SaaS
+ * sustituye cada herramienta). Si 2+ herramientas del conjunto reemplazan
+ * al mismo SaaS, es una señal real de que probablemente no hacen falta
+ * todas. Genérica en `T` para servir igual a `ToolCardData` (Stack Builder,
+ * cliente) que a `OpenSourceTool` (detalle de un Stack curado, servidor) —
+ * ambas ya tienen `name`/`replaces`.
+ */
+export function findFunctionalOverlaps<T extends { name: string; replaces: string[] }>(tools: T[]): FunctionalOverlapGroup[] {
+  const toolNamesBySaas = new Map<string, string[]>();
+  for (const tool of tools) {
+    for (const saas of tool.replaces) {
+      const names = toolNamesBySaas.get(saas) ?? [];
+      names.push(tool.name);
+      toolNamesBySaas.set(saas, names);
+    }
+  }
+  return [...toolNamesBySaas.entries()]
+    .filter(([, toolNames]) => toolNames.length > 1)
+    .map(([saas, toolNames]) => ({ saas, toolNames }));
+}

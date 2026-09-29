@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
-import { Stethoscope } from "lucide-react";
+import Link from "next/link";
+import { Stethoscope, ArrowRight } from "lucide-react";
 import { ComposeDoctorContent } from "@/components/pages/compose-doctor-content";
 import { siteConfig } from "@/lib/site-config";
 import { getDictionary } from "@/i18n/get-dictionary";
+import { localeHref } from "@/lib/locale-href";
 
 const t = getDictionary("en");
 
@@ -27,6 +29,13 @@ export default function EnglishComposeDoctorPage() {
       </header>
 
       <ComposeDoctorContent locale="en" t={t.composeDoctor} />
+
+      <div className="mt-10 text-center">
+        <Link href={localeHref("/stacks/builder", "en")} className="inline-flex items-center gap-1.5 text-sm font-medium text-emerald-700 hover:underline">
+          {t.composeDoctorPage.afterFixCta}
+          <ArrowRight size={14} />
+        </Link>
+      </div>
     </div>
   );
 }
