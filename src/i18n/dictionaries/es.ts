@@ -413,6 +413,20 @@ const es = {
         ? `Sí, las ${total} son 100% FOSS: sin plan de pago ni funciones bloqueadas al auto-hospedarlas.`
         : `${fossCount} de ${total} son 100% FOSS. Las demás son Open-Core: el núcleo es gratis y auto-hospedable, pero alguna función avanzada puede seguir de pago — lo indicamos en cada ficha.`,
   },
+  replacePage: {
+    metaTitle: (saas: string, year: number) => `Cómo sustituir ${saas} por alternativas Open Source en ${year}`,
+    metaDescription: (saas: string, count: number) =>
+      `Guía práctica para sustituir ${saas}: ${count} alternativas open source reales, con su caso de uso, limitaciones honestas y cómo migrar.`,
+    breadcrumb: (saas: string) => `Cómo sustituir ${saas}`,
+    eyebrow: "Guía de sustitución",
+    pageTitle: (saas: string) => `¿Cómo sustituyo ${saas}?`,
+    pageSubtitle: (saas: string, count: number) =>
+      `${count} alternativas open source que pueden cubrir distintos casos de uso de ${saas} — cada una con su encaje real, no una promesa de "sustituye completamente".`,
+    viewAllAlternativesLink: (saas: string) => `Ver tabla comparativa completa de ${saas} →`,
+    tryFullFlowTitle: "¿Usas más de un SaaS?",
+    tryFullFlowBody: "Selecciona todos los que pagas hoy y construye tu stack completo de una vez.",
+    tryFullFlowLink: "Abrir Reemplaza mi SaaS →",
+  },
   categoryPage: {
     metaTitle: (label: string, year: number) => `Las mejores alternativas Open Source de ${label} en ${year}`,
     h1: (label: string, year: number) => `Las mejores alternativas Open Source de ${label} en ${year}`,
@@ -786,6 +800,37 @@ const es = {
     shareButton: "Copiar resumen para compartir",
     shareCopied: "¡Copiado!",
     disclaimer: "Precios de lista aproximados a fecha de redacción — cada proveedor los cambia con frecuencia. Revisa el precio vigente en su web antes de decidir.",
+  },
+  replaceFlow: {
+    navLabel: "Reemplaza SaaS",
+    metaTitle: "Reemplaza mi SaaS — encuentra tu stack open source",
+    metaDescription:
+      "Dinos qué SaaS usas (Notion, Slack, Airtable, Zapier...) y te mostramos qué alternativas open source pueden sustituirlo, con sus limitaciones reales, listas para construir tu stack.",
+    badge: "Sin registro · SaaS con mapping curado a mano",
+    step1Eyebrow: "Paso 1 de 2",
+    pageTitle: "¿Qué SaaS utilizas?",
+    pageSubtitle:
+      "Selecciona las herramientas que pagas hoy. Solo mostramos SaaS con alternativas suficientemente documentadas en el catálogo — nada de mapear a ciegas.",
+    searchPlaceholder: "Buscar SaaS (Notion, Slack, Zapier...)",
+    searchNoResults: "No hay ningún SaaS con mapping disponible que coincida.",
+    selectedSaasTitle: "Tus herramientas SaaS",
+    removeSaasLabel: "Quitar",
+    emptyStateTitle: "Selecciona al menos un SaaS para ver sus alternativas.",
+    continueButton: "Ver alternativas",
+    step2Eyebrow: "Paso 2 de 2",
+    backButton: "← Cambiar mi selección de SaaS",
+    alternativesFor: (saas: string) => `Alternativas a ${saas}`,
+    fitGoodLabel: "Buen encaje",
+    fitPartialLabel: "Encaje parcial",
+    fitSpecializedLabel: "Encaje especializado",
+    limitationLabel: "Limitación:",
+    migrationGuideLink: "Ver guía de migración paso a paso →",
+    viewToolLink: "Ver ficha completa →",
+    selectedCount: (n: number) => (n === 1 ? "1 herramienta seleccionada" : `${n} herramientas seleccionadas`),
+    buildStackButton: "🚀 Construir mi Stack",
+    buildStackHint:
+      "Se abre el Stack Builder con estas herramientas ya añadidas — ahí verás RAM, dependencias, coste estimado y el docker-compose listo para descargar.",
+    buildStackEmptyNote: "Añade al menos una alternativa a tu stack para continuar.",
   },
   costCalculatorPage: {
     metaTitle: "Calculadora de costes de infraestructura self-hosted",

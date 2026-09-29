@@ -415,6 +415,20 @@ const en: Dictionary = {
         ? `Yes, all ${total} are 100% FOSS: no paid plan or locked features when self-hosted.`
         : `${fossCount} out of ${total} are 100% FOSS. The rest are Open-Core: the core is free and self-hostable, but some advanced feature may stay paid — we call it out on each tool's page.`,
   },
+  replacePage: {
+    metaTitle: (saas: string, year: number) => `How to Replace ${saas} with Open Source Alternatives in ${year}`,
+    metaDescription: (saas: string, count: number) =>
+      `A practical guide to replacing ${saas}: ${count} real open source alternatives, with their use case, honest limitations, and how to migrate.`,
+    breadcrumb: (saas: string) => `How to replace ${saas}`,
+    eyebrow: "Replacement guide",
+    pageTitle: (saas: string) => `How do I replace ${saas}?`,
+    pageSubtitle: (saas: string, count: number) =>
+      `${count} open source alternatives that can cover different use cases of ${saas} — each with its real fit, not a "replaces it completely" promise.`,
+    viewAllAlternativesLink: (saas: string) => `See the full ${saas} comparison table →`,
+    tryFullFlowTitle: "Using more than one SaaS?",
+    tryFullFlowBody: "Select everything you pay for today and build your whole stack at once.",
+    tryFullFlowLink: "Open Replace My SaaS →",
+  },
   categoryPage: {
     metaTitle: (label: string, year: number) => `The best Open Source ${label} alternatives in ${year}`,
     h1: (label: string, year: number) => `The best Open Source ${label} alternatives in ${year}`,
@@ -788,6 +802,36 @@ const en: Dictionary = {
     shareButton: "Copy summary to share",
     shareCopied: "Copied!",
     disclaimer: "Approximate list prices as of writing — every provider changes these often. Check their current price on their website before deciding.",
+  },
+  replaceFlow: {
+    navLabel: "Replace SaaS",
+    metaTitle: "Replace My SaaS — find your open source stack",
+    metaDescription:
+      "Tell us which SaaS you use (Notion, Slack, Airtable, Zapier...) and we'll show you which open source alternatives can replace it, with their real limitations, ready to build your stack.",
+    badge: "No sign-up · Hand-curated SaaS mappings",
+    step1Eyebrow: "Step 1 of 2",
+    pageTitle: "Which SaaS do you use?",
+    pageSubtitle:
+      "Select the tools you pay for today. We only show SaaS with alternatives documented well enough in the catalog — never a blind mapping.",
+    searchPlaceholder: "Search SaaS (Notion, Slack, Zapier...)",
+    searchNoResults: "No SaaS with an available mapping matches.",
+    selectedSaasTitle: "Your SaaS tools",
+    removeSaasLabel: "Remove",
+    emptyStateTitle: "Select at least one SaaS to see its alternatives.",
+    continueButton: "View alternatives",
+    step2Eyebrow: "Step 2 of 2",
+    backButton: "← Change my SaaS selection",
+    alternativesFor: (saas: string) => `Alternatives to ${saas}`,
+    fitGoodLabel: "Good fit",
+    fitPartialLabel: "Partial fit",
+    fitSpecializedLabel: "Specialized fit",
+    limitationLabel: "Limitation:",
+    migrationGuideLink: "See step-by-step migration guide →",
+    viewToolLink: "View full profile →",
+    selectedCount: (n: number) => (n === 1 ? "1 tool selected" : `${n} tools selected`),
+    buildStackButton: "🚀 Build My Stack",
+    buildStackHint: "Opens the Stack Builder with these tools already added — you'll see RAM, dependencies, estimated cost, and the docker-compose ready to download.",
+    buildStackEmptyNote: "Add at least one alternative to your stack to continue.",
   },
   costCalculatorPage: {
     metaTitle: "Self-hosted infrastructure cost calculator",

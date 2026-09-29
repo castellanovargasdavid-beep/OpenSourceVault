@@ -33,6 +33,7 @@ import { useStackBuilder } from "@/lib/stack-builder-store";
 import { getHostname, cn } from "@/lib/utils";
 import { localeHref } from "@/lib/locale-href";
 import { extractEnvPlaceholders } from "@/lib/deploy-guide";
+import { trackReplaceEvent } from "@/lib/analytics";
 import {
   aggregateStack,
   computeStackCheck,
@@ -208,6 +209,7 @@ export function StackBuilderContent({
 
   function handleDownload() {
     if (!displayYaml) return;
+    trackReplaceEvent({ name: "compose_downloaded", toolCount: selectedTools.length });
     const blob = new Blob([displayYaml], { type: "text/yaml" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");

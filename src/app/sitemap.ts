@@ -4,6 +4,7 @@ import { stacks } from "@/data/stacks";
 import { categories } from "@/data/categories";
 import { categoriesEn } from "@/data/categories.en";
 import { getAllSaasSlugs } from "@/lib/alternatives";
+import { getAllReplaceSlugs } from "@/lib/replace";
 import { getAllComparisonSlugs } from "@/lib/comparisons";
 import {
   getCompareHref,
@@ -55,6 +56,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ["/stacks/builder", "weekly", 0.7],
     ["/doctor", "weekly", 0.8],
     ["/saas-exit", "weekly", 0.9],
+    ["/replace", "weekly", 0.9],
     ["/hosting-deals", "monthly", 0.7],
     ["/promote", "monthly", 0.5],
     ["/privacy", "yearly", 0.2],
@@ -101,6 +103,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       { url: enUrl, changeFrequency: "monthly", priority: 0.9, alternates },
     ];
   });
+
+  const replaceGuideEntries: MetadataRoute.Sitemap = getAllReplaceSlugs().flatMap((slug) => [
+    entry(`/replace/${slug}`, "monthly", 0.8),
+    entryEn(`/replace/${slug}`, "monthly", 0.8),
+  ]);
 
   const comparisonEntries: MetadataRoute.Sitemap = getAllComparisonSlugs().flatMap((pair) => {
     const esUrl = `${siteConfig.url}${getCompareHref(pair, "es")}`;
@@ -158,6 +165,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...allPaths.map(([path, freq, priority]) => entryEn(path, freq, priority)),
     ...categoryEntries,
     ...alternativeEntries,
+    ...replaceGuideEntries,
     ...comparisonEntries,
     ...migrationGuideEntries,
     ...hostingGuideEntries,

@@ -16,12 +16,15 @@ export function AddToStackButton({
   addedLabel,
   compact = false,
   className,
+  onAdd,
 }: {
   toolSlug: string;
   addLabel: string;
   addedLabel: string;
   compact?: boolean;
   className?: string;
+  /** Se dispara solo al pasar de "no está en el stack" a "añadido" — nunca al quitarlo. Opcional, para analítica (ver trackReplaceEvent) sin acoplar este componente genérico a ningún flujo concreto. */
+  onAdd?: () => void;
 }) {
   const { hydrated, isInActiveStack, toggleTool } = useStackBuilder();
   const inStack = hydrated && isInActiveStack(toolSlug);
@@ -36,6 +39,7 @@ export function AddToStackButton({
       onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();
+        if (!inStack) onAdd?.();
         toggleTool(toolSlug);
       }}
       className={cn(
