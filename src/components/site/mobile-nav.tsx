@@ -37,7 +37,29 @@ export function MobileNav({
     document.body.style.overflow = "hidden";
     panelRef.current?.focus();
     function handleKey(e: KeyboardEvent) {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape") {
+        setOpen(false);
+        return;
+      }
+      // Trampa de foco: sin esto, Tab desde el último enlace del panel sale
+      // del diálogo hacia contenido de la página que sigue visualmente tapado
+      // por el overlay (confirmado con teclado: el 10º Tab caía en el
+      // selector de idioma "ES", detrás del fondo semitransparente).
+      if (e.key === "Tab") {
+        const panel = panelRef.current;
+        if (!panel) return;
+        const focusables = panel.querySelectorAll<HTMLElement>('a[href], button:not([disabled])');
+        if (focusables.length === 0) return;
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
     }
     document.addEventListener("keydown", handleKey);
     return () => {

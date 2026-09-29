@@ -66,7 +66,13 @@ export function ToolCard({
   return (
     <Card
       className={cn(
-        "group relative flex h-full flex-col transition-all",
+        // min-w-0: Card es el propio grid item en sus contenedores (grid de
+        // ToolExplorer/FeaturedTools/etc.) — sin esto, "min-width: auto" (el
+        // default de un flex container) fuerza al TRACK del grid a medirse
+        // por el max-content de la tarjeta (348px) en vez de encogerse a los
+        // 288px reales disponibles a 320px, y toda la página desborda
+        // horizontalmente. Confirmado en vivo con Playwright antes/después.
+        "group relative flex h-full min-w-0 flex-col transition-all",
         published ? cn("hover:-translate-y-0.5 hover:shadow-lg", palette.borderHover) : "opacity-80"
       )}
     >
@@ -82,7 +88,7 @@ export function ToolCard({
       )}
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between gap-2">
-          <div className="flex items-start gap-3">
+          <div className="flex min-w-0 items-start gap-3">
             <LogoImage
               domain={getHostname(tool.websiteUrl)}
               label={tool.name}
@@ -90,7 +96,12 @@ export function ToolCard({
               fallbackGradient={palette.gradient}
               className={cn(!published && "grayscale")}
             />
-            <div>
+            {/* min-w-0: sin esto, el pill "Alternativa a X" de abajo (un
+                <p inline-flex> sin restricción de ancho propia) fuerza a
+                toda la fila del header a medirse por su max-content y no
+                envolver — confirmado en vivo: a 320px la tarjeta desbordaba
+                la página 348px vs 288px disponibles en la columna del grid. */}
+            <div className="min-w-0">
               {published ? (
                 <Link href={localeHref(`/tool/${tool.slug}`, locale)} className="font-semibold text-slate-900 hover:text-emerald-700">
                   {tool.name}
