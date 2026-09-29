@@ -36,6 +36,7 @@ export function FloatingToolCard({
   ramLabel,
   toolCardT,
   layout = "floating",
+  float = true,
   style,
   className,
 }: {
@@ -46,6 +47,13 @@ export function FloatingToolCard({
   ramLabel: string;
   toolCardT: Dictionary["toolCard"];
   layout?: "floating" | "inline";
+  /**
+   * Solo aplica en layout "floating". false = tarjeta sin animación de
+   * flotado (queda fija en su posición, con un fade-in de entrada nada
+   * más, y con el lift+scale de hover — ver más abajo por qué solo estas
+   * lo tienen). Usado para que no todas las tarjetas floten a la vez.
+   */
+  float?: boolean;
   style?: React.CSSProperties;
   className?: string;
 }) {
@@ -60,28 +68,40 @@ export function FloatingToolCard({
     if (layout !== "floating" || pairs.length < 2) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
+    let fadeTimeout: ReturnType<typeof setTimeout> | undefined;
     const interval = setInterval(() => {
       setVisible(false);
-      setTimeout(() => {
+      fadeTimeout = setTimeout(() => {
         setIndex((i) => (i + 1) % pairs.length);
         setVisible(true);
       }, ROTATE_FADE_MS);
     }, ROTATE_INTERVAL_MS);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      clearTimeout(fadeTimeout);
+    };
   }, [layout, pairs.length]);
 
   const pair = pairs[index % pairs.length];
   const fossLabel = fossModelLabel(pair.fossModel, toolCardT);
+  const isFloatingAndAnimated = layout === "floating" && float;
 
   return (
     <Link
       href={localeHref(`/tool/${pair.toolSlug}`, locale)}
-      aria-label={`${pair.saasName} → ${pair.toolName}`}
+      aria-label={`${pair.toolName} — ${toolCardT.alternativeTo} ${pair.saasName}`}
       style={style}
       className={cn(
-        "block w-44 shrink-0 rounded-xl border border-slate-200/80 bg-white/85 p-3 shadow-sm backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:scale-[1.02] hover:shadow-md",
-        layout === "floating" && "animate-hero-card-float",
+        "block w-44 shrink-0 rounded-xl border border-slate-200/80 bg-white/85 p-3 shadow-sm backdrop-blur-sm transition-all hover:border-slate-300 hover:shadow-md",
+        // El lift+scale de hover se reserva para las tarjetas SIN flotado
+        // activo a propósito: en las que sí flotan, sumar un salto de hover
+        // encima de un elemento que ya se mueve solo se sentía menos
+        // "premium/predecible" (sección 4 del brief) — no porque compitan
+        // técnicamente por la misma propiedad CSS (Tailwind v4 anima
+        // translate/scale como propiedades nativas separadas de transform,
+        // así que si se combinaran no habría conflicto real).
+        isFloatingAndAnimated ? "animate-hero-card-float" : "hover:-translate-y-0.5 hover:scale-[1.02]",
         className
       )}
     >
@@ -90,7 +110,7 @@ export function FloatingToolCard({
       >
         <div className="flex items-center gap-1.5">
           <LogoImage domain={pair.saasDomain} label={pair.saasName} size={18} fallbackGradient="from-slate-300 to-slate-400" />
-          <span className="truncate text-xs font-medium text-slate-500">{pair.saasName}</span>
+          <span className="truncate text-xs font-medium text-slate-600">{pair.saasName}</span>
         </div>
         <ArrowDown size={11} className="text-slate-300" aria-hidden />
         <div className="flex items-center gap-1.5">

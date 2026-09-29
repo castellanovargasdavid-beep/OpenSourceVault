@@ -60,12 +60,16 @@ export function Hero({ tools, locale = "es" }: { tools: ToolCardData[]; locale?:
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-600">{t.hero.subtitle}</p>
 
-          <ol className="mt-6 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+          <ol className="mt-6 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-[11px] font-semibold uppercase tracking-wide text-slate-600">
             {[t.heroFloating.journeyDiscover, t.heroFloating.journeyCompare, t.heroFloating.journeyBuild, t.heroFloating.journeyDeploy].map(
               (step, i, all) => (
                 <li key={step} className="flex items-center gap-2">
                   <span className={i === 0 ? "text-emerald-600" : undefined}>{step}</span>
-                  {i < all.length - 1 && <span aria-hidden>→</span>}
+                  {i < all.length - 1 && (
+                    <span aria-hidden className="text-slate-300">
+                      →
+                    </span>
+                  )}
                 </li>
               )
             )}

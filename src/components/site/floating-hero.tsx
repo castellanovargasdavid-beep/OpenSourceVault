@@ -50,6 +50,13 @@ export function FloatingHero({
                 locale={locale}
                 ramLabel={t.ramLabel}
                 toolCardT={toolCardT}
+                // Solo la tarjeta cuyo contenido rota (2+ pares) mantiene el
+                // flotado perpetuo — el resto queda fija. Antes las 5
+                // tarjetas flotaban a la vez todo el tiempo; era demasiado
+                // movimiento simultáneo para un hero (y además anulaba en
+                // silencio el hover de las tarjetas estáticas, ver el
+                // comentario de "isFloatingAndAnimated" en FloatingToolCard).
+                float={slot.pairs.length > 1}
                 style={
                   {
                     "--hero-float-duration": layout.duration,
