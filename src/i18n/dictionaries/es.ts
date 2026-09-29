@@ -8,7 +8,7 @@ const es = {
     calculadora: "Calculadora",
     guiaDespliegue: "Guía Docker",
     hosting: "Hosting",
-    verOfertas: "Ver ofertas de hosting",
+    verOfertas: "Empieza a ahorrar",
     github: "Contribuir",
     abrirMenu: "Abrir menú",
     cerrarMenu: "Cerrar menú",

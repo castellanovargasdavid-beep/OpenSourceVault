@@ -65,7 +65,7 @@ export function Header({ locale = "es" }: { locale?: Locale }) {
             navLinks={navLinks}
             githubHref={siteConfig.links.github}
             githubLabel={t.header.github}
-            hostingHref={localeHref("/hosting-deals", locale)}
+            hostingHref={localeHref("/saas-exit", locale)}
             hostingLabel={t.header.verOfertas}
             menuLabel={t.header.abrirMenu}
             closeLabel={t.header.cerrarMenu}
@@ -81,7 +81,7 @@ export function Header({ locale = "es" }: { locale?: Locale }) {
             {t.header.github}
           </a>
           <Link
-            href={localeHref("/hosting-deals", locale)}
+            href={localeHref("/saas-exit", locale)}
             className="hidden h-9 items-center whitespace-nowrap rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 px-4 text-sm font-medium text-white shadow-sm transition-opacity hover:opacity-90 xl:inline-flex"
           >
             {t.header.verOfertas}

@@ -10,7 +10,7 @@ const en: Dictionary = {
     calculadora: "Calculator",
     guiaDespliegue: "Docker Guide",
     hosting: "Hosting",
-    verOfertas: "See hosting deals",
+    verOfertas: "Start saving",
     github: "Contribute",
     abrirMenu: "Open menu",
     cerrarMenu: "Close menu",
