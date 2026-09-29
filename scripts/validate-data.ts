@@ -15,6 +15,8 @@ import { stacks } from "../src/data/stacks";
 import { stacksEn } from "../src/data/stacks.en";
 import { pairOverrides } from "../src/lib/migration-pair-overrides";
 import { catalogStats } from "../src/lib/catalog-stats";
+import { saasPricing } from "../src/data/saas-pricing";
+import { saasDomains } from "../src/lib/saas-domains";
 import type { OpenSourceTool } from "../src/lib/types";
 
 const VALID_CATEGORIES = new Set([
@@ -269,6 +271,58 @@ function main(): void {
     const toolSlug = key.slice(key.indexOf("→") + 1);
     if (!allSlugs.has(toolSlug)) {
       errors.push({ toolId: key, message: `migration-pair-overrides.ts tiene la clave "${key}", cuyo slug de destino "${toolSlug}" no existe en el catálogo` });
+    }
+  }
+
+  // --- saas-pricing.ts / saas-domains.ts: cada entrada debe corresponder a
+  // al menos una herramienta real que sustituya ese SaaS (`tool.replaces[]`)
+  // — si ninguna herramienta lo referencia, es una entrada huérfana (un
+  // precio/dominio que no se muestra en ningún sitio del catálogo). Se
+  // comprueba primero contra `allTools` (¿existe la herramienta destino en
+  // absoluto?) y luego contra `tools` (¿está publicada?), porque un SaaS
+  // solo sustituido por una herramienta "scheduled"/"coming_soon" todavía
+  // no tiene ningún efecto visible en el sitio en producción.
+  const allReplacesNames = new Set(allTools.flatMap((t) => t.replaces));
+  const publishedReplacesNames = new Set(tools.flatMap((t) => t.replaces));
+
+  const saasPricingNameCounts = new Map<string, number>();
+  for (const entry of saasPricing) {
+    saasPricingNameCounts.set(entry.saasName, (saasPricingNameCounts.get(entry.saasName) ?? 0) + 1);
+
+    if (!isNonEmptyString(entry.saasName)) {
+      errors.push({ toolId: "saas-pricing.ts", message: "una entrada de `saasPricing` tiene `saasName` vacío" });
+      continue;
+    }
+    if (!allReplacesNames.has(entry.saasName)) {
+      errors.push({
+        toolId: entry.saasName,
+        message: `saas-pricing.ts tiene precio para "${entry.saasName}", pero ninguna herramienta del catálogo la sustituye (\`replaces\`) — entrada huérfana`,
+      });
+    } else if (!publishedReplacesNames.has(entry.saasName)) {
+      errors.push({
+        toolId: entry.saasName,
+        message: `saas-pricing.ts tiene precio para "${entry.saasName}", pero solo la sustituye(n) herramienta(s) todavía no publicada(s) — sin efecto visible hoy`,
+      });
+    }
+  }
+  for (const [name, count] of saasPricingNameCounts) {
+    if (count > 1) errors.push({ toolId: name, message: `saas-pricing.ts tiene ${count} entradas duplicadas para "${name}"` });
+  }
+
+  for (const [saasName, domain] of Object.entries(saasDomains)) {
+    if (!isNonEmptyString(domain)) {
+      errors.push({ toolId: saasName, message: `saas-domains.ts tiene un dominio vacío para "${saasName}"` });
+    }
+    if (!allReplacesNames.has(saasName)) {
+      errors.push({
+        toolId: saasName,
+        message: `saas-domains.ts tiene un dominio para "${saasName}", pero ninguna herramienta del catálogo la sustituye (\`replaces\`) — entrada huérfana`,
+      });
+    } else if (!publishedReplacesNames.has(saasName)) {
+      errors.push({
+        toolId: saasName,
+        message: `saas-domains.ts tiene un dominio para "${saasName}", pero solo la sustituye(n) herramienta(s) todavía no publicada(s) — sin efecto visible hoy`,
+      });
     }
   }
 

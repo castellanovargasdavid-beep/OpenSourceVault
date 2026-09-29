@@ -5,7 +5,6 @@
  */
 export const saasDomains: Record<string, string> = {
   Notion: "notion.so",
-  Slite: "slite.com",
   Jira: "atlassian.com",
   Asana: "asana.com",
   Linear: "linear.app",
