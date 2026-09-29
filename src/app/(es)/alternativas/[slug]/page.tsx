@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!group) return {};
 
   const t = getDictionary("es");
-  const title = t.alternativaPage.metaTitle(group.saasName, siteConfig.year);
+  const title = t.alternativaPage.metaTitle(group.saasName, siteConfig.year, group.tools.length);
   const description = t.alternativaPage.metaDescription(group.tools.length, group.saasName);
   const url = `${siteConfig.url}/alternativas/${group.saasSlug}`;
 

@@ -103,7 +103,7 @@ export function AlternativaPageContent({ group, locale }: { group: SaasAlternati
           </Link>
         </div>
         <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-          {t.alternativaPage.h1(group.saasName, siteConfig.year)}
+          {t.alternativaPage.h1(group.saasName, siteConfig.year, group.tools.length)}
         </h1>
         <p className="mt-4 text-lg text-slate-600">{t.alternativaPage.subtitle(group.tools.length)}</p>
       </header>

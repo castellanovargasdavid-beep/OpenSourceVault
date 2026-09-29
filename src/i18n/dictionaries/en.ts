@@ -374,12 +374,16 @@ const en: Dictionary = {
     comparisonLink: (a: string, b: string) => `${a} vs ${b}`,
   },
   alternativaPage: {
-    metaTitle: (saas: string, year: number) => `The best Open Source alternatives to ${saas} in ${year}`,
+    metaTitle: (saas: string, year: number, count: number) =>
+      count === 1 ? `The best Open Source alternative to ${saas} in ${year}` : `The best Open Source alternatives to ${saas} in ${year}`,
     metaDescription: (count: number, saas: string) =>
-      `Compare ${count} open source, self-hostable tools that replace ${saas}: license, tech stack and Docker deployment guide.`,
+      count === 1
+        ? `Compare 1 open source, self-hostable tool that replaces ${saas}: license, tech stack and Docker deployment guide.`
+        : `Compare ${count} open source, self-hostable tools that replace ${saas}: license, tech stack and Docker deployment guide.`,
     breadcrumb: (saas: string) => `Alternatives to ${saas}`,
     verified: (count: number) => (count === 1 ? "verified alternative" : "verified alternatives"),
-    h1: (saas: string, year: number) => `The best Open Source alternatives to ${saas} in ${year}`,
+    h1: (saas: string, year: number, count: number) =>
+      count === 1 ? `The best Open Source alternative to ${saas} in ${year}` : `The best Open Source alternatives to ${saas} in ${year}`,
     subtitle: (count: number) =>
       `We compare ${count} self-hostable ${count === 1 ? "tool" : "tools"} you can deploy on your own server in minutes, with license, tech stack and a ready-to-copy docker-compose.`,
     tableTitle: "Quick comparison",

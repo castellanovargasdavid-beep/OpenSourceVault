@@ -372,12 +372,16 @@ const es = {
     comparisonLink: (a: string, b: string) => `${a} vs ${b}`,
   },
   alternativaPage: {
-    metaTitle: (saas: string, year: number) => `Las mejores alternativas Open Source a ${saas} en ${year}`,
+    metaTitle: (saas: string, year: number, count: number) =>
+      count === 1 ? `La mejor alternativa Open Source a ${saas} en ${year}` : `Las mejores alternativas Open Source a ${saas} en ${year}`,
     metaDescription: (count: number, saas: string) =>
-      `Compara ${count} herramientas de código abierto y auto-hospedables que reemplazan a ${saas}: licencia, stack técnico y guía de despliegue con Docker.`,
+      count === 1
+        ? `Compara 1 herramienta de código abierto y auto-hospedable que reemplaza a ${saas}: licencia, stack técnico y guía de despliegue con Docker.`
+        : `Compara ${count} herramientas de código abierto y auto-hospedables que reemplazan a ${saas}: licencia, stack técnico y guía de despliegue con Docker.`,
     breadcrumb: (saas: string) => `Alternativas a ${saas}`,
     verified: (count: number): string => (count === 1 ? "alternativa verificada" : "alternativas verificadas"),
-    h1: (saas: string, year: number) => `Las mejores alternativas Open Source a ${saas} en ${year}`,
+    h1: (saas: string, year: number, count: number) =>
+      count === 1 ? `La mejor alternativa Open Source a ${saas} en ${year}` : `Las mejores alternativas Open Source a ${saas} en ${year}`,
     subtitle: (count: number) =>
       `Comparamos ${count} ${count === 1 ? "herramienta auto-hospedable" : "herramientas auto-hospedables"} que puedes desplegar en tu propio servidor en minutos, con licencia, stack técnico y docker-compose listo para copiar.`,
     tableTitle: "Comparativa rápida",
