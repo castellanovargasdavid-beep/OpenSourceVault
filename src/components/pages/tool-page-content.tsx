@@ -214,7 +214,7 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
       </header>
 
       <div className="grid gap-10 lg:grid-cols-3">
-        <div className="space-y-10 lg:col-span-2">
+        <div className="min-w-0 space-y-10 lg:col-span-2">
           <section>
             <h2 className="mb-4 text-xl font-semibold text-slate-900">{t.toolPage.vs(tool.name, tool.replaces[0])}</h2>
             <div className="grid gap-4 sm:grid-cols-2">
@@ -447,14 +447,14 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
           )}
 
           {tool.dockerCompose && (
-            <section className="space-y-3">
+            <section className="min-w-0 space-y-3">
               {isComposeFile(tool.dockerCompose) && (
-                <details className="group rounded-xl border border-slate-200 open:border-emerald-200">
+                <details className="group min-w-0 rounded-xl border border-slate-200 open:border-emerald-200">
                   <summary className="flex cursor-pointer list-none items-center justify-between gap-2 px-5 py-4 text-lg font-semibold text-slate-900 [&::-webkit-details-marker]:hidden">
                     {t.howToDeploy.backups.title}
                     <ChevronDown size={18} className="shrink-0 text-slate-400 transition-transform group-open:rotate-180" />
                   </summary>
-                  <div className="space-y-3 border-t border-slate-100 px-5 py-4 text-sm text-slate-600">
+                  <div className="min-w-0 space-y-3 border-t border-slate-100 px-5 py-4 text-sm text-slate-600">
                     <p>{t.howToDeploy.backups.intro}</p>
                     <div>
                       <p className="font-medium text-slate-900">{t.howToDeploy.backups.step1Title}</p>
@@ -479,12 +479,12 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
                 </details>
               )}
 
-              <details className="group rounded-xl border border-slate-200 open:border-emerald-200">
+              <details className="group min-w-0 rounded-xl border border-slate-200 open:border-emerald-200">
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-2 px-5 py-4 text-lg font-semibold text-slate-900 [&::-webkit-details-marker]:hidden">
                   {t.howToDeploy.domain.title}
                   <ChevronDown size={18} className="shrink-0 text-slate-400 transition-transform group-open:rotate-180" />
                 </summary>
-                <div className="space-y-4 border-t border-slate-100 px-5 py-4 text-sm text-slate-600">
+                <div className="min-w-0 space-y-4 border-t border-slate-100 px-5 py-4 text-sm text-slate-600">
                   <div>
                     <p className="font-medium text-slate-900">{t.howToDeploy.domain.step1Title}</p>
                     <p className="mt-1 text-xs">{t.howToDeploy.domain.step1Desc}</p>
@@ -516,7 +516,7 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
           )}
         </div>
 
-        <aside className="space-y-6 lg:sticky lg:top-24 lg:self-start">
+        <aside className="min-w-0 space-y-6 lg:sticky lg:top-24 lg:self-start">
           <HardwareFitPanel totalMinRamMb={minRamMb} gpuRequiredToolNames={gpuRequired ? [tool.name] : []} t={t.hardwareFit} />
           <RepoHealthBadge liveStats={liveStats} estimatedStars={tool.starsCount} license={tool.license} locale={locale} />
           <UpdateCheckerCard latestRelease={latestRelease} releasesUrl={releasesUrl} feedUrl={releasesFeedUrl} locale={locale} />
@@ -530,10 +530,10 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
                   <Link
                     key={stack.slug}
                     href={localeHref(`/stacks/${stack.slug}`, locale)}
-                    className={cn(buttonVariants({ variant: "outline", size: "sm" }), "justify-between")}
+                    className={cn(buttonVariants({ variant: "outline", size: "sm" }), "h-auto min-h-8 justify-between whitespace-normal py-1.5 text-left")}
                   >
                     {t.toolPage.featuredInBadge(stack.title)}
-                    <ExternalLink size={14} />
+                    <ExternalLink size={14} className="shrink-0" />
                   </Link>
                 ))}
               </div>
@@ -547,10 +547,10 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
                 <Link
                   key={saas}
                   href={getAlternativeHref(saas, locale)}
-                  className={cn(buttonVariants({ variant: "outline", size: "sm" }), "justify-between")}
+                  className={cn(buttonVariants({ variant: "outline", size: "sm" }), "h-auto min-h-8 justify-between whitespace-normal py-1.5 text-left")}
                 >
                   {t.toolPage.viewAlternatives(saas)}
-                  <ExternalLink size={14} />
+                  <ExternalLink size={14} className="shrink-0" />
                 </Link>
               ))}
             </div>
@@ -560,10 +560,10 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
             <p className="mb-3 text-sm font-semibold text-slate-900">{t.toolPage.migrationGuide}</p>
             <Link
               href={migrationGuideHref}
-              className={cn(buttonVariants({ variant: "outline", size: "sm" }), "w-full justify-between")}
+              className={cn(buttonVariants({ variant: "outline", size: "sm" }), "h-auto min-h-8 w-full justify-between whitespace-normal py-1.5 text-left")}
             >
               {t.toolPage.migrationLink(migrationFromSaas, tool.name)}
-              <ExternalLink size={14} />
+              <ExternalLink size={14} className="shrink-0" />
             </Link>
           </div>
 
@@ -577,10 +577,10 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
                     <Link
                       key={comparison.pairSlug}
                       href={getCompareHref(comparison.pairSlug, locale)}
-                      className={cn(buttonVariants({ variant: "outline", size: "sm" }), "justify-between")}
+                      className={cn(buttonVariants({ variant: "outline", size: "sm" }), "h-auto min-h-8 justify-between whitespace-normal py-1.5 text-left")}
                     >
                       {t.toolPage.comparisonLink(tool.name, other.name)}
-                      <ExternalLink size={14} />
+                      <ExternalLink size={14} className="shrink-0" />
                     </Link>
                   );
                 })}

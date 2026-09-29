@@ -55,7 +55,7 @@ export function DockerComposeBlock({ code, t }: { code: string; t: Dictionary["d
   }
 
   return (
-    <div className="overflow-hidden rounded-xl border border-slate-700/60 bg-slate-900 shadow-lg">
+    <div className="min-w-0 overflow-hidden rounded-xl border border-slate-700/60 bg-slate-900 shadow-lg">
       <div className="h-1 bg-gradient-to-r from-emerald-500 via-teal-500 to-blue-500" />
       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-700/60 px-4 py-2.5">
         <div className="flex items-center gap-3">
