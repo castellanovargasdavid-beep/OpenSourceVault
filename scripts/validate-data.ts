@@ -17,6 +17,7 @@ import { pairOverrides } from "../src/lib/migration-pair-overrides";
 import { catalogStats } from "../src/lib/catalog-stats";
 import { saasPricing } from "../src/data/saas-pricing";
 import { saasDomains } from "../src/lib/saas-domains";
+import { extractDockerImageRefs } from "../src/lib/deployment-audit";
 import type { OpenSourceTool } from "../src/lib/types";
 
 const VALID_CATEGORIES = new Set([
@@ -83,16 +84,6 @@ function extractHostPorts(dockerCompose: string): number[] {
   return ports;
 }
 
-/** Extrae cada valor de `image:` de un docker-compose.yml (sin comillas). Vacío si el compose no declara ninguna (p.ej. herramientas que se instalan con un script propio, no un compose inline — ver comentario en resolveToolResourceProfile). */
-function extractDockerImages(dockerCompose: string): string[] {
-  const images: string[] = [];
-  for (const line of dockerCompose.split("\n")) {
-    const m = line.match(/^\s*image:\s*(.+?)\s*(#.*)?$/);
-    if (m) images.push(m[1].replace(/^["']|["']$/g, ""));
-  }
-  return images;
-}
-
 /** Marcadores de licencias que, por definición, NO son OSI/open-source real — si aparecen, la herramienta nunca debería estar clasificada como `fossModel: "FOSS"` (ver Fase 3: no asumir Open-Core/Source-available = FOSS). */
 const NON_OSI_LICENSE_MARKERS = ["BUSL", "FSL-", "Elastic License", "Source-available", "Sustainable Use", "SSPL", "Commons Clause"];
 
@@ -138,16 +129,17 @@ function validateTool(tool: OpenSourceTool, errors: ValidationError[]): void {
   // --- Imagen Docker mal formada / inconsistente con dockerStatus. Sin
   // "image:" en absoluto es válido (instaladores por script propio, p.ej.
   // Coolify/Dokku/Penpot — ver resolveToolResourceProfile), así que solo se
-  // valida el formato de las que SÍ declaran una. ---
+  // valida el formato de las que SÍ declaran una. Reutiliza el mismo
+  // clasificador de tags que la auditoría de despliegue (deployment-audit.ts
+  // / `npm run audit:deployment`) — una sola definición de "mutable", no dos. ---
   if (isNonEmptyString(tool.dockerCompose)) {
-    for (const image of extractDockerImages(tool.dockerCompose)) {
+    for (const { image, tagClass } of extractDockerImageRefs(tool.dockerCompose)) {
       if (!image || /\s/.test(image)) {
         push(`\`dockerCompose\` declara una imagen Docker mal formada: "${image}"`);
         continue;
       }
-      const usesLatestOrNoTag = /:latest$/.test(image) || !image.includes(":");
-      if (tool.dockerStatus === "VERIFIED_PINNED" && usesLatestOrNoTag) {
-        push(`\`dockerStatus\` es "VERIFIED_PINNED" pero la imagen "${image}" usa \`latest\` o no tiene tag — no está realmente fijada`);
+      if (tool.dockerStatus === "VERIFIED_PINNED" && tagClass === "mutable") {
+        push(`\`dockerStatus\` es "VERIFIED_PINNED" pero la imagen "${image}" usa un tag móvil (\`latest\`/\`main\`/sin tag/...) — no está realmente fijada`);
       }
     }
   }

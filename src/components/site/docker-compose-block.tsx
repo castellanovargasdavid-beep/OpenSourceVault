@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Check, Copy, Wand2, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { isComposeFile } from "@/lib/deploy-guide";
 import { cn } from "@/lib/utils";
 import type { Dictionary } from "@/i18n/dictionaries/es";
 
@@ -29,6 +30,12 @@ export function DockerComposeBlock({ code, t }: { code: string; t: Dictionary["d
   const [copyError, setCopyError] = React.useState(false);
   const [randomized, setRandomized] = React.useState(false);
   const hasPlaceholders = /change-me/.test(code);
+  // Un puñado de herramientas (Coolify, CasaOS, Dokploy...) usan este mismo
+  // bloque para mostrar su script de instalación oficial en vez de un
+  // docker-compose.yml real — el encabezado no debe llamarlo "docker-
+  // compose.yml" cuando no lo es (ver Fase 7/9: no dar una falsa sensación
+  // de qué se está mostrando).
+  const isCompose = isComposeFile(code);
 
   async function handleCopy() {
     try {
@@ -57,7 +64,7 @@ export function DockerComposeBlock({ code, t }: { code: string; t: Dictionary["d
             <span className="h-2.5 w-2.5 rounded-full bg-amber-400/70" />
             <span className="h-2.5 w-2.5 rounded-full bg-emerald-400/70" />
           </span>
-          <span className="text-xs font-medium text-slate-400">docker-compose.yml</span>
+          <span className="text-xs font-medium text-slate-400">{isCompose ? "docker-compose.yml" : t.installScriptFilename}</span>
         </div>
         <div className="flex items-center gap-1">
           {hasPlaceholders && (

@@ -23,6 +23,7 @@ import { getSaasDomain } from "@/lib/saas-domains";
 import { categoryColors } from "@/lib/category-colors";
 import { getComparisonsForTool, type ToolComparison } from "@/lib/comparisons";
 import { extractDefaultPort, isComposeFile } from "@/lib/deploy-guide";
+import { auditToolDeployment } from "@/lib/deployment-audit";
 import { getGithubStats, getLatestRelease, getReleasesPageUrl, getReleasesFeedUrl, formatRelativeDate } from "@/lib/github-stats";
 import { getOgImageUrl } from "@/lib/og-image";
 import { siteConfig } from "@/lib/site-config";
@@ -66,6 +67,7 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
     difficulty === "beginner" ? t.difficulty.beginnerBadge : difficulty === "intermediate" ? t.difficulty.intermediateBadge : t.difficulty.advancedBadge;
   const port = extractDefaultPort(tool.dockerCompose ?? "");
   const gpuRequired = resolveGpuRequirement(tool);
+  const deploymentAudit = tool.dockerCompose ? auditToolDeployment(tool) : null;
   const comparison = getToolComparison(tool, locale);
 
   return (
@@ -247,14 +249,72 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
             <section>
               <h2 className="mb-4 text-xl font-semibold text-slate-900">{t.toolPage.dockerGuideTitle}</h2>
               <OneClickDeploy targets={tool.oneClickDeploy} locale={locale} />
-              {tool.dockerCompose && (
+              {tool.dockerCompose && deploymentAudit && (
                 <>
                   <p className="mb-4 text-sm text-slate-600">
-                    {t.toolPage.dockerGuideText}{" "}
+                    {deploymentAudit.method === "compose" ? t.toolPage.dockerGuideText : t.toolPage.dockerGuideTextScript}{" "}
                     <Link href={getDeployGuideHref(locale)} className="font-medium text-emerald-700 hover:underline">
                       {t.toolPage.dockerGuideLink}
                     </Link>
                   </p>
+
+                  {/* Fase 6/7 de la auditoría de despliegue: distinguir siempre método,
+                      tag de imagen y nivel de verificación real — nunca "Verified"
+                      solo porque exista un docker-compose. Ver src/lib/deployment-audit.ts
+                      para los criterios exactos de cada estado (mismo texto que el title). */}
+                  <div className="mb-4 flex flex-wrap items-center gap-1.5">
+                    <Badge variant="outline">
+                      {deploymentAudit.method === "compose"
+                        ? t.toolPage.deploymentMethodCompose
+                        : deploymentAudit.state === "manual_setup"
+                          ? t.toolPage.deploymentMethodManual
+                          : t.toolPage.deploymentMethodScript}
+                    </Badge>
+
+                    {deploymentAudit.method === "compose" && (
+                      <Badge variant={deploymentAudit.hasMutableTag ? "warning" : deploymentAudit.hasUnknownTag ? "secondary" : "success"}>
+                        {deploymentAudit.hasMutableTag ? t.toolPage.dockerTagMutable : deploymentAudit.hasUnknownTag ? t.toolPage.dockerTagUnknownBadge : t.toolPage.dockerTagPinned}
+                      </Badge>
+                    )}
+
+                    <Badge
+                      variant={
+                        deploymentAudit.state === "verified"
+                          ? "success"
+                          : deploymentAudit.state === "partially_verified"
+                            ? "warning"
+                            : "secondary"
+                      }
+                      title={
+                        deploymentAudit.state === "verified"
+                          ? t.toolPage.deploymentStateVerifiedCaption
+                          : deploymentAudit.state === "partially_verified"
+                            ? t.toolPage.deploymentStatePartialCaption
+                            : deploymentAudit.state === "unverified"
+                              ? t.toolPage.deploymentStateUnverifiedCaption
+                              : deploymentAudit.state === "external_script"
+                                ? t.toolPage.deploymentStateExternalScriptCaption
+                                : t.toolPage.deploymentStateManualSetupCaption
+                      }
+                    >
+                      {deploymentAudit.state === "verified"
+                        ? t.toolPage.deploymentStateVerifiedBadge
+                        : deploymentAudit.state === "partially_verified"
+                          ? t.toolPage.deploymentStatePartialBadge
+                          : deploymentAudit.state === "unverified"
+                            ? t.toolPage.deploymentStateUnverifiedBadge
+                            : deploymentAudit.state === "external_script"
+                              ? t.toolPage.deploymentStateExternalScriptBadge
+                              : t.toolPage.deploymentStateManualSetupBadge}
+                    </Badge>
+
+                    {deploymentAudit.scriptOrigin && (
+                      <Badge variant={deploymentAudit.scriptOrigin.origin === "official" ? "secondary" : "warning"}>
+                        {deploymentAudit.scriptOrigin.origin === "official" ? t.toolPage.scriptOriginOfficial : t.toolPage.scriptOriginUnverifiable}
+                      </Badge>
+                    )}
+                  </div>
+
                   <HowToDeployGuide
                     toolName={tool.name}
                     toolSlug={tool.slug}

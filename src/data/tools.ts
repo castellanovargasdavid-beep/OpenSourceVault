@@ -5912,8 +5912,11 @@ volumes:
     fossModel: "FOSS",
     dockerCompose: `# Coolify se instala oficialmente con un script (no un docker-compose.yml
 # simple), porque despliega y gestiona su propia infraestructura de
-# contenedores sobre tu servidor:
-curl -fsSL https://cdn.coollabs.io/coolify/install.sh | bash
+# contenedores sobre tu servidor. Descárgalo e inspecciónalo antes de
+# ejecutarlo — nunca lo hagas con un pipe directo a ciegas:
+curl -fsSL https://cdn.coollabs.io/coolify/install.sh -o coolify-install.sh
+cat coolify-install.sh   # revísalo antes de continuar
+bash coolify-install.sh
 `,
     affiliateLinks,
     features: ["Deploy desde Git con un clic (como Vercel)", "Bases de datos gestionadas con un clic", "Gestiona múltiples servidores desde un panel"],
@@ -6002,8 +6005,12 @@ sudo DOKKU_TAG=v0.35.15 bash bootstrap.sh
     license: "Apache-2.0",
     fossModel: "FOSS",
     dockerCompose: `# CasaOS se instala con su script oficial directamente sobre el servidor
-# (es un panel para gestionar Docker/tu NAS, no una app dentro de Docker):
-curl -fsSL https://get.casaos.io | sudo bash
+# (es un panel para gestionar Docker/tu NAS, no una app dentro de Docker).
+# Descárgalo e inspecciónalo antes de ejecutarlo — nunca lo hagas con un
+# pipe directo a ciegas:
+curl -fsSL https://get.casaos.io -o casaos-install.sh
+cat casaos-install.sh   # revísalo antes de continuar
+sudo bash casaos-install.sh
 `,
     affiliateLinks,
     features: ["App Store de un clic con decenas de apps self-hosted", "Gestor de archivos web integrado", "Pensado para Raspberry Pi y mini-PCs"],
@@ -7224,8 +7231,12 @@ volumes:
     platforms: ["Web"],
     fossModel: "OpenCore",
     dockerCompose: `# Dokploy se instala con su propio script oficial, que prepara Docker Swarm
-# y despliega la plataforma completa (no un docker-compose.yml suelto):
-curl -sSL https://dokploy.com/install.sh | sh
+# y despliega la plataforma completa (no un docker-compose.yml suelto).
+# Descárgalo e inspecciónalo antes de ejecutarlo — nunca lo hagas con un
+# pipe directo a ciegas:
+curl -sSL https://dokploy.com/install.sh -o dokploy-install.sh
+cat dokploy-install.sh   # revísalo antes de continuar
+sh dokploy-install.sh
 `,
     affiliateLinks,
     features: [
