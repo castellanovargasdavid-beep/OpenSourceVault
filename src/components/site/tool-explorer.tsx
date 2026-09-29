@@ -13,6 +13,16 @@ import type { FossModel, ToolCardData, ToolDifficulty, ToolTag } from "@/lib/typ
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries/es";
 
+/**
+ * El catálogo completo (196 herramientas, incluidas las "coming soon") ya
+ * no se renderiza entero de golpe: a 375px, en una sola columna, ocupaba
+ * ~73.000px de los ~91.000px de toda la home (el 80%) — medido con
+ * Playwright. Se muestra un primer lote y "Mostrar más" revela el resto,
+ * sin tocar la lógica de filtrado ni los datos: sigue siendo el mismo
+ * `filtered` de siempre, solo se corta al renderizar.
+ */
+const INITIAL_VISIBLE_COUNT = 24;
+
 export function ToolExplorer({
   tools: allTools,
   locale = "es",
@@ -92,6 +102,17 @@ export function ToolExplorer({
       return matchesQuery && matchesCategory && matchesTags && matchesDifficulty && matchesFossModel;
     });
   }, [allTools, query, category, activeTags, difficultyFilter, fossModelFilter]);
+
+  const [visibleCount, setVisibleCount] = React.useState(INITIAL_VISIBLE_COUNT);
+  // Reajustado durante el render (no en un efecto) cuando cambia el conjunto
+  // filtrado — mismo patrón ya usado en language-switcher.tsx para evitar
+  // react-hooks/set-state-in-effect y el render extra que un efecto añadiría.
+  const [lastFiltered, setLastFiltered] = React.useState(filtered);
+  if (filtered !== lastFiltered) {
+    setLastFiltered(filtered);
+    setVisibleCount(INITIAL_VISIBLE_COUNT);
+  }
+  const visibleTools = filtered.slice(0, visibleCount);
 
   const hasActiveFilters =
     query !== "" || category !== "all" || activeTags.length > 0 || difficultyFilter !== "all" || fossModelFilter !== "all";
@@ -214,19 +235,31 @@ export function ToolExplorer({
       </div>
 
       {filtered.length > 0 ? (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((tool) => (
-            <ToolCard
-              key={tool.id}
-              tool={tool}
-              locale={locale}
-              t={toolCardT}
-              comingSoonBadge={comingSoonBadge}
-              difficultyT={difficultyT}
-              stackBuilderT={stackBuilderT}
-            />
-          ))}
-        </div>
+        <>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {visibleTools.map((tool) => (
+              <ToolCard
+                key={tool.id}
+                tool={tool}
+                locale={locale}
+                t={toolCardT}
+                comingSoonBadge={comingSoonBadge}
+                difficultyT={difficultyT}
+                stackBuilderT={stackBuilderT}
+              />
+            ))}
+          </div>
+          <div className="mt-8 flex flex-col items-center gap-3">
+            <p className="text-sm text-slate-500">
+              {t.showingCountPrefix} {visibleTools.length} {t.showingCountSeparator} {filtered.length}
+            </p>
+            {visibleCount < filtered.length && (
+              <Button variant="outline" onClick={() => setVisibleCount((v) => v + INITIAL_VISIBLE_COUNT)}>
+                {t.showMoreButtonPrefix} {filtered.length - visibleCount} {t.showMoreButtonSuffix}
+              </Button>
+            )}
+          </div>
+        </>
       ) : (
         <div className="rounded-xl border border-dashed border-slate-300 py-16 text-center">
           <p className="text-slate-600">{t.noResults}</p>

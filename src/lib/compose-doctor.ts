@@ -389,7 +389,15 @@ export function analyzeComposeYaml(yaml: string, locale: Locale = "es"): DoctorF
     ...scanPorts(lines, locale),
   ];
   if (yaml.includes("\r")) findings.push({ severity: "warning", message: t.crlf });
-  if (findings.length === 0) findings.push({ severity: "info", message: t.yamlAllGood });
+  // scanPorts() siempre añade al menos una nota informativa (sobre el
+  // puerto detectado, o de que no hay ninguno) — con "findings.length === 0"
+  // este mensaje de tranquilidad nunca podía aparecer, ni siquiera en un
+  // archivo perfectamente limpio. La condición real es "sin errores ni
+  // avisos", no "sin ningún hallazgo" — las notas informativas (puertos,
+  // version: obsoleta) no cuentan como un problema que reporte.
+  if (!findings.some((f) => f.severity === "error" || f.severity === "warning")) {
+    findings.push({ severity: "info", message: t.yamlAllGood });
+  }
   return sortFindings(findings);
 }
 
