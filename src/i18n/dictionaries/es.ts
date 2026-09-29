@@ -93,6 +93,10 @@ const es = {
     tagPermissive: "Permissive License",
     showingCountPrefix: "Mostrando",
     showingCountSeparator: "de",
+    /** Aclaración junto a "Mostrando X de Y": Y incluye herramientas "Coming Soon" (sin publicar), que la home/metodología cuentan aparte como "auditadas". Sin esto, "de 196" contradice el "+150 auditadas" del hero.
+     * Strings planas (no funciones): t.toolExplorer se pasa entero como prop de Server a Client Component (ToolExplorer) — una función ahí rompe la serialización de TODO el build, no solo esta página (ya pasó antes con t.stackBuilder/t.toolExplorer). */
+    showingCountPublishedSuffix: "auditadas",
+    showingCountComingSoonSuffix: "próximamente",
     showMoreButtonPrefix: "Mostrar",
     showMoreButtonSuffix: "más",
   },

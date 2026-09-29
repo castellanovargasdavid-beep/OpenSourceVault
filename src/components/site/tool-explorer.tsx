@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { ToolCard } from "@/components/site/tool-card";
 import { difficultyMeta } from "@/lib/tool-difficulty";
 import { cn } from "@/lib/utils";
+import { isPublished } from "@/lib/types";
 import type { FossModel, ToolCardData, ToolDifficulty, ToolTag } from "@/lib/types";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries/es";
@@ -113,6 +114,12 @@ export function ToolExplorer({
     setVisibleCount(INITIAL_VISIBLE_COUNT);
   }
   const visibleTools = filtered.slice(0, visibleCount);
+
+  // "filtered" mezcla publicadas y "Coming Soon" (ver el comentario de
+  // arriba) — sin este desglose, "Mostrando X de 196" contradice el "+150
+  // auditadas" del hero y de la metodología, que solo cuentan publicadas.
+  const publishedCount = React.useMemo(() => filtered.filter(isPublished).length, [filtered]);
+  const comingSoonCount = filtered.length - publishedCount;
 
   const hasActiveFilters =
     query !== "" || category !== "all" || activeTags.length > 0 || difficultyFilter !== "all" || fossModelFilter !== "all";
@@ -252,6 +259,12 @@ export function ToolExplorer({
           <div className="mt-8 flex flex-col items-center gap-3">
             <p className="text-sm text-slate-500">
               {t.showingCountPrefix} {visibleTools.length} {t.showingCountSeparator} {filtered.length}
+              {comingSoonCount > 0 && (
+                <span className="text-slate-400">
+                  {" "}
+                  ({publishedCount} {t.showingCountPublishedSuffix} · {comingSoonCount} {t.showingCountComingSoonSuffix})
+                </span>
+              )}
             </p>
             {visibleCount < filtered.length && (
               <Button variant="outline" onClick={() => setVisibleCount((v) => v + INITIAL_VISIBLE_COUNT)}>

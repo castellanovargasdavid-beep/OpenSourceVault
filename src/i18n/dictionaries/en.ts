@@ -95,6 +95,10 @@ const en: Dictionary = {
     tagPermissive: "Permissive License",
     showingCountPrefix: "Showing",
     showingCountSeparator: "of",
+    /** Clarifier next to "Showing X of Y": Y includes "Coming Soon" (unpublished) tools, which the hero/methodology count separately as "audited". Without this, "of 196" contradicts the hero's "+150 audited".
+     * Plain strings (not functions): t.toolExplorer is passed whole as a prop from a Server to a Client Component (ToolExplorer) — a function there breaks serialization for the ENTIRE build, not just this page (already happened before with t.stackBuilder/t.toolExplorer). */
+    showingCountPublishedSuffix: "audited",
+    showingCountComingSoonSuffix: "coming soon",
     showMoreButtonPrefix: "Show",
     showMoreButtonSuffix: "more",
   },
