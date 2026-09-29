@@ -32,8 +32,43 @@ import { Input } from "@/components/ui/input";
 import { useStackBuilder } from "@/lib/stack-builder-store";
 import { getHostname, cn } from "@/lib/utils";
 import { localeHref } from "@/lib/locale-href";
+import { extractEnvPlaceholders } from "@/lib/deploy-guide";
+import {
+  aggregateStack,
+  computeStackCheck,
+  type StackToolProfile,
+  type DependencyKind,
+  type StackCheckItem,
+} from "@/lib/stack-resources";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries/es";
+
+const DEPENDENCY_LABEL_KEY: Record<DependencyKind, keyof Dictionary["stackBuilder"]> = {
+  postgresql: "dependencyPostgresql",
+  mysql_mariadb: "dependencyMysqlMariadb",
+  redis: "dependencyRedis",
+  object_storage: "dependencyObjectStorage",
+  reverse_proxy: "dependencyReverseProxy",
+  authentication: "dependencyAuthentication",
+  search_index: "dependencySearchIndex",
+  message_queue: "dependencyMessageQueue",
+  external_api: "dependencyExternalApi",
+  other_service: "dependencyOtherService",
+};
+
+const STACK_CHECK_LABEL_KEY: Record<StackCheckItem["code"], keyof Dictionary["stackBuilder"]> = {
+  ram_available: "stackCheckRamAvailable",
+  docker_image_identified: "stackCheckDockerImageIdentified",
+  dependencies_detected: "stackCheckDependenciesDetected",
+  mutable_tag: "stackCheckMutableTag",
+  manual_setup_needed: "stackCheckManualSetupNeeded",
+  external_dependency: "stackCheckExternalDependency",
+  backup_not_documented: "stackCheckBackupNotDocumented",
+  suspicious_secret: "stackCheckSuspiciousSecret",
+};
+
+/** Estos códigos afectan típicamente a todo el stack — repetir la lista de nombres sería redundante con la lista de herramientas ya visible encima. */
+const STACK_CHECK_CODES_WITHOUT_TOOL_LIST = new Set<StackCheckItem["code"]>(["ram_available"]);
 
 interface MergeResponse {
   yaml: string;
@@ -67,12 +102,14 @@ const formatUsd = (value: number, locale: Locale) =>
 
 export function StackBuilderContent({
   tools,
+  profiles,
   locale = "es",
   t,
   hardwareT,
   hostingTierT,
 }: {
   tools: ToolCardData[];
+  profiles: Record<string, StackToolProfile>;
   locale?: Locale;
   t: Dictionary["stackBuilder"];
   hardwareT: Dictionary["hardwareFit"];
@@ -97,9 +134,21 @@ export function StackBuilderContent({
   const selectedTools = displayedSlugs.map((slug) => toolsBySlug.get(slug)).filter((x): x is ToolCardData => x !== undefined);
   const sharedNotFoundCount = isPreviewingShared ? sharedSlugs!.length - selectedTools.length : 0;
 
-  const totalMinRamMb = selectedTools.reduce((sum, tool) => sum + tool.minRamMb, 0);
-  const anyRamEstimated = selectedTools.some((tool) => tool.isEstimated);
-  const gpuRequiredToolNames = selectedTools.filter((tool) => tool.gpuRequired).map((tool) => tool.name);
+  const selectedProfiles = React.useMemo(
+    () => displayedSlugs.map((slug) => profiles[slug]).filter((p): p is StackToolProfile => p !== undefined),
+    [displayedSlugs, profiles]
+  );
+  const aggregate = React.useMemo(() => aggregateStack(selectedProfiles), [selectedProfiles]);
+  const stackCheck = React.useMemo(() => computeStackCheck(selectedProfiles, aggregate), [selectedProfiles, aggregate]);
+  const [showDetails, setShowDetails] = React.useState(false);
+
+  const nameOf = React.useCallback((slug: string) => toolsBySlug.get(slug)?.name ?? slug, [toolsBySlug]);
+  const namesOf = React.useCallback((slugs: string[]) => slugs.map(nameOf).join(", "), [nameOf]);
+  const gpuRequiredToolNames = aggregate.gpuRequiredTools.map(nameOf);
+  const activeDependencyKinds = (Object.keys(aggregate.dependencyCounts) as DependencyKind[]).filter(
+    (kind) => aggregate.dependencyCounts[kind] > 0
+  );
+
   const savings = { monthly: 0, matched: 0 };
   for (const tool of selectedTools) {
     const primary = tool.replaces[0];
@@ -133,6 +182,7 @@ export function StackBuilderContent({
   const deployApiPath = `/api/deploy?stack=${encodeURIComponent(displayedSlugsKey)}&locale=${locale}`;
   const displayYaml = randomizedYaml ?? merge?.yaml ?? "";
   const hasPlaceholders = Boolean(merge?.yaml && /change-me/.test(merge.yaml));
+  const configurableEnvVars = React.useMemo(() => (merge?.yaml ? extractEnvPlaceholders(merge.yaml) : []), [merge]);
 
   async function handleGenerate() {
     setMergeLoading(true);
@@ -281,7 +331,7 @@ export function StackBuilderContent({
       )}
 
       <div className="grid gap-8 lg:grid-cols-3">
-        <div className="space-y-6 lg:col-span-2">
+        <div className="min-w-0 space-y-6 lg:col-span-2">
           {!isPreviewingShared && (
             <div className="relative">
               <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
@@ -349,6 +399,28 @@ export function StackBuilderContent({
 
           {selectedTools.length > 0 && (
             <div className="rounded-xl border border-slate-200 p-6">
+              <h2 className="mb-3 text-lg font-semibold text-slate-900">{t.stackCheckTitle}</h2>
+              <ul className="space-y-1.5 text-sm">
+                {stackCheck.map((item) => (
+                  <li
+                    key={item.code}
+                    className={cn("flex items-start gap-2", item.severity === "ok" ? "text-emerald-700" : "text-amber-700")}
+                  >
+                    <span className="mt-0.5 shrink-0">{item.severity === "ok" ? "✓" : "⚠"}</span>
+                    <span>
+                      {t[STACK_CHECK_LABEL_KEY[item.code]]}
+                      {!STACK_CHECK_CODES_WITHOUT_TOOL_LIST.has(item.code) && (
+                        <span className="text-slate-500"> — {namesOf(item.toolSlugs)}</span>
+                      )}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {selectedTools.length > 0 && (
+            <div className="rounded-xl border border-slate-200 p-6">
               <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
                 <h2 className="text-lg font-semibold text-slate-900">{t.generateButton}</h2>
                 <div className="flex flex-wrap gap-2">
@@ -379,6 +451,18 @@ export function StackBuilderContent({
                       <ul className="list-disc space-y-0.5 pl-4">
                         {merge.warnings.map((w) => (
                           <li key={w}>{w}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {configurableEnvVars.length > 0 && (
+                    <div className="rounded-lg border border-sky-200 bg-sky-50 p-3 text-xs text-sky-800">
+                      <p className="mb-1 font-semibold">{t.configureVarsTitle}</p>
+                      <ul className="flex flex-wrap gap-1.5 font-mono">
+                        {configurableEnvVars.map((v) => (
+                          <li key={v} className="rounded bg-white/70 px-1.5 py-0.5">
+                            {v}
+                          </li>
                         ))}
                       </ul>
                     </div>
@@ -421,44 +505,129 @@ export function StackBuilderContent({
           )}
         </div>
 
-        <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
+        <aside className="min-w-0 space-y-4 lg:sticky lg:top-24 lg:self-start">
           {selectedTools.length > 0 && (
-            <>
-              <HardwareFitPanel totalMinRamMb={totalMinRamMb} gpuRequiredToolNames={gpuRequiredToolNames} t={hardwareT} />
-              <HostingTierRecommendation totalMinRamMb={totalMinRamMb} locale={locale} t={hostingTierT} />
-            </>
+            <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-6">
+              <div className="flex items-start gap-2.5">
+                <Cpu size={18} className="mt-0.5 shrink-0 text-emerald-700" />
+                <div className="min-w-0">
+                  <p className="text-xs uppercase tracking-wide text-emerald-800">{t.resourcesHeadline}</p>
+                  <p className="mt-0.5 text-2xl font-bold text-emerald-900">
+                    {formatMinRam(aggregate.totalApplicationRamMb, aggregate.isRamEstimated)}
+                  </p>
+                  <p className="mt-1 text-xs text-emerald-700">{t.ramNote}</p>
+                  {aggregate.aiToolsWithVariableModelRam.length > 0 && (
+                    <p className="mt-2 text-xs font-medium text-amber-700">
+                      {t.modelRamLabel}: {t.modelRamNote} {namesOf(aggregate.aiToolsWithVariableModelRam)}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <div className="mt-4 flex items-start gap-2.5 border-t border-emerald-200 pt-4">
+                <DollarSign size={18} className="mt-0.5 shrink-0 text-emerald-700" />
+                <div className="min-w-0">
+                  <p className="text-xs uppercase tracking-wide text-emerald-800">{t.savingsLabel}</p>
+                  {savings.matched > 0 ? (
+                    <p className="mt-0.5 text-lg font-bold text-emerald-900">
+                      {formatUsd(savings.monthly, locale)}
+                      <span className="text-sm font-medium text-emerald-700">{t.savingsPerMonth}</span>
+                    </p>
+                  ) : (
+                    <p className="mt-0.5 text-sm text-emerald-800">{t.savingsUnavailable}</p>
+                  )}
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setShowDetails((v) => !v)}
+                className="mt-4 text-xs font-semibold text-emerald-800 underline underline-offset-2 hover:text-emerald-900"
+              >
+                {showDetails ? t.detailsHideButton : t.detailsShowButton}
+              </button>
+            </div>
           )}
 
-          <div className="rounded-xl border border-slate-200 p-6">
-            <p className="mb-4 text-sm font-semibold text-slate-900">{t.metricsTitle}</p>
-
-            <div className="mb-4 flex items-start gap-2.5">
-              <Cpu size={18} className="mt-0.5 shrink-0 text-slate-500" />
-              <div>
-                <p className="text-xs uppercase tracking-wide text-slate-600">{t.ramLabel}</p>
-                <p className="mt-0.5 text-xl font-bold text-slate-900">{formatMinRam(totalMinRamMb, anyRamEstimated)}</p>
-                <p className="mt-1 text-xs text-slate-500">{t.ramNote}</p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-2.5">
-              <DollarSign size={18} className="mt-0.5 shrink-0 text-emerald-600" />
-              <div>
-                <p className="text-xs uppercase tracking-wide text-slate-600">{t.savingsLabel}</p>
-                {savings.matched > 0 ? (
-                  <>
-                    <p className="mt-0.5 text-xl font-bold text-emerald-700">
-                      {formatUsd(savings.monthly, locale)}
-                      <span className="text-sm font-medium text-slate-500">{t.savingsPerMonth}</span>
-                    </p>
-                    <p className="mt-1 text-xs text-slate-500">{t.savingsNote}</p>
-                  </>
-                ) : (
-                  <p className="mt-0.5 text-sm text-slate-500">{t.savingsUnavailable}</p>
+          {selectedTools.length > 0 && showDetails && (
+            <div className="space-y-4">
+              <div className="rounded-xl border border-slate-200 p-5">
+                <p className="text-xs uppercase tracking-wide text-slate-600">{t.storageLabel}</p>
+                <p className="mt-1 text-lg font-bold text-slate-900">
+                  {aggregate.totalStorageGb === null ? t.storageUnavailable : `${aggregate.totalStorageGb} GB`}
+                </p>
+                {aggregate.totalStorageGb !== null && aggregate.toolsWithUnknownStorage.length > 0 && (
+                  <p className="mt-1 text-xs text-slate-500">{t.storageNote}</p>
                 )}
               </div>
+
+              <div className="rounded-xl border border-slate-200 p-5">
+                {aggregate.gpuRequiredTools.length === 0 && aggregate.gpuOptionalTools.length === 0 ? (
+                  <p className="text-sm text-slate-600">{t.gpuNoneNote}</p>
+                ) : (
+                  <>
+                    {aggregate.gpuRequiredTools.length > 0 && (
+                      <p className="text-sm font-medium text-rose-700">
+                        {t.gpuRequiredLabel}: {namesOf(aggregate.gpuRequiredTools)}
+                      </p>
+                    )}
+                    {aggregate.gpuOptionalTools.length > 0 && (
+                      <p className={cn("text-sm text-slate-600", aggregate.gpuRequiredTools.length > 0 && "mt-1.5")}>
+                        {t.gpuOptionalLabel}: {namesOf(aggregate.gpuOptionalTools)}
+                      </p>
+                    )}
+                  </>
+                )}
+              </div>
+
+              <div className="rounded-xl border border-slate-200 p-5">
+                <p className="text-sm font-semibold text-slate-900">{t.dependenciesTitle}</p>
+                {aggregate.totalAdditionalServices === 0 ? (
+                  <p className="mt-1 text-sm text-slate-600">{t.dependenciesNone}</p>
+                ) : (
+                  <>
+                    <p className="mt-1 text-xs text-slate-600">{t.dependenciesNote}</p>
+                    <ul className="mt-2 flex flex-wrap gap-1.5">
+                      {activeDependencyKinds.map((kind) => (
+                        <li key={kind} className="rounded-full bg-slate-100 px-2.5 py-1 text-xs text-slate-700">
+                          {t[DEPENDENCY_LABEL_KEY[kind]]} × {aggregate.dependencyCounts[kind]}
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+              </div>
+
+              <div className="rounded-xl border border-slate-200 p-5">
+                <p className="text-xs uppercase tracking-wide text-slate-600">{t.costTitle}</p>
+                <p className="mt-1 text-lg font-bold text-slate-900">
+                  {aggregate.cheapestMonthlyUsd === null ? t.costUnavailable : formatUsd(aggregate.cheapestMonthlyUsd, locale) + t.savingsPerMonth}
+                </p>
+                {aggregate.cheapestMonthlyUsd !== null && <p className="mt-1 text-xs text-slate-500">{t.costApproxNote}</p>}
+              </div>
+
+              <div className="rounded-xl border border-slate-200 p-5">
+                <p className="text-sm font-semibold text-slate-900">{t.backupsTitle}</p>
+                {aggregate.allVolumeNames.length === 0 ? (
+                  <p className="mt-1 text-sm text-slate-600">{t.backupsNone}</p>
+                ) : (
+                  <>
+                    <p className="mt-1 text-xs text-slate-600">{t.backupsNote}</p>
+                    <ul className="mt-2 space-y-1 text-xs text-slate-600">
+                      {aggregate.allVolumeNames.map(({ slug, volumes }) => (
+                        <li key={slug} className="break-words">
+                          <span className="font-medium text-slate-800">{nameOf(slug)}:</span> {volumes.join(", ")}
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+              </div>
+
+              <HardwareFitPanel totalMinRamMb={aggregate.totalApplicationRamMb} gpuRequiredToolNames={gpuRequiredToolNames} t={hardwareT} />
+              <HostingTierRecommendation totalMinRamMb={aggregate.totalApplicationRamMb} locale={locale} t={hostingTierT} />
             </div>
-          </div>
+          )}
 
           <Link href={localeHref("/#explorador", locale)} className={cn(buttonVariants({ variant: "outline", size: "sm" }), "w-full")}>
             {t.viewCatalog}

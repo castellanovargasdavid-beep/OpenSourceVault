@@ -9,6 +9,7 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
+    "test": "tsx --test tests/*.test.ts",
     "validate:data": "tsx scripts/validate-data.ts",
     "audit:deployment": "tsx scripts/deployment-audit.ts"
   },
