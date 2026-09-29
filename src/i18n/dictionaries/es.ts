@@ -100,6 +100,19 @@ const es = {
     showMoreButtonPrefix: "Mostrar",
     showMoreButtonSuffix: "más",
   },
+  /** generateMetadata de /herramientas — nunca se pasa a un Client Component, así que las funciones aquí son seguras (a diferencia de toolExplorer, ver su comentario). */
+  toolsCatalogPage: {
+    metaTitle: (year: number) => `Catálogo completo: todas las alternativas Open Source (${year})`,
+    metaDescription: (published: number, comingSoon: number, total: number) =>
+      `Explora las ${total} herramientas del catálogo: ${published} ya auditadas y publicadas, ${comingSoon} en camino. Filtra por categoría, licencia o etiqueta.`,
+  },
+  /** CTA compacto que sustituye al explorador completo en la home — el catálogo interactivo ahora vive en /herramientas (ver toolsCatalogPage). */
+  catalogTeaser: {
+    title: "¿Buscas algo más concreto?",
+    subtitle: (published: number, comingSoon: number) =>
+      `Filtra por categoría, licencia o etiqueta entre las ${published} herramientas ya auditadas (+${comingSoon} en camino).`,
+    cta: "Ver el catálogo completo",
+  },
   searchBar: {
     placeholder: "¿A qué herramienta SaaS buscas alternativa? (Ej. Notion, Analytics, Slack)",
     button: "Buscar",

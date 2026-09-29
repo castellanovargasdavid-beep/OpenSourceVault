@@ -4,7 +4,7 @@ import { getRecentlyAddedTools } from "@/data/tools";
 import { toToolCardData } from "@/lib/tool-card-data";
 import { ToolCard } from "@/components/site/tool-card";
 import { getDictionary } from "@/i18n/get-dictionary";
-import { localeHref } from "@/lib/locale-href";
+import { getToolsExplorerHref } from "@/lib/routes";
 import type { Locale } from "@/i18n/config";
 
 /**
@@ -30,7 +30,7 @@ export function RecentlyAddedTools({ locale = "es" }: { locale?: Locale }) {
             <p className="mt-2 max-w-xl text-slate-600">{t.recentlyAdded.subtitle}</p>
           </div>
           <Link
-            href={localeHref("/#explorador", locale)}
+            href={getToolsExplorerHref(locale)}
             className="text-sm font-medium text-emerald-700 hover:text-emerald-800"
           >
             {t.recentlyAdded.viewAll}

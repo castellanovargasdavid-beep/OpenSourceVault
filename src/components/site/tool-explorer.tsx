@@ -125,11 +125,13 @@ export function ToolExplorer({
     query !== "" || category !== "all" || activeTags.length > 0 || difficultyFilter !== "all" || fossModelFilter !== "all";
 
   return (
-    <section id="explorador" className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
       <div className="mb-8 flex flex-col gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">{t.title}</h2>
-          <p className="mt-2 text-slate-600">{t.subtitle}</p>
+          {/* h1: ToolExplorer ahora solo se usa en /herramientas y /en/tools
+              (página propia), no como sub-sección de la home — antes era h2. */}
+          <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">{t.title}</h1>
+          <p className="mt-4 text-lg text-slate-600">{t.subtitle}</p>
         </div>
 
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">

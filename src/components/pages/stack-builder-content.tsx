@@ -34,7 +34,7 @@ import { getHostname, cn } from "@/lib/utils";
 import { localeHref } from "@/lib/locale-href";
 import { extractEnvPlaceholders } from "@/lib/deploy-guide";
 import { trackReplaceEvent } from "@/lib/analytics";
-import { getCostCalculatorHref } from "@/lib/routes";
+import { getCostCalculatorHref, getToolsExplorerHref } from "@/lib/routes";
 import {
   aggregateStack,
   computeStackCheck,
@@ -668,7 +668,7 @@ export function StackBuilderContent({
             </div>
           )}
 
-          <Link href={localeHref("/#explorador", locale)} className={cn(buttonVariants({ variant: "outline", size: "sm" }), "w-full")}>
+          <Link href={getToolsExplorerHref(locale)} className={cn(buttonVariants({ variant: "outline", size: "sm" }), "w-full")}>
             {t.viewCatalog}
           </Link>
         </aside>

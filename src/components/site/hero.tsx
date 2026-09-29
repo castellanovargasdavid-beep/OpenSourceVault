@@ -8,7 +8,7 @@ import { getSaasDomain } from "@/lib/saas-domains";
 import { getHeroFloatingData } from "@/lib/hero-floating-data";
 import { catalogStats } from "@/lib/catalog-stats";
 import { getDictionary } from "@/i18n/get-dictionary";
-import { getHowWeAuditHref } from "@/lib/routes";
+import { getHowWeAuditHref, getToolsExplorerHref } from "@/lib/routes";
 import { localeHref } from "@/lib/locale-href";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -80,7 +80,7 @@ export function Hero({ tools, locale = "es" }: { tools: ToolCardData[]; locale?:
 
           <div className="mx-auto mt-6 flex flex-wrap items-center justify-center gap-3">
             <Link
-              href={localeHref("/#explorador", locale)}
+              href={getToolsExplorerHref(locale)}
               className={cn(buttonVariants({ size: "lg" }), "bg-gradient-to-r from-emerald-600 to-teal-600 hover:opacity-90")}
             >
               {t.hero.ctaExplore}

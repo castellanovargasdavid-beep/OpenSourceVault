@@ -37,3 +37,7 @@ export function getContributeHref(locale: Locale): string {
 export function getCostCalculatorHref(locale: Locale): string {
   return locale === "en" ? "/en/cost-calculator" : "/calculadora-costes";
 }
+
+export function getToolsExplorerHref(locale: Locale): string {
+  return locale === "en" ? "/en/tools" : "/herramientas";
+}

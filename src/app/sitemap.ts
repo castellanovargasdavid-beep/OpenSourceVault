@@ -15,6 +15,7 @@ import {
   getHowWeAuditHref,
   getMigrationGuideHref,
   getSavingsCalculatorHref,
+  getToolsExplorerHref,
 } from "@/lib/routes";
 import { siteConfig } from "@/lib/site-config";
 import { slugify } from "@/lib/utils";
@@ -170,6 +171,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const costCalcEnUrl = `${siteConfig.url}${getCostCalculatorHref("en")}`;
   const costCalcAlternates = { languages: { es: costCalcEsUrl, en: costCalcEnUrl } };
 
+  const toolsExplorerEsUrl = `${siteConfig.url}${getToolsExplorerHref("es")}`;
+  const toolsExplorerEnUrl = `${siteConfig.url}${getToolsExplorerHref("en")}`;
+  const toolsExplorerAlternates = { languages: { es: toolsExplorerEsUrl, en: toolsExplorerEnUrl } };
+
   return [
     ...allPaths.map(([path, freq, priority]) => entry(path, freq, priority)),
     ...allPaths.map(([path, freq, priority]) => entryEn(path, freq, priority)),
@@ -189,5 +194,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: contributeEnUrl, changeFrequency: "yearly", priority: 0.4, alternates: contributeAlternates },
     { url: costCalcEsUrl, changeFrequency: "monthly", priority: 0.8, alternates: costCalcAlternates },
     { url: costCalcEnUrl, changeFrequency: "monthly", priority: 0.8, alternates: costCalcAlternates },
+    { url: toolsExplorerEsUrl, changeFrequency: "weekly", priority: 0.8, alternates: toolsExplorerAlternates },
+    { url: toolsExplorerEnUrl, changeFrequency: "weekly", priority: 0.8, alternates: toolsExplorerAlternates },
   ];
 }

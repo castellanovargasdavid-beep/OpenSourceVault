@@ -102,6 +102,19 @@ const en: Dictionary = {
     showMoreButtonPrefix: "Show",
     showMoreButtonSuffix: "more",
   },
+  /** generateMetadata for /en/tools — never passed to a Client Component, so functions here are safe (unlike toolExplorer, see its comment). */
+  toolsCatalogPage: {
+    metaTitle: (year: number) => `Full catalog: every Open Source alternative (${year})`,
+    metaDescription: (published: number, comingSoon: number, total: number) =>
+      `Explore all ${total} tools in the catalog: ${published} already audited and published, ${comingSoon} coming soon. Filter by category, license or tag.`,
+  },
+  /** Compact CTA replacing the full explorer on the home page — the interactive catalog now lives at /herramientas and /en/tools (see toolsCatalogPage). */
+  catalogTeaser: {
+    title: "Looking for something more specific?",
+    subtitle: (published: number, comingSoon: number) =>
+      `Filter by category, license or tag across the ${published} tools already audited (+${comingSoon} coming soon).`,
+    cta: "Browse the full catalog",
+  },
   searchBar: {
     placeholder: "Which SaaS tool are you looking for an alternative to? (e.g. Notion, Analytics, Slack)",
     button: "Search",
