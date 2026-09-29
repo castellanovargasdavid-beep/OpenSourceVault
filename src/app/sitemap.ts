@@ -18,6 +18,7 @@ import {
 } from "@/lib/routes";
 import { siteConfig } from "@/lib/site-config";
 import { slugify } from "@/lib/utils";
+import { catalogStats } from "@/lib/catalog-stats";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   function entry(
@@ -84,7 +85,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // /en/alternatives/notion, /en/compare/…, /en/guides/…, /en/savings-calculator)
   // en vez de reutilizar la palabra en español, así que no se pueden generar
   // con el simple prefijo /en que usan entry()/entryEn().
-  const categoryEntries: MetadataRoute.Sitemap = categories.flatMap((category) => {
+  // La taxonomía completa (categories.ts) incluye categorías todavía sin
+  // ninguna herramienta publicada (p.ej. Hogar Inteligente) — su página
+  // renderiza igualmente (el slug es válido), pero con un H1/título que
+  // promete "las mejores alternativas de X" y cero tarjetas debajo. Enviar
+  // esa URL a indexar sería justo el tipo de contenido delgado que no
+  // queremos en el sitemap; la página sigue siendo accesible, solo deja de
+  // recomendarse activamente para indexar mientras no tenga contenido real.
+  const categoriesWithTools = categories.filter((category) => catalogStats.toolCountByCategory[category.id] > 0);
+
+  const categoryEntries: MetadataRoute.Sitemap = categoriesWithTools.flatMap((category) => {
     const esUrl = `${siteConfig.url}/categoria/${category.slug}`;
     const enUrl = `${siteConfig.url}/en/categories/${categoriesEn[category.id].slug}`;
     const alternates = { languages: { es: esUrl, en: enUrl } };

@@ -7,6 +7,8 @@ import { categoryColors } from "@/lib/category-colors";
 import { LogoImage } from "@/components/site/logo-image";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
+import { JsonLd, buildBreadcrumbListSchema } from "@/components/site/json-ld";
+import { getCompareHref } from "@/lib/routes";
 import { siteConfig } from "@/lib/site-config";
 import { cn, formatStars, getHostname } from "@/lib/utils";
 import type { OpenSourceTool } from "@/lib/types";
@@ -33,6 +35,16 @@ export function ComparisonPageContent({ comparison, locale }: { comparison: Tool
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
+      <JsonLd
+        data={buildBreadcrumbListSchema([
+          { name: t.breadcrumb.home, url: `${siteConfig.url}${localeHref("/", locale)}` },
+          {
+            name: `${toolA.name} vs ${toolB.name}`,
+            url: `${siteConfig.url}${getCompareHref(comparison.pairSlug, locale)}`,
+          },
+        ])}
+      />
+
       <nav className="mb-6 text-sm text-slate-600">
         <Link href={localeHref("/", locale)} className="hover:text-emerald-700">
           {t.breadcrumb.home}

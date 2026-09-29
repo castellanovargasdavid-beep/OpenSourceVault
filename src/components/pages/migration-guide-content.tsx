@@ -6,10 +6,13 @@ import { getSaasDomain } from "@/lib/saas-domains";
 import { categoryColors } from "@/lib/category-colors";
 import { getMigrationContentForPair, fillTemplate } from "@/lib/migration-patterns";
 import { buttonVariants } from "@/components/ui/button";
+import { JsonLd, buildBreadcrumbListSchema } from "@/components/site/json-ld";
+import { getMigrationGuideHref } from "@/lib/routes";
+import { siteConfig } from "@/lib/site-config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { localeHref } from "@/lib/locale-href";
 import type { Locale } from "@/i18n/config";
-import { cn, getHostname } from "@/lib/utils";
+import { cn, getHostname, slugify } from "@/lib/utils";
 
 export function MigrationGuideContent({
   tool,
@@ -26,6 +29,16 @@ export function MigrationGuideContent({
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
+      <JsonLd
+        data={buildBreadcrumbListSchema([
+          { name: t.breadcrumb.home, url: `${siteConfig.url}${localeHref("/", locale)}` },
+          {
+            name: t.migrationGuidePage.breadcrumb(fromName, tool.name),
+            url: `${siteConfig.url}${getMigrationGuideHref(slugify(fromName), tool.slug, locale)}`,
+          },
+        ])}
+      />
+
       <nav className="mb-6 text-sm text-slate-600">
         <Link href={localeHref("/", locale)} className="hover:text-emerald-700">
           {t.breadcrumb.home}

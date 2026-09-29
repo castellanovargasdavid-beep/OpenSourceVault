@@ -168,6 +168,16 @@ export function StackDetailContent({ stack, stackTools, locale }: { stack: Stack
         </div>
       </header>
 
+      <div className="mb-6">
+        <Link
+          href={`${localeHref("/stacks/builder", locale)}?tools=${encodeURIComponent(stackTools.map((tool) => tool.slug).join(","))}`}
+          className={cn(buttonVariants({ size: "sm" }), "gap-1.5")}
+        >
+          <Sparkles size={14} />
+          {t.stackDetailPage.customizeInBuilder}
+        </Link>
+      </div>
+
       <section>
         <h2 className="mb-4 text-xl font-semibold text-slate-900">
           {t.stackDetailPage.toolsTitle} ({stackTools.length})

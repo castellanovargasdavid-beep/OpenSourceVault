@@ -471,6 +471,7 @@ const en: Dictionary = {
     savingsLabel: "Estimated savings",
     toolsTitle: "Tools in this pack",
     viewFullProfile: (name: string) => `View ${name}'s full profile`,
+    customizeInBuilder: "Customize this stack in the Stack Builder →",
     backToStacks: "← View all stacks",
   },
   comparisonPage: {

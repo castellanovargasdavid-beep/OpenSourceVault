@@ -469,6 +469,7 @@ const es = {
     savingsLabel: "Ahorro estimado",
     toolsTitle: "Herramientas de este pack",
     viewFullProfile: (name: string) => `Ver ficha completa de ${name}`,
+    customizeInBuilder: "Personalizar este stack en el Stack Builder →",
     backToStacks: "← Ver todos los stacks",
   },
   comparisonPage: {
