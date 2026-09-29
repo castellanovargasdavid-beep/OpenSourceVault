@@ -10,6 +10,9 @@ interface PageProps {
   params: Promise<{ category: string }>;
 }
 
+/** Cierra el set de rutas a las categorías reales del catálogo — un slug inventado da 404 inmediato en vez de un SSR bajo demanda que solo termina en notFound(). */
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return categories.map((category) => ({ category: category.slug }));
 }

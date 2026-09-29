@@ -10,6 +10,9 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
+/** Cierra el set de rutas a los packs listos reales — un slug inventado da 404 inmediato en vez de un SSR bajo demanda que solo termina en notFound(). */
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return stacks.map((stack) => ({ slug: stack.slug }));
 }

@@ -11,6 +11,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { localeHref } from "@/lib/locale-href";
 import { cn } from "@/lib/utils";
 import { getDictionary } from "@/i18n/get-dictionary";
+import { trackReplaceEvent } from "@/lib/analytics";
 import type { Locale } from "@/i18n/config";
 
 const formatUsd = (value: number, locale: Locale) =>
@@ -42,6 +43,13 @@ export function CostCalculator({ locale = "es" }: { locale?: Locale }) {
   // diccionario aquí dentro en vez de recibirlo ya resuelto.
   const t = getDictionary(locale).costCalculator;
   const hostingTierT = getDictionary(locale).hostingTier;
+
+  const usedRef = React.useRef(false);
+  React.useEffect(() => {
+    if (usedRef.current) return;
+    usedRef.current = true;
+    trackReplaceEvent({ name: "calculator_used", calculator: "cost" });
+  }, []);
 
   const [ramGb, setRamGb] = React.useState(4);
   const [storageGb, setStorageGb] = React.useState(40);

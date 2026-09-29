@@ -16,3 +16,22 @@ export function JsonLd({ data }: { data: Record<string, unknown> }) {
     />
   );
 }
+
+/**
+ * BreadcrumbList a partir de los mismos niveles que ya se muestran en el
+ * <nav> visible de cada página (Inicio / Categoría / Herramienta, etc.) —
+ * nunca un nivel que no esté también en pantalla, para que el schema
+ * describa exactamente lo que el usuario ve.
+ */
+export function buildBreadcrumbListSchema(items: { name: string; url: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: item.url,
+    })),
+  };
+}

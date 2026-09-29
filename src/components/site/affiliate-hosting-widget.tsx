@@ -3,6 +3,7 @@ import { Gift, GraduationCap } from "lucide-react";
 import type { OpenSourceTool } from "@/lib/types";
 import { buttonVariants } from "@/components/ui/button";
 import { LogoImage } from "@/components/site/logo-image";
+import { AffiliateLink } from "@/components/site/affiliate-link";
 import { getHostingGuideHref } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { getDictionary } from "@/i18n/get-dictionary";
@@ -32,10 +33,9 @@ export function AffiliateHostingWidget({ tool, locale = "es" }: { tool: OpenSour
       </p>
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1.5">
-          <a
+          <AffiliateLink
             href={tool.affiliateLinks.digitalOceanUrl}
-            target="_blank"
-            rel="noopener noreferrer sponsored"
+            provider="digitalocean"
             className={cn(buttonVariants({ variant: "default", size: "lg" }), "h-auto w-full flex-col items-start gap-0.5 whitespace-normal px-4 py-3")}
           >
             <span className="flex items-center gap-2">
@@ -43,31 +43,29 @@ export function AffiliateHostingWidget({ tool, locale = "es" }: { tool: OpenSour
               {t.affiliateWidget.digitalOcean}
             </span>
             <span className="pl-6 text-xs font-normal opacity-90">{t.affiliateWidget.digitalOceanCredit}</span>
-          </a>
+          </AffiliateLink>
           <GuideLink href={getHostingGuideHref("digitalocean", locale)} label={t.hostingGuidePage.linkLabel("DigitalOcean")} />
         </div>
         <div className="flex flex-col gap-1.5">
-          <a
+          <AffiliateLink
             href={tool.affiliateLinks.vultrUrl}
-            target="_blank"
-            rel="noopener noreferrer sponsored"
+            provider="vultr"
             className={cn(buttonVariants({ size: "lg" }), "w-full justify-start gap-2 bg-blue-600 hover:bg-blue-500")}
           >
             <LogoImage domain="vultr.com" label="Vultr" size={18} className="rounded" fallbackGradient="from-blue-500 to-blue-600" />
             {t.affiliateWidget.vultr}
-          </a>
+          </AffiliateLink>
           <GuideLink href={getHostingGuideHref("vultr", locale)} label={t.hostingGuidePage.linkLabel("Vultr")} />
         </div>
         <div className="flex flex-col gap-1.5">
-          <a
+          <AffiliateLink
             href={tool.affiliateLinks.railwayUrl}
-            target="_blank"
-            rel="noopener noreferrer sponsored"
+            provider="railway"
             className={cn(buttonVariants({ size: "lg" }), "w-full justify-start gap-2 bg-violet-600 hover:bg-violet-500")}
           >
             <LogoImage domain="railway.app" label="Railway" size={18} className="rounded" fallbackGradient="from-violet-500 to-violet-600" />
             {t.affiliateWidget.railway}
-          </a>
+          </AffiliateLink>
           <GuideLink href={getHostingGuideHref("railway", locale)} label={t.hostingGuidePage.linkLabel("Railway")} />
         </div>
       </div>

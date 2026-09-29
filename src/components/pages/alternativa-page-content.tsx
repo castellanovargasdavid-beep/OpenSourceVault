@@ -1,11 +1,12 @@
 import Link from "next/link";
 import type { SaasAlternativeGroup } from "@/lib/alternatives";
-import { buildAlternativeTableRows } from "@/lib/alternatives";
+import { buildAlternativeTableRows, getAlternativeHref } from "@/lib/alternatives";
 import { formatMinRam, difficultyMeta } from "@/lib/tool-difficulty";
 import { getSaasPricingLocalized } from "@/data/saas-pricing";
 import { ToolCard } from "@/components/site/tool-card";
 import { toToolCardData } from "@/lib/tool-card-data";
-import { JsonLd } from "@/components/site/json-ld";
+import { JsonLd, buildBreadcrumbListSchema } from "@/components/site/json-ld";
+import { ViewTracker } from "@/components/site/view-tracker";
 import { LogoImage } from "@/components/site/logo-image";
 import { getSaasDomain } from "@/lib/saas-domains";
 import { siteConfig } from "@/lib/site-config";
@@ -45,6 +46,7 @@ export function AlternativaPageContent({ group, locale }: { group: SaasAlternati
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+      <ViewTracker event={{ name: "alternative_view", saasSlug: group.saasSlug }} />
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -68,6 +70,12 @@ export function AlternativaPageContent({ group, locale }: { group: SaasAlternati
             acceptedAnswer: { "@type": "Answer", text: a },
           })),
         }}
+      />
+      <JsonLd
+        data={buildBreadcrumbListSchema([
+          { name: t.breadcrumb.home, url: `${siteConfig.url}${localeHref("/", locale)}` },
+          { name: t.alternativaPage.breadcrumb(group.saasName), url: `${siteConfig.url}${getAlternativeHref(group.saasName, locale)}` },
+        ])}
       />
 
       <nav className="mb-6 text-sm text-slate-600">

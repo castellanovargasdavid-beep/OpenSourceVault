@@ -11,6 +11,9 @@ interface PageProps {
   params: Promise<{ provider: string }>;
 }
 
+/** Cierra el set de rutas a los proveedores de hosting reales — un slug inventado da 404 inmediato en vez de un SSR bajo demanda que solo termina en notFound(). */
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return providers.map((provider) => ({ provider }));
 }

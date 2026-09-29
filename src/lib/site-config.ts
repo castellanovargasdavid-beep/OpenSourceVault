@@ -1,6 +1,6 @@
 export const siteConfig = {
   name: "AltFreeStack",
-  tagline: "Las mejores alternativas Open Source al software que ya usas",
+  tagline: "Alternativas Open Source al software que ya usas",
   description:
     "Descubre alternativas de código abierto y auto-hospedables al software SaaS más popular. Compara licencias, mira el docker-compose y despliega en minutos.",
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://altfreestack.com",

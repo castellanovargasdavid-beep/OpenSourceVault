@@ -7626,7 +7626,7 @@ volumes:
     affiliateLinks,
     features: ["Importa recetas automáticamente pegando la URL de cualquier web", "Planificador de menú semanal con arrastrar y soltar", "Genera la lista de la compra a partir del menú"],
     techStack: ["Python", "Vue.js"],
-    pros: ["Una de las apps mejor cuidadas de todo el ecosistema self-hosted", "App para toda la familia, no solo para quien lo instaló"],
+    pros: ["Interfaz limpia y fácil de usar a diario", "App pensada para toda la familia, no solo para quien la instaló"],
     cons: ["La importación automática no siempre funciona con webs que bloquean el scraping"],
     tags: ["docker-ready"],
     status: "scheduled",

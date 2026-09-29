@@ -37,7 +37,7 @@ export const hostingProviders: HostingProvider[] = [
     name: "DigitalOcean",
     logo: "digitalocean",
     domain: "digitalocean.com",
-    tagline: "VPS simples y predecibles con la mejor documentación del mercado",
+    tagline: "VPS simples y predecibles, con documentación técnica extensa",
     startingPrice: "desde $4/mes",
     monthlyUsdApprox: 4,
     freeCredit: "$200 de crédito gratis por 60 días",

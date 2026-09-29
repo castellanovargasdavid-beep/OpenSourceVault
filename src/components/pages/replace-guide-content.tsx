@@ -2,7 +2,8 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import type { ReplaceMapping } from "@/lib/replace";
 import { ReplaceEntryCard } from "@/components/site/replace-entry-card";
-import { JsonLd } from "@/components/site/json-ld";
+import { JsonLd, buildBreadcrumbListSchema } from "@/components/site/json-ld";
+import { ViewTracker } from "@/components/site/view-tracker";
 import { LogoImage } from "@/components/site/logo-image";
 import { getSaasDomain } from "@/lib/saas-domains";
 import { getAlternativeHref } from "@/lib/alternatives";
@@ -29,6 +30,7 @@ export function ReplaceGuideContent({ mapping, locale = "es", dict }: { mapping:
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+      <ViewTracker event={{ name: "replace_view", saasSlug: mapping.saasSlug }} />
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -41,6 +43,12 @@ export function ReplaceGuideContent({ mapping, locale = "es", dict }: { mapping:
             name: entry.tool.name,
           })),
         }}
+      />
+      <JsonLd
+        data={buildBreadcrumbListSchema([
+          { name: dict.breadcrumb.home, url: `${siteConfig.url}${localeHref("/", locale)}` },
+          { name: t.breadcrumb(mapping.saasName), url: `${siteConfig.url}${localeHref(`/replace/${mapping.saasSlug}`, locale)}` },
+        ])}
       />
 
       <nav className="mb-6 text-sm text-slate-600">

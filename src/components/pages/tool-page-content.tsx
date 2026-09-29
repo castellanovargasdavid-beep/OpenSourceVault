@@ -17,7 +17,8 @@ import { HowToDeployGuide } from "@/components/site/how-to-deploy-guide";
 import { RepoHealthBadge } from "@/components/site/repo-health-badge";
 import { HardwareFitPanel } from "@/components/site/hardware-fit-panel";
 import { UpdateCheckerCard } from "@/components/site/update-checker-card";
-import { JsonLd } from "@/components/site/json-ld";
+import { JsonLd, buildBreadcrumbListSchema } from "@/components/site/json-ld";
+import { ViewTracker } from "@/components/site/view-tracker";
 import { LogoImage } from "@/components/site/logo-image";
 import { ToolPreviewImage } from "@/components/site/tool-preview-image";
 import { getSaasDomain } from "@/lib/saas-domains";
@@ -73,6 +74,7 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
+      <ViewTracker event={{ name: "tool_view", toolSlug: tool.slug }} />
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -80,11 +82,22 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
           name: tool.name,
           applicationCategory: category.label,
           description: tool.description,
-          operatingSystem: "Linux, Docker",
+          // "Docker" solo cuando el propio despliegue lo usa de verdad — la
+          // única excepción hoy es dub-co (manual_setup, build a mano sobre
+          // el host) — ver NO_DOCKER_AT_ALL_TOOL_IDS en deployment-audit.ts.
+          // No afirmamos en el schema algo que la página no respalda.
+          operatingSystem: deploymentAudit?.state === "manual_setup" ? "Linux" : "Linux, Docker",
           license: tool.license,
           url: `${siteConfig.url}${localeHref(`/tool/${tool.slug}`, locale)}`,
           codeRepository: tool.githubUrl,
         }}
+      />
+      <JsonLd
+        data={buildBreadcrumbListSchema([
+          { name: t.breadcrumb.home, url: `${siteConfig.url}${localeHref("/", locale)}` },
+          { name: category.label, url: `${siteConfig.url}${getCategoryHref(tool.category, locale)}` },
+          { name: tool.name, url: `${siteConfig.url}${localeHref(`/tool/${tool.slug}`, locale)}` },
+        ])}
       />
 
       <nav className="mb-6 text-sm text-slate-600">

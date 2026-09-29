@@ -12,7 +12,7 @@ import "../globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
-const enTagline = "The best Open Source alternatives to the software you already use";
+const enTagline = "Open Source alternatives to the software you already use";
 const enDescription = getDictionary("en").siteDescription;
 
 export const metadata: Metadata = {

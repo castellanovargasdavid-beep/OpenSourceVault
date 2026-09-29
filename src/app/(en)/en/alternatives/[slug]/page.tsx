@@ -9,6 +9,9 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
+/** Cierra el set de rutas al conjunto real de SaaS con alternativas (ver getAllSaasSlugs) — un slug inventado da 404 inmediato en vez de un SSR bajo demanda que solo termina en notFound(). */
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return getAllSaasSlugs().map((slug) => ({ slug }));
 }

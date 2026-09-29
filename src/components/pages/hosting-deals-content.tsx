@@ -4,6 +4,7 @@ import { getHostingProvidersLocalized } from "@/data/hosting-providers";
 import { Card, CardContent, CardHeader, CardDescription } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
 import { LogoImage } from "@/components/site/logo-image";
+import { AffiliateLink } from "@/components/site/affiliate-link";
 import { getHostingGuideHref } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { getDictionary } from "@/i18n/get-dictionary";
@@ -47,15 +48,14 @@ export function HostingDealsContent({ locale = "es" }: { locale?: Locale }) {
                   </li>
                 ))}
               </ul>
-              <a
+              <AffiliateLink
                 href={provider.affiliateUrl}
-                target="_blank"
-                rel="noopener noreferrer sponsored"
+                provider={provider.id}
                 className={cn(buttonVariants({ size: "lg" }), "w-full justify-between")}
               >
                 {provider.ctaLabel}
                 <ExternalLink size={16} />
-              </a>
+              </AffiliateLink>
               <Link
                 href={getHostingGuideHref(provider.id, locale)}
                 className="inline-flex items-center justify-center gap-1.5 text-sm font-medium text-emerald-700 hover:underline"

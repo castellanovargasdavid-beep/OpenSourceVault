@@ -121,6 +121,13 @@ export function StackBuilderContent({
   const searchParams = useSearchParams();
   const builder = useStackBuilder();
 
+  const openedRef = React.useRef(false);
+  React.useEffect(() => {
+    if (openedRef.current) return;
+    openedRef.current = true;
+    trackReplaceEvent({ name: "stack_builder_opened" });
+  }, []);
+
   const toolsBySlug = React.useMemo(() => new Map(tools.map((tool) => [tool.slug, tool])), [tools]);
 
   const rawSharedSlugs = searchParams.get("tools");

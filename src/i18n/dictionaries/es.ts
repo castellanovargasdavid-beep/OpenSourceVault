@@ -35,7 +35,7 @@ const es = {
     titlePrefix: "Deja de pagar por",
     titleSuffix: "Auto-hospeda lo que ya usas.",
     subtitle:
-      "Encuentra la mejor alternativa de código abierto a Notion, Slack, Airtable, Google Analytics y decenas de herramientas más — con licencia, docker-compose y guía de despliegue incluidos.",
+      "Encuentra alternativas de código abierto a Notion, Slack, Airtable, Google Analytics y decenas de herramientas más — con licencia, docker-compose y guía de despliegue incluidos.",
     statTools: "herramientas",
     statSaas: "SaaS cubiertos",
     statCategories: "categorías",
@@ -736,6 +736,7 @@ const es = {
     categoryDedicatedDesc: "Tu stack es exigente — un plan grande o un servidor dedicado evitará bloqueos.",
     perMonth: "/mes",
     exceedsAllTiersNote: "Ninguno de estos planes estándar llega a la RAM que necesitas — busca un plan superior o un servidor dedicado directamente en la web del proveedor.",
+    disclaimer: "Enlaces de afiliado: si contratas a través de ellos podemos recibir una comisión sin coste extra para ti.",
   },
   composeDoctorPage: {
     metaTitle: "Doctor Compose: valida y repara tu docker-compose.yml gratis",

@@ -3,6 +3,7 @@ import { getHostingProvidersLocalized } from "@/data/hosting-providers";
 import { matchHostingTiers, classifyHostingCategory } from "@/lib/hosting-tier";
 import { formatMinRam } from "@/lib/tool-difficulty";
 import { LogoImage } from "@/components/site/logo-image";
+import { AffiliateLink } from "@/components/site/affiliate-link";
 import { cn } from "@/lib/utils";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries/es";
@@ -36,6 +37,7 @@ export function HostingTierRecommendation({
   const categoryDesc = category === "basic" ? t.categoryBasicDesc : category === "pro" ? t.categoryProDesc : t.categoryDedicatedDesc;
 
   if (matches.length === 0) return null;
+  const hasAffiliateLink = matches.some((m) => m.tier);
 
   return (
     <div className="rounded-xl border border-slate-200 p-6">
@@ -57,19 +59,19 @@ export function HostingTierRecommendation({
               </div>
               {specLine ? <p className="mt-1 text-xs text-slate-500">{specLine}</p> : <p className="mt-1 text-xs text-rose-600">{t.exceedsAllTiersNote}</p>}
               {tier && (
-                <a
+                <AffiliateLink
                   href={provider.affiliateUrl}
-                  target="_blank"
-                  rel="noopener noreferrer sponsored"
+                  provider={provider.id}
                   className="mt-2.5 flex items-center justify-center gap-1.5 rounded-lg bg-slate-900 px-3 py-2 text-xs font-medium text-white transition-opacity hover:opacity-90"
                 >
                   {provider.ctaLabel} <ExternalLink size={11} className="shrink-0" />
-                </a>
+                </AffiliateLink>
               )}
             </div>
           );
         })}
       </div>
+      {hasAffiliateLink && <p className="mt-4 text-xs text-slate-500">{t.disclaimer}</p>}
     </div>
   );
 }

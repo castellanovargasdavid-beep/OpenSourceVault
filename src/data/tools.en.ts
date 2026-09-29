@@ -1427,7 +1427,7 @@ export const toolsEn: Record<string, ToolTranslation> = {
       "Mealie stores your recipes (automatically importing them from almost any website by just pasting the URL), plans your weekly menu and generates your shopping list — all on your own server.",
     shortDescription: "Recipes, weekly menu and shopping list, an alternative to paid recipe apps.",
     features: ["Automatically imports recipes by pasting a URL from almost any site", "Drag-and-drop weekly meal planner", "Generates a shopping list from your meal plan"],
-    pros: ["One of the best-polished apps in the whole self-hosted ecosystem", "An app for the whole family, not just whoever installed it"],
+    pros: ["Clean interface, easy to use day to day", "An app for the whole family, not just whoever installed it"],
     cons: ["Automatic import doesn't always work on sites that block scraping"],
   },
   navidrome: {

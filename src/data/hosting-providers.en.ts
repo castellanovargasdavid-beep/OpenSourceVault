@@ -9,7 +9,7 @@ export interface HostingProviderTranslation {
 
 export const hostingProvidersEn: Record<string, HostingProviderTranslation> = {
   digitalocean: {
-    tagline: "Simple, predictable VPS with the best documentation in the market",
+    tagline: "Simple, predictable VPS with extensive technical documentation",
     startingPrice: "from $4/mo",
     freeCredit: "$200 in free credit for 60 days",
     bestFor: "Getting started fast with Droplets and App Platform",

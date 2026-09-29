@@ -9,6 +9,9 @@ interface PageProps {
   params: Promise<{ pair: string }>;
 }
 
+/** Cierra el set de rutas a los pares comparados reales — un slug inventado da 404 inmediato en vez de un SSR bajo demanda que solo termina en notFound(). */
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return getAllComparisonSlugs().map((pair) => ({ pair }));
 }

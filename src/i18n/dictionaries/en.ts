@@ -37,7 +37,7 @@ const en: Dictionary = {
     titlePrefix: "Stop paying for",
     titleSuffix: "Self-host what you already use.",
     subtitle:
-      "Find the best open source alternative to Notion, Slack, Airtable, Google Analytics and dozens more tools — with license, docker-compose and deployment guide included.",
+      "Find open source alternatives to Notion, Slack, Airtable, Google Analytics and dozens more tools — with license, docker-compose and deployment guide included.",
     statTools: "tools",
     statSaas: "SaaS covered",
     statCategories: "categories",
@@ -738,6 +738,7 @@ const en: Dictionary = {
     categoryDedicatedDesc: "Your stack is demanding — a large plan or a dedicated server will avoid lockups.",
     perMonth: "/mo",
     exceedsAllTiersNote: "None of these standard plans reach the RAM you need — look for a bigger plan or a dedicated server directly on the provider's site.",
+    disclaimer: "Affiliate links: if you sign up through them, we may receive a commission at no extra cost to you.",
   },
   composeDoctorPage: {
     metaTitle: "Compose Doctor: validate and fix your docker-compose.yml for free",

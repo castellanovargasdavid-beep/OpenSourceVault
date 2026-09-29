@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { CategoryMeta } from "@/data/categories";
+import { getCategoryHref } from "@/data/categories";
 import type { OpenSourceTool } from "@/lib/types";
 import { getToolsByCategory } from "@/data/tools";
 import { getCategoryFaqs } from "@/data/category-faqs";
@@ -8,7 +9,7 @@ import { formatMinRam, difficultyMeta } from "@/lib/tool-difficulty";
 import { resolveGpuRequirement } from "@/lib/tool-hardware";
 import { ToolCard } from "@/components/site/tool-card";
 import { toToolCardData } from "@/lib/tool-card-data";
-import { JsonLd } from "@/components/site/json-ld";
+import { JsonLd, buildBreadcrumbListSchema } from "@/components/site/json-ld";
 import { categoryColors } from "@/lib/category-colors";
 import { categoryIconMap } from "@/lib/category-icons";
 import { cn } from "@/lib/utils";
@@ -74,6 +75,12 @@ export function CategoryPageContent({
           }}
         />
       )}
+      <JsonLd
+        data={buildBreadcrumbListSchema([
+          { name: t.breadcrumb.home, url: `${siteConfig.url}${localeHref("/", locale)}` },
+          { name: category.label, url: `${siteConfig.url}${getCategoryHref(category.id, locale)}` },
+        ])}
+      />
 
       <nav className="mb-6 text-sm text-slate-600">
         <Link href={localeHref("/", locale)} className="hover:text-emerald-700">

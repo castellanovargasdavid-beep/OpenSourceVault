@@ -9,6 +9,7 @@ import { getAlternativeHref } from "@/lib/alternatives";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { getDictionary } from "@/i18n/get-dictionary";
+import { trackReplaceEvent } from "@/lib/analytics";
 import type { Locale } from "@/i18n/config";
 
 const formatUsd = (value: number, locale: Locale) =>
@@ -25,6 +26,14 @@ export function SavingsCalculator({ locale = "es" }: { locale?: Locale }) {
   // dentro en vez de recibirse ya resuelto, a diferencia de otros componentes.
   const t = getDictionary(locale).savingsCalculator;
   const hostingProviders = getHostingProvidersLocalized(locale);
+
+  const usedRef = React.useRef(false);
+  React.useEffect(() => {
+    if (usedRef.current) return;
+    usedRef.current = true;
+    trackReplaceEvent({ name: "calculator_used", calculator: "savings" });
+  }, []);
+
   const [saasName, setSaasName] = React.useState(saasPricing[0].saasName);
   const [seats, setSeats] = React.useState(10);
   const [providerId, setProviderId] = React.useState(hostingProviders[0].id);
