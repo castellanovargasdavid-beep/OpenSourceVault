@@ -1,6 +1,7 @@
 import { getToolBySlug } from "@/data/tools";
 import { mergeDockerComposeFiles } from "@/lib/stack-merge";
 import { buildDeployScript } from "@/lib/deploy-script";
+import { siteConfig } from "@/lib/site-config";
 
 export const runtime = "nodejs";
 
@@ -21,14 +22,14 @@ function errorScript(locale: "es" | "en", message: string): string {
           "#!/usr/bin/env bash",
           "# AltFreeStack Stack Builder — this link couldn't generate a deploy script.",
           `echo "❌ ${message}"`,
-          'echo "   Go back to https://altfreestack.com/en/stacks/builder and try again."',
+          `echo "   Go back to ${siteConfig.url}/en/stacks/builder and try again."`,
           "exit 1",
         ]
       : [
           "#!/usr/bin/env bash",
           "# Stack Builder de AltFreeStack — este enlace no pudo generar un script de despliegue.",
           `echo "❌ ${message}"`,
-          'echo "   Vuelve a https://altfreestack.com/stacks/builder e inténtalo de nuevo."',
+          `echo "   Vuelve a ${siteConfig.url}/stacks/builder e inténtalo de nuevo."`,
           "exit 1",
         ];
   return lines.join("\n") + "\n";

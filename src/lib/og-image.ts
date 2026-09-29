@@ -1,3 +1,5 @@
+import { siteConfig } from "@/lib/site-config";
+
 /**
  * Obtiene la imagen Open Graph (og:image) que la propia web de la
  * herramienta publica para que se reutilice al compartir su enlace — es
@@ -13,7 +15,11 @@ export async function getOgImageUrl(websiteUrl: string): Promise<string | null> 
   try {
     const res = await fetch(websiteUrl, {
       headers: {
-        "User-Agent": "Mozilla/5.0 (compatible; AltFreeStackBot/1.0; +https://altfreestack.com)",
+        // Convención estándar de bots (Googlebot, bingbot...): el +URL al
+        // final identifica el sitio que hace la petición ante quien reciba
+        // esta request — debe ser el dominio oficial, igual que en el resto
+        // de metadata emitida por el sitio.
+        "User-Agent": `Mozilla/5.0 (compatible; AltFreeStackBot/1.0; +${siteConfig.url})`,
       },
       next: { revalidate: 604800 }, // 7 días: el og:image de una web cambia poco
       signal: AbortSignal.timeout(4000),

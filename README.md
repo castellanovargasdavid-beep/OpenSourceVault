@@ -4,7 +4,7 @@
 
 Every SaaS tool you pay for monthly probably has an open-source, self-hostable twin — you just have to find it, check its license, and figure out how to run it. AltFreeStack does that legwork: 140+ tools, each with a real license, an honest pros/cons list, and a ready-to-copy `docker-compose.yml` so you can go from "found it" to "running on my own server" in minutes, not hours.
 
-🔗 **Live site:** [altfreestack.com](https://altfreestack.com)
+🔗 **Live site:** [www.altfreestack.com](https://www.altfreestack.com)
 
 ## Why this exists
 
@@ -114,7 +114,7 @@ A few things that make a submission easy to merge:
 
 Bug fixes, UI improvements, and correcting outdated info (a license that changed, a stale star count, a Docker image still on `:latest` that should be pinned) are just as welcome — no special process, just open a PR, or an issue using the **[Report outdated data](.github/ISSUE_TEMPLATE/report_outdated_data.md)** template if you'd rather not fix it yourself.
 
-The site's own [/contribute](https://altfreestack.com/en/contribute) page covers the same ground with the exact fields the `OpenSourceTool` type expects.
+The site's own [/contribute](https://www.altfreestack.com/en/contribute) page covers the same ground with the exact fields the `OpenSourceTool` type expects.
 
 ## License
 

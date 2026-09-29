@@ -8,7 +8,7 @@ assignees: ""
 
 <!--
 Before opening this: is the tool already in the catalog? Check
-https://altfreestack.com or search src/data/tools.ts.
+https://www.altfreestack.com or search src/data/tools.ts.
 
 Prefer to add it yourself instead of waiting? See "How to Contribute" in the
 README — a PR editing src/data/tools.ts gets merged much faster than an issue.

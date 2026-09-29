@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { LogoImage } from "@/components/site/logo-image";
 import { getSaasDomain } from "@/lib/saas-domains";
 import { localeHref } from "@/lib/locale-href";
+import { siteConfig } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries/es";
@@ -108,8 +109,8 @@ export function SaasExitContent({
   async function handleShare() {
     const summary =
       locale === "en"
-        ? `I just audited my SaaS tools with AltFreeStack: I spend ${formatUsd(saasAnnual, locale)}/year and could save ${formatUsd(savings, locale)}/year (${savingsPercent}%) self-hosting the open source equivalent. https://altfreestack.com/en/saas-exit`
-        : `Acabo de auditar mis herramientas SaaS con AltFreeStack: gasto ${formatUsd(saasAnnual, locale)}/año y podría ahorrar ${formatUsd(savings, locale)}/año (${savingsPercent}%) auto-hospedando el equivalente open source. https://altfreestack.com/saas-exit`;
+        ? `I just audited my SaaS tools with AltFreeStack: I spend ${formatUsd(saasAnnual, locale)}/year and could save ${formatUsd(savings, locale)}/year (${savingsPercent}%) self-hosting the open source equivalent. ${siteConfig.url}/en/saas-exit`
+        : `Acabo de auditar mis herramientas SaaS con AltFreeStack: gasto ${formatUsd(saasAnnual, locale)}/año y podría ahorrar ${formatUsd(savings, locale)}/año (${savingsPercent}%) auto-hospedando el equivalente open source. ${siteConfig.url}/saas-exit`;
     try {
       await navigator.clipboard.writeText(summary);
       setShareCopied(true);
