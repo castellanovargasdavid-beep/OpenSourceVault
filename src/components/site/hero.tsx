@@ -3,10 +3,15 @@ import { SearchBar } from "@/components/site/search-bar";
 import { RotatingExamples } from "@/components/site/rotating-examples";
 import { AnimatedCounter } from "@/components/site/animated-counter";
 import { LogoImage } from "@/components/site/logo-image";
+import { FloatingHero } from "@/components/site/floating-hero";
 import { categories } from "@/data/categories";
 import { getSaasDomain } from "@/lib/saas-domains";
+import { getHeroFloatingData } from "@/lib/hero-floating-data";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { getHowWeAuditHref } from "@/lib/routes";
+import { localeHref } from "@/lib/locale-href";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import type { Locale } from "@/i18n/config";
 import type { ToolCardData } from "@/lib/types";
 
@@ -24,6 +29,7 @@ const showcaseSaas = [
 export function Hero({ tools, locale = "es" }: { tools: ToolCardData[]; locale?: Locale }) {
   const t = getDictionary(locale);
   const totalSaas = new Set(tools.flatMap((tool) => tool.replaces)).size;
+  const floatingData = getHeroFloatingData(tools);
 
   return (
     <section className="relative overflow-hidden border-b border-slate-200">
@@ -33,67 +39,96 @@ export function Hero({ tools, locale = "es" }: { tools: ToolCardData[]; locale?:
         <div className="animate-blob-slow absolute bottom-0 left-1/3 h-96 w-96 rounded-full bg-blue-200/40 blur-3xl" />
       </div>
 
-      <div className="mx-auto max-w-4xl px-4 py-20 text-center sm:px-6 lg:px-8">
-        <Link
-          href={getHowWeAuditHref(locale)}
-          className="inline-flex items-center rounded-full border border-emerald-200 bg-emerald-100 px-3 py-1 text-xs font-medium text-emerald-800 transition-colors hover:bg-emerald-200"
-        >
-          {t.hero.badge(tools.length)}
-        </Link>
-        <h1 className="mt-6 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
-          {t.hero.titlePrefix}{" "}
-          <RotatingExamples
-            examples={showcaseSaas}
-            className="bg-gradient-to-r from-emerald-600 via-teal-600 to-blue-600 bg-clip-text text-transparent"
-          />
-          .
-          <br />
-          {t.hero.titleSuffix}
-        </h1>
-        <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-600">{t.hero.subtitle}</p>
-        <div className="mx-auto mt-10 max-w-2xl">
-          <SearchBar tools={tools} locale={locale} t={t.searchBar} />
+      {/* Ancho mayor que la columna central de texto (nivel 1) a propósito: le da sitio a las tarjetas flotantes (nivel 2) alrededor sin que compitan con el headline. Ver src/components/site/floating-hero.tsx. */}
+      <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <div className="relative z-10 mx-auto max-w-4xl text-center">
+          <Link
+            href={getHowWeAuditHref(locale)}
+            className="inline-flex items-center rounded-full border border-emerald-200 bg-emerald-100 px-3 py-1 text-xs font-medium text-emerald-800 transition-colors hover:bg-emerald-200"
+          >
+            {t.hero.badge(tools.length)}
+          </Link>
+          <h1 className="mt-6 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
+            {t.hero.titlePrefix}{" "}
+            <RotatingExamples
+              examples={showcaseSaas}
+              className="bg-gradient-to-r from-emerald-600 via-teal-600 to-blue-600 bg-clip-text text-transparent"
+            />
+            .
+            <br />
+            {t.hero.titleSuffix}
+          </h1>
+          <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-600">{t.hero.subtitle}</p>
+
+          <ol className="mt-6 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+            {[t.heroFloating.journeyDiscover, t.heroFloating.journeyCompare, t.heroFloating.journeyBuild, t.heroFloating.journeyDeploy].map(
+              (step, i, all) => (
+                <li key={step} className="flex items-center gap-2">
+                  <span className={i === 0 ? "text-emerald-600" : undefined}>{step}</span>
+                  {i < all.length - 1 && <span aria-hidden>→</span>}
+                </li>
+              )
+            )}
+          </ol>
+
+          <div className="mx-auto mt-6 max-w-2xl">
+            <SearchBar tools={tools} locale={locale} t={t.searchBar} />
+          </div>
+
+          <div className="mx-auto mt-6 flex flex-wrap items-center justify-center gap-3">
+            <Link
+              href={localeHref("/#explorador", locale)}
+              className={cn(buttonVariants({ size: "lg" }), "bg-gradient-to-r from-emerald-600 to-teal-600 hover:opacity-90")}
+            >
+              {t.hero.ctaExplore}
+            </Link>
+            <Link href={localeHref("/stacks/builder", locale)} className={cn(buttonVariants({ variant: "outline", size: "lg" }))}>
+              {t.hero.ctaBuildStack}
+            </Link>
+          </div>
+
+          <div className="mx-auto mt-10 flex max-w-xl flex-wrap items-center justify-center gap-x-10 gap-y-4">
+            <div>
+              <p className="text-2xl font-bold text-slate-900">
+                <AnimatedCounter value={tools.length} suffix="+" />
+              </p>
+              <p className="text-xs text-slate-600">{t.hero.statTools}</p>
+            </div>
+            <div>
+              <p className="text-2xl font-bold text-slate-900">
+                <AnimatedCounter value={totalSaas} suffix="+" />
+              </p>
+              <p className="text-xs text-slate-600">{t.hero.statSaas}</p>
+            </div>
+            <div>
+              <p className="text-2xl font-bold text-slate-900">
+                <AnimatedCounter value={categories.length} />
+              </p>
+              <p className="text-xs text-slate-600">{t.hero.statCategories}</p>
+            </div>
+            <div>
+              <p className="text-2xl font-bold text-emerald-600">$0</p>
+              <p className="text-xs text-slate-600">{t.hero.statLicenseCost}</p>
+            </div>
+          </div>
+
+          <div className="mt-14">
+            <p className="text-xs font-medium uppercase tracking-wide text-slate-600">{t.hero.replacesLabel}</p>
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
+              {showcaseSaas.map((name) => (
+                <span
+                  key={name}
+                  className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-3 py-1.5 text-sm text-slate-600 shadow-sm backdrop-blur"
+                >
+                  <LogoImage domain={getSaasDomain(name)} label={name} size={18} />
+                  {name}
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
 
-        <div className="mx-auto mt-10 flex max-w-xl flex-wrap items-center justify-center gap-x-10 gap-y-4">
-          <div>
-            <p className="text-2xl font-bold text-slate-900">
-              <AnimatedCounter value={tools.length} suffix="+" />
-            </p>
-            <p className="text-xs text-slate-600">{t.hero.statTools}</p>
-          </div>
-          <div>
-            <p className="text-2xl font-bold text-slate-900">
-              <AnimatedCounter value={totalSaas} suffix="+" />
-            </p>
-            <p className="text-xs text-slate-600">{t.hero.statSaas}</p>
-          </div>
-          <div>
-            <p className="text-2xl font-bold text-slate-900">
-              <AnimatedCounter value={categories.length} />
-            </p>
-            <p className="text-xs text-slate-600">{t.hero.statCategories}</p>
-          </div>
-          <div>
-            <p className="text-2xl font-bold text-emerald-600">$0</p>
-            <p className="text-xs text-slate-600">{t.hero.statLicenseCost}</p>
-          </div>
-        </div>
-
-        <div className="mt-14">
-          <p className="text-xs font-medium uppercase tracking-wide text-slate-600">{t.hero.replacesLabel}</p>
-          <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
-            {showcaseSaas.map((name) => (
-              <span
-                key={name}
-                className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-3 py-1.5 text-sm text-slate-600 shadow-sm backdrop-blur"
-              >
-                <LogoImage domain={getSaasDomain(name)} label={name} size={18} />
-                {name}
-              </span>
-            ))}
-          </div>
-        </div>
+        <FloatingHero data={floatingData} locale={locale} t={t.heroFloating} toolCardT={t.toolCard} />
       </div>
     </section>
   );
