@@ -55,7 +55,12 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
     FairCode: t.toolPage.fossModelFairCodeCaption,
     SourceAvailable: t.toolPage.fossModelSourceAvailableCaption,
   } as const;
-  const comparisons: ToolComparison[] = getComparisonsForTool(tool.slug).slice(0, 5);
+  // Sin tope artificial: un tope fijo (antes 5) puede dejar huérfana una
+  // comparativa real si cae fuera del corte en AMBOS lados del par a la vez
+  // (visto en producción con shopware-vs-woocommerce, la 6ª de las dos). El
+  // máximo real hoy es 8 (huly) — una lista de botones en la sidebar sigue
+  // siendo perfectamente legible a ese tamaño.
+  const comparisons: ToolComparison[] = getComparisonsForTool(tool.slug);
   const migrationFromSaas = tool.replaces[0];
   const migrationGuideHref = getMigrationGuideHref(slugify(migrationFromSaas), tool.slug, locale);
   const featuredStacks = getStacksForTool(tool.id).map((stack) => getLocalizedStack(stack, locale));
