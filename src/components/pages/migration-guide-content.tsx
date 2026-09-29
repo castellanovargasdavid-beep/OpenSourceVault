@@ -4,11 +4,7 @@ import type { OpenSourceTool } from "@/lib/types";
 import { LogoImage } from "@/components/site/logo-image";
 import { getSaasDomain } from "@/lib/saas-domains";
 import { categoryColors } from "@/lib/category-colors";
-import {
-  getMigrationPatternId,
-  getMigrationPatternContentLocalized,
-  fillTemplate,
-} from "@/lib/migration-patterns";
+import { getMigrationContentForPair, fillTemplate } from "@/lib/migration-patterns";
 import { buttonVariants } from "@/components/ui/button";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { localeHref } from "@/lib/locale-href";
@@ -25,8 +21,7 @@ export function MigrationGuideContent({
   locale: Locale;
 }) {
   const t = getDictionary(locale);
-  const patternId = getMigrationPatternId(fromName);
-  const content = getMigrationPatternContentLocalized(patternId, locale);
+  const content = getMigrationContentForPair(fromName, tool.slug, locale);
   const palette = categoryColors[tool.category];
 
   return (

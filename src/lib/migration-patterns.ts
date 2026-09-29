@@ -1,4 +1,6 @@
 import { patternsEn } from "./migration-patterns.en";
+import { pairOverrides, getPairOverrideKey } from "./migration-pair-overrides";
+import { pairOverridesEn } from "./migration-pair-overrides.en";
 
 export type MigrationPatternId =
   | "notes-docs"
@@ -485,4 +487,22 @@ export function getMigrationPatternContentLocalized(
 
 export function fillTemplate(text: string, fromName: string, toName: string): string {
   return text.replaceAll("{from}", fromName).replaceAll("{to}", toName);
+}
+
+/**
+ * Contenido real para una guía de migración: primero comprueba si existe
+ * contenido específico escrito a mano para este par exacto (SaaS → slug de
+ * la herramienta) en migration-pair-overrides.ts — las 5 migraciones con más
+ * búsquedas del sitio lo tienen — y si no, cae al patrón genérico por
+ * categoría (mismo comportamiento que antes de que existieran los overrides).
+ */
+export function getMigrationContentForPair(
+  fromName: string,
+  toSlug: string,
+  locale: "es" | "en"
+): MigrationPatternContent {
+  const key = getPairOverrideKey(fromName, toSlug);
+  const overrides = locale === "en" ? pairOverridesEn : pairOverrides;
+  if (key in overrides) return overrides[key];
+  return getMigrationPatternContentLocalized(getMigrationPatternId(fromName), locale);
 }
