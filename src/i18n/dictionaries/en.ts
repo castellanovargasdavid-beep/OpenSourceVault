@@ -418,15 +418,21 @@ const en: Dictionary = {
     faqDockerQ: (saas: string) => `Do I need Docker to self-host a ${saas} alternative?`,
     faqDockerA: (dockerCount: number, total: number) =>
       dockerCount === total
-        ? `Yes, for all ${total}: each one has a ready-to-copy docker-compose.yml. You just need Docker installed on your server.`
+        ? total === 1
+          ? "Yes: the only alternative on this list has a ready-to-copy docker-compose.yml. You just need Docker installed on your server."
+          : `Yes, for all ${total}: each one has a ready-to-copy docker-compose.yml. You just need Docker installed on your server.`
         : `${dockerCount} out of ${total} have a ready-to-copy docker-compose.yml; the rest use their own installer (each tool's page says which).`,
     faqRamQ: "How much RAM do I need at minimum?",
     faqRamA: (ram: string, name: string) => `The lightest option on this list is ${name}, which runs on as little as ${ram} of RAM — enough for a cheap VPS.`,
     faqFreeQ: (saas: string) => `Are they all 100% free, or are there paid features like on ${saas}?`,
     faqFreeA: (fossCount: number, total: number) =>
-      fossCount === total
-        ? `Yes, all ${total} are 100% FOSS: no paid plan or locked features when self-hosted.`
-        : `${fossCount} out of ${total} are 100% FOSS. The rest are Open-Core: the core is free and self-hostable, but some advanced feature may stay paid — we call it out on each tool's page.`,
+      total === 1
+        ? fossCount === 1
+          ? "Yes, it's 100% FOSS: no paid plan or locked features when self-hosted."
+          : "No: it's Open-Core. The core is free and self-hostable, but some advanced feature may stay paid — we call it out on its page."
+        : fossCount === total
+          ? `Yes, all ${total} are 100% FOSS: no paid plan or locked features when self-hosted.`
+          : `${fossCount} out of ${total} are 100% FOSS. The rest are Open-Core: the core is free and self-hostable, but some advanced feature may stay paid — we call it out on each tool's page.`,
   },
   replacePage: {
     metaTitle: (saas: string, year: number) => `How to Replace ${saas} with Open Source Alternatives in ${year}`,

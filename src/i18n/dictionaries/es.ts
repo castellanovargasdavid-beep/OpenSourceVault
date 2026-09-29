@@ -416,15 +416,21 @@ const es = {
     faqDockerQ: (saas: string) => `¿Necesito Docker para auto-hospedar una alternativa a ${saas}?`,
     faqDockerA: (dockerCount: number, total: number) =>
       dockerCount === total
-        ? `Sí para las ${total}: todas tienen un docker-compose.yml listo para copiar. No hace falta instalar nada más que Docker en tu servidor.`
+        ? total === 1
+          ? "Sí: la única alternativa de esta lista tiene un docker-compose.yml listo para copiar. No hace falta instalar nada más que Docker en tu servidor."
+          : `Sí para las ${total}: todas tienen un docker-compose.yml listo para copiar. No hace falta instalar nada más que Docker en tu servidor.`
         : `${dockerCount} de ${total} tienen un docker-compose.yml listo para copiar; el resto usa su propio instalador (verás cuál es cuál en la ficha de cada una).`,
     faqRamQ: "¿Cuánta RAM necesito como mínimo?",
     faqRamA: (ram: string, name: string) => `La opción más ligera de esta lista es ${name}, que arranca con ${ram} de RAM — suficiente para un VPS económico.`,
     faqFreeQ: (saas: string) => `¿Son todas 100% gratis, o hay funciones de pago como en ${saas}?`,
     faqFreeA: (fossCount: number, total: number) =>
-      fossCount === total
-        ? `Sí, las ${total} son 100% FOSS: sin plan de pago ni funciones bloqueadas al auto-hospedarlas.`
-        : `${fossCount} de ${total} son 100% FOSS. Las demás son Open-Core: el núcleo es gratis y auto-hospedable, pero alguna función avanzada puede seguir de pago — lo indicamos en cada ficha.`,
+      total === 1
+        ? fossCount === 1
+          ? "Sí, es 100% FOSS: sin plan de pago ni funciones bloqueadas al auto-hospedarla."
+          : "No: es Open-Core. El núcleo es gratis y auto-hospedable, pero alguna función avanzada puede seguir de pago — lo indicamos en su ficha."
+        : fossCount === total
+          ? `Sí, las ${total} son 100% FOSS: sin plan de pago ni funciones bloqueadas al auto-hospedarlas.`
+          : `${fossCount} de ${total} son 100% FOSS. Las demás son Open-Core: el núcleo es gratis y auto-hospedable, pero alguna función avanzada puede seguir de pago — lo indicamos en cada ficha.`,
   },
   replacePage: {
     metaTitle: (saas: string, year: number) => `Cómo sustituir ${saas} por alternativas Open Source en ${year}`,

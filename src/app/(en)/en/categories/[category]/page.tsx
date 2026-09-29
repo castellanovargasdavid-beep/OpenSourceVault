@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { categories, getCategoryBySlugLocalized } from "@/data/categories";
 import { categoriesEn } from "@/data/categories.en";
 import { getToolsByCategoryAll } from "@/data/tools";
+import { catalogStats } from "@/lib/catalog-stats";
 import { siteConfig } from "@/lib/site-config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { CategoryPageContent } from "@/components/pages/category-page-content";
@@ -28,6 +29,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const description = category.description;
   const url = `${siteConfig.url}/en/categories/${category.slug}`;
   const esSlug = categories.find((c) => c.id === category.id)!.slug;
+  // Ver el comentario equivalente en la ruta ES: excluida del sitemap por
+  // contenido delgado, pero sigue enlazada desde el footer, así que también
+  // necesita noindex explícito aquí.
+  const hasPublishedTools = catalogStats.toolCountByCategory[category.id] > 0;
 
   return {
     title,
@@ -38,6 +43,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     },
     openGraph: { title, description, url },
     twitter: { card: "summary_large_image", title, description },
+    robots: hasPublishedTools ? undefined : { index: false, follow: true },
   };
 }
 
