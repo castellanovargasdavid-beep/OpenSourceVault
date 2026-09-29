@@ -484,6 +484,7 @@ volumes:
     language: "Python (Django)",
     platforms: ["Web"],
     fossModel: "OpenCore",
+    storageGb: 15,
     dockerCompose: `version: "3.9"
 services:
   posthog:
@@ -649,6 +650,7 @@ volumes:
     language: "Go",
     platforms: ["Web", "Desktop (Mac/Win/Linux)", "Mobile (iOS/Android)"],
     fossModel: "OpenCore",
+    storageGb: 15,
     dockerCompose: `version: "3.9"
 services:
   mattermost:
@@ -816,6 +818,7 @@ volumes:
     language: "Multi-language (Elixir, Go, Rust)",
     platforms: ["Web"],
     fossModel: "FOSS",
+    storageGb: 40,
     dockerCompose: `version: "3.9"
 services:
   studio:
@@ -875,6 +878,7 @@ volumes:
     platforms: ["Web"],
     fossModel: "FOSS",
     dockerStatus: "VERIFIED_PINNED",
+    storageGb: 20,
     dockerCompose: `version: "3.9"
 services:
   appwrite:
@@ -977,6 +981,7 @@ volumes:
     language: "PHP",
     platforms: ["Web", "Desktop (Mac/Win/Linux)", "Mobile (iOS/Android)"],
     fossModel: "OpenCore",
+    storageGb: 20,
     dockerCompose: `version: "3.9"
 services:
   nextcloud:
@@ -1100,6 +1105,9 @@ volumes:
     language: "Python",
     platforms: ["Web"],
     fossModel: "OpenCore",
+    storageGb: 5,
+    notes:
+      "Es solo la interfaz de chat: no ejecuta modelos por sí misma, así que no necesita GPU propia — la inferencia real ocurre en Ollama (u otro backend compatible con la API de OpenAI) al que se conecta.",
     dockerCompose: `version: "3.9"
 services:
   open-webui:
@@ -2422,6 +2430,7 @@ volumes:
     language: "Ruby on Rails",
     platforms: ["Web"],
     fossModel: "OpenCore",
+    storageGb: 25,
     dockerCompose: `version: "3.9"
 services:
   gitlab:
@@ -3582,6 +3591,9 @@ volumes:
     language: "Go",
     platforms: ["Web", "Desktop (Mac/Win/Linux)"],
     fossModel: "OpenCore",
+    gpuRequired: false,
+    notes:
+      "CPU viable para modelos ≤7B (requiere ~8GB RAM libre). Para modelos 13B+ o inferencia rápida se recomienda GPU dedicada con mínimo 8-12GB VRAM.",
     dockerCompose: `version: "3.9"
 services:
   ollama:
@@ -3619,6 +3631,9 @@ volumes:
     language: "Go",
     platforms: ["Web"],
     fossModel: "FOSS",
+    storageGb: 10,
+    notes:
+      "La imagen base ocupa poco, pero los modelos que descargues (GGUF/GGML) pueden sumar decenas de GB aparte — no están incluidos en esta estimación. Funciona en CPU; detecta y usa GPU NVIDIA/AMD/Intel automáticamente si está disponible.",
     dockerCompose: `version: "3.9"
 services:
   localai:
@@ -3766,6 +3781,9 @@ volumes:
     language: "Node.js",
     platforms: ["Web"],
     fossModel: "OpenCore",
+    storageGb: 5,
+    notes:
+      "5GB es el mínimo documentado por el proyecto para una instalación básica. No requiere GPU — solo se beneficia si los flujos que construyas llaman a un modelo local (ej. vía Ollama).",
     dockerCompose: `version: "3.9"
 services:
   flowise:
@@ -3838,6 +3856,9 @@ volumes:
     language: "Python",
     platforms: ["Web"],
     fossModel: "OpenCore",
+    storageGb: 40,
+    notes:
+      "40GB es la recomendación oficial del proyecto para un despliegue de producción (cubre Postgres, Redis y el resto de servicios del stack). No necesita GPU propia — solo se beneficia si conectas un runtime de embeddings/inferencia local.",
     dockerCompose: `version: "3.9"
 services:
   dify-api:
@@ -4308,6 +4329,7 @@ volumes: {}
     language: "C / Python",
     platforms: ["Web", "Desktop (Mac/Win/Linux)", "Mobile (iOS/Android)"],
     fossModel: "OpenCore",
+    storageGb: 15,
     dockerCompose: `version: "3.9"
 services:
   seafile:
@@ -4509,6 +4531,9 @@ volumes:
     language: "TypeScript (Node.js) / Dart (mobile app)",
     platforms: ["Web", "Mobile (iOS/Android)"],
     fossModel: "FOSS",
+    storageGb: 20,
+    notes:
+      "Soporta aceleración por hardware opcional tanto para transcodificación de vídeo (NVENC, Quick Sync, VAAPI, RKMPP) como para el reconocimiento facial y la búsqueda inteligente (CUDA, OpenVINO, ROCm) — ninguna es obligatoria, ambas se activan aparte en Ajustes.",
     dockerCompose: `version: "3.9"
 services:
   immich-server:
@@ -4567,6 +4592,7 @@ volumes:
     language: "Go",
     platforms: ["Web"],
     fossModel: "OpenCore",
+    storageGb: 10,
     dockerCompose: `version: "3.9"
 services:
   photoprism:
@@ -6625,6 +6651,9 @@ volumes:
     language: "C# (.NET)",
     platforms: ["Web", "Desktop (Mac/Win/Linux)", "Mobile (iOS/Android)", "Smart TV"],
     fossModel: "FOSS",
+    storageGb: 20,
+    notes:
+      "Soporta transcodificación acelerada por hardware (Intel Quick Sync, NVIDIA NVENC, AMD AMF/VAAPI) configurable desde el panel de administración — no es obligatoria, pero reduce muchísimo el uso de CPU al hacer streaming a dispositivos que no soportan el códec original.",
     dockerCompose: `services:
   jellyfin:
     image: jellyfin/jellyfin:latest

@@ -11,6 +11,7 @@ export interface ToolTranslation {
   features: string[];
   pros: string[];
   cons: string[];
+  notes?: string;
 }
 
 export const toolsEn: Record<string, ToolTranslation> = {
@@ -236,6 +237,8 @@ export const toolsEn: Record<string, ToolTranslation> = {
     features: ["Compatible with Ollama and any OpenAI-style API", "RAG with your own documents", "User and role management", "Marketplace of community prompts and functions"],
     pros: ["Runs 100% local models, no data sent to third parties"],
     cons: ["Quality depends on the model you choose to run (GPU recommended)"],
+    notes:
+      "It's just the chat interface: it doesn't run models itself, so it doesn't need its own GPU — the actual inference happens in Ollama (or another OpenAI-API-compatible backend) that it connects to.",
   },
   langfuse: {
     description:
@@ -660,6 +663,8 @@ export const toolsEn: Record<string, ToolTranslation> = {
     features: ["Download models with a single command", "API compatible with multiple clients", "GPU and CPU support"],
     pros: ["Your data never leaves your server"],
     cons: ["Quality depends on the model and hardware available"],
+    notes:
+      "CPU-only is viable for models ≤7B (needs ~8GB of free RAM). For 13B+ models or fast inference, a dedicated GPU with at least 8-12GB VRAM is recommended.",
   },
   localai: {
     description:
@@ -668,6 +673,8 @@ export const toolsEn: Record<string, ToolTranslation> = {
     features: ["API compatible with the OpenAI SDK", "Chat, images, embeddings and audio", "Runs GGUF, GGML and more model formats"],
     pros: ["Near-direct migration from code already using the OpenAI API"],
     cons: ["Needs decent hardware (ideally a GPU) for large models"],
+    notes:
+      "The base image itself is small, but the models you download (GGUF/GGML) can add tens of GB on top — not included in this estimate. Runs on CPU; auto-detects and uses NVIDIA/AMD/Intel GPUs when available.",
   },
   khoj: {
     description:
@@ -700,6 +707,8 @@ export const toolsEn: Record<string, ToolTranslation> = {
     features: ["Visual drag-and-drop AI flow editor", "Supports agents, tools and memory", "API and embeddable widget"],
     pros: ["No coding needed to build basic agents"],
     cons: ["Very complex flows can become hard to debug visually"],
+    notes:
+      "5GB is the project's documented minimum for a basic install. No GPU required — it only helps if the flows you build call a local model (e.g. via Ollama).",
   },
   langflow: {
     description:
@@ -716,6 +725,8 @@ export const toolsEn: Record<string, ToolTranslation> = {
     features: ["Visual editor for AI agents and flows", "Observability and logs for every conversation", "Multi-model: OpenAI, Anthropic, local"],
     pros: ["Cuts down a lot of the code needed to ship an AI product"],
     cons: ["Full production stack has several services (Weaviate/Redis)"],
+    notes:
+      "40GB is the project's official recommendation for a production deployment (covers Postgres, Redis and the rest of the stack). No GPU of its own required — it only helps if you connect a local embeddings/inference runtime.",
   },
   "automatic1111-sd-webui": {
     description:
@@ -844,6 +855,8 @@ export const toolsEn: Record<string, ToolTranslation> = {
     features: ["Automatic backup from mobile apps", "Facial recognition and object search", "Shared albums and family timeline"],
     pros: ["The mobile app rivals Google Photos in quality"],
     cons: ["Facial and object recognition benefit from having a GPU"],
+    notes:
+      "Supports optional hardware acceleration for both video transcoding (NVENC, Quick Sync, VAAPI, RKMPP) and facial recognition/smart search (CUDA, OpenVINO, ROCm) — neither is required, both are enabled separately in Settings.",
   },
   photoprism: {
     description:
@@ -1254,6 +1267,8 @@ export const toolsEn: Record<string, ToolTranslation> = {
     features: ["Streams video, music and photos to any device", "Hardware (GPU) transcoding", "Native TV, mobile and browser apps — no account or telemetry"],
     pros: ["100% free and telemetry-free, unlike Plex", "Very active community, a direct fork of Emby after it went closed-source"],
     cons: ["Hardware transcoding setup requires manual steps depending on your GPU", "No official Smart TV app on some platforms (uses third-party apps)"],
+    notes:
+      "Supports hardware-accelerated transcoding (Intel Quick Sync, NVIDIA NVENC, AMD AMF/VAAPI), configurable from the admin dashboard — not required, but it cuts CPU usage dramatically when streaming to devices that don't support the original codec.",
   },
   linkwarden: {
     description:
