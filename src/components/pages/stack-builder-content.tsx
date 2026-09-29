@@ -34,6 +34,7 @@ import { getHostname, cn } from "@/lib/utils";
 import { localeHref } from "@/lib/locale-href";
 import { extractEnvPlaceholders } from "@/lib/deploy-guide";
 import { trackReplaceEvent } from "@/lib/analytics";
+import { getCostCalculatorHref } from "@/lib/routes";
 import {
   aggregateStack,
   computeStackCheck,
@@ -276,9 +277,16 @@ export function StackBuilderContent({
     if (window.confirm(t.deleteProjectConfirm)) builder.deleteStack(builder.activeStack.id);
   }
 
-  if (!builder.hydrated) {
-    return <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8" />;
-  }
+  // Antes había un guard "if (!builder.hydrated) return <div vacío />" que
+  // blanqueaba toda la página hasta que el store leía localStorage — eso
+  // pintaba un frame casi vacío y, justo después, todo el contenido real
+  // aparecía de golpe, empujando el footer hacia abajo (CLS medido de
+  // 0.33-0.80 en producción, muy por encima del umbral de Core Web
+  // Vitals). useSyncExternalStore ya resuelve la hidratación seguro por su
+  // cuenta (usa getServerSnapshot en el primer render del cliente, igual
+  // que hace <AddToStackButton> con isInActiveStack) — dejar que el árbol
+  // se renderice desde el primer pintado, con el stack vacío hasta que
+  // hidrate, evita el salto de layout sin arriesgar un mismatch.
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
@@ -635,6 +643,9 @@ export function StackBuilderContent({
 
               <HardwareFitPanel totalMinRamMb={aggregate.totalApplicationRamMb} gpuRequiredToolNames={gpuRequiredToolNames} t={hardwareT} />
               <HostingTierRecommendation totalMinRamMb={aggregate.totalApplicationRamMb} locale={locale} t={hostingTierT} />
+              <Link href={getCostCalculatorHref(locale)} className="block text-center text-xs font-medium text-slate-500 hover:text-emerald-700">
+                {t.costCalculatorLink}
+              </Link>
             </div>
           )}
 

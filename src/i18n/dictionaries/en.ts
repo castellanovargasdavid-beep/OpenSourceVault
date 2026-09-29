@@ -660,6 +660,7 @@ const en: Dictionary = {
     importBannerNotFoundMany: "tools from this link are no longer in the catalog (they may have been removed) and aren't shown below.",
     importSaveButton: "Save to My Stack",
     viewCatalog: "Browse the catalog →",
+    costCalculatorLink: "Want to fine-tune the exact cost? Open the infrastructure calculator →",
     ramNote: "Rough estimate: adds up each tool's own recommended minimum RAM. Sharing libraries between containers can lower real usage.",
     oneCommandTitle: "🚀 Deploy in 1 command",
     oneCommandBadge: "Recommended for beginners",

@@ -658,6 +658,7 @@ const es = {
     importBannerNotFoundMany: "herramientas de este enlace ya no están en el catálogo (pueden haberse retirado) y no aparecen abajo.",
     importSaveButton: "Guardar en mi Stack",
     viewCatalog: "Explorar catálogo →",
+    costCalculatorLink: "¿Quieres afinar el coste exacto? Abre la calculadora de infraestructura →",
     ramNote: "Estimación orientativa: suma la RAM mínima recomendada de cada herramienta por separado. Compartir librerías entre contenedores puede reducir el uso real.",
     oneCommandTitle: "🚀 Despliegue en 1 comando",
     oneCommandBadge: "Recomendado para novatos",
