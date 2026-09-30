@@ -3,6 +3,8 @@ export interface GithubStats {
   openIssues: number;
   forks: number;
   updatedAt: string;
+  /** `license.spdx_id` tal como lo detecta GitHub, o null si GitHub no reconoce ninguna licencia estándar en el repo. Ver src/lib/license-verification.ts. */
+  licenseSpdxId: string | null;
 }
 
 /**
@@ -55,6 +57,7 @@ export async function getGithubStats(githubUrl: string): Promise<GithubStats | n
       open_issues_count: number;
       forks_count: number;
       pushed_at: string;
+      license: { spdx_id: string } | null;
     };
 
     return {
@@ -62,6 +65,7 @@ export async function getGithubStats(githubUrl: string): Promise<GithubStats | n
       openIssues: data.open_issues_count,
       forks: data.forks_count,
       updatedAt: data.pushed_at,
+      licenseSpdxId: data.license?.spdx_id ?? null,
     };
   } catch {
     return null;

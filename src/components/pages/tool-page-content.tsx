@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { GitFork, ExternalLink, Check, X, ArrowRight, PlayCircle, Database, Code2, MonitorSmartphone, TriangleAlert, ChevronDown } from "lucide-react";
+import { GitFork, ExternalLink, Check, X, ArrowRight, PlayCircle, Database, Code2, MonitorSmartphone, TriangleAlert, ChevronDown, Star } from "lucide-react";
 import { getLocalizedTool } from "@/data/tools";
 import { getCategoryMetaLocalized, getCategoryHref } from "@/data/categories";
 import { getStacksForTool, getLocalizedStack } from "@/data/stacks";
@@ -14,7 +14,7 @@ import { DockerComposeBlock } from "@/components/site/docker-compose-block";
 import { OneClickDeploy } from "@/components/site/one-click-deploy";
 import { OneCommandDeployBlock } from "@/components/site/one-command-deploy-block";
 import { HowToDeployGuide } from "@/components/site/how-to-deploy-guide";
-import { RepoHealthBadge } from "@/components/site/repo-health-badge";
+import { AuditSnapshot } from "@/components/site/audit-snapshot";
 import { HardwareFitPanel } from "@/components/site/hardware-fit-panel";
 import { UpdateCheckerCard } from "@/components/site/update-checker-card";
 import { JsonLd, buildBreadcrumbListSchema } from "@/components/site/json-ld";
@@ -26,13 +26,14 @@ import { categoryColors } from "@/lib/category-colors";
 import { getComparisonsForTool, type ToolComparison } from "@/lib/comparisons";
 import { extractDefaultPort, isComposeFile } from "@/lib/deploy-guide";
 import { auditToolDeployment } from "@/lib/deployment-audit";
-import { getGithubStats, getLatestRelease, getReleasesPageUrl, getReleasesFeedUrl, formatRelativeDate } from "@/lib/github-stats";
+import { verifyLicense } from "@/lib/license-verification";
+import { getGithubStats, getLatestRelease, getReleasesPageUrl, getReleasesFeedUrl, getRepoHealthStatus, formatRelativeDate } from "@/lib/github-stats";
 import { getOgImageUrl } from "@/lib/og-image";
 import { siteConfig } from "@/lib/site-config";
 import { difficultyMeta, formatMinRam, resolveToolResourceProfile } from "@/lib/tool-difficulty";
 import { resolveGpuRequirement } from "@/lib/tool-hardware";
 import { getToolComparison } from "@/lib/tool-comparison";
-import { slugify, cn, getHostname } from "@/lib/utils";
+import { slugify, cn, getHostname, formatStars } from "@/lib/utils";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { localeHref } from "@/lib/locale-href";
 import type { Locale } from "@/i18n/config";
@@ -76,6 +77,8 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
   const gpuRequired = resolveGpuRequirement(tool);
   const deploymentAudit = tool.dockerCompose ? auditToolDeployment(tool) : null;
   const comparison = getToolComparison(tool, locale);
+  const licenseVerification = verifyLicense(tool.license, liveStats?.licenseSpdxId);
+  const repoHealthStatus = liveStats ? getRepoHealthStatus(liveStats.updatedAt) : null;
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
@@ -203,6 +206,13 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
           <span className="inline-flex items-center gap-1.5">
             <GitFork size={16} /> {t.toolPage.license} {tool.license}
           </span>
+          {(liveStats?.stars ?? tool.starsCount) !== undefined && (
+            <span className="inline-flex items-center gap-1.5">
+              <Star size={16} className="text-amber-500" />
+              {formatStars((liveStats?.stars ?? tool.starsCount)!)} {t.toolPage.stars}
+              {!liveStats && <span className="text-xs text-slate-500">{t.toolPage.estimated}</span>}
+            </span>
+          )}
           <a
             href={tool.websiteUrl}
             target="_blank"
@@ -231,6 +241,18 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
           </a>
         </div>
       </header>
+
+      <AuditSnapshot
+        locale={locale}
+        t={t.auditSnapshot}
+        toolPageT={t.toolPage}
+        licenseVerification={licenseVerification}
+        repoHealthStatus={repoHealthStatus}
+        lastCommitIso={liveStats?.updatedAt ?? null}
+        latestRelease={latestRelease}
+        releasesUrl={releasesUrl}
+        deploymentAudit={deploymentAudit}
+      />
 
       <div className="grid gap-10 lg:grid-cols-3">
         <div className="min-w-0 space-y-10 lg:col-span-2">
@@ -276,63 +298,6 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
                       {t.toolPage.dockerGuideLink}
                     </Link>
                   </p>
-
-                  {/* Fase 6/7 de la auditoría de despliegue: distinguir siempre método,
-                      tag de imagen y nivel de verificación real — nunca "Verified"
-                      solo porque exista un docker-compose. Ver src/lib/deployment-audit.ts
-                      para los criterios exactos de cada estado (mismo texto que el title). */}
-                  <div className="mb-4 flex flex-wrap items-center gap-1.5">
-                    <Badge variant="outline">
-                      {deploymentAudit.method === "compose"
-                        ? t.toolPage.deploymentMethodCompose
-                        : deploymentAudit.state === "manual_setup"
-                          ? t.toolPage.deploymentMethodManual
-                          : t.toolPage.deploymentMethodScript}
-                    </Badge>
-
-                    {deploymentAudit.method === "compose" && (
-                      <Badge variant={deploymentAudit.hasMutableTag ? "warning" : deploymentAudit.hasUnknownTag ? "secondary" : "success"}>
-                        {deploymentAudit.hasMutableTag ? t.toolPage.dockerTagMutable : deploymentAudit.hasUnknownTag ? t.toolPage.dockerTagUnknownBadge : t.toolPage.dockerTagPinned}
-                      </Badge>
-                    )}
-
-                    <Badge
-                      variant={
-                        deploymentAudit.state === "verified"
-                          ? "success"
-                          : deploymentAudit.state === "partially_verified"
-                            ? "warning"
-                            : "secondary"
-                      }
-                      title={
-                        deploymentAudit.state === "verified"
-                          ? t.toolPage.deploymentStateVerifiedCaption
-                          : deploymentAudit.state === "partially_verified"
-                            ? t.toolPage.deploymentStatePartialCaption
-                            : deploymentAudit.state === "unverified"
-                              ? t.toolPage.deploymentStateUnverifiedCaption
-                              : deploymentAudit.state === "external_script"
-                                ? t.toolPage.deploymentStateExternalScriptCaption
-                                : t.toolPage.deploymentStateManualSetupCaption
-                      }
-                    >
-                      {deploymentAudit.state === "verified"
-                        ? t.toolPage.deploymentStateVerifiedBadge
-                        : deploymentAudit.state === "partially_verified"
-                          ? t.toolPage.deploymentStatePartialBadge
-                          : deploymentAudit.state === "unverified"
-                            ? t.toolPage.deploymentStateUnverifiedBadge
-                            : deploymentAudit.state === "external_script"
-                              ? t.toolPage.deploymentStateExternalScriptBadge
-                              : t.toolPage.deploymentStateManualSetupBadge}
-                    </Badge>
-
-                    {deploymentAudit.scriptOrigin && (
-                      <Badge variant={deploymentAudit.scriptOrigin.origin === "official" ? "secondary" : "warning"}>
-                        {deploymentAudit.scriptOrigin.origin === "official" ? t.toolPage.scriptOriginOfficial : t.toolPage.scriptOriginUnverifiable}
-                      </Badge>
-                    )}
-                  </div>
 
                   <HowToDeployGuide
                     toolName={tool.name}
@@ -537,8 +502,7 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
 
         <aside className="min-w-0 space-y-6 lg:sticky lg:top-24 lg:self-start">
           <HardwareFitPanel totalMinRamMb={minRamMb} gpuRequiredToolNames={gpuRequired ? [tool.name] : []} t={t.hardwareFit} />
-          <RepoHealthBadge liveStats={liveStats} estimatedStars={tool.starsCount} license={tool.license} locale={locale} />
-          <UpdateCheckerCard latestRelease={latestRelease} releasesUrl={releasesUrl} feedUrl={releasesFeedUrl} locale={locale} />
+          <UpdateCheckerCard feedUrl={releasesFeedUrl} locale={locale} />
           <AffiliateHostingWidget tool={tool} locale={locale} />
 
           {featuredStacks.length > 0 && (

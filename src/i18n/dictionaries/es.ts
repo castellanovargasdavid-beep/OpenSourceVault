@@ -306,13 +306,6 @@ const es = {
     tryDemo: "Probar Demo",
     deployOn: (platform: string) => `Desplegar en ${platform}`,
     githubRepo: "Repositorio en GitHub",
-    repoHealthTitle: "Estado del repositorio",
-    repoHealthStatus: {
-      active: "Activo",
-      maintained: "Mantenimiento bajo",
-      stale: "Posiblemente inactivo",
-      unknown: "Sin datos en vivo",
-    },
     repoHealthLastCommit: (date: string) => `Último commit ${date}`,
     replacesBadge: (saas: string) => `Alternativa a ${saas}`,
     replacesAriaLabel: "Herramientas SaaS que sustituye",
@@ -344,23 +337,11 @@ const es = {
     dockerGuideText: "Copia este docker-compose.yml, ajusta las contraseñas de ejemplo y ejecuta docker compose up -d en tu servidor.",
     dockerGuideTextScript: "Esta herramienta no se instala con un docker-compose.yml suelto, sino con el instalador oficial del propio proyecto — revísalo antes de ejecutarlo.",
     dockerGuideLink: "Ver la guía completa paso a paso →",
-    deploymentMethodCompose: "Docker Compose",
-    deploymentMethodScript: "Script de instalación oficial",
-    deploymentMethodManual: "Instalación manual (sin Docker)",
-    dockerTagPinned: "Versión fijada",
-    dockerTagMutable: "Tag móvil",
-    dockerTagUnknownBadge: "Tag sin clasificar",
-    deploymentStateVerifiedBadge: "Verified",
     deploymentStateVerifiedCaption: "Deployment verificado según los criterios publicados de AltFreeStack: imagen identificable, tag fijado o digest, fuente identificable, y sin señales conocidas de configuración insegura. Esto NO es una auditoría de seguridad del software ni de sus dependencias.",
-    deploymentStatePartialBadge: "Partially verified",
     deploymentStatePartialCaption: "Hay algo revisado a mano sobre esta imagen (o el tag ya tiene forma de versión fija), pero no una comprobación completa contra el registro de Docker.",
-    deploymentStateUnverifiedBadge: "Unverified",
     deploymentStateUnverifiedCaption: "Nadie de AltFreeStack ha verificado todavía esta imagen a mano contra el registro de Docker. Puede funcionar perfectamente — simplemente no lo hemos comprobado nosotros.",
-    deploymentStateExternalScriptBadge: "External script",
     deploymentStateExternalScriptCaption: "Esta herramienta no se despliega con un docker-compose.yml: usa el instalador oficial del propio proyecto, que gestiona Docker (u otra infraestructura) por su cuenta.",
-    deploymentStateManualSetupBadge: "Manual setup",
     deploymentStateManualSetupCaption: "Esta herramienta no usa contenedores Docker en absoluto — se instala compilando/ejecutando el proyecto directamente sobre tu servidor.",
-    scriptOriginOfficial: "Coincide con dominio oficial",
     scriptOriginUnverifiable: "Origen no confirmable automáticamente",
     comparisonTitle: "💡 ¿SaaS oficial o self-hosted con AltFreeStack?",
     comparisonCloudLabel: "En la nube oficial:",
@@ -378,6 +359,52 @@ const es = {
     migrationLink: (from: string, tool: string) => `Cómo migrar de ${from} a ${tool}`,
     comparisons: "Comparativas cara a cara",
     comparisonLink: (a: string, b: string) => `${a} vs ${b}`,
+  },
+  /**
+   * "Audit Snapshot" — bloque consolidado cerca de arriba de /tool/[slug]
+   * que sustituye a RepoHealthBadge, el mini-header de UpdateCheckerCard y
+   * la fila de badges de verificación Docker. Cada fila muestra el estado
+   * REAL de esta herramienta concreta — nunca ✓ por defecto. Reutiliza las
+   * captions ya existentes de deploymentState y scriptOrigin (t.toolPage)
+   * en vez de duplicarlas.
+   */
+  auditSnapshot: {
+    title: "Audit Snapshot",
+    licenseLabel: "Licencia",
+    licenseVerified: "Verificada",
+    licenseVerifiedCaption: "El identificador de licencia que declaramos coincide con el que detecta GitHub para este repositorio.",
+    licenseMismatch: "Revisar licencia",
+    licenseMismatchCaption:
+      "La licencia que declaramos no coincide con la que detecta GitHub — puede ser un matiz de redacción o un dato desactualizado en nuestro catálogo. Revísalo antes de dar por buena ninguna de las dos.",
+    licenseUnverifiable: "No verificable",
+    licenseUnverifiableCaption:
+      "GitHub no expone un identificador de licencia estándar para este repositorio, o nuestro catálogo usa un valor sin equivalente SPDX fiable con el que compararlo.",
+    githubLabel: "GitHub",
+    githubActive: "Activo",
+    githubActiveCaption: "Commit en los últimos 60 días.",
+    githubMaintained: "Mantenimiento reducido",
+    githubMaintainedCaption: "Entre 2 y 6 meses sin actividad — no implica abandono.",
+    githubStale: "Desactualizado",
+    githubStaleCaption: "Más de 6 meses sin actividad — conviene revisarlo antes de depender de soporte activo.",
+    githubUnknown: "Sin datos en vivo",
+    githubUnknownCaption: "No hemos podido consultar la API de GitHub en este momento.",
+    releaseLabel: "Último release",
+    releaseUnavailable: "No disponible",
+    releaseCaption: "Última versión publicada de verdad en GitHub (release o tag más reciente).",
+    releaseViewLink: "Ver notas →",
+    dockerLabel: "Docker Compose",
+    dockerVerified: "Verificado",
+    dockerPartial: "Parcial",
+    dockerUnverified: "No verificado",
+    dockerNoCompose: "No aplica",
+    dockerNoComposeCaption: "Esta herramienta no declara un docker-compose.yml en el catálogo.",
+    dockerOfficialInstaller: "Instalador oficial, sin compose",
+    dockerManualSetup: "Instalación manual, sin Docker",
+    dockerScriptOriginWarning: "Origen del script no verificable",
+    productionLabel: "Producción",
+    productionValue: "No probado por AltFreeStack",
+    productionCaption:
+      "Verificamos configuración y datos del catálogo, no ejecutamos estas herramientas en un entorno de producción real — es un límite de nuestro proceso, no un problema de la herramienta.",
   },
   alternativaPage: {
     metaTitle: (saas: string, year: number, count: number) =>
@@ -801,9 +828,6 @@ const es = {
   },
   updateChecker: {
     title: "🔄 ¿Es seguro actualizar?",
-    latestVersionLabel: "Última versión publicada",
-    noReleaseData: "No hemos podido leer la última versión desde GitHub ahora mismo.",
-    viewReleaseNotesLink: "Ver las notas de esta versión →",
     checklistTitle: "Antes de actualizar, siempre:",
     checklistBackup: "Hazte una copia de seguridad de tus datos — nunca actualices sin backup.",
     checklistChangelog: "Lee las notas de la versión: algunas cambian variables de entorno o piden un paso previo antes de hacer pull.",
