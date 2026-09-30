@@ -168,10 +168,10 @@ test("computeFullCoverage: devuelve exactamente 2 filas por cada SaaS del catál
   for (const count of bySaas.values()) assert.equal(count, 2);
 });
 
-test("computeFullCoverage: incluye las 6 páginas ya publicadas del piloto, correctamente marcadas", () => {
+test("computeFullCoverage: incluye las 15 páginas ya publicadas (6 del piloto + 9 del segundo lote), correctamente marcadas", () => {
   const rows = computeFullCoverage();
   const published = rows.filter((row) => row.state === "published");
-  assert.equal(published.length, 6);
+  assert.equal(published.length, 15);
 });
 
 test("computeFullCoverage: nunca produce el estado inexistente ready-for-editorial (nombre descartado por el usuario)", () => {
