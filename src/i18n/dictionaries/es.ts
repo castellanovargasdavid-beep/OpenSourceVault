@@ -371,14 +371,14 @@ const es = {
   auditSnapshot: {
     title: "Audit Snapshot",
     licenseLabel: "Licencia",
-    licenseVerified: "Verificada",
+    licenseVerified: "Coincide con GitHub",
     licenseVerifiedCaption: "El identificador de licencia que declaramos coincide con el que detecta GitHub para este repositorio.",
-    licenseMismatch: "Revisar licencia",
+    licenseMismatch: "Discrepancia con GitHub",
     licenseMismatchCaption:
-      "La licencia que declaramos no coincide con la que detecta GitHub — puede ser un matiz de redacción o un dato desactualizado en nuestro catálogo. Revísalo antes de dar por buena ninguna de las dos.",
-    licenseUnverifiable: "No verificable",
+      "El identificador de licencia que declaramos no coincide con el que detecta GitHub — esto no significa que la licencia del proyecto sea incorrecta, solo que el dato de nuestro catálogo y el de GitHub no coinciden. Puede ser un matiz de redacción o un dato desactualizado en cualquiera de los dos.",
+    licenseUnverifiable: "No verificable en GitHub",
     licenseUnverifiableCaption:
-      "GitHub no expone un identificador de licencia estándar para este repositorio, o nuestro catálogo usa un valor sin equivalente SPDX fiable con el que compararlo.",
+      "GitHub no expone un identificador de licencia estándar para este repositorio, o nuestro catálogo usa un valor sin equivalente SPDX fiable con el que compararlo — una limitación de los datos disponibles, no un problema de la herramienta.",
     githubLabel: "GitHub",
     githubActive: "Activo",
     githubActiveCaption: "Commit en los últimos 60 días.",

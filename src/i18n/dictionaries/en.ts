@@ -365,14 +365,14 @@ const en: Dictionary = {
   auditSnapshot: {
     title: "Audit Snapshot",
     licenseLabel: "License",
-    licenseVerified: "Verified",
+    licenseVerified: "Matches GitHub",
     licenseVerifiedCaption: "The license we declare matches what GitHub detects for this repository.",
-    licenseMismatch: "Review license",
+    licenseMismatch: "Discrepancy with GitHub",
     licenseMismatchCaption:
-      "The license we declare doesn't match what GitHub detects — it could be a wording nuance or outdated data in our catalog. Check both before trusting either.",
-    licenseUnverifiable: "Not verifiable",
+      "The license we declare doesn't match what GitHub detects for this repository — this doesn't mean the project's license is wrong, only that our catalog's data and GitHub's don't agree. It could be a wording nuance or outdated data on either side.",
+    licenseUnverifiable: "Not verifiable on GitHub",
     licenseUnverifiableCaption:
-      "GitHub doesn't expose a standard license identifier for this repository, or our catalog uses a value with no reliable SPDX equivalent to compare it against.",
+      "GitHub doesn't expose a standard license identifier for this repository, or our catalog uses a value with no reliable SPDX equivalent to compare it against — a limitation of the available data, not a problem with the tool.",
     githubLabel: "GitHub",
     githubActive: "Active",
     githubActiveCaption: "Commit within the last 60 days.",
