@@ -62,23 +62,10 @@ const en: Dictionary = {
     savingsUnavailable: "No public SaaS pricing for this combo",
     buildStackCta: "Build this stack",
   },
-  categoryGrid: {
-    title: "Explore by category",
-    subtitle: "From databases and CRM to AI: find the exact open source replacement your stack needs.",
-    toolCount: (n: number) => `${n} tools`,
-    explore: "Explore",
-  },
-  featuredTools: {
-    badge: "Featured this week",
-    title: "The most solid alternatives to deploy today",
-    subtitle: "Chosen for project maturity, active community and ease of deployment with Docker.",
-    viewAll: "View the full catalog →",
-  },
-  recentlyAdded: {
-    badge: "Recently added",
-    title: "The latest additions to the catalog",
-    subtitle: "Tools added in the latest update, with their docker-compose.yml and deploy guide already ready.",
-    viewAll: "View the full catalog →",
+  discoveryStrip: {
+    title: "Not sure what you're looking for? Explore a few options",
+    toolsLabel: "Featured & recently added",
+    viewAllTools: "View the full catalog →",
   },
   toolExplorer: {
     title: "Explore the full catalog",

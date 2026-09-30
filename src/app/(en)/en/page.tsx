@@ -1,7 +1,5 @@
 import { Hero } from "@/components/site/hero";
-import { CategoryGrid } from "@/components/site/category-grid";
-import { FeaturedTools } from "@/components/site/featured-tools";
-import { RecentlyAddedTools } from "@/components/site/recently-added-tools";
+import { DiscoveryStrip } from "@/components/site/discovery-strip";
 import { CatalogTeaser } from "@/components/site/catalog-teaser";
 import { tools } from "@/data/tools";
 import { toToolCardData } from "@/lib/tool-card-data";
@@ -12,9 +10,7 @@ export default function EnglishHomePage() {
   return (
     <>
       <Hero tools={publishedToolCards} locale="en" />
-      <CategoryGrid locale="en" />
-      <FeaturedTools locale="en" />
-      <RecentlyAddedTools locale="en" />
+      <DiscoveryStrip locale="en" />
       <CatalogTeaser locale="en" />
     </>
   );

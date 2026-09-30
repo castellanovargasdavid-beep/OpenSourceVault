@@ -60,23 +60,10 @@ const es = {
     savingsUnavailable: "Sin precio SaaS público para este combo",
     buildStackCta: "Construir este stack",
   },
-  categoryGrid: {
-    title: "Explora por categoría",
-    subtitle: "Desde bases de datos y CRM hasta IA: encuentra el reemplazo open source exacto que necesita tu stack.",
-    toolCount: (n: number) => `${n} herramientas`,
-    explore: "Explorar",
-  },
-  featuredTools: {
-    badge: "Destacadas de la semana",
-    title: "Las alternativas más sólidas para desplegar hoy",
-    subtitle: "Elegidas por madurez del proyecto, comunidad activa y facilidad de despliegue con Docker.",
-    viewAll: "Ver todo el catálogo →",
-  },
-  recentlyAdded: {
-    badge: "Recién añadidas",
-    title: "Lo último que hemos sumado al catálogo",
-    subtitle: "Herramientas incorporadas en la última actualización, con su docker-compose.yml y guía de despliegue ya listos.",
-    viewAll: "Ver todo el catálogo →",
+  discoveryStrip: {
+    title: "¿No sabes qué buscas? Explora algunas opciones",
+    toolsLabel: "Destacadas y recién añadidas",
+    viewAllTools: "Ver todo el catálogo →",
   },
   toolExplorer: {
     title: "Explora todo el catálogo",
