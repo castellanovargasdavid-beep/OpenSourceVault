@@ -21,8 +21,16 @@
  *   - No calcula ningún KPI de "% del catálogo cubierto". El objetivo de
  *     este backlog es que cada página publicada merezca existir, no
  *     maximizar cuántas hay.
+ *
+ * También imprime un OVERLAP SUMMARY (ver src/lib/intent-overlap.ts): qué
+ * herramientas se repiten entre varias candidatas y qué relación estructural
+ * hay entre cada par que comparte alguna (low-overlap/strong-subset/
+ * near-identical/same-tools-different-intent). Es la misma filosofía que el
+ * resto del script: señal para revisión humana, nunca una regla que
+ * descarte páginas automáticamente ni un score compuesto.
  */
 import { computeFullCoverage, COVERAGE_THRESHOLDS, type CoverageRow, type CoverageState } from "../src/lib/intent-coverage";
+import { computeAllOverlapPairs, computeToolFanout, OVERLAP_THRESHOLDS, type CandidateRef, type OverlapPair } from "../src/lib/intent-overlap";
 import { formatMinRam } from "../src/lib/tool-difficulty";
 
 const STATE_ORDER: CoverageState[] = ["published", "editorial-candidate", "needs-editorial-signal", "not-worth-a-page", "insufficient-data"];
@@ -40,6 +48,60 @@ function formatSignal(row: CoverageRow): string {
     return row.ramSpreadMb === null ? "—" : `RAM spread ${formatMinRam(row.ramSpreadMb)}`;
   }
   return row.cutRatio === null ? "—" : `cut ratio ${Math.round(row.cutRatio * 100)}%`;
+}
+
+function formatCandidate(ref: CandidateRef): string {
+  return `${ref.saasName}-${ref.intent}`;
+}
+
+const OVERLAP_RELATION_LABEL: Record<OverlapPair["relation"], string> = {
+  "near-identical": "near-identical — mismo conjunto de herramientas en ambos sentidos",
+  "strong-subset": "strong-subset — un conjunto está total o sustancialmente contenido en el otro",
+  "same-tools-different-intent": "same-tools-different-intent — mismo SaaS, self-hosted vs. open-source",
+  "low-overlap": "low-overlap — comparten alguna herramienta, sin más",
+};
+
+/**
+ * Muestra primero las relaciones más accionables (near-identical/strong-subset,
+ * donde SÍ conviene revisar si conviene investigar juntas o descartar una),
+ * dejando same-tools-different-intent (estructuralmente normal) y
+ * low-overlap (rara vez accionable) al final — nunca oculta ninguna, solo
+ * ordena para que lo más urgente se lea primero.
+ */
+const OVERLAP_RELATION_ORDER: OverlapPair["relation"][] = ["near-identical", "strong-subset", "same-tools-different-intent", "low-overlap"];
+
+function printOverlapSection(): void {
+  const fanout = computeToolFanout();
+  const pairs = computeAllOverlapPairs();
+
+  console.log("\n\nOVERLAP SUMMARY");
+  console.log("Señal de PRIORIZACIÓN para revisión editorial — nunca clasifica dos páginas como duplicadas ni decide automáticamente cuál publicar.");
+  console.log(`Umbral configurado: solapamiento parcial >= ${Math.round(OVERLAP_THRESHOLDS.partialStrongSubsetContainment * 100)}% en al menos un sentido -> strong-subset (además del caso de contención total al 100%).\n`);
+
+  console.log(`Tools shared by multiple candidates (fan-out >= 2, ${fanout.length} herramientas)`);
+  console.log("-----------------------------------------------------------------------------");
+  if (fanout.length === 0) {
+    console.log("  (ninguna herramienta aparece en más de una candidata hoy)");
+  }
+  for (const entry of fanout) {
+    const candidates = entry.candidates.map(formatCandidate).join(", ");
+    console.log(`  ${entry.toolName.padEnd(24)} ${entry.candidates.length} candidates (${candidates})`);
+  }
+
+  console.log(`\nCandidate relationships (${pairs.length} pares con >=1 herramienta compartida — solo se listan pares con solapamiento real)`);
+  console.log("-----------------------------------------------------------------------------------------------------------------------");
+  if (pairs.length === 0) {
+    console.log("  (ninguna relación de solapamiento hoy)");
+  }
+  const sorted = [...pairs].sort((a, b) => OVERLAP_RELATION_ORDER.indexOf(a.relation) - OVERLAP_RELATION_ORDER.indexOf(b.relation) || formatCandidate(a.a).localeCompare(formatCandidate(b.a)));
+  for (const pair of sorted) {
+    console.log(`\n${formatCandidate(pair.a)} <-> ${formatCandidate(pair.b)}`);
+    console.log(`  relation: ${OVERLAP_RELATION_LABEL[pair.relation]}`);
+    console.log(`  shared: ${pair.sharedTools.join(", ")}`);
+    console.log(`  containment: ${formatCandidate(pair.a)} ${Math.round(pair.containmentA * 100)}% (${pair.sharedTools.length}/${pair.toolCountA}) / ${formatCandidate(pair.b)} ${Math.round(pair.containmentB * 100)}% (${pair.sharedTools.length}/${pair.toolCountB})`);
+  }
+
+  console.log("\nRecordatorio: compartir herramientas NUNCA significa automáticamente \"página duplicada\" — same-tools-different-intent es la arquitectura normal del sistema (self-hosted/open-source del mismo SaaS). La decisión de investigar juntas, fusionar o mantener ambas sigue siendo editorial.");
 }
 
 function main(): void {
@@ -75,6 +137,8 @@ function main(): void {
   console.log("\nRecordatorio: este informe no crea páginas, no modifica el catálogo, no genera rutas.");
   console.log("Nunca leas \"editorial-candidate\" como \"crear esta página\" — significa \"revisar a mano si hay contenido diferencial real\".");
   console.log("Evaluar si una página YA publicada merece seguir viva es responsabilidad humana (Search Console, canibalización), no de este script.");
+
+  printOverlapSection();
 }
 
 main();

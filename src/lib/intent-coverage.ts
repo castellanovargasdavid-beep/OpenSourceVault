@@ -104,13 +104,24 @@ function computeCutRatio(group: SaasAlternativeGroup, openSourceEligibleCount: n
 }
 
 /**
+ * Herramientas elegibles de un grupo para una intención — extraído aparte
+ * porque intent-overlap.ts necesita exactamente esta misma lista (no solo
+ * el recuento) para calcular solapamiento entre candidatas; nunca debe
+ * haber dos cálculos distintos de "qué herramientas cuentan" para la misma
+ * intención.
+ */
+export function eligibleToolsFor(group: SaasAlternativeGroup, intent: IntentType): OpenSourceTool[] {
+  return group.tools.filter(intent === "self-hosted" ? isSelfHostedEligible : isOpenSourceEligible);
+}
+
+/**
  * Fila del backlog para un (SaaS, intención). "published" se comprueba
  * contra getIntentPage en locale "es" — content.ts documenta explícitamente
  * que la versión EN debe reflejar las mismas claims, así que una locale
  * basta para saber si la página existe.
  */
 export function computeCoverageRow(group: SaasAlternativeGroup, intent: IntentType): CoverageRow {
-  const eligibleTools = group.tools.filter(intent === "self-hosted" ? isSelfHostedEligible : isOpenSourceEligible);
+  const eligibleTools = eligibleToolsFor(group, intent);
   const eligibleToolCount = eligibleTools.length;
   const isPublishedPage = getIntentPage(`${group.saasSlug}-${intent}`, "es") !== undefined;
   const hasCuratedContent = Boolean(INTENT_PAGE_CONTENT[`${group.saasName}→${intent}`]);
