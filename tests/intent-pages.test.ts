@@ -99,7 +99,7 @@ test("getIntentPage works the same way in EN with the EN URL suffix", () => {
   assert.equal(page.saasName, "Notion");
 });
 
-test("getAllIntentPageSlugs: returns exactly the approved 15-page set (6-page pilot + 9-page second batch), no more, no less", () => {
+test("getAllIntentPageSlugs: returns exactly the approved 22-page set (6-page pilot + 9-page second batch + 7-page third batch), no more, no less", () => {
   const slugs = getAllIntentPageSlugs("es").sort();
   assert.deepEqual(slugs, [
     "airtable-self-hosted",
@@ -108,14 +108,21 @@ test("getAllIntentPageSlugs: returns exactly the approved 15-page set (6-page pi
     "dropbox-self-hosted",
     "github-self-hosted",
     "google-analytics-self-hosted",
+    "google-docs-self-hosted",
+    "google-drive-self-hosted",
+    "google-photos-self-hosted",
     "heroku-open-source",
     "heroku-self-hosted",
+    "jira-self-hosted",
     "lastpass-open-source",
     "mixpanel-self-hosted",
     "notion-self-hosted",
+    "retool-self-hosted",
+    "shopify-plus-self-hosted",
     "shopify-self-hosted",
     "slack-open-source",
     "slack-self-hosted",
+    "zendesk-self-hosted",
     "zoom-self-hosted",
   ]);
 });

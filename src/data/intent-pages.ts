@@ -179,4 +179,67 @@ export const INTENT_PAGE_CONTENT: Record<string, IntentPageContent> = {
     tradeoffsVsSaas:
       "Dentro del subconjunto 100% FOSS, Coolify y Dokku siguen siendo muy distintos entre sí: Coolify es la opción más completa y pulida (deploy con un clic, panel multi-servidor); Dokku es el enfoque más minimalista, sin panel web oficial, desplegando con un simple git push. La licencia FOSS no borra esa diferencia de alcance — elegir \"solo FOSS\" todavía te deja decidiendo entre una plataforma completa y una herramienta deliberadamente pequeña.",
   },
+  "Google Drive→self-hosted": {
+    intent: "self-hosted",
+    intro:
+      "Al buscar \"Google Drive self-hosted\" hay una pregunta previa que decide el resto: ¿quieres una suite de productividad completa, una reescritura más ligera del mismo tipo de producto, o simplemente una interfaz que te dé acceso unificado a un almacenamiento que ya tienes en otro sitio? Las 3 alternativas del catálogo responden a esa pregunta de formas completamente distintas.",
+    operationalNotes:
+      "Nextcloud es la opción de mayor alcance: además de archivos incluye calendario, contactos, edición colaborativa de documentos y videollamadas — una suite de productividad, no solo almacenamiento. ownCloud es, según su propia ficha, el proyecto original del que nació Nextcloud, pero la versión que recoge el catálogo es su reescritura reciente (Infinite Scale / oCIS): una arquitectura nueva con un ecosistema de apps más reducido que el de Nextcloud. Filestash es un caso distinto por completo: no almacena nada — es una interfaz web que se conecta a backends que ya existen (S3, FTP, SFTP, WebDAV, tu propio Google Drive) y te da una experiencia de navegación unificada sobre ellos.\n\nEsa última distinción importa para decidir: si no tienes ya un almacenamiento que conectar, Filestash no te sirve como sustituto de Google Drive por sí solo — necesitas un backend detrás. Nextcloud y ownCloud sí son sistemas de almacenamiento completos por sí mismos, con su propia base de datos y sus propios archivos.",
+    tradeoffsVsSaas:
+      "No hay datos en el catálogo que respalden que ownCloud sea más rápido o más ligero que Nextcloud — lo único verificado es que su ecosistema de apps es menor, consecuencia de ser una reescritura más reciente y enfocada. Tampoco hay datos sobre qué tan segura es la interfaz de Filestash frente a alojar tu propio almacenamiento — son arquitecturas distintas, no una escala de confianza. Elegir entre las 3 depende de si ya tienes algo que conectar (Filestash), quieres la suite más completa (Nextcloud), o prefieres una base más reducida y reciente (ownCloud).",
+  },
+  "Google Photos→self-hosted": {
+    intent: "self-hosted",
+    intro:
+      "\"Google Photos self-hosted\" casi siempre esconde una de dos necesidades distintas: que las fotos de tu móvil se respalden automáticamente sin que tengas que hacer nada, o que puedas organizar y buscar en una biblioteca de fotos que ya tienes, sin que nada la modifique. Las 2 alternativas del catálogo responden a necesidades diferentes, no son la misma herramienta con distinto nombre.",
+    operationalNotes:
+      "Immich está centrado en el backup automático: sus apps móviles suben fotos y vídeos a tu servidor en cuanto los haces, con reconocimiento facial y búsqueda por objetos para encontrarlos después. Según sus propias notas, soporta aceleración por hardware opcional tanto para transcodificación de vídeo como para el reconocimiento facial — ninguna de las dos es obligatoria, se activan aparte si tienes GPU disponible. PhotoPrism está centrado en organizar una biblioteca que ya tienes: etiqueta automáticamente por IA y permite búsqueda semántica, pero — según su propia ficha — nunca modifica ni mueve los archivos originales.\n\nSobre la licencia de PhotoPrism conviene ser precisos: el catálogo la clasifica como \"Source-available (non-OSI)\" — el código es visible, pero la licencia en sí no está aprobada por la OSI como código abierto. Es una categoría distinta de la de Immich, que sí es 100% FOSS (AGPL-3.0).",
+    tradeoffsVsSaas:
+      "Ser FOSS no es una garantía de privacidad o seguridad — es una propiedad de la licencia del código, no una medida de cuánto protege tus fotos. Si lo que necesitas es que el móvil respalde automáticamente sin pensarlo, Immich responde a eso directamente. Si ya tienes una biblioteca de fotos y solo quieres organizarla sin que nada la toque, PhotoPrism cubre ese caso — con la salvedad de su licencia source-available.",
+  },
+  "Google Docs→self-hosted": {
+    intent: "self-hosted",
+    intro:
+      "Al buscar \"Google Docs self-hosted\" la pregunta real no es solo qué herramienta, sino qué necesitas de ella: ¿edición colaborativa de texto sin más, o una suite ofimática completa con hojas de cálculo y presentaciones? Y, en este caso concreto, hay un segundo eje que también importa: qué puede llegar a leer el servidor que alojas.",
+    operationalNotes:
+      "Etherpad cubre específicamente edición colaborativa de texto en tiempo real — según su propia ficha, \"no tiene hojas de cálculo ni presentaciones, solo texto\". No es una versión incompleta de una suite ofimática: es una herramienta con un alcance deliberadamente más específico, pensada para notas compartidas rápidas, no para sustituir todo Google Workspace. CryptPad cubre mucho más: documentos, hojas de cálculo, presentaciones, formularios y kanban en la misma plataforma.\n\nLa segunda diferencia es arquitectónica: CryptPad cifra el contenido de extremo a extremo, de forma que el servidor que lo aloja no puede leer lo que hay dentro de los documentos — es un hecho de diseño, verificable en que CryptPad ni siquiera usa una base de datos tradicional (guarda todo como archivos cifrados). Etherpad no tiene ese diseño: su servidor sí puede leer el contenido, guardado en una base de datos relacional normal.",
+    tradeoffsVsSaas:
+      "Esto no es una afirmación de que CryptPad sea \"más seguro\" en abstracto — es un hecho arquitectónico concreto (el servidor no puede leer el contenido en claro) que puede importarte o no según tu caso. Si solo necesitas notas colaborativas rápidas, Etherpad es más simple de desplegar y mantener. Si necesitas una suite completa y que el cifrado sea parte del diseño desde el servidor, CryptPad es la opción que lo ofrece.",
+  },
+  "Zendesk→self-hosted": {
+    intent: "self-hosted",
+    intro:
+      "\"Zendesk self-hosted\" agrupa en realidad dos modelos de soporte al cliente distintos: mensajería omnicanal en tiempo real, o una cola de tickets con SLAs y base de conocimiento. Las 2 alternativas del catálogo no son variantes del mismo producto — cada una está construida alrededor de un modelo distinto.",
+    operationalNotes:
+      "Chatwoot centra su producto en una bandeja compartida omnicanal — web, email, WhatsApp, Instagram — con chatbots y respuestas automáticas, pensada para conversación en tiempo real con el cliente. Zammad centra el suyo en tickets de soporte tradicionales, con base de conocimiento integrada y automatizaciones con SLAs — un modelo de cola, no de conversación inmediata. Zammad además usa Elasticsearch junto a PostgreSQL, un servicio adicional que Chatwoot no requiere.\n\nSobre la licencia hay un matiz que vale la pena no pasar por alto: Chatwoot tiene licencia MIT — una de las más permisivas que existen — pero en nuestra clasificación es Open-Core, no FOSS, porque, según su propia ficha, \"algunas integraciones de IA solo están en el plan cloud\". La licencia del código y el modelo de negocio Open-Core son dos cosas distintas: una licencia permisiva no impide que el proyecto reserve funciones para su plan de pago. Zammad, en cambio, sí es 100% FOSS (AGPL-3.0).",
+    tradeoffsVsSaas:
+      "No hay un modelo \"mejor\" entre los dos — depende de qué tipo de soporte da tu equipo. Si la mayoría de tus conversaciones con clientes son en tiempo real por chat o redes sociales, el modelo de bandeja compartida de Chatwoot encaja con eso. Si tu soporte funciona sobre todo por colas de tickets con acuerdos de nivel de servicio, el modelo de Zammad —con su base de conocimiento y automatizaciones— encaja mejor ahí.",
+  },
+  "Retool→self-hosted": {
+    intent: "self-hosted",
+    intro:
+      "Al buscar \"Retool self-hosted\" la decisión real no es solo qué herramienta sino qué forma de trabajar prefiere tu equipo: escribir código real para construir los paneles internos, o montarlos con un editor completamente visual. Las 3 alternativas del catálogo se dividen exactamente por ahí.",
+    operationalNotes:
+      "Windmill, según su propia ficha, \"ejecuta código real, no solo low-code visual\": escribes scripts en Python, TypeScript o Go, y a partir de ahí genera paneles y flujos. Budibase y Appsmith son editores visuales de arrastrar y soltar — Appsmith, de hecho, se describe en el catálogo como \"muy similar a Retool\" en su forma de trabajar.\n\nComo consecuencia práctica de esas arquitecturas distintas, cada una usa un motor de base de datos distinto para sus propios metadatos: Windmill sobre PostgreSQL, Budibase sobre CouchDB (una base de documentos poco habitual en este catálogo) y Appsmith sobre MongoDB — administrar cada una implica familiarizarte con un motor distinto, no solo con la interfaz de la herramienta.",
+    tradeoffsVsSaas:
+      "Ninguno de los dos enfoques es \"mejor\" en abstracto — es un trade-off entre control y velocidad de construcción. Escribir código real (Windmill) da más control sobre lo que construyes, a cambio de necesitar gente en el equipo que sepa programar. Un editor puramente visual (Budibase, Appsmith) permite prototipar más rápido sin escribir código, a cambio de menos control cuando necesitas algo que el editor no contempla.",
+  },
+  "Shopify Plus→self-hosted": {
+    intent: "self-hosted",
+    intro:
+      "Shopify Plus es la capa \"enterprise\" de Shopify, y sus 2 alternativas del catálogo reflejan dos arquitecturas de e-commerce a gran escala completamente distintas, no dos tallas del mismo producto.",
+    operationalNotes:
+      "Saleor es comercio headless: una API GraphQL completa con arquitectura orientada a eventos (webhooks), sin storefront visual incluido — tienes que construir o conectar el frontend tú mismo. Según su propia ficha, está \"pensado desde el diseño para tiendas de tráfico muy alto\". Magento Open Source es una plataforma tradicional con toda la pila incluida, pensada para catálogos con atributos de producto complejos y estructuras multi-tienda/multi-idioma nativas — según su ficha, \"el más potente para catálogos B2B/B2C muy grandes\".\n\nLa diferencia de stack es real: Saleor corre sobre Python/Django con GraphQL, PostgreSQL y Redis; Magento corre sobre PHP con MySQL y Elasticsearch. Y hay un dato explícito de infraestructura que vale la pena no diluir: el catálogo indica que Magento tiene \"requisitos de servidor considerablemente más altos\" que el resto de alternativas de e-commerce del catálogo.",
+    tradeoffsVsSaas:
+      "Que Saleor esté \"pensado para tráfico muy alto\" es una afirmación de diseño del propio proyecto, no una garantía medida de escalabilidad o rendimiento — no hay datos propios que la confirmen más allá de eso. Tampoco hay ninguna base para llamar a Magento \"anticuado\": es la opción con más capacidad para catálogos masivos del grupo, a cambio de requisitos de servidor más altos. La decisión real es arquitectónica — headless orientado a eventos (Saleor) frente a monolítico de catálogo masivo (Magento) — no una cuestión de cuál es superior.",
+  },
+  "Jira→self-hosted": {
+    intent: "self-hosted",
+    intro:
+      "Jira es conocido por su complejidad configurable, y las 3 alternativas self-hosted del catálogo no son intercambiables entre sí — cada una está pensada para un nivel distinto de esa complejidad, no para sustituir a Jira en general.",
+    operationalNotes:
+      "Taiga cubre gestión ágil con Scrum y Kanban, backlog e historias de usuario — según su propia ficha, tiene una \"curva de aprendizaje mucho menor que Jira\", pensada para equipos que quieren esa simplicidad sin el resto del aparato de Jira. OpenProject va en la dirección opuesta: además de backlogs ágiles añade diagramas de Gantt interactivos y hoja de tiempos y presupuestos — según su ficha, es \"el más completo para gestión de proyectos tradicional + ágil\", pensado para equipos grandes con necesidades de planificación más formales que las de Jira estándar.\n\nPlane queda en un punto intermedio entre las dos: ciclos, módulos y vistas Kanban, lista, calendario y Gantt con una interfaz más moderna, sin llegar a la profundidad de presupuestos y hoja de tiempos de OpenProject ni quedarse en la simplicidad deliberada de Taiga. Las 3 herramientas son auto-hospedables con Docker y usan PostgreSQL como base de datos.",
+    tradeoffsVsSaas:
+      "No hay una escala objetiva de \"mejor a peor\" entre las 3 — la elección depende de cuánta de la complejidad de Jira necesitas realmente reproducir. Un equipo que usaba Jira solo para Kanban/Scrum básico probablemente no necesita lo que aporta OpenProject; un equipo que dependía de Gantt y presupuestos en Jira probablemente sí lo necesita, y Taiga no se lo daría.",
+  },
 };
