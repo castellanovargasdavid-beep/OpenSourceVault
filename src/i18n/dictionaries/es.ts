@@ -77,7 +77,7 @@ const es = {
     noResults: "No hay herramientas que coincidan con esos filtros.",
     tagDockerReady: "Docker Ready",
     tagOneClick: "1-Click Deploy",
-    tagPermissive: "Permissive License",
+    tagPermissive: "Licencia Permisiva",
     showingCountPrefix: "Mostrando",
     showingCountSeparator: "de",
     /** Aclaración junto a "Mostrando X de Y": Y incluye herramientas "Coming Soon" (sin publicar), que la home/metodología cuentan aparte como "auditadas". Sin esto, "de 196" contradice el "+150 auditadas" del hero.
