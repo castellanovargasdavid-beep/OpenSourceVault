@@ -1,10 +1,9 @@
 import Link from "next/link";
 import type { SaasAlternativeGroup } from "@/lib/alternatives";
 import { buildAlternativeTableRows, getAlternativeHref } from "@/lib/alternatives";
-import { formatMinRam, difficultyMeta } from "@/lib/tool-difficulty";
+import { AlternativeDecisionFilters } from "@/components/pages/alternativa-decision-filters";
+import { formatMinRam } from "@/lib/tool-difficulty";
 import { getSaasPricingLocalized } from "@/data/saas-pricing";
-import { ToolCard } from "@/components/site/tool-card";
-import { toToolCardData } from "@/lib/tool-card-data";
 import { JsonLd, buildBreadcrumbListSchema } from "@/components/site/json-ld";
 import { ViewTracker } from "@/components/site/view-tracker";
 import { LogoImage } from "@/components/site/logo-image";
@@ -108,69 +107,24 @@ export function AlternativaPageContent({ group, locale }: { group: SaasAlternati
         <p className="mt-4 text-lg text-slate-600">{t.alternativaPage.subtitle(group.tools.length)}</p>
       </header>
 
-      <section className="mb-12">
-        <h2 className="mb-1 text-xl font-semibold text-slate-900">{t.alternativaPage.tableTitle}</h2>
-        <p className="mb-4 text-sm text-slate-500">{t.alternativaPage.sortNote}</p>
-        <div className="overflow-x-auto rounded-xl border border-slate-200">
-          <table className="w-full min-w-[640px] text-left text-sm">
-            <thead className="bg-slate-50 text-xs font-medium uppercase tracking-wide text-slate-500">
-              <tr>
-                <th className="px-4 py-3">{t.alternativaPage.tableHeaders.tool}</th>
-                <th className="px-4 py-3">{t.alternativaPage.tableHeaders.license}</th>
-                <th className="px-4 py-3">{t.alternativaPage.tableHeaders.ram}</th>
-                <th className="px-4 py-3">{t.alternativaPage.tableHeaders.docker}</th>
-                <th className="px-4 py-3">{t.alternativaPage.tableHeaders.stars}</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100">
-              {rows.map(({ tool, minRamMb, isEstimated, dockerReady, difficulty, badgeCodes }) => (
-                <tr key={tool.id}>
-                  <td className="px-4 py-3">
-                    <Link href={localeHref(`/tool/${tool.slug}`, locale)} className="font-medium text-slate-900 hover:text-emerald-700">
-                      {tool.name}
-                    </Link>
-                    {badgeCodes.length > 0 && (
-                      <div className="mt-1 flex flex-wrap gap-1">
-                        {badgeCodes.includes("lightestRam") && (
-                          <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[11px] font-medium text-emerald-700">
-                            {t.alternativaPage.badgeLightestRam}
-                          </span>
-                        )}
-                        {badgeCodes.includes("pureFoss") && (
-                          <span className="rounded-full border border-sky-200 bg-sky-50 px-2 py-0.5 text-[11px] font-medium text-sky-700">
-                            {t.toolCard.fossModelFoss}
-                          </span>
-                        )}
-                        {badgeCodes.includes("mostPopular") && (
-                          <span className="rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-[11px] font-medium text-amber-700">
-                            {t.alternativaPage.badgeMostPopular}
-                          </span>
-                        )}
-                        {badgeCodes.includes("oneClickDeploy") && (
-                          <span className="rounded-full border border-purple-200 bg-purple-50 px-2 py-0.5 text-[11px] font-medium text-purple-700">
-                            {t.toolCard.tagOneClick}
-                          </span>
-                        )}
-                      </div>
-                    )}
-                  </td>
-                  <td className="px-4 py-3 text-slate-600">{tool.license}</td>
-                  <td className="px-4 py-3 text-slate-600">
-                    <span
-                      title={isEstimated ? t.difficulty.ramEstimatedNote : undefined}
-                      className={`rounded border px-1.5 py-0.5 text-xs ${difficultyMeta[difficulty].badgeClass}`}
-                    >
-                      {formatMinRam(minRamMb, isEstimated)}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3">{dockerReady ? "✅" : "—"}</td>
-                  <td className="px-4 py-3 text-slate-600">{tool.starsCount ? `★ ${tool.starsCount.toLocaleString(locale)}` : "—"}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
+      <AlternativeDecisionFilters
+        rows={rows}
+        tools={group.tools}
+        locale={locale}
+        t={{
+          tableTitle: t.alternativaPage.tableTitle,
+          sortNote: t.alternativaPage.sortNote,
+          tableHeaders: t.alternativaPage.tableHeaders,
+          badgeLightestRam: t.alternativaPage.badgeLightestRam,
+          badgeMostPopular: t.alternativaPage.badgeMostPopular,
+          detailedCardsTitle: t.alternativaPage.detailedCardsTitle,
+          filters: t.alternativaPage.filters,
+        }}
+        toolCardT={t.toolCard}
+        comingSoonBadge={t.comingSoon.badge}
+        difficultyT={t.difficulty}
+        stackBuilderT={t.stackBuilder}
+      />
 
       <section className={cn("mb-12 grid gap-6 sm:grid-cols-2", replaceMapping && "lg:grid-cols-3")}>
         {replaceMapping && (
@@ -205,21 +159,6 @@ export function AlternativaPageContent({ group, locale }: { group: SaasAlternati
           </Link>
         </div>
       </section>
-
-      <h2 className="mb-4 text-xl font-semibold text-slate-900">{t.alternativaPage.detailedCardsTitle}</h2>
-      <div className="mb-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {group.tools.map((tool) => (
-          <ToolCard
-            key={tool.id}
-            tool={toToolCardData(tool)}
-            locale={locale}
-            t={t.toolCard}
-            comingSoonBadge={t.comingSoon.badge}
-            difficultyT={t.difficulty}
-            stackBuilderT={t.stackBuilder}
-          />
-        ))}
-      </div>
 
       <section>
         <h2 className="mb-4 text-xl font-semibold text-slate-900">{t.alternativaPage.faqTitle}</h2>

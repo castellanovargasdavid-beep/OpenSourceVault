@@ -403,6 +403,16 @@ const es = {
     },
     badgeLightestRam: "La más ligera",
     badgeMostPopular: "Más popular en GitHub",
+    /** Filtros objetivos (no puntuación subjetiva) sobre datos ya presentes en cada ficha — ver badgeCodes/tags en buildAlternativeTableRows(). */
+    filters: {
+      label: "¿Cuál encaja mejor contigo?",
+      foss: "100% FOSS",
+      easyInstall: "Más fácil de instalar",
+      lowRam: "Menor consumo",
+      permissiveLicense: "Licencia permisiva",
+      clear: "Limpiar filtros",
+      noResults: "Ninguna alternativa cumple todos los filtros seleccionados.",
+    },
     detailedCardsTitle: "Ficha detallada de cada alternativa",
     replaceGuideTitle: (saas: string) => `¿Cómo sustituyo ${saas}?`,
     replaceGuideBody: (count: number) => `Guía práctica con el caso de uso y la limitación real de cada una de las ${count} alternativas, para elegir la que mejor encaje.`,
