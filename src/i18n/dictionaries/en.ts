@@ -471,17 +471,21 @@ const en: Dictionary = {
     chip: { "self-hosted": "Self-hosted", "open-source": "100% Open Source" },
     h1: {
       "self-hosted": (saas: string) => `How to self-host your ${saas} alternative`,
-      "open-source": (saas: string) => `100% Open Source alternatives to ${saas}`,
+      // Avoids literally repeating "Open Source alternatives to {saas}" from
+      // the base page's (/alternativas/[slug]) H1 — leads with the 100%
+      // FOSS vs. Open-Core distinction, the real differentiator here, not
+      // the same "Open Source alternatives to X" pattern.
+      "open-source": (saas: string) => `${saas} alternatives that are 100% Open Source, no Open-Core`,
     },
     metaTitle: {
       "self-hosted": (saas: string, year: number) => `Self-hosted alternatives to ${saas} in ${year}: requirements and guide`,
-      "open-source": (saas: string, year: number) => `100% Open Source (FOSS) alternatives to ${saas} in ${year}`,
+      "open-source": (saas: string, year: number) => `${saas} alternatives that are 100% Open Source (no Open-Core) in ${year}`,
     },
     metaDescription: {
       "self-hosted": (saas: string, count: number) =>
         `How to self-host your ${saas} alternative: real server requirements, Docker and maintenance for the catalog's ${count} self-hosted options.`,
       "open-source": (saas: string, count: number) =>
-        `The catalog's ${count} alternatives to ${saas} with a 100% Open Source (FOSS) license — no Open-Core, no features locked behind a paid plan.`,
+        `Of the catalog's alternatives to ${saas}, these ${count} have a 100% Open Source (FOSS) license — no Open-Core core, no features that can sit behind a paid plan.`,
     },
     toolsTitle: "Tools that meet this intent",
     serverRequirementsTitle: "Real server requirements",

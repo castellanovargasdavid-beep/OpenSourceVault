@@ -12,6 +12,19 @@ import { getDictionary } from "@/i18n/get-dictionary";
 import { localeHref } from "@/lib/locale-href";
 import type { Locale } from "@/i18n/config";
 
+/** Contenido curado que necesita más de un párrafo (ej. un bloque operativo + uno de migración) separa cada uno con una línea en blanco ("\n\n") en el dato — esto solo decide cómo renderizarlos, nunca añade un campo ni una sección nueva al modelo. */
+function Paragraphs({ text, className }: { text: string; className?: string }) {
+  return (
+    <div className="space-y-3">
+      {text.split("\n\n").map((paragraph, i) => (
+        <p key={i} className={className}>
+          {paragraph}
+        </p>
+      ))}
+    </div>
+  );
+}
+
 /**
  * Página long-tail /alternativas/{saas}-{intent} — deliberadamente NO
  * reutiliza la tabla comparativa ni el FAQ de AlternativaPageContent: el
@@ -87,7 +100,7 @@ export function IntentPageContent({ page, locale }: { page: IntentPage; locale: 
           <p className="mb-3 text-sm font-medium text-slate-700">
             {it.serverRequirementsRange(formatMinRam(page.ramRangeMb.min), formatMinRam(page.ramRangeMb.max))}
           </p>
-          <p className="text-sm text-slate-600">{page.content.operationalNotes}</p>
+          <Paragraphs text={page.content.operationalNotes} className="text-sm text-slate-600" />
         </section>
       )}
 

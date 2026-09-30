@@ -7,7 +7,7 @@ export const INTENT_PAGE_CONTENT: Record<string, IntentPageContent> = {
     intro:
       "Self-hosting your Notion alternative means your notes, wikis and Notion-style databases live on your own server, not in Notion's cloud — no free-tier block limit, no risk of a price hike affecting you.",
     operationalNotes:
-      "All 5 catalog alternatives ship a docker-compose.yml and need between 1GB and 2GB of RAM (AppFlowy and Huly are the lightest; Outline, Docmost and AFFiNE need more for their built-in search/whiteboard engine). Updating is a docker compose pull && docker compose up -d — back up the data volume first, same as any database.",
+      "All 5 catalog alternatives ship a docker-compose.yml and need between 1GB and 2GB of RAM (AppFlowy and Huly are the lightest; Outline, Docmost and AFFiNE need more for their built-in search/whiteboard engine). Updating is a docker compose pull && docker compose up -d — back up the data volume first, same as any database.\n\nMigrating from Notion depends on which alternative you pick: each one imports different formats (Markdown, HTML, CSV) with varying fidelity for databases, page relations and embedded blocks — check the alternative's own import documentation before assuming your whole workspace will carry over untouched. None of them guarantees an automatic 1:1 migration. Before migrating, export a full backup directly from Notion (Settings → Export all workspace content) and keep it separately, regardless of how the import goes.",
     tradeoffsVsSaas:
       "You won't get Notion's polished real-time collaboration without extra infrastructure work (websockets, CDN), and maintenance (backups, updates) becomes yours. In exchange, your notes don't depend on Notion staying in business, raising prices, or changing its free-tier limits.",
   },
@@ -16,7 +16,7 @@ export const INTENT_PAGE_CONTENT: Record<string, IntentPageContent> = {
     intro:
       "With self-hosted team chat, your organization's message history lives on your server — no free-plan visible-message limit, no blocked export.",
     operationalNotes:
-      "Real range across the 4 alternatives: from 512MB (Zulip, the lightest) to 1GB (Rocket.Chat, Mattermost, Huly). Mobile push notifications usually need your own Firebase/APNs project configured — they don't come ready out of the box like Slack's.",
+      "Real range across the 4 alternatives: from 512MB (Zulip, the lightest) to 1GB (Rocket.Chat, Mattermost, Huly). Mobile push notifications usually need your own Firebase/APNs project configured — they don't come ready out of the box like Slack's.\n\nThe real server requirement isn't fixed — it grows with how many people are connected at once, your message/history volume, the files you upload, and how many integrations/bots you run. Database and file storage are usually the first bottlenecks as a team grows, not CPU — and mobile push notifications (mentioned above) may need separate tuning as volume grows. We're not giving a \"supports up to X users\" figure per tool here: the catalog doesn't have that verified data, and a number without a real source would be a promise we can't back.",
     tradeoffsVsSaas:
       "You lose Slack's catalog of thousands of third-party integrations; you gain full control over how long history is retained and no message limit imposed by a paid plan.",
   },
@@ -43,7 +43,7 @@ export const INTENT_PAGE_CONTENT: Record<string, IntentPageContent> = {
     intro:
       "Self-hosting your web analytics turns \"your visitor data goes to Google\" into \"it stays on your own server\" — several of these alternatives don't even use cookies.",
     operationalNotes:
-      "The widest RAM range in the catalog for this intent: GoatCounter runs on 256MB (a single binary), Umami and Matomo need 1GB, and Plausible needs 2GB since it runs ClickHouse underneath — the right choice depends on the traffic volume you want to analyze, not just your server budget.",
+      "The widest RAM range in the catalog for this intent: GoatCounter runs on 256MB (a single binary), Umami and Matomo need 1GB, and Plausible needs 2GB since it runs ClickHouse underneath — the right choice depends on the traffic volume you want to analyze, not just your server budget.\n\nMigrating your Google Analytics history isn't equivalent across tools: some can import historical data with varying fidelity, while others simply start measuring from scratch the day you install them — it helps to separate \"keeping what you already have\" (export your GA reports separately, as a backup) from \"measuring going forward\" with the new tool. Custom events, goals/conversions and integrations (Google Ads, Search Console) usually need to be rebuilt by hand in whichever alternative you choose — none of these tools currently offers a verified automatic migration from Google Analytics.",
     tradeoffsVsSaas:
       "You lose Google Analytics' native integration with Google Ads/Search Console; you gain data that doesn't depend on a visitor accepting a cookie, and full control over how long it's retained.",
   },

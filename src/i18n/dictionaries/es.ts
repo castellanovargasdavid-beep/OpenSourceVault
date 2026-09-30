@@ -479,17 +479,21 @@ const es = {
     chip: { "self-hosted": "Self-hosted", "open-source": "100% Open Source" },
     h1: {
       "self-hosted": (saas: string) => `Cómo auto-alojar tu alternativa a ${saas}`,
-      "open-source": (saas: string) => `Alternativas 100% Open Source a ${saas}`,
+      // Evita repetir literalmente "alternativas Open Source a {saas}" del H1
+      // de la página base (/alternativas/[slug]) — lidera con el criterio
+      // 100% FOSS frente a Open-Core, que es la diferenciación real de esta
+      // página, no con el mismo patrón "alternativas Open Source a X".
+      "open-source": (saas: string) => `Alternativas a ${saas} 100% Open Source, sin Open-Core`,
     },
     metaTitle: {
       "self-hosted": (saas: string, year: number) => `Alternativas self-hosted a ${saas} en ${year}: requisitos y guía`,
-      "open-source": (saas: string, year: number) => `Alternativas 100% Open Source (FOSS) a ${saas} en ${year}`,
+      "open-source": (saas: string, year: number) => `Alternativas a ${saas} 100% Open Source (sin Open-Core) en ${year}`,
     },
     metaDescription: {
       "self-hosted": (saas: string, count: number) =>
         `Cómo auto-alojar tu alternativa a ${saas}: requisitos de servidor reales, Docker y mantenimiento de las ${count} opciones self-hosted del catálogo.`,
       "open-source": (saas: string, count: number) =>
-        `Las ${count} alternativas a ${saas} con licencia 100% Open Source (FOSS) del catálogo — sin Open-Core ni funciones bloqueadas tras un plan de pago.`,
+        `De las alternativas a ${saas} del catálogo, estas ${count} tienen licencia 100% Open Source (FOSS) — sin núcleo Open-Core ni funciones que puedan quedar detrás de un plan de pago.`,
     },
     toolsTitle: "Herramientas que cumplen esta intención",
     serverRequirementsTitle: "Requisitos de servidor reales",
