@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   description: t.stacksPage.metaDescription,
   alternates: {
     canonical: `${siteConfig.url}/stacks`,
-    languages: { es: `${siteConfig.url}/stacks`, en: `${siteConfig.url}/en/stacks` },
+    languages: { es: `${siteConfig.url}/stacks`, en: `${siteConfig.url}/en/stacks`, "x-default": `${siteConfig.url}/stacks` },
   },
 };
 

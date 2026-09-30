@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: `Condiciones de uso de ${siteConfig.name}.`,
   alternates: {
     canonical: `${siteConfig.url}/terms`,
-    languages: { es: `${siteConfig.url}/terms`, en: `${siteConfig.url}/en/terms` },
+    languages: { es: `${siteConfig.url}/terms`, en: `${siteConfig.url}/en/terms`, "x-default": `${siteConfig.url}/terms` },
   },
   robots: { index: true, follow: true },
 };

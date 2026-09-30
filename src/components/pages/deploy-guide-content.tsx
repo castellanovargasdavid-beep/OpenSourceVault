@@ -47,9 +47,12 @@ const stepsEs = [
         <pre className="mt-2 overflow-x-auto rounded-lg bg-slate-900 p-3 text-xs text-slate-200">
           <code>ssh root@TU_IP_DEL_SERVIDOR</code>
         </pre>
-        <p className="mt-3">Instala Docker y el plugin de Compose con el script oficial:</p>
+        <p className="mt-3">
+          Instala Docker y el plugin de Compose con el script oficial. Descárgalo primero,
+          revisa qué contiene y ejecútalo solo después — nunca un pipe directo a ciegas:
+        </p>
         <pre className="mt-2 overflow-x-auto rounded-lg bg-slate-900 p-3 text-xs text-slate-200">
-          <code>curl -fsSL https://get.docker.com | sh</code>
+          <code>curl -fsSL https://get.docker.com -o get-docker.sh && cat get-docker.sh && sh get-docker.sh</code>
         </pre>
       </>
     ),
@@ -177,9 +180,12 @@ const stepsEn = [
         <pre className="mt-2 overflow-x-auto rounded-lg bg-slate-900 p-3 text-xs text-slate-200">
           <code>ssh root@YOUR_SERVER_IP</code>
         </pre>
-        <p className="mt-3">Install Docker and the Compose plugin with the official script:</p>
+        <p className="mt-3">
+          Install Docker and the Compose plugin with the official script. Download it first,
+          inspect what it does, and only then run it — never a blind direct pipe:
+        </p>
         <pre className="mt-2 overflow-x-auto rounded-lg bg-slate-900 p-3 text-xs text-slate-200">
-          <code>curl -fsSL https://get.docker.com | sh</code>
+          <code>curl -fsSL https://get.docker.com -o get-docker.sh && cat get-docker.sh && sh get-docker.sh</code>
         </pre>
       </>
     ),

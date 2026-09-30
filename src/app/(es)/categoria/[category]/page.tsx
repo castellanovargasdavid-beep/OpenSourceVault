@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: PageProps, parent: ResolvingM
     description,
     alternates: {
       canonical: url,
-      languages: { es: url, en: `${siteConfig.url}${getCategoryHref(category.id, "en")}` },
+      languages: { es: url, en: `${siteConfig.url}${getCategoryHref(category.id, "en")}`, "x-default": url },
     },
     openGraph: { title, description, url, images: openGraphImages },
     twitter: { card: "summary_large_image", title, description, images: twitterImages },

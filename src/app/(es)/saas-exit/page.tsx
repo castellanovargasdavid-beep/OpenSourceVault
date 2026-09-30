@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   description: t.saasExitPage.metaDescription,
   alternates: {
     canonical: `${siteConfig.url}/saas-exit`,
-    languages: { es: `${siteConfig.url}/saas-exit`, en: `${siteConfig.url}/en/saas-exit` },
+    languages: { es: `${siteConfig.url}/saas-exit`, en: `${siteConfig.url}/en/saas-exit`, "x-default": `${siteConfig.url}/saas-exit` },
   },
 };
 

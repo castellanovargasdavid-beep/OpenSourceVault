@@ -11,7 +11,7 @@ export const hostingProvidersEn: Record<string, HostingProviderTranslation> = {
   digitalocean: {
     tagline: "Simple, predictable VPS with extensive technical documentation",
     startingPrice: "from $4/mo",
-    freeCredit: "$200 in free credit for 60 days",
+    freeCredit: "$5 in free credit for 90 days",
     bestFor: "Getting started fast with Droplets and App Platform",
     features: [
       "Droplets (VPS) from 512MB RAM",
@@ -19,7 +19,7 @@ export const hostingProvidersEn: Record<string, HostingProviderTranslation> = {
       "Managed Databases and Kubernetes",
       "Very simple dashboard and CLI",
     ],
-    ctaLabel: "Get $200 in free credit",
+    ctaLabel: "Get $5 in free credit",
   },
   vultr: {
     tagline: "High-performance cloud servers across 32 datacenters worldwide",

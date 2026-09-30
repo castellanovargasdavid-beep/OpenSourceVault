@@ -12,7 +12,7 @@ import "../globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
-const enTagline = "Open Source alternatives to the software you already use";
+const enTagline = siteConfig.enTagline;
 const enDescription = getDictionary("en").siteDescription;
 
 export const metadata: Metadata = {
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   description: enDescription,
   alternates: {
     canonical: `${siteConfig.url}/en`,
-    languages: { es: siteConfig.url, en: `${siteConfig.url}/en` },
+    languages: { es: siteConfig.url, en: `${siteConfig.url}/en`, "x-default": siteConfig.url },
   },
   openGraph: {
     type: "website",
@@ -57,6 +57,20 @@ export default function EnglishRootLayout({ children }: { children: React.ReactN
             name: siteConfig.name,
             url: siteConfig.url,
             description: enDescription,
+          }}
+        />
+        {/* WebSite complements Organization (entity vs. website) — no
+            potentialAction/SearchAction since the /en/tools search box is a
+            client-side filter with no URL of its own (?q=), not a real
+            results page: declaring a SearchAction that doesn't work on click
+            would be worse than declaring none. */}
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: siteConfig.name,
+            url: `${siteConfig.url}/en`,
+            inLanguage: "en",
           }}
         />
         <StackBuilderProvider defaultStackName={t.stackBuilder.defaultProjectName}>

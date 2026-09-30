@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: PageProps, parent: ResolvingM
       description,
       alternates: {
         canonical: url,
-        languages: { es: url, en: `${siteConfig.url}/en/alternatives/${group.saasSlug}` },
+        languages: { es: url, en: `${siteConfig.url}/en/alternatives/${group.saasSlug}`, "x-default": url },
       },
       openGraph: { title, description, url, type: "article", images: openGraphImages },
       twitter: { card: "summary_large_image", title, description, images: twitterImages },

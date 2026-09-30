@@ -25,7 +25,11 @@ export function OneCommandDeployBlock({
 
   async function handleCopy() {
     const url = `${window.location.origin}${deployApiPath}`;
-    const command = `curl -sSL "${url}" | bash`;
+    // Nunca un pipe directo a ciegas (curl | bash): se descarga primero,
+    // se imprime en pantalla para que el usuario vea exactamente qué va a
+    // ejecutar, y solo entonces se corre — mismo principio que ya aplican
+    // Coolify/Dokploy en sus propios dockerCompose de este catálogo.
+    const command = `curl -sSL "${url}" -o deploy.sh && cat deploy.sh && bash deploy.sh`;
     try {
       await navigator.clipboard.writeText(command);
       setCopied(true);
@@ -50,7 +54,7 @@ export function OneCommandDeployBlock({
 
       <div className="flex items-center justify-between gap-2 rounded-lg border border-slate-700/60 bg-slate-900 px-3 py-2.5">
         <code className="flex-1 overflow-x-auto whitespace-pre text-xs text-emerald-300">
-          {`curl -sSL ".../api/deploy?stack=${commandPreview}" | bash`}
+          {`curl -sSL ".../api/deploy?stack=${commandPreview}" -o deploy.sh && cat deploy.sh && bash deploy.sh`}
         </code>
         <button
           type="button"

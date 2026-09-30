@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   description: t.composeDoctorPage.metaDescription,
   alternates: {
     canonical: `${siteConfig.url}/doctor`,
-    languages: { es: `${siteConfig.url}/doctor`, en: `${siteConfig.url}/en/doctor` },
+    languages: { es: `${siteConfig.url}/doctor`, en: `${siteConfig.url}/en/doctor`, "x-default": `${siteConfig.url}/doctor` },
   },
 };
 

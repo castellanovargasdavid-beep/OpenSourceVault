@@ -94,6 +94,8 @@ const en: Dictionary = {
     metaTitle: (year: number) => `Full catalog: every Open Source alternative (${year})`,
     metaDescription: (published: number, comingSoon: number, total: number) =>
       `Explore all ${total} tools in the catalog: ${published} already audited and published, ${comingSoon} coming soon. Filter by category, license or tag.`,
+    /** Heading for the hidden (sr-only) index of links to every tool page — see the comment in page.tsx. */
+    fullIndexHeading: "Full index of every tool in the catalog",
   },
   /** Compact CTA replacing the full explorer on the home page — the interactive catalog now lives at /herramientas and /en/tools (see toolsCatalogPage). */
   catalogTeaser: {
@@ -156,7 +158,7 @@ const en: Dictionary = {
     subtitlePrefix: "Use the",
     subtitleSuffix: "below on any of these self-hosting providers.",
     digitalOcean: "Deploy on DigitalOcean",
-    digitalOceanCredit: "$200 in free credit",
+    digitalOceanCredit: "$5 in free credit",
     vultr: "Deploy on Vultr",
     railway: "Deploy on Railway",
     disclaimer: "Affiliate links: if you sign up through them we may earn a commission at no extra cost to you.",
@@ -168,12 +170,19 @@ const en: Dictionary = {
     perYear: (name: string) => `${name} per year`,
     seatsUnit: (n: number) => (n === 1 ? "seat" : "seats"),
     perMonth: "mo",
-    selfHostedPerYear: "Self-hosted per year",
+    // "Self-hosted per year" read like a TOTAL cost, but selfHostAnnualCost
+    // (see savings-calculator.tsx) is just monthlyUsdApprox × 12 — the VPS
+    // list price, nothing else. An external audit flagged that "$0 license
+    // cost" isn't the same as "$0 total cost" (storage, backups, bandwidth,
+    // migration, your own time are all missing) and that the existing
+    // disclaimer (only mentioned "your time") undersold that gap. The label
+    // now says "VPS" explicitly, and the disclaimer spells out the rest.
+    selfHostedPerYear: "Self-hosted VPS per year",
     selfHostedNote: (provider: string) => `1 server on ${provider}, unlimited users`,
     estimatedSavings: "Estimated savings",
     lessPerYear: (pct: number) => `${pct}% less per year`,
     disclaimer: (billingNote: string, saasName: string) =>
-      `Approximate, indicative list prices (${billingNote}); check the current price on ${saasName}'s official website. Doesn't include the time you (or someone on your team) spend maintaining the server.`,
+      `Approximate, indicative list prices (${billingNote}); check the current price on ${saasName}'s official website. This figure is just the VPS cost: it doesn't include extra storage, backups, bandwidth beyond what's included, the domain/SSL, migrating your data, or the time you (or someone on your team) spend on maintenance — the real cost of self-hosting is almost always higher than this number.`,
     cta: (saasName: string) => `View open source alternatives to ${saasName}`,
   },
   dockerBlock: {
@@ -287,6 +296,9 @@ const en: Dictionary = {
     tablePriceFrom: "Price from",
     tableFreeCredit: "Free credit",
     tableBestFor: "Best for",
+    verifiedOn: (date: string) => `Verified on ${date}`,
+    verificationNote:
+      "Free-credit offers and entry-level prices change over time — we manually verify this data against each provider's official source on the date shown next to it. If you spot something out of date, let us know.",
     disclosure:
       "Disclosure: some of the links above are affiliate links. If you sign up through them, we may earn a commission at no extra cost to you. This helps us keep AltFreeStack free.",
   },
@@ -299,8 +311,13 @@ const en: Dictionary = {
     subtitle: "Compare the annual cost of your current per-seat SaaS against a single self-hosted server with unlimited users.",
   },
   toolPage: {
-    metaTitle: (tool: string, saas: string, year: number) => `${tool}: the best Open Source alternative to ${saas} in ${year}`,
-    h1: (tool: string, saas: string, year: number) => `${tool}: the best Open Source alternative to ${saas} in ${year}`,
+    // Previously "the best alternative" — with ~196 tool pages, several
+    // different tools competing for the same SaaS (e.g. AppFlowy AND AFFiNE
+    // as alternatives to Notion) each claimed to be THE best at the same
+    // time, a contradiction visible by comparing any two pages for the same
+    // replaced tool. Same note applies to alternativaPage.metaTitle.
+    metaTitle: (tool: string, saas: string, year: number) => `${tool}: Open Source alternative to ${saas} in ${year}`,
+    h1: (tool: string, saas: string, year: number) => `${tool}: Open Source alternative to ${saas} in ${year}`,
     license: "License",
     stars: "stars",
     estimated: "(estimated)",
@@ -401,8 +418,15 @@ const en: Dictionary = {
       "We verify catalog data and configuration, we don't run these tools in a real production environment — that's a limit of our own process, not a problem with the tool.",
   },
   alternativaPage: {
+    // Previously "The best alternative"/"The best alternatives" — an external
+    // audit flagged that superlative, repeated on EVERY list page (Notion,
+    // Slack, Airtable...) and in the plural case claiming several tools are
+    // ALL simultaneously "the best", as contradicting the site's own
+    // editorial stance (the comparison page already says explicitly that
+    // more GitHub stars doesn't mean "best" for every use case). The real
+    // count is differentiator enough, and honest.
     metaTitle: (saas: string, year: number, count: number) =>
-      count === 1 ? `The best Open Source alternative to ${saas} in ${year}` : `The best Open Source alternatives to ${saas} in ${year}`,
+      count === 1 ? `Open Source alternative to ${saas} in ${year}` : `${count} Open Source alternatives to ${saas} in ${year}`,
     metaDescription: (count: number, saas: string) =>
       count === 1
         ? `Compare 1 open source, self-hostable tool that replaces ${saas}: license, tech stack and Docker deployment guide.`
@@ -410,7 +434,7 @@ const en: Dictionary = {
     breadcrumb: (saas: string) => `Alternatives to ${saas}`,
     verified: (count: number) => (count === 1 ? "verified alternative" : "verified alternatives"),
     h1: (saas: string, year: number, count: number) =>
-      count === 1 ? `The best Open Source alternative to ${saas} in ${year}` : `The best Open Source alternatives to ${saas} in ${year}`,
+      count === 1 ? `Open Source alternative to ${saas} in ${year}` : `${count} Open Source alternatives to ${saas} in ${year}`,
     subtitle: (count: number) =>
       `We compare ${count} self-hostable ${count === 1 ? "tool" : "tools"} you can deploy on your own server in minutes, with license, tech stack and a ready-to-copy docker-compose.`,
     tableTitle: "Quick comparison",
@@ -514,8 +538,13 @@ const en: Dictionary = {
     tryFullFlowLink: "Open Replace My SaaS →",
   },
   categoryPage: {
-    metaTitle: (label: string, year: number) => `The best Open Source ${label} alternatives in ${year}`,
-    h1: (label: string, year: number) => `The best Open Source ${label} alternatives in ${year}`,
+    // Previously "The best alternatives" — the catalog's largest category
+    // has 26 tools; calling all 26 "the best" at once is the same
+    // contradiction already fixed in toolPage/alternativaPage. This page is
+    // also still generated (with noindex) for categories with no tools yet
+    // — see the comment in sitemap.ts.
+    metaTitle: (label: string, year: number) => `Open Source ${label} alternatives in ${year}`,
+    h1: (label: string, year: number) => `Open Source ${label} alternatives in ${year}`,
     emptyState: "We don't have any tools published in this category yet.",
     faqFossQ: (label: string) => `Which ${label} tools are 100% free?`,
     faqFossA: (fossCount: number, total: number) =>
@@ -609,7 +638,7 @@ const en: Dictionary = {
   promotePage: {
     metaTitle: "Promote your tool on AltFreeStack",
     metaDescription:
-      "Reach people who are actively comparing open source and self-hosted alternatives. Featured badge, top category placement and an SEO backlink from $49/mo.",
+      "Reach people who are actively comparing open source and self-hosted alternatives. Featured badge, top category placement and sponsored visibility from $49/mo.",
     badge: "For founders & maintainers",
     title: "Put your tool in front of people already looking for an alternative",
     subtitle:
@@ -625,8 +654,8 @@ const en: Dictionary = {
         body: "Your tool shows up next to real alternatives in its category, not in a generic banner disconnected from the content.",
       },
       {
-        title: "SEO that sticks around",
-        body: "The backlink lives on your tool page for as long as the sponsorship runs, indexed and with relevant topical context.",
+        title: "Visibility that sticks around",
+        body: "Your sponsored link lives on your tool page for as long as the sponsorship runs, labeled as sponsored content (rel=\"sponsored\") and with relevant topical context — we don't sell link authority or search rankings, only visibility to an audience with real buying intent.",
       },
     ],
     plansTitle: "Sponsorship plans",
@@ -637,9 +666,18 @@ const en: Dictionary = {
         price: "$49",
         period: "/mo",
         description: "To gain visibility within your category.",
+        // Previously promised the "Featured" badge and a spot in the
+        // homepage's "Featured this week" section — that badge and section
+        // are driven by tool.featured, the same field DATA_MODEL.md
+        // documents as an "editorial curation flag" and that we use as the
+        // sort tie-break on /alternativas and /replace. Selling it would
+        // have contradicted the editorial independence we promise on
+        // /affiliate-disclosure. What's actually real and already built is
+        // the "Sponsored" badge (tool.sponsored, see tool-card.tsx) — a
+        // separate field, shown on any card for that tool site-wide, with
+        // zero effect on editorial classification.
         features: [
-          '"Featured" badge on your card and on your tool page',
-          'Appears in the "Featured this week" section on the homepage',
+          '"Sponsored" badge on your card, shown in the catalog, your category, and any alternatives page you appear on — not just your own tool page',
           "30-day run, renewable",
         ],
         cta: "Choose Featured",
@@ -649,11 +687,10 @@ const en: Dictionary = {
         price: "$99",
         period: "/mo",
         badge: "Most popular",
-        description: "For maximum visibility and a backlink that sticks around.",
+        description: "For maximum visibility within your category.",
         features: [
           "Everything in Featured",
-          "Fixed top-3 spot in your category",
-          "Dofollow backlink from your tool page",
+          'Permanent sponsored link on your tool page, labeled "Sponsored" and marked rel="sponsored" (no effect on your search rankings)',
           'Priority publishing if your tool is currently "Coming Soon"',
         ],
         cta: "Choose Top of category",
@@ -742,7 +779,7 @@ const en: Dictionary = {
     oneCommandTitle: "🚀 Deploy in 1 command",
     oneCommandBadge: "Recommended for beginners",
     oneCommandDesc:
-      "Copy this single command and paste it into your freshly created VPS's console (Vultr, DigitalOcean...). It installs Docker if needed, writes the files with secrets already generated, and starts everything — no nano, no pasting code blocks.",
+      "Copy this single command and paste it into your freshly created VPS's console (Vultr, DigitalOcean...). It downloads the script, prints it to your screen so you can see exactly what it's about to do (never a blind direct pipe), and only then installs Docker if needed, writes the files with secrets already generated, and starts everything — no nano, no pasting code blocks.",
     oneCommandCopyButton: "Copy command",
     oneCommandCopied: "Command copied!",
     viewScriptLink: "See what this script does →",
@@ -947,7 +984,8 @@ const en: Dictionary = {
     saasCostLabel: "SaaS (per user × users)",
     savingsLabel: "Estimated savings",
     savingsPerMonth: "/mo",
-    disclaimer: "A reference estimate, not a quote — the real price depends on the provider, region and traffic. VPS prices are DigitalOcean/Vultr's public list price as of writing.",
+    disclaimer:
+      "A reference estimate, not a quote — the real price depends on the provider, region and traffic. VPS prices are DigitalOcean/Vultr's public list price as of writing. It also doesn't include off-site backups, the time you (or someone on your team) spend on maintenance, or the effort of migrating your data away from your current SaaS.",
     ctaSaasExitTitle: "Want to know exactly which SaaS to replace?",
     ctaSaasExit: "Audit my current SaaS",
     ctaStackBuilder: "Open the Stack Builder",

@@ -216,7 +216,7 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
           <a
             href={tool.websiteUrl}
             target="_blank"
-            rel="noopener noreferrer"
+            rel={tool.sponsored ? "sponsored noopener noreferrer" : "noopener noreferrer"}
             className="inline-flex items-center gap-1.5 hover:text-emerald-700"
           >
             {t.toolPage.website} <ExternalLink size={14} />

@@ -39,7 +39,7 @@ export default function OpengraphImage() {
           <div style={{ fontSize: 64, fontWeight: 700, color: "#0f172a" }}>{siteConfig.name}</div>
         </div>
         <div style={{ marginTop: 28, fontSize: 30, color: "#475569", maxWidth: 920, textAlign: "center" }}>
-          Las mejores alternativas Open Source al software que ya usas
+          {siteConfig.tagline}
         </div>
       </div>
     ),

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   description: t.hostingDeals.metaDescription,
   alternates: {
     canonical: `${siteConfig.url}/hosting-deals`,
-    languages: { es: `${siteConfig.url}/hosting-deals`, en: `${siteConfig.url}/en/hosting-deals` },
+    languages: { es: `${siteConfig.url}/hosting-deals`, en: `${siteConfig.url}/en/hosting-deals`, "x-default": `${siteConfig.url}/hosting-deals` },
   },
 };
 

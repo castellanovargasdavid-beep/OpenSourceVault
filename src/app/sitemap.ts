@@ -34,7 +34,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: esUrl,
       changeFrequency,
       priority,
-      alternates: { languages: { es: esUrl, en: enUrl } },
+      alternates: { languages: { es: esUrl, en: enUrl, "x-default": esUrl } },
     };
   }
 
@@ -49,7 +49,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: enUrl,
       changeFrequency,
       priority,
-      alternates: { languages: { es: esUrl, en: enUrl } },
+      alternates: { languages: { es: esUrl, en: enUrl, "x-default": esUrl } },
     };
   }
 
@@ -99,7 +99,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const categoryEntries: MetadataRoute.Sitemap = categoriesWithTools.flatMap((category) => {
     const esUrl = `${siteConfig.url}/categoria/${category.slug}`;
     const enUrl = `${siteConfig.url}/en/categories/${categoriesEn[category.id].slug}`;
-    const alternates = { languages: { es: esUrl, en: enUrl } };
+    const alternates = { languages: { es: esUrl, en: enUrl, "x-default": esUrl } };
     return [
       { url: esUrl, changeFrequency: "weekly", priority: 0.6, alternates },
       { url: enUrl, changeFrequency: "weekly", priority: 0.6, alternates },
@@ -109,7 +109,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const alternativeEntries: MetadataRoute.Sitemap = getAllSaasSlugs().flatMap((slug) => {
     const esUrl = `${siteConfig.url}/alternativas/${slug}`;
     const enUrl = `${siteConfig.url}/en/alternatives/${slug}`;
-    const alternates = { languages: { es: esUrl, en: enUrl } };
+    const alternates = { languages: { es: esUrl, en: enUrl, "x-default": esUrl } };
     return [
       { url: esUrl, changeFrequency: "monthly", priority: 0.9, alternates },
       { url: enUrl, changeFrequency: "monthly", priority: 0.9, alternates },
@@ -126,7 +126,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     if (!page) return [];
     const esUrl = `${siteConfig.url}${getIntentPageHref(page.saasName, page.intent, "es")}`;
     const enUrl = `${siteConfig.url}${getIntentPageHref(page.saasName, page.intent, "en")}`;
-    const alternates = { languages: { es: esUrl, en: enUrl } };
+    const alternates = { languages: { es: esUrl, en: enUrl, "x-default": esUrl } };
     return [
       { url: esUrl, changeFrequency: "monthly" as const, priority: 0.75, alternates },
       { url: enUrl, changeFrequency: "monthly" as const, priority: 0.75, alternates },
@@ -141,7 +141,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const comparisonEntries: MetadataRoute.Sitemap = getAllComparisonSlugs().flatMap((pair) => {
     const esUrl = `${siteConfig.url}${getCompareHref(pair, "es")}`;
     const enUrl = `${siteConfig.url}${getCompareHref(pair, "en")}`;
-    const alternates = { languages: { es: esUrl, en: enUrl } };
+    const alternates = { languages: { es: esUrl, en: enUrl, "x-default": esUrl } };
     return [
       { url: esUrl, changeFrequency: "monthly", priority: 0.7, alternates },
       { url: enUrl, changeFrequency: "monthly", priority: 0.7, alternates },
@@ -152,7 +152,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     const fromSlug = slugify(tool.replaces[0]);
     const esUrl = `${siteConfig.url}${getMigrationGuideHref(fromSlug, tool.slug, "es")}`;
     const enUrl = `${siteConfig.url}${getMigrationGuideHref(fromSlug, tool.slug, "en")}`;
-    const alternates = { languages: { es: esUrl, en: enUrl } };
+    const alternates = { languages: { es: esUrl, en: enUrl, "x-default": esUrl } };
     return [
       { url: esUrl, changeFrequency: "monthly", priority: 0.6, alternates },
       { url: enUrl, changeFrequency: "monthly", priority: 0.6, alternates },
@@ -162,7 +162,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const hostingGuideEntries: MetadataRoute.Sitemap = ["digitalocean", "vultr", "railway"].flatMap((provider) => {
     const esUrl = `${siteConfig.url}${getHostingGuideHref(provider, "es")}`;
     const enUrl = `${siteConfig.url}${getHostingGuideHref(provider, "en")}`;
-    const alternates = { languages: { es: esUrl, en: enUrl } };
+    const alternates = { languages: { es: esUrl, en: enUrl, "x-default": esUrl } };
     return [
       { url: esUrl, changeFrequency: "monthly", priority: 0.7, alternates },
       { url: enUrl, changeFrequency: "monthly", priority: 0.7, alternates },
@@ -171,27 +171,27 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const deployGuideEsUrl = `${siteConfig.url}${getDeployGuideHref("es")}`;
   const deployGuideEnUrl = `${siteConfig.url}${getDeployGuideHref("en")}`;
-  const deployGuideAlternates = { languages: { es: deployGuideEsUrl, en: deployGuideEnUrl } };
+  const deployGuideAlternates = { languages: { es: deployGuideEsUrl, en: deployGuideEnUrl, "x-default": deployGuideEsUrl } };
 
   const savingsCalcEsUrl = `${siteConfig.url}${getSavingsCalculatorHref("es")}`;
   const savingsCalcEnUrl = `${siteConfig.url}${getSavingsCalculatorHref("en")}`;
-  const savingsCalcAlternates = { languages: { es: savingsCalcEsUrl, en: savingsCalcEnUrl } };
+  const savingsCalcAlternates = { languages: { es: savingsCalcEsUrl, en: savingsCalcEnUrl, "x-default": savingsCalcEsUrl } };
 
   const howWeAuditEsUrl = `${siteConfig.url}${getHowWeAuditHref("es")}`;
   const howWeAuditEnUrl = `${siteConfig.url}${getHowWeAuditHref("en")}`;
-  const howWeAuditAlternates = { languages: { es: howWeAuditEsUrl, en: howWeAuditEnUrl } };
+  const howWeAuditAlternates = { languages: { es: howWeAuditEsUrl, en: howWeAuditEnUrl, "x-default": howWeAuditEsUrl } };
 
   const contributeEsUrl = `${siteConfig.url}${getContributeHref("es")}`;
   const contributeEnUrl = `${siteConfig.url}${getContributeHref("en")}`;
-  const contributeAlternates = { languages: { es: contributeEsUrl, en: contributeEnUrl } };
+  const contributeAlternates = { languages: { es: contributeEsUrl, en: contributeEnUrl, "x-default": contributeEsUrl } };
 
   const costCalcEsUrl = `${siteConfig.url}${getCostCalculatorHref("es")}`;
   const costCalcEnUrl = `${siteConfig.url}${getCostCalculatorHref("en")}`;
-  const costCalcAlternates = { languages: { es: costCalcEsUrl, en: costCalcEnUrl } };
+  const costCalcAlternates = { languages: { es: costCalcEsUrl, en: costCalcEnUrl, "x-default": costCalcEsUrl } };
 
   const toolsExplorerEsUrl = `${siteConfig.url}${getToolsExplorerHref("es")}`;
   const toolsExplorerEnUrl = `${siteConfig.url}${getToolsExplorerHref("en")}`;
-  const toolsExplorerAlternates = { languages: { es: toolsExplorerEsUrl, en: toolsExplorerEnUrl } };
+  const toolsExplorerAlternates = { languages: { es: toolsExplorerEsUrl, en: toolsExplorerEnUrl, "x-default": toolsExplorerEsUrl } };
 
   return [
     ...allPaths.map(([path, freq, priority]) => entry(path, freq, priority)),

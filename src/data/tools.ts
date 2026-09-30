@@ -34,7 +34,7 @@ export const allTools: OpenSourceTool[] = [
     dockerCompose: `version: "3.9"
 services:
   appflowy-cloud:
-    image: appflowyinc/appflowy_cloud:latest
+    image: appflowyinc/appflowy_cloud:0.18.11
     restart: unless-stopped
     ports:
       - "8000:8000"
@@ -1047,7 +1047,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   n8n:
-    image: n8nio/n8n:latest
+    image: n8nio/n8n:1.123.83
     restart: unless-stopped
     ports:
       - "5678:5678"
@@ -2961,7 +2961,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   listmonk:
-    image: listmonk/listmonk:latest
+    image: listmonk/listmonk:v6.2.0
     restart: unless-stopped
     ports:
       - "9000:9000"
@@ -6540,7 +6540,7 @@ volumes:
     fossModel: "OpenCore",
     dockerCompose: `services:
   activepieces:
-    image: activepieces/activepieces:latest
+    image: activepieces/activepieces:0.92.1
     restart: unless-stopped
     ports:
       - "8080:80"

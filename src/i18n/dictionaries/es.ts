@@ -92,6 +92,8 @@ const es = {
     metaTitle: (year: number) => `Catálogo completo: todas las alternativas Open Source (${year})`,
     metaDescription: (published: number, comingSoon: number, total: number) =>
       `Explora las ${total} herramientas del catálogo: ${published} ya auditadas y publicadas, ${comingSoon} en camino. Filtra por categoría, licencia o etiqueta.`,
+    /** Encabezado del índice oculto (sr-only) de enlaces a todas las fichas — ver comentario en page.tsx. */
+    fullIndexHeading: "Índice completo de herramientas del catálogo",
   },
   /** CTA compacto que sustituye al explorador completo en la home — el catálogo interactivo ahora vive en /herramientas (ver toolsCatalogPage). */
   catalogTeaser: {
@@ -154,7 +156,7 @@ const es = {
     subtitlePrefix: "Usa el",
     subtitleSuffix: "de abajo en cualquiera de estos proveedores auto-hospedados.",
     digitalOcean: "Desplegar en DigitalOcean",
-    digitalOceanCredit: "$200 de crédito gratis",
+    digitalOceanCredit: "$5 de crédito gratis",
     vultr: "Desplegar en Vultr",
     railway: "Desplegar en Railway",
     disclaimer: "Enlaces de afiliado: si compras a través de ellos podemos recibir una comisión sin coste extra para ti.",
@@ -166,12 +168,19 @@ const es = {
     perYear: (name: string) => `${name} al año`,
     seatsUnit: (n: number): string => (n === 1 ? "asiento" : "asientos"),
     perMonth: "mes",
-    selfHostedPerYear: "Auto-hospedado al año",
+    // "Auto-hospedado al año" sonaba a coste TOTAL, pero selfHostAnnualCost
+    // (ver savings-calculator.tsx) es solo monthlyUsdApprox × 12 — el precio
+    // de lista del VPS, nada más. Una auditoría externa señaló que "$0 de
+    // licencia" no es lo mismo que "$0 de coste total" (falta almacenamiento,
+    // backups, tráfico, migración, tiempo propio) y que el disclaimer
+    // existente (solo mencionaba "tu tiempo") se quedaba corto. El label
+    // ahora dice explícitamente "VPS", y el disclaimer enumera el resto.
+    selfHostedPerYear: "VPS auto-hospedado al año",
     selfHostedNote: (provider: string) => `1 servidor en ${provider}, usuarios ilimitados`,
     estimatedSavings: "Ahorro estimado",
     lessPerYear: (pct: number) => `${pct}% menos al año`,
     disclaimer: (billingNote: string, saasName: string) =>
-      `Precios de lista aproximados y orientativos (${billingNote}); verifica el precio vigente en la web oficial de ${saasName}. No incluye el tiempo que dediques tú (o alguien de tu equipo) al mantenimiento del servidor.`,
+      `Precios de lista aproximados y orientativos (${billingNote}); verifica el precio vigente en la web oficial de ${saasName}. Esta cifra es solo el coste del VPS: no incluye almacenamiento extra, copias de seguridad, tráfico por encima de lo incluido, dominio/SSL, la migración de tus datos ni el tiempo que dediques tú (o alguien de tu equipo) al mantenimiento — el coste real de auto-hospedar casi siempre es mayor que este número.`,
     cta: (saasName: string) => `Ver alternativas open source a ${saasName}`,
   },
   dockerBlock: {
@@ -285,6 +294,9 @@ const es = {
     tablePriceFrom: "Precio desde",
     tableFreeCredit: "Crédito gratis",
     tableBestFor: "Mejor para",
+    verifiedOn: (date: string) => `Verificado el ${date}`,
+    verificationNote:
+      "Las ofertas de crédito gratis y precios de entrada cambian con el tiempo — verificamos manualmente estos datos contra la fuente oficial de cada proveedor en la fecha indicada junto a cada uno. Si detectas un dato desactualizado, avísanos.",
     disclosure:
       "Divulgación: algunos de los enlaces anteriores son enlaces de afiliado. Si te registras a través de ellos, podemos recibir una comisión sin coste adicional para ti. Esto nos ayuda a mantener AltFreeStack gratuito.",
   },
@@ -297,8 +309,13 @@ const es = {
     subtitle: "Compara el coste anual de tu SaaS actual por asiento contra un único servidor auto-hospedado con usuarios ilimitados.",
   },
   toolPage: {
-    metaTitle: (tool: string, saas: string, year: number) => `${tool}: la mejor alternativa Open Source a ${saas} en ${year}`,
-    h1: (tool: string, saas: string, year: number) => `${tool}: la mejor alternativa Open Source a ${saas} en ${year}`,
+    // Antes "la mejor alternativa" — con ~196 fichas, varias herramientas
+    // distintas que compiten por el mismo SaaS (p.ej. AppFlowy Y AFFiNE
+    // como alternativa a Notion) afirmaban cada una ser "LA mejor" al mismo
+    // tiempo, una contradicción detectable comparando dos fichas cualquiera
+    // del mismo reemplazo. Ver nota igual en alternativaPage.metaTitle.
+    metaTitle: (tool: string, saas: string, year: number) => `${tool}: alternativa Open Source a ${saas} en ${year}`,
+    h1: (tool: string, saas: string, year: number) => `${tool}: alternativa Open Source a ${saas} en ${year}`,
     license: "Licencia",
     stars: "estrellas",
     estimated: "(estimado)",
@@ -407,8 +424,15 @@ const es = {
       "Verificamos configuración y datos del catálogo, no ejecutamos estas herramientas en un entorno de producción real — es un límite de nuestro proceso, no un problema de la herramienta.",
   },
   alternativaPage: {
+    // Antes "La mejor alternativa"/"Las mejores alternativas" — una auditoría
+    // externa señaló que esa superlativa, repetida en CADA página de lista
+    // (Notion, Slack, Airtable...) y además en plural ("las mejores", varias
+    // herramientas a la vez "la mejor"), contradice la propia filosofía
+    // editorial del sitio (la página de comparar ya dice explícitamente que
+    // más estrellas en GitHub no significa "mejor" para cualquier caso de
+    // uso). El conteo real ya es suficientemente diferenciador y honesto.
     metaTitle: (saas: string, year: number, count: number) =>
-      count === 1 ? `La mejor alternativa Open Source a ${saas} en ${year}` : `Las mejores alternativas Open Source a ${saas} en ${year}`,
+      count === 1 ? `Alternativa Open Source a ${saas} en ${year}` : `${count} alternativas Open Source a ${saas} en ${year}`,
     metaDescription: (count: number, saas: string) =>
       count === 1
         ? `Compara 1 herramienta de código abierto y auto-hospedable que reemplaza a ${saas}: licencia, stack técnico y guía de despliegue con Docker.`
@@ -416,7 +440,7 @@ const es = {
     breadcrumb: (saas: string) => `Alternativas a ${saas}`,
     verified: (count: number): string => (count === 1 ? "alternativa verificada" : "alternativas verificadas"),
     h1: (saas: string, year: number, count: number) =>
-      count === 1 ? `La mejor alternativa Open Source a ${saas} en ${year}` : `Las mejores alternativas Open Source a ${saas} en ${year}`,
+      count === 1 ? `Alternativa Open Source a ${saas} en ${year}` : `${count} alternativas Open Source a ${saas} en ${year}`,
     subtitle: (count: number) =>
       `Comparamos ${count} ${count === 1 ? "herramienta auto-hospedable" : "herramientas auto-hospedables"} que puedes desplegar en tu propio servidor en minutos, con licencia, stack técnico y docker-compose listo para copiar.`,
     tableTitle: "Comparativa rápida",
@@ -522,8 +546,13 @@ const es = {
     tryFullFlowLink: "Abrir Reemplaza mi SaaS →",
   },
   categoryPage: {
-    metaTitle: (label: string, year: number) => `Las mejores alternativas Open Source de ${label} en ${year}`,
-    h1: (label: string, year: number) => `Las mejores alternativas Open Source de ${label} en ${year}`,
+    // Antes "Las mejores alternativas" — la categoría con más herramientas
+    // del catálogo tiene 26 fichas; llamar "la mejor" a las 26 a la vez es
+    // la misma contradicción que ya se corrigió en toolPage/alternativaPage.
+    // Además esta página se sigue generando (con noindex) para categorías
+    // sin ninguna herramienta todavía — ver el comentario en sitemap.ts.
+    metaTitle: (label: string, year: number) => `Alternativas Open Source de ${label} en ${year}`,
+    h1: (label: string, year: number) => `Alternativas Open Source de ${label} en ${year}`,
     emptyState: "Todavía no tenemos herramientas publicadas en esta categoría.",
     faqFossQ: (label: string) => `¿Cuáles herramientas de ${label} son 100% gratis?`,
     faqFossA: (fossCount: number, total: number) =>
@@ -617,7 +646,7 @@ const es = {
   promotePage: {
     metaTitle: "Promociona tu herramienta en AltFreeStack",
     metaDescription:
-      "Llega a personas que ya están comparando alternativas open source y self-hosted. Badge Featured, posición top en tu categoría y un backlink SEO desde $49/mes.",
+      "Llega a personas que ya están comparando alternativas open source y self-hosted. Badge Featured, posición top en tu categoría y visibilidad patrocinada desde $49/mes.",
     badge: "Para fundadores y mantenedores",
     title: "Pon tu herramienta delante de quien ya está buscando una alternativa",
     subtitle:
@@ -633,8 +662,8 @@ const es = {
         body: "Tu herramienta aparece junto a alternativas reales de su categoría, no en un banner genérico desconectado del contenido.",
       },
       {
-        title: "SEO que se queda",
-        body: "El backlink vive en tu ficha de herramienta mientras dure el patrocinio, indexado y con contexto temático relevante.",
+        title: "Visibilidad que se queda",
+        body: "Tu enlace patrocinado vive en tu ficha de herramienta mientras dure el patrocinio, marcado como contenido patrocinado (rel=\"sponsored\") y con contexto temático relevante — no vendemos autoridad de enlace ni posiciones en buscadores, solo visibilidad ante una audiencia con intención real.",
       },
     ],
     plansTitle: "Planes de patrocinio",
@@ -645,9 +674,18 @@ const es = {
         price: "$49",
         period: "/mes",
         description: "Para ganar visibilidad dentro de tu categoría.",
+        // Antes prometía el badge "Destacado" y un hueco en "Destacadas de la
+        // semana" en portada — ese badge y esa sección los controla
+        // tool.featured, el mismo campo que DATA_MODEL.md documenta como
+        // "flag de curación editorial" y que usamos como criterio de
+        // ordenación en /alternativas y /replace. Venderlo habría
+        // contradicho la independencia editorial que prometemos en
+        // /affiliate-disclosure. Lo que sí es 100% real y ya existe es el
+        // badge "Patrocinado" (tool.sponsored, ver tool-card.tsx) — distinto
+        // campo, visible en cualquier tarjeta de esa herramienta en todo el
+        // sitio, sin tocar en absoluto la clasificación editorial.
         features: [
-          'Badge "Destacado" en tu tarjeta y en tu ficha de herramienta',
-          'Aparece en la sección "Destacadas de la semana" en portada',
+          'Badge "Patrocinado" en tu tarjeta, visible en el catálogo, tu categoría y cualquier página de alternativas donde aparezcas — no solo en tu propia ficha',
           "Vigencia de 30 días, renovable",
         ],
         cta: "Elegir Featured",
@@ -657,11 +695,10 @@ const es = {
         price: "$99",
         period: "/mes",
         badge: "Más popular",
-        description: "Para la máxima visibilidad y un backlink que se queda.",
+        description: "Para la máxima visibilidad dentro de tu categoría.",
         features: [
           "Todo lo del plan Featured",
-          "Posición fija en el top 3 de tu categoría",
-          "Backlink dofollow desde tu ficha de herramienta",
+          'Enlace patrocinado permanente en tu ficha de herramienta, etiquetado como "Patrocinado" y con rel="sponsored" (sin efecto en tu posicionamiento en buscadores)',
           'Prioridad de publicación si tu herramienta está en estado "Próximamente"',
         ],
         cta: "Elegir Top de categoría",
@@ -750,7 +787,7 @@ const es = {
     oneCommandTitle: "🚀 Despliegue en 1 comando",
     oneCommandBadge: "Recomendado para novatos",
     oneCommandDesc:
-      "Copia este único comando y pégalo en la consola de tu VPS recién creado (Vultr, DigitalOcean...). Instala Docker si hace falta, crea los archivos con los secretos ya generados y arranca todo — sin nano, sin copiar y pegar bloques de código.",
+      "Copia este único comando y pégalo en la consola de tu VPS recién creado (Vultr, DigitalOcean...). Descarga el script, lo muestra en pantalla para que veas exactamente qué va a hacer (nunca un pipe directo a ciegas) y, solo entonces, instala Docker si hace falta, crea los archivos con los secretos ya generados y arranca todo — sin nano, sin copiar y pegar bloques de código.",
     oneCommandCopyButton: "Copiar comando",
     oneCommandCopied: "¡Comando copiado!",
     viewScriptLink: "Ver qué hace este script →",
@@ -956,7 +993,8 @@ const es = {
     saasCostLabel: "SaaS (por usuario × usuarios)",
     savingsLabel: "Ahorro estimado",
     savingsPerMonth: "/mes",
-    disclaimer: "Estimación de referencia, no una cotización — el precio real depende del proveedor, la región y el tráfico. Los precios de VPS son de lista pública de DigitalOcean/Vultr a fecha de redacción.",
+    disclaimer:
+      "Estimación de referencia, no una cotización — el precio real depende del proveedor, la región y el tráfico. Los precios de VPS son de lista pública de DigitalOcean/Vultr a fecha de redacción. Tampoco incluye copias de seguridad externas, el tiempo que dediques tú (o alguien de tu equipo) al mantenimiento, ni el esfuerzo de migrar tus datos desde el SaaS actual.",
     ctaSaasExitTitle: "¿Quieres saber qué SaaS reemplazar exactamente?",
     ctaSaasExit: "Auditar mis SaaS actuales",
     ctaStackBuilder: "Abrir el Stack Builder",

@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: `How ${siteConfig.name} collects, uses, and protects your information.`,
   alternates: {
     canonical: `${siteConfig.url}/en/privacy`,
-    languages: { es: `${siteConfig.url}/privacy`, en: `${siteConfig.url}/en/privacy` },
+    languages: { es: `${siteConfig.url}/privacy`, en: `${siteConfig.url}/en/privacy`, "x-default": `${siteConfig.url}/privacy` },
   },
   robots: { index: true, follow: true },
 };

@@ -23,6 +23,16 @@ export interface HostingProvider {
   affiliateUrl: string;
   ctaLabel: string;
   /**
+   * Fecha (YYYY-MM-DD) en la que se verificó manualmente que `freeCredit` y
+   * `startingPrice` siguen coincidiendo con la oferta pública real del
+   * proveedor (no solo con lo que dice nuestra propia copia). Ausente si no
+   * se ha podido verificar contra una fuente primaria en la última revisión.
+   * Ver auditoría 2026-09: la oferta de DigitalOcean pasó de "$200/60 días"
+   * a "$5/90 días" sin que esta página se actualizara — este campo existe
+   * para que ese tipo de desfase sea visible y revisable periódicamente.
+   */
+  lastVerified?: string;
+  /**
    * Escalera de planes reales por RAM, para recomendar el tamaño de VPS
    * exacto que necesita un stack concreto (ver src/lib/hosting-tier.ts).
    * Ordenada de menor a mayor. Ausente en proveedores cuyo precio no depende
@@ -40,7 +50,7 @@ export const hostingProviders: HostingProvider[] = [
     tagline: "VPS simples y predecibles, con documentación técnica extensa",
     startingPrice: "desde $4/mes",
     monthlyUsdApprox: 4,
-    freeCredit: "$200 de crédito gratis por 60 días",
+    freeCredit: "$5 de crédito gratis por 90 días",
     bestFor: "Empezar rápido con Droplets y App Platform",
     features: [
       "Droplets (VPS) desde 512MB RAM",
@@ -49,7 +59,8 @@ export const hostingProviders: HostingProvider[] = [
       "Panel y CLI muy simples",
     ],
     affiliateUrl: affiliateLinks.digitalOceanUrl,
-    ctaLabel: "Obtener $200 de crédito gratis",
+    ctaLabel: "Obtener $5 de crédito gratis",
+    lastVerified: "2026-09-30",
     tiers: [
       { ramMb: 512, vcpu: 1, monthlyUsdApprox: 4 },
       { ramMb: 1024, vcpu: 1, monthlyUsdApprox: 6 },
@@ -99,6 +110,7 @@ export const hostingProviders: HostingProvider[] = [
     ],
     affiliateUrl: affiliateLinks.railwayUrl,
     ctaLabel: "Desplegar en Railway",
+    lastVerified: "2026-09-30",
   },
 ];
 

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { siteConfig } from "@/lib/site-config";
 import { categories, getCategoryHref } from "@/data/categories";
 import { categoriesEn } from "@/data/categories.en";
+import { catalogStats } from "@/lib/catalog-stats";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { localeHref } from "@/lib/locale-href";
 import { getSavingsCalculatorHref, getCostCalculatorHref, getDeployGuideHref, getHowWeAuditHref, getContributeHref } from "@/lib/routes";
@@ -21,7 +22,15 @@ export function Footer({ locale = "es" }: { locale?: Locale }) {
         <div>
           <p className="text-sm font-semibold text-slate-900">{t.footer.categorias}</p>
           <ul className="mt-3 space-y-2">
-            {categories.map((category) => (
+            {/* Mismo filtro que discovery-strip.tsx y el contador de la home
+                (catalogStats.totalCategories): antes este footer enlazaba las
+                16 categorías de la taxonomía completa, incluyendo 3 sin
+                ninguna herramienta publicada todavía, mientras la home
+                anunciaba "13 categorías" — un visitante podía contarlas y
+                encontrar el desajuste, además de aterrizar en una ficha vacía. */}
+            {categories
+              .filter((category) => catalogStats.toolCountByCategory[category.id] > 0)
+              .map((category) => (
               <li key={category.id}>
                 <Link
                   href={getCategoryHref(category.id, locale)}

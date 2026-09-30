@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   description: t.stackBuilder.metaDescription,
   alternates: {
     canonical: `${siteConfig.url}/stacks/builder`,
-    languages: { es: `${siteConfig.url}/stacks/builder`, en: `${siteConfig.url}/en/stacks/builder` },
+    languages: { es: `${siteConfig.url}/stacks/builder`, en: `${siteConfig.url}/en/stacks/builder`, "x-default": `${siteConfig.url}/stacks/builder` },
   },
 };
 

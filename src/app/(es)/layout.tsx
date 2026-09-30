@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   description: siteConfig.description,
   alternates: {
     canonical: siteConfig.url,
-    languages: { es: siteConfig.url, en: `${siteConfig.url}/en` },
+    languages: { es: siteConfig.url, en: `${siteConfig.url}/en`, "x-default": siteConfig.url },
   },
   openGraph: {
     type: "website",
@@ -54,6 +54,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             name: siteConfig.name,
             url: siteConfig.url,
             description: siteConfig.description,
+          }}
+        />
+        {/* WebSite complementa a Organization (entidad vs. sitio web) — sin
+            potentialAction/SearchAction porque el buscador de /herramientas
+            es un filtro client-side sin URL propia (?q=), no una página de
+            resultados real: declarar un SearchAction que no funciona al
+            hacer clic sería peor que no declarar ninguno. */}
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: siteConfig.name,
+            url: siteConfig.url,
+            inLanguage: "es",
           }}
         />
         <StackBuilderProvider defaultStackName={t.stackBuilder.defaultProjectName}>

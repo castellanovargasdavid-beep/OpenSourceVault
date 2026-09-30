@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description: `The real methodology behind the "audited" label on ${siteConfig.name}: what we check, how, and what we can't guarantee.`,
   alternates: {
     canonical: `${siteConfig.url}/en/how-we-audit`,
-    languages: { es: `${siteConfig.url}/como-auditamos`, en: `${siteConfig.url}/en/how-we-audit` },
+    languages: { es: `${siteConfig.url}/como-auditamos`, en: `${siteConfig.url}/en/how-we-audit`, "x-default": `${siteConfig.url}/como-auditamos` },
   },
   robots: { index: true, follow: true },
 };

@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description: `How to add a tool, fix outdated data, or propose a change on ${siteConfig.name} — no database, everything goes through a GitHub Pull Request.`,
   alternates: {
     canonical: `${siteConfig.url}/en/contribute`,
-    languages: { es: `${siteConfig.url}/contribuir`, en: `${siteConfig.url}/en/contribute` },
+    languages: { es: `${siteConfig.url}/contribuir`, en: `${siteConfig.url}/en/contribute`, "x-default": `${siteConfig.url}/contribuir` },
   },
   robots: { index: true, follow: true },
 };

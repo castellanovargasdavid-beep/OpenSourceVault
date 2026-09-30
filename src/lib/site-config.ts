@@ -1,6 +1,8 @@
 export const siteConfig = {
   name: "AltFreeStack",
   tagline: "Alternativas Open Source al software que ya usas",
+  /** Versión EN — antes duplicada como const local en (en)/layout.tsx y de nuevo (y desincronizada, con "The best...") en (en)/opengraph-image.tsx. */
+  enTagline: "Open Source alternatives to the software you already use",
   description:
     "Descubre alternativas de código abierto y auto-hospedables al software SaaS más popular. Compara licencias, mira el docker-compose y despliega en minutos.",
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://www.altfreestack.com",

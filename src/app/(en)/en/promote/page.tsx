@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   description: t.promotePage.metaDescription,
   alternates: {
     canonical: `${siteConfig.url}/en/promote`,
-    languages: { es: `${siteConfig.url}/promote`, en: `${siteConfig.url}/en/promote` },
+    languages: { es: `${siteConfig.url}/promote`, en: `${siteConfig.url}/en/promote`, "x-default": `${siteConfig.url}/promote` },
   },
 };
 

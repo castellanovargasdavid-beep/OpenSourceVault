@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description: `La metodología real detrás de la etiqueta "auditada" en ${siteConfig.name}: qué comprobamos, cómo, y qué no podemos garantizar.`,
   alternates: {
     canonical: `${siteConfig.url}/como-auditamos`,
-    languages: { es: `${siteConfig.url}/como-auditamos`, en: `${siteConfig.url}/en/how-we-audit` },
+    languages: { es: `${siteConfig.url}/como-auditamos`, en: `${siteConfig.url}/en/how-we-audit`, "x-default": `${siteConfig.url}/como-auditamos` },
   },
   robots: { index: true, follow: true },
 };

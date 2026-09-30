@@ -36,6 +36,9 @@ export function HostingDealsContent({ locale = "es" }: { locale?: Locale }) {
               <div>
                 <p className="text-2xl font-bold text-slate-900">{provider.startingPrice}</p>
                 {provider.freeCredit && <p className="mt-1 text-sm font-medium text-emerald-700">{provider.freeCredit}</p>}
+                {provider.lastVerified && (
+                  <p className="mt-1 text-xs text-slate-400">{t.hostingDeals.verifiedOn(provider.lastVerified)}</p>
+                )}
               </div>
               <p className="text-sm text-slate-600">
                 {t.hostingDeals.bestFor} {provider.bestFor}
@@ -95,7 +98,8 @@ export function HostingDealsContent({ locale = "es" }: { locale?: Locale }) {
         </table>
       </section>
 
-      <p className="mt-8 text-xs text-slate-600">{t.hostingDeals.disclosure}</p>
+      <p className="mt-8 text-xs text-slate-500">{t.hostingDeals.verificationNote}</p>
+      <p className="mt-2 text-xs text-slate-600">{t.hostingDeals.disclosure}</p>
     </div>
   );
 }

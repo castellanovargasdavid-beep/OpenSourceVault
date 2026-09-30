@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: `How ${siteConfig.name} is funded through affiliate links.`,
   alternates: {
     canonical: `${siteConfig.url}/en/affiliate-disclosure`,
-    languages: { es: `${siteConfig.url}/affiliate-disclosure`, en: `${siteConfig.url}/en/affiliate-disclosure` },
+    languages: { es: `${siteConfig.url}/affiliate-disclosure`, en: `${siteConfig.url}/en/affiliate-disclosure`, "x-default": `${siteConfig.url}/affiliate-disclosure` },
   },
   robots: { index: true, follow: true },
 };
@@ -53,13 +53,31 @@ export default function AffiliateDisclosurePageEn() {
         </section>
 
         <section>
+          <h2 className="mb-2 text-xl font-semibold text-slate-900">Tool sponsorships (different from the above)</h2>
+          <p>
+            Besides hosting affiliate links, some projects pay for{" "}
+            <Link href="/en/promote" className="font-medium text-emerald-700 hover:underline">
+              sponsored visibility
+            </Link>{" "}
+            on their own tool page, which is already in the catalog: a featured link, clearly labeled
+            &quot;Sponsored&quot; and marked <code className="rounded bg-slate-100 px-1 py-0.5 text-[0.85em]">rel=&quot;sponsored&quot;</code> so
+            search engines don&apos;t treat it as an organic ranking signal. This is a visibility
+            product, not an SEO service: paying doesn&apos;t change the tool&apos;s category, its pros
+            and cons, whether it appears as featured, or the order it&apos;s shown in relative to
+            others — those decisions are exactly what &quot;Editorial independence&quot; below describes, and
+            sponsorship has no effect on them.
+          </p>
+        </section>
+
+        <section>
           <h2 className="mb-2 text-xl font-semibold text-slate-900">Editorial independence</h2>
           <p>
             Whether a tool is included in the catalog, its category, its pros and cons, and whether it
             appears as featured are decided by editorial criteria (project maturity, active community,
             ease of deployment) — not by whether its recommended hosting provider has an affiliate
-            program with us. We don&apos;t accept payment from the listed open source projects in
-            exchange for inclusion or a more favorable review.
+            program with us, nor by whether it pays for the sponsorship described above. We don&apos;t
+            accept payment from the listed open source projects in exchange for joining the catalog or
+            a more favorable review.
           </p>
         </section>
 

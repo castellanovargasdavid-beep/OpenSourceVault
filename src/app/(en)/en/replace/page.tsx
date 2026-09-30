@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   description: t.replaceFlow.metaDescription,
   alternates: {
     canonical: `${siteConfig.url}/en/replace`,
-    languages: { es: `${siteConfig.url}/replace`, en: `${siteConfig.url}/en/replace` },
+    languages: { es: `${siteConfig.url}/replace`, en: `${siteConfig.url}/en/replace`, "x-default": `${siteConfig.url}/replace` },
   },
 };
 
