@@ -473,6 +473,33 @@ const es = {
           ? `Sí, las ${total} son 100% FOSS: sin plan de pago ni funciones bloqueadas al auto-hospedarlas.`
           : `${fossCount} de ${total} son 100% FOSS. Las demás son Open-Core: el núcleo es gratis y auto-hospedable, pero alguna función avanzada puede seguir de pago — lo indicamos en cada ficha.`,
   },
+  /** Páginas long-tail /alternativas/{saas}-{intent} — ver src/lib/intent-pages.ts. Contenido curado en src/data/intent-pages(.en).ts, nunca generado aquí. */
+  intentPage: {
+    breadcrumb: { "self-hosted": "Self-hosted", "open-source": "100% Open Source" },
+    chip: { "self-hosted": "Self-hosted", "open-source": "100% Open Source" },
+    h1: {
+      "self-hosted": (saas: string) => `Cómo auto-alojar tu alternativa a ${saas}`,
+      "open-source": (saas: string) => `Alternativas 100% Open Source a ${saas}`,
+    },
+    metaTitle: {
+      "self-hosted": (saas: string, year: number) => `Alternativas self-hosted a ${saas} en ${year}: requisitos y guía`,
+      "open-source": (saas: string, year: number) => `Alternativas 100% Open Source (FOSS) a ${saas} en ${year}`,
+    },
+    metaDescription: {
+      "self-hosted": (saas: string, count: number) =>
+        `Cómo auto-alojar tu alternativa a ${saas}: requisitos de servidor reales, Docker y mantenimiento de las ${count} opciones self-hosted del catálogo.`,
+      "open-source": (saas: string, count: number) =>
+        `Las ${count} alternativas a ${saas} con licencia 100% Open Source (FOSS) del catálogo — sin Open-Core ni funciones bloqueadas tras un plan de pago.`,
+    },
+    toolsTitle: "Herramientas que cumplen esta intención",
+    serverRequirementsTitle: "Requisitos de servidor reales",
+    serverRequirementsRange: (min: string, max: string) => `Entre ${min} y ${max} de RAM según la herramienta elegida — nunca un número único.`,
+    operationalNotesTitle: "Qué implica auto-alojarlo",
+    licenseAngleTitle: "Por qué importa que sea 100% FOSS",
+    tradeoffsTitle: "Lo que ganas y lo que pierdes frente al SaaS",
+    backToBaseLink: (saas: string) => `Ver todas las alternativas a ${saas} →`,
+    moreSpecificLabel: "¿Buscas algo más concreto?",
+  },
   replacePage: {
     metaTitle: (saas: string, year: number) => `Cómo sustituir ${saas} por alternativas Open Source en ${year}`,
     metaDescription: (saas: string, count: number) =>

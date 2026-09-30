@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { SaasAlternativeGroup } from "@/lib/alternatives";
 import { buildAlternativeTableRows, getAlternativeHref } from "@/lib/alternatives";
 import { AlternativeDecisionFilters } from "@/components/pages/alternativa-decision-filters";
+import { getIntentPagesForSaas } from "@/lib/intent-pages";
 import { formatMinRam } from "@/lib/tool-difficulty";
 import { getSaasPricingLocalized } from "@/data/saas-pricing";
 import { JsonLd, buildBreadcrumbListSchema } from "@/components/site/json-ld";
@@ -33,6 +34,7 @@ export function AlternativaPageContent({ group, locale }: { group: SaasAlternati
       : `$${formatPrice(pricing.pricePerSeatUsd)}/mes${pricing.pricingModel === "perSeat" ? " por usuario" : ""}`
     : null;
 
+  const intentPages = getIntentPagesForSaas(group.saasName, locale);
   const dockerCount = rows.filter((r) => r.dockerReady).length;
   const fossCount = rows.filter((r) => r.tool.fossModel === "FOSS").length;
   const lightestRow = rows.find((r) => r.badgeCodes.includes("lightestRam")) ?? rows[0];
@@ -105,6 +107,20 @@ export function AlternativaPageContent({ group, locale }: { group: SaasAlternati
           {t.alternativaPage.h1(group.saasName, siteConfig.year, group.tools.length)}
         </h1>
         <p className="mt-4 text-lg text-slate-600">{t.alternativaPage.subtitle(group.tools.length)}</p>
+        {intentPages.length > 0 && (
+          <div className="mt-5 flex flex-wrap items-center gap-2">
+            <span className="text-xs font-medium text-slate-500">{t.intentPage.moreSpecificLabel}</span>
+            {intentPages.map(({ intent, href }) => (
+              <Link
+                key={intent}
+                href={href}
+                className="rounded-full border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 transition-colors hover:border-emerald-300 hover:text-emerald-700"
+              >
+                {t.intentPage.chip[intent]}
+              </Link>
+            ))}
+          </div>
+        )}
       </header>
 
       <AlternativeDecisionFilters

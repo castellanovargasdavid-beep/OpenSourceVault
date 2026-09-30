@@ -466,6 +466,32 @@ const en: Dictionary = {
           ? `Yes, all ${total} are 100% FOSS: no paid plan or locked features when self-hosted.`
           : `${fossCount} out of ${total} are 100% FOSS. The rest are Open-Core: the core is free and self-hostable, but some advanced feature may stay paid — we call it out on each tool's page.`,
   },
+  intentPage: {
+    breadcrumb: { "self-hosted": "Self-hosted", "open-source": "100% Open Source" },
+    chip: { "self-hosted": "Self-hosted", "open-source": "100% Open Source" },
+    h1: {
+      "self-hosted": (saas: string) => `How to self-host your ${saas} alternative`,
+      "open-source": (saas: string) => `100% Open Source alternatives to ${saas}`,
+    },
+    metaTitle: {
+      "self-hosted": (saas: string, year: number) => `Self-hosted alternatives to ${saas} in ${year}: requirements and guide`,
+      "open-source": (saas: string, year: number) => `100% Open Source (FOSS) alternatives to ${saas} in ${year}`,
+    },
+    metaDescription: {
+      "self-hosted": (saas: string, count: number) =>
+        `How to self-host your ${saas} alternative: real server requirements, Docker and maintenance for the catalog's ${count} self-hosted options.`,
+      "open-source": (saas: string, count: number) =>
+        `The catalog's ${count} alternatives to ${saas} with a 100% Open Source (FOSS) license — no Open-Core, no features locked behind a paid plan.`,
+    },
+    toolsTitle: "Tools that meet this intent",
+    serverRequirementsTitle: "Real server requirements",
+    serverRequirementsRange: (min: string, max: string) => `Between ${min} and ${max} of RAM depending on the tool — never a single number.`,
+    operationalNotesTitle: "What self-hosting it actually involves",
+    licenseAngleTitle: "Why being 100% FOSS matters here",
+    tradeoffsTitle: "What you gain and lose versus the SaaS",
+    backToBaseLink: (saas: string) => `See all alternatives to ${saas} →`,
+    moreSpecificLabel: "Looking for something more specific?",
+  },
   replacePage: {
     metaTitle: (saas: string, year: number) => `How to Replace ${saas} with Open Source Alternatives in ${year}`,
     metaDescription: (saas: string, count: number) =>

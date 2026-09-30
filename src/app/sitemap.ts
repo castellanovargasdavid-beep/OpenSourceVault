@@ -4,6 +4,7 @@ import { stacks } from "@/data/stacks";
 import { categories } from "@/data/categories";
 import { categoriesEn } from "@/data/categories.en";
 import { getAllSaasSlugs } from "@/lib/alternatives";
+import { getAllIntentPageSlugs, getIntentPage, getIntentPageHref } from "@/lib/intent-pages";
 import { getAllReplaceSlugs } from "@/lib/replace";
 import { getAllComparisonSlugs } from "@/lib/comparisons";
 import {
@@ -115,6 +116,23 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ];
   });
 
+  // Solo entran las combinaciones SaaS+intención que existen DE VERDAD (contenido
+  // curado + elegibilidad recalculada, ver getAllIntentPageSlugs en intent-pages.ts)
+  // — el conjunto ES es el canónico hoy porque ES/EN comparten exactamente las
+  // mismas claves de contenido; si algún día divergen, esto deja de asumirlo
+  // silenciosamente porque getIntentPage() se vuelve a comprobar para cada slug.
+  const intentPageEntries: MetadataRoute.Sitemap = getAllIntentPageSlugs("es").flatMap((esSlug) => {
+    const page = getIntentPage(esSlug, "es");
+    if (!page) return [];
+    const esUrl = `${siteConfig.url}${getIntentPageHref(page.saasName, page.intent, "es")}`;
+    const enUrl = `${siteConfig.url}${getIntentPageHref(page.saasName, page.intent, "en")}`;
+    const alternates = { languages: { es: esUrl, en: enUrl } };
+    return [
+      { url: esUrl, changeFrequency: "monthly" as const, priority: 0.75, alternates },
+      { url: enUrl, changeFrequency: "monthly" as const, priority: 0.75, alternates },
+    ];
+  });
+
   const replaceGuideEntries: MetadataRoute.Sitemap = getAllReplaceSlugs().flatMap((slug) => [
     entry(`/replace/${slug}`, "monthly", 0.8),
     entryEn(`/replace/${slug}`, "monthly", 0.8),
@@ -180,6 +198,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...allPaths.map(([path, freq, priority]) => entryEn(path, freq, priority)),
     ...categoryEntries,
     ...alternativeEntries,
+    ...intentPageEntries,
     ...replaceGuideEntries,
     ...comparisonEntries,
     ...migrationGuideEntries,
