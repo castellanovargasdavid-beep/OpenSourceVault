@@ -31,9 +31,11 @@ const INTENT_SLUG: Record<IntentType, string> = {
  * Mínimo de herramientas elegibles para que una página exista. Ninguna
  * entrada del piloto necesita bajar de esto — una excepción por debajo de 2
  * exige justificación editorial explícita en el propio dato curado, nunca
- * un valor por defecto más permisivo.
+ * un valor por defecto más permisivo. Exportado porque intent-coverage.ts
+ * reutiliza exactamente este mismo umbral para el estado "insufficient-data"
+ * del backlog — nunca debe haber dos números distintos para lo mismo.
  */
-const MIN_ELIGIBLE_TOOLS = 2;
+export const MIN_ELIGIBLE_TOOLS = 2;
 
 /**
  * "Self-hosted" NO exige docker-compose específicamente: una herramienta
