@@ -19,7 +19,7 @@ export interface ToolTranslation {
 export const toolsEn: Record<string, ToolTranslation> = {
   appflowy: {
     description:
-      "AppFlowy is an all-in-one workspace for notes, wikis and databases, built in Rust and Flutter to stay fast even with thousands of pages. It's the most mature open source alternative to Notion for teams who want control over where their data lives.",
+      "AppFlowy is an all-in-one workspace for notes, wikis and databases, built in Rust and Flutter to stay fast even with thousands of pages. It's an open source alternative to Notion for teams who want control over where their data lives.",
     shortDescription: "Notes and database workspace, the open source alternative to Notion.",
     features: [
       "Notion-style block editor with databases",
@@ -129,14 +129,14 @@ export const toolsEn: Record<string, ToolTranslation> = {
   },
   matomo: {
     description:
-      "Matomo is the most complete open source web analytics tool, with heatmaps, session recordings, funnels and the level of detail of GA4, but with your data 100% under your control.",
+      "Matomo is an open source web analytics tool with heatmaps, session recordings, funnels and the level of detail of GA4, but with your data 100% under your control.",
     shortDescription: "Complete web analytics with heatmaps and sessions, 100% yours.",
     features: [
       "Heatmaps and session recording (official plugin)",
       "Advanced funnels and segments",
       "100% of the data, no sampling",
     ],
-    pros: ["The most complete open source alternative to GA4"],
+    pros: ["Heatmaps, session recordings and advanced funnels in a single tool"],
     cons: ["Heavier interface, needs more resources than Plausible or Umami"],
   },
   posthog: {
@@ -223,7 +223,7 @@ export const toolsEn: Record<string, ToolTranslation> = {
   },
   nextcloud: {
     description:
-      "Nextcloud is the most popular open source productivity and cloud storage suite: files, calendar, contacts, collaborative editing and video calls, all under your own domain.",
+      "Nextcloud is an open source productivity and cloud storage suite: files, calendar, contacts, collaborative editing and video calls, all under your own domain.",
     shortDescription: "File cloud and collaboration, an alternative to Google Drive.",
     features: ["Cross-platform file sync", "Collaborative document editing (Collabora/OnlyOffice)", "Calendar, contacts and video calls (Nextcloud Talk)", "Hundreds of official and community apps"],
     pros: ["The widest ecosystem of self-hosted productivity apps"],
@@ -313,7 +313,7 @@ export const toolsEn: Record<string, ToolTranslation> = {
       "OpenProject covers classic and agile project management: Gantt charts, backlogs, timesheets and budgets, as a complete alternative to Jira and MS Project for large teams.",
     shortDescription: "Project management with Gantt and budgets, an alternative to Jira/MS Project.",
     features: ["Interactive Gantt charts", "Agile backlogs and sprints", "Timesheets and budgets"],
-    pros: ["The most complete option for traditional + agile project management"],
+    pros: ["Combines traditional (Gantt) and agile (backlogs, sprints) project management in one tool"],
     cons: ["Heavier interface than minimalist alternatives"],
   },
   "trilium-notes": {
@@ -438,7 +438,7 @@ export const toolsEn: Record<string, ToolTranslation> = {
       "GoatCounter is extremely lightweight web analytics (a single Go binary) focused on privacy, built for blogs and personal sites that don't need a full GA4.",
     shortDescription: "Ultra-lightweight web analytics in a single binary, an alternative to Google Analytics.",
     features: ["Single binary, no external dependencies", "Simple visits and referrers dashboard", "No cookies or fingerprinting"],
-    pros: ["The lightest deployment in the whole category"],
+    pros: ["A single binary with no external dependencies, no separate database to maintain"],
     cons: ["Not built for complex product analytics"],
   },
   openreplay: {
@@ -492,10 +492,10 @@ export const toolsEn: Record<string, ToolTranslation> = {
   },
   jenkins: {
     description:
-      "Jenkins is the most widely used and plugin-extensible CI/CD automation server, for teams who want full control of their pipelines without relying on a SaaS.",
+      "Jenkins is a plugin-extensible CI/CD automation server, for teams who want full control of their pipelines without relying on a SaaS.",
     shortDescription: "Extensible CI/CD server, a self-hosted alternative to CircleCI.",
     features: ["Thousands of community plugins", "Pipelines as code (Jenkinsfile)", "Support for any language or runner"],
-    pros: ["The biggest plugin ecosystem in CI/CD"],
+    pros: ["Thousands of community plugins covering almost any CI/CD use case"],
     cons: ["More manual initial setup than modern SaaS tools"],
   },
   portainer: {
@@ -516,12 +516,12 @@ export const toolsEn: Record<string, ToolTranslation> = {
   },
   strapi: {
     description:
-      "Strapi is the most popular open source headless CMS built on Node.js, with fully customizable content types and a REST/GraphQL API ready to consume from any frontend.",
-    shortDescription: "The most popular open source headless CMS, an alternative to Contentful.",
+      "Strapi is an open source headless CMS built on Node.js, with fully customizable content types and a REST/GraphQL API ready to consume from any frontend.",
+    shortDescription: "Open source headless CMS on Node.js, an alternative to Contentful.",
     notes:
       "Strapi doesn't publish any official Docker image — their own docs say so explicitly. strapi/strapi was a community courtesy image that was never updated for v4/v5 and no longer exists on Docker Hub. The recommended path is generating your own Dockerfile with create-strapi-app, following Strapi's official Docker guide.",
     features: ["100% customizable content types", "REST and GraphQL API", "Plugin marketplace"],
-    pros: ["MIT license and the largest headless JS CMS community"],
+    pros: ["MIT license, with a plugin marketplace and a ready-to-use REST/GraphQL API"],
     cons: ["Major version migrations need care"],
   },
   pocketbase: {
@@ -529,7 +529,7 @@ export const toolsEn: Record<string, ToolTranslation> = {
       "PocketBase is a backend-as-a-service in a single binary file: SQLite database, authentication, file storage and a realtime API, ideal for MVPs and small apps.",
     shortDescription: "Backend-as-a-service in a single binary, a minimal alternative to Firebase.",
     features: ["Auth, storage and database in one binary", "Realtime API over WebSockets", "Admin panel included"],
-    pros: ["The simplest deployment in the whole backend-as-a-service category"],
+    pros: ["Auth, storage and database in a single binary, no separate pieces to coordinate"],
     cons: ["SQLite limits horizontal scalability at high volume"],
   },
   hasura: {
@@ -614,7 +614,7 @@ export const toolsEn: Record<string, ToolTranslation> = {
       "Grafana visualizes metrics, logs and traces from almost any data source in highly customizable dashboards, the de facto standard for self-hosted observability versus Datadog.",
     shortDescription: "Observability dashboards, a self-hosted alternative to Datadog.",
     features: ["Dashboards connected to dozens of data sources", "Multichannel alerting", "Logs and traces explorer"],
-    pros: ["The industry standard for observability dashboards"],
+    pros: ["Dashboards connected to dozens of different data sources, with multichannel alerting"],
     cons: ["You need Prometheus/Loki/Tempo separately for data collection"],
   },
   espocrm: {
@@ -769,7 +769,7 @@ export const toolsEn: Record<string, ToolTranslation> = {
   },
   "automatic1111-sd-webui": {
     description:
-      "AUTOMATIC1111's WebUI is the most popular interface for generating images with Stable Diffusion locally, with full control over models, LoRAs and extensions, with no generation limit.",
+      "AUTOMATIC1111's WebUI is an interface for generating images with Stable Diffusion locally, with full control over models, LoRAs and extensions, with no generation limit.",
     shortDescription: "Complete interface for local Stable Diffusion, an alternative to Midjourney.",
     features: ["Thousands of community extensions", "Support for LoRAs and custom models", "Full control over generation parameters"],
     pros: ["No limit on generated images and no monthly subscription"],
@@ -1003,7 +1003,7 @@ export const toolsEn: Record<string, ToolTranslation> = {
     notes:
       "This docker-compose is incomplete for a real deployment: markoshust/magento-nginx is only the nginx proxy from the docker-magento development kit, with no PHP-FPM container holding Magento's actual code, no Elasticsearch/OpenSearch (required since Magento 2.4) and no Redis. Follow Adobe Commerce/Magento Open Source's official guide or the full docker-magento project for a stack that actually works.",
     features: ["Massive catalogs with complex attributes", "Native multi-store and multi-language", "Very wide extension ecosystem"],
-    pros: ["The most powerful option for very large B2B/B2C catalogs"],
+    pros: ["Supports massive B2B/B2C catalogs with complex attributes and native multi-store"],
     cons: [
       "Considerably higher server requirements",
       "This catalog's docker-compose is incomplete (see note above) — it needs PHP-FPM, Elasticsearch/OpenSearch and Redis beyond what's shown",
@@ -1011,15 +1011,15 @@ export const toolsEn: Record<string, ToolTranslation> = {
   },
   woocommerce: {
     description:
-      "WooCommerce turns any WordPress site into a complete online store, with the largest plugin ecosystem in the world, as a free alternative to Shopify for anyone already on WordPress.",
+      "WooCommerce turns any WordPress site into a complete online store, with a very wide plugin ecosystem, as a free alternative to Shopify for anyone already on WordPress.",
     shortDescription: "Ecommerce on WordPress, a free alternative to Shopify.",
-    features: ["The largest plugin ecosystem in the world", "Works with any WordPress theme", "Thousands of supported payment gateways"],
+    features: ["Very wide plugin ecosystem", "Works with any WordPress theme", "Thousands of supported payment gateways"],
     pros: ["Ideal if your site already runs on WordPress"],
     cons: ["Performance depends heavily on the plugins you install"],
   },
   "jitsi-meet": {
     description:
-      "Jitsi Meet is the most popular open source video calling platform, with no time or participant limit, and no account needed to join, as a direct alternative to Zoom.",
+      "Jitsi Meet is an open source video calling platform, with no time or participant limit, and no account needed to join, as a direct alternative to Zoom.",
     shortDescription: "Video calls with no limits or account, a direct alternative to Zoom.",
     features: ["No time or participant limit", "No account needed to join", "Recording and YouTube streaming"],
     pros: ["Free, with none of the SaaS version's artificial limits"],
@@ -1032,7 +1032,7 @@ export const toolsEn: Record<string, ToolTranslation> = {
     notes:
       "BigBlueButton isn't installed with a single-container docker-compose: bigbluebutton/bbb-install isn't a real Docker image (bbb-install.sh is a bash script), and the officially supported production install uses that script on Ubuntu. A full, community-maintained Docker deployment exists (bigbluebutton/docker on GitHub) that generates its own multi-container docker-compose, but it isn't this single-service one.",
     features: ["Multi-user collaborative whiteboard", "Breakout rooms", "Polls and class recording"],
-    pros: ["The most complete option for educational use cases"],
+    pros: ["Built specifically for education: collaborative whiteboard, breakout rooms and class recording"],
     cons: ["Production installation is more complex than a simple docker-compose"],
   },
   livekit: {
@@ -1084,7 +1084,7 @@ export const toolsEn: Record<string, ToolTranslation> = {
       "Vaultwarden is a lightweight, unofficial implementation of the Bitwarden server in Rust, compatible with all official Bitwarden clients, ideal for self-hosting your own password manager.",
     shortDescription: "Lightweight Rust Bitwarden server, a self-hosted alternative to 1Password.",
     features: ["Compatible with all official Bitwarden clients", "Minimal resource usage (great for small VPS)", "Own admin panel"],
-    pros: ["The lightest, most popular self-hosted password manager"],
+    pros: ["Minimal resource usage and compatible with every official Bitwarden client"],
     cons: ["Not the official Bitwarden server, it's a community reimplementation"],
   },
   "bitwarden-self-hosted": {
@@ -1125,10 +1125,10 @@ export const toolsEn: Record<string, ToolTranslation> = {
   // ---------- Coming soon batch ----------
   keycloak: {
     description:
-      "Keycloak is the most established open source identity and access solution: SSO, LDAP/AD federation, social login and role management for any app or API.",
+      "Keycloak is an open source identity and access solution with SSO, LDAP/AD federation, social login and role management for any app or API.",
     shortDescription: "Open source SSO and identity management, an alternative to Auth0/Okta.",
     features: ["SSO and LDAP/Active Directory federation", "Social login (Google, GitHub...)", "Granular role and permission management"],
-    pros: ["The most mature and battle-tested option in enterprise environments"],
+    pros: ["Permissive Apache-2.0 license, with 36k+ GitHub stars and a verified deployment"],
     cons: ["Higher memory usage than lighter alternatives"],
   },
   authentik: {
@@ -1136,7 +1136,7 @@ export const toolsEn: Record<string, ToolTranslation> = {
       "Authentik is a modern, flexible identity platform with visually customizable authentication flows and native support for SSO, MFA and an application proxy.",
     shortDescription: "Flexible identity platform, a modern alternative to Okta/Auth0.",
     features: ["Visual authentication flow editor", "Application proxy with no code changes", "MFA and conditional access policies"],
-    pros: ["A much more modern interface than the open source competition"],
+    pros: ["Visual authentication flow editor and an application proxy with no code changes"],
     cons: ["Requires Postgres and Redis in addition to the server itself"],
   },
   ory: {
@@ -1176,7 +1176,7 @@ export const toolsEn: Record<string, ToolTranslation> = {
       "Coolify is a self-hosted deployment platform that replicates the Vercel/Heroku experience: connect your Git repo and deploy apps, databases and services with one click.",
     shortDescription: "Self-hosted PaaS with a Vercel-like experience, a free alternative.",
     features: ["One-click deploy from Git (like Vercel)", "One-click managed databases", "Manage multiple servers from one dashboard"],
-    pros: ["The most polished open source alternative to Vercel/Heroku"],
+    pros: ["One-click deploy from Git, managed databases and multi-server management from one dashboard"],
     cons: ["Installs across the whole server, doesn't fit into a single-app docker-compose"],
   },
   caprover: {
@@ -1232,7 +1232,7 @@ export const toolsEn: Record<string, ToolTranslation> = {
       "Beszel is an ultra-lightweight infrastructure monitor (a single binary) to see CPU, RAM, disk and network across all your servers in a simple dashboard, without a full stack's complexity.",
     shortDescription: "Ultra-lightweight server monitor, a single binary, a minimal alternative to Datadog.",
     features: ["Single binary/container, no dependencies", "Lightweight agents per monitored server", "CPU/RAM/disk/network usage history"],
-    pros: ["The fastest setup of the whole monitoring group"],
+    pros: ["A single binary with no dependencies, with lightweight agents per monitored server"],
     cons: ["No application error tracking, infrastructure only"],
   },
   budibase: {
@@ -1280,7 +1280,7 @@ export const toolsEn: Record<string, ToolTranslation> = {
       "Dub is a modern short-link platform with detailed click analytics, built as an open source, self-hostable alternative to Bitly.",
     shortDescription: "Link shortener with analytics, an open source alternative to Bitly.",
     features: ["Real-time click analytics", "Your own custom domains", "API to generate links programmatically"],
-    pros: ["The most modern interface and analytics of the open source shorteners"],
+    pros: ["Real-time click analytics, custom domains and a programmatic API"],
     cons: ["Self-hosting it takes more work than a simple docker-compose"],
   },
   formbricks: {
@@ -1293,10 +1293,10 @@ export const toolsEn: Record<string, ToolTranslation> = {
   },
   ghost: {
     description:
-      "Ghost is a publishing and paid-newsletter platform with a modern editor, built-in memberships and payments — the most established open source alternative to Substack.",
+      "Ghost is a publishing and paid-newsletter platform with a modern editor, built-in memberships and payments — an open source alternative to Substack.",
     shortDescription: "Blog and paid newsletter, a mature open source alternative to Substack.",
     features: ["Built-in paid memberships and subscriptions", "Modern, Notion-like editor", "Native email newsletters"],
-    pros: ["The most mature and production-proven tool in this whole batch"],
+    pros: ["Built-in paid memberships, a modern editor and native newsletters in one product"],
     cons: ["MySQL as a dependency adds some weight compared to SQLite-based options"],
   },
   "invoice-ninja": {
@@ -1378,7 +1378,7 @@ export const toolsEn: Record<string, ToolTranslation> = {
       "AdGuard Home blocks ads and trackers network-wide at the DNS level with native DNS-over-HTTPS/TLS support and parental controls, as a free, self-hosted alternative to NextDNS.",
     shortDescription: "Network-wide DNS ad-blocking with native DoH/DoT, an alternative to NextDNS.",
     features: ["Network-wide ad and tracker blocking at the DNS level", "Native DNS-over-HTTPS and DNS-over-TLS support", "Parental controls and per-client filtering profiles"],
-    pros: ["Native DNS-over-HTTPS/TLS without needing an extra proxy, unlike Pi-hole", "More modern statistics dashboard"],
+    pros: ["Native DNS-over-HTTPS/TLS without needing an extra proxy, unlike Pi-hole", "More modern statistics dashboard than Pi-hole's"],
     cons: ["Smaller third-party blocklist community than Pi-hole's"],
   },
   joplin: {
@@ -1391,10 +1391,10 @@ export const toolsEn: Record<string, ToolTranslation> = {
   },
   discourse: {
     description:
-      "Discourse is the most widely used open source forum software in large-scale production, with community trust-level moderation, email notifications and automatic digests.",
+      "Discourse is an open source forum software built for large-scale communities, with community trust-level moderation, email notifications and automatic digests.",
     shortDescription: "Large-scale forum and community software, an alternative to Circle.",
     features: ["Forums with threads, categories and unlimited tags", "Moderation via community trust levels", "Email notifications and automatic digests"],
-    pros: ["The most widely used open source forum software in large-scale production", "Excellent automatic anti-spam moderation"],
+    pros: ["Built for large communities, with built-in progressive trust-level moderation", "Excellent automatic anti-spam moderation"],
     cons: ["Less straightforward install than a standard docker-compose (uses its own installer)", "Needs at least 2 GB of RAM to run smoothly"],
   },
   erpnext: {
@@ -1456,9 +1456,9 @@ export const toolsEn: Record<string, ToolTranslation> = {
   "home-assistant": {
     description:
       "Home Assistant is the de facto standard for home automation: it connects thousands of different device brands under a single dashboard, with all automations running on your own network, with no dependency on the manufacturer's cloud.",
-    shortDescription: "The open source standard for home automation, no brand cloud required.",
+    shortDescription: "Open source home automation, no brand cloud required.",
     features: ["Compatible with thousands of brands and integrations (Zigbee, Z-Wave, Matter...)", "Local automations, no dependency on the manufacturer's cloud", "Official mobile app with geofencing"],
-    pros: ["The largest and most active home automation project that exists", "None of your sensor data leaves your network unless you want it to"],
+    pros: ["Thousands of integrations and 100% local automations, no dependency on the manufacturer's cloud", "None of your sensor data leaves your network unless you want it to"],
     cons: ["network_mode: host and privileged: true give the container fairly broad access — review your network security", "Real learning curve at the start, though guides are plentiful"],
   },
   overseerr: {
@@ -1514,7 +1514,7 @@ export const toolsEn: Record<string, ToolTranslation> = {
       "Firefly III is a complete personal finance manager: accounts, budgets, recurring bills and automatic categorization rules, with your banking data stored only on your own server.",
     shortDescription: "A complete personal finance manager, no third party gets your banking data.",
     features: ["Budgets, recurring bills and automatic rules", "Bank transaction import (CSV, Nordigen/GoCardless)", "Reports and spending charts by category"],
-    pros: ["The most complete and mature self-hosted personal finance manager", "Nobody else sees your bank transactions"],
+    pros: ["Budgets, recurring bills, automation rules and bank import in a single tool", "Nobody else sees your bank transactions"],
     cons: ["Setting up import rules initially takes some time"],
   },
   excalidraw: {
@@ -1527,8 +1527,8 @@ export const toolsEn: Record<string, ToolTranslation> = {
   },
   penpot: {
     description:
-      "Penpot is an interface design and collaborative prototyping tool, the most direct open source alternative to Figma, with native SVG support and no proprietary file format locking you in.",
-    shortDescription: "Interface design and prototyping, the open source alternative to Figma.",
+      "Penpot is an interface design and collaborative prototyping tool, an open source alternative to Figma, with native SVG support and no proprietary file format locking you in.",
+    shortDescription: "Interface design and prototyping, an open source alternative to Figma.",
     features: ["Interface design and prototyping based on standard SVG", "Design systems and reusable components", "Imports existing Figma files"],
     pros: ["Backed by a company (Kaleidos) with active, funded development", "Since it uses SVG, your designs never get trapped in a proprietary format"],
     cons: ["Plugin ecosystem is still smaller than Figma's"],
