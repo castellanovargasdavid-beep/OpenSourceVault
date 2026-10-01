@@ -37,22 +37,53 @@ hosting recommendation is exposure, not an action the PRD's own definition
 asks for ("realiza... una acción") — it belongs in the funnel as a
 mid-funnel checkpoint, not as a qualifying action in the North Star.
 
-### The honest limitation
+### The honest limitation — and what we checked before concluding that
 
-**This repo cannot currently compute "visitors" or "sessions" as a
+**This codebase cannot currently compute "visitors" or "sessions" as a
 de-duplicated unit at all.** `trackReplaceEvent()` sends named events with
 small properties (slugs, counts, placement) — it does not attach any
 anonymous visitor/session identifier, and none exists anywhere else in this
 codebase to borrow (the Stack Builder's `localStorage` key stores stack
-*contents*, not an analytics identity). Vercel Web Analytics does report an
-aggregate "Visitors" number in its own dashboard for standard page views,
-but that is a platform-level stat we can reference, not something this
-code computes, and it has no way to tell us which specific visitors also
-fired a given custom event. Without a per-visitor/session ID attached to
-every event — new analytics architecture, explicitly out of scope for this
-iteration — **"at least one qualifying action per unique visitor" cannot be
-computed today without either fabricating it or adding that
-instrumentation.** We are not doing either.
+*contents*, not an analytics identity).
+
+Before concluding this is unfixable without new instrumentation, this
+revision explicitly checked whether the analytics infrastructure *already
+mounted* (`@vercel/analytics`) can do this for us, since Vercel Web
+Analytics' own "Visitors" count for standard page views is itself already a
+de-duplicated, cookieless metric computed by the platform (a hashed,
+rotating identifier derived from IP + user agent — not something this
+code implements or has access to). The open question was whether that same
+platform-level deduplication also applies to the custom events we send via
+`track()` — i.e., whether the Vercel Analytics dashboard can already show
+"N unique visitors fired `stack_created`" (not just "fired N times"), or
+let an event be marked as a goal/conversion with a conversion rate.
+
+**We could not verify this with certainty in this session**: confirming it
+means reading Vercel's own product documentation and/or the project's live
+Analytics dashboard, and this sandboxed environment's network egress policy
+blocks `vercel.com` (the same restriction that blocked verifying Vultr's
+current pricing in a prior pass — see `DATA_QUALITY_AUDIT.md`). We are not
+guessing at an answer. What's certain either way, independent of what the
+dashboard UI supports:
+
+- This codebase has no analytics API integration or data export — whatever
+  Vercel's dashboard can or can't show, our own code/scripts never see the
+  raw per-visitor event data back, so we could never recompute or verify
+  this number ourselves regardless.
+- We are **not** adding an anonymous UUID/localStorage identifier to work
+  around this. That was considered and explicitly rejected: it would mean
+  building a parallel, home-grown visitor-identity system next to a
+  platform that may already solve this natively, before even checking
+  whether the existing infrastructure already provides it.
+
+**Action for whoever has access to the project's live Vercel dashboard**:
+open Analytics → Events for one of the qualifying events (e.g.
+`stack_created`) and check whether it reports a visitors count (not just an
+event count) or supports being marked as a conversion goal. If yes, the
+North Star Metric is already computable today, through the dashboard, with
+zero code changes — the events are already being sent correctly. If no,
+the limitation below stands and the three metrics in the next section are
+what's reliably available.
 
 ### What we CAN compute reliably, today, with zero new instrumentation
 
@@ -73,16 +104,6 @@ instrumentation.** We are not doing either.
    a "% of visitors who converted" — document it that way wherever it's
    reported, since the numerator can include multiple events per visitor
    while the denominator counts each visitor once.
-
-### Recommended next step (not implemented here — out of scope)
-
-If a true unique-visitor conversion rate is wanted later, the minimal
-addition would be a single anonymous, non-PII id (e.g. a random UUID in
-`localStorage`, generated once, sent as an extra property on every
-`trackReplaceEvent` call) so qualifying events can be de-duplicated by
-visitor downstream. That's a deliberate architecture change and was not
-made in this iteration per explicit instruction to avoid new analytics
-architecture.
 
 ## Full event taxonomy (`src/lib/analytics.ts`)
 

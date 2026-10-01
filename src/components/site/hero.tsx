@@ -41,12 +41,15 @@ export function Hero({ tools, locale = "es" }: { tools: ToolCardData[]; locale?:
   const journeySteps = [t.heroFloating.journeyDiscover, t.heroFloating.journeyCompare, t.heroFloating.journeyBuild, t.heroFloating.journeyDeploy];
   // El H1 ya no rota una sola palabra + un sufijo fijo concatenado (eso
   // duplicaba "stack" en los estados Construye/Despliega: "Construye tu
-  // stack tu stack self-hosted." no es una frase). Rota una frase completa
-  // de 2 palabras por estado — mismo concepto/orden que journeySteps, pero
-  // cada una ya es gramatical por sí sola — y h1Suffix pasa a ser una
-  // segunda línea fija independiente (ver el render de abajo), repetida
-  // como refuerzo de posicionamiento tras cualquier frase, nunca como
-  // continuación gramatical de ella.
+  // stack tu stack self-hosted." no es una frase). Rota una frase dinámica
+  // completa por estado (no una plantilla fija de "2 palabras": varían en
+  // longitud) — mismo concepto/orden que journeySteps, pero cada una ya es
+  // gramatical por sí sola — y h1Suffix pasa a ser una segunda línea fija
+  // independiente (ver el render de abajo), repetida tras cualquier frase
+  // como refuerzo de posicionamiento, nunca como continuación gramatical de
+  // ella. h1Suffix ya no menciona "stack" precisamente para que nunca pueda
+  // repetirse con una frase dinámica que también lo mencione (ver el
+  // comentario en es.ts/en.ts junto a h1Suffix).
   const h1Phrases = [t.hero.h1PhraseDiscover, t.hero.h1PhraseCompare, t.hero.h1PhraseBuild, t.hero.h1PhraseDeploy];
   const HIGHLIGHTED_STEP_INDEX = 2;
 

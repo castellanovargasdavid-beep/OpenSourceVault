@@ -54,11 +54,18 @@ const en: Dictionary = {
     // "Compare the tools" reads better than a literal "Compare tools", and
     // keeps a similar length to the other 3 phrases so the rotating line
     // doesn't wrap differently between states).
+    //
+    // h1Suffix used to be "your self-hosted stack.", which for 2 of the 4
+    // states repeated "stack" right after the dynamic phrase ("Build your
+    // stack." + "your self-hosted stack." reads as "Build your stack your
+    // self-hosted stack."). Fixed to a line that shares no noun with any of
+    // the 4 phrases, while keeping the same "open source"/"self-hosted"
+    // positioning terms already used elsewhere on this page.
     h1PhraseDiscover: "Discover alternatives.",
     h1PhraseCompare: "Compare the tools.",
     h1PhraseBuild: "Build your stack.",
     h1PhraseDeploy: "Deploy your stack.",
-    h1Suffix: "your self-hosted stack.",
+    h1Suffix: "open source, self-hosted.",
     subtitle:
       "Compare open source tools by license, RAM and deployment method, and build a real self-hosted stack to replace Notion, Slack, Airtable, Google Analytics and dozens more SaaS tools.",
     statTools: "tools",

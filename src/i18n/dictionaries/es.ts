@@ -52,22 +52,31 @@ const es = {
     // producto ahora es "construye tu stack self-hosted", con el catálogo/
     // comparativas como la infraestructura que lo alimenta, no al revés.
     //
-    // h1Phrase* son frases COMPLETAS de 2 palabras (verbo + objeto), en el
-    // mismo orden/concepto que heroFloating.journey* (Descubre→Compara→
-    // Construye→Despliega) — no sustituyen esa lista (sigue siendo la única
-    // fuente para la fila estática del flujo debajo), es una elaboración
-    // paralela para el H1, que necesita una frase legible por sí sola en
-    // vez de una sola palabra. "Construye tu stack."/"Despliega tu stack."
-    // ya mencionan "stack" por sí mismas — concatenar h1Suffix después (como
-    // antes) duplicaría la palabra para esos 2 de los 4 estados, así que
-    // h1Suffix pasó de "sufijo pegado a la palabra" a segunda línea fija e
-    // independiente del hero (ver hero.tsx) — se repite tras cada frase
-    // como refuerzo de posicionamiento, nunca como continuación gramatical.
+    // h1Phrase* son frases dinámicas completas (no una plantilla fija de "N
+    // palabras" — varían en longitud, "Descubre alternativas."/"Compara
+    // herramientas." son 2 palabras + objeto, "Construye tu stack."/
+    // "Despliega tu stack." son 3), una por paso del journey Descubre→
+    // Compara→Construye→Despliega — mismo concepto/orden que
+    // heroFloating.journey*, sin sustituir esa lista (sigue siendo la única
+    // fuente para la fila estática del flujo debajo); esta es una
+    // elaboración paralela para el H1, que necesita una frase legible por
+    // sí sola en vez de una sola palabra.
+    //
+    // h1Suffix es una segunda línea fija e independiente (ver hero.tsx),
+    // nunca una continuación gramatical de la frase dinámica. Antes decía
+    // "tu stack self-hosted.", lo que para 2 de los 4 estados repetía
+    // "tu stack" inmediatamente ("Construye tu stack." + "tu stack
+    // self-hosted." se lee como "Construye tu stack tu stack
+    // self-hosted."). Corregido a una línea que no repite ningún sustantivo
+    // de ninguna de las 4 frases, conservando "open source"/"self-hosted"
+    // como términos de posicionamiento ya establecidos (badge/subtitle de
+    // abajo los usan igual, sin traducir — son préstamos ya asentados en el
+    // copy ES del proyecto).
     h1PhraseDiscover: "Descubre alternativas.",
     h1PhraseCompare: "Compara herramientas.",
     h1PhraseBuild: "Construye tu stack.",
     h1PhraseDeploy: "Despliega tu stack.",
-    h1Suffix: "tu stack self-hosted.",
+    h1Suffix: "open source, self-hosted.",
     subtitle:
       "Compara herramientas open source por licencia, RAM y forma de despliegue, y construye un stack self-hosted real para sustituir Notion, Slack, Airtable, Google Analytics y decenas de SaaS más.",
     statTools: "herramientas",

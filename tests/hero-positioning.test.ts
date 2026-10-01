@@ -7,12 +7,14 @@ import { catalogStats } from "../src/lib/catalog-stats";
 /**
  * Regresión del rediseño del hero (Stack Builder como producto principal,
  * ver el encargo "AUDITORÍA COMPLETA + REDISEÑO QUIRÚRGICO de la homepage",
- * y la iteración posterior "frase de 2 palabras + segunda línea fija").
- * No testea layout/CSS — eso se verificó a mano contra el HTML generado —
- * sino el contrato de contenido que un cambio futuro podría romper sin
- * querer: el H1 sigue siendo gramatical en los 4 estados de la frase
- * dinámica, ambos locales están sincronizados, y la jerarquía de CTAs no
- * vuelve a invertirse en silencio.
+ * y la iteración posterior "frases dinámicas por paso del journey + segunda
+ * línea fija" — NO es una plantilla fija de "2 palabras", las 4 frases
+ * varían en longitud). No testea layout/CSS — eso se verificó a mano contra
+ * el HTML generado — sino el contrato de contenido que un cambio futuro
+ * podría romper sin querer: el H1 sigue siendo gramatical en los 4 estados
+ * de la frase dinámica, ninguna frase repite una palabra con la línea fija,
+ * ambos locales están sincronizados, y la jerarquía de CTAs no vuelve a
+ * invertirse en silencio.
  */
 
 function h1PhrasesOf(dict: typeof es | typeof en): string[] {
@@ -29,28 +31,50 @@ test("each H1 phrase is a complete, grammatical sentence on its own, in both loc
   }
 });
 
-test("H1 phrases don't duplicate h1Suffix's wording — they're two independent lines, not one concatenated sentence", () => {
-  // Regresión directa: la versión anterior concatenaba "{verbo} {suffix}" en
-  // una sola frase, lo que para Construye/Despliega producía "Construye tu
-  // stack tu stack self-hosted." — ya no se concatenan (ver hero.tsx), pero
-  // este test blinda contra que alguien reintroduzca esa concatenación sin
-  // darse cuenta de la duplicación que causaba.
+function significantWordsOf(s: string): Set<string> {
+  return new Set(
+    s
+      .toLowerCase()
+      .replace(/[.,]/g, "")
+      .split(/\s+/)
+      .filter(Boolean)
+  );
+}
+
+test("no dynamic H1 phrase repeats a word with the fixed h1Suffix line — they read as two consecutive lines, not a concatenated sentence", () => {
+  // Regresión directa: una versión anterior tenía h1Suffix = "tu stack
+  // self-hosted."/"your self-hosted stack.", lo que para los estados
+  // Construye/Despliega (que ya dicen "tu stack"/"your stack") leía como
+  // "Construye tu stack tu stack self-hosted." al renderizarse como dos
+  // líneas consecutivas del mismo H1. Comprobar solape de palabras en vez de
+  // solo substring exacto protege contra cualquier variante futura del mismo
+  // problema, no solo la redacción exacta que causó el bug original.
   for (const dict of [es, en]) {
-    const suffixWords = dict.hero.h1Suffix.replace(/\.$/, "").toLowerCase();
+    const suffixWords = significantWordsOf(dict.hero.h1Suffix);
     for (const phrase of h1PhrasesOf(dict)) {
-      assert.ok(
-        !phrase.toLowerCase().includes(suffixWords),
-        `"${phrase}" should not already contain the full h1Suffix text ("${dict.hero.h1Suffix}") — they're rendered as two separate lines, concatenating them would duplicate wording`
+      const overlap = [...significantWordsOf(phrase)].filter((w) => suffixWords.has(w));
+      assert.equal(
+        overlap.length,
+        0,
+        `"${phrase}" and "${dict.hero.h1Suffix}" share the word(s) ${JSON.stringify(overlap)} — reads as an immediate repetition when rendered as two consecutive H1 lines`
       );
     }
   }
 });
 
-test("H1 suffix mentions 'stack' and 'self-hosted' in both locales — the new positioning, not the old 'replace SaaS' framing", () => {
-  assert.match(es.hero.h1Suffix, /stack/i);
+test("h1Suffix still carries the 'open source'/'self-hosted' positioning in both locales, without reintroducing 'stack' (which would risk repeating it with 2 of the 4 phrases)", () => {
+  // Ya no exige "stack" en h1Suffix a propósito: "Construye tu stack."/
+  // "Despliega tu stack." ya lo mencionan, así que mantenerlo también en la
+  // línea fija es justo lo que producía la repetición de arriba. "stack"
+  // sigue presente en el H1 para esos 2 estados, y en el subtitle para los
+  // 4 — este test no lo exige aquí, solo evita que vuelva a este sitio en
+  // concreto.
+  assert.match(es.hero.h1Suffix, /open source/i);
   assert.match(es.hero.h1Suffix, /self-hosted/i);
-  assert.match(en.hero.h1Suffix, /stack/i);
+  assert.doesNotMatch(es.hero.h1Suffix, /stack/i);
+  assert.match(en.hero.h1Suffix, /open source/i);
   assert.match(en.hero.h1Suffix, /self-hosted/i);
+  assert.doesNotMatch(en.hero.h1Suffix, /stack/i);
 });
 
 test("the old SaaS-name H1 template (titlePrefix/titleSuffix) was fully removed, not left dangling", () => {
