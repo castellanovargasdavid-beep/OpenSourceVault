@@ -15,6 +15,9 @@ export interface DoctorFix {
 
 export type DoctorInputKind = "yaml" | "error-message";
 
+// Compose Doctor no tiene página zh-CN todavía (ver lib/zh-mvp.ts) — se
+// mantiene deliberadamente a solo "es"|"en"; el llamador (compose-doctor-
+// content.tsx) es quien reduce el Locale general del sitio a este tipo.
 type Locale = "es" | "en";
 
 /**

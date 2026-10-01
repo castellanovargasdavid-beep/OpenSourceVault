@@ -7,7 +7,9 @@ import type { Locale } from "@/i18n/config";
  */
 
 export function getCompareHref(pairSlug: string, locale: Locale): string {
-  return locale === "en" ? `/en/compare/${pairSlug}` : `/comparar/${pairSlug}`;
+  if (locale === "en") return `/en/compare/${pairSlug}`;
+  if (locale === "zh") return `/zh/compare/${pairSlug}`;
+  return `/comparar/${pairSlug}`;
 }
 
 export function getDeployGuideHref(locale: Locale): string {

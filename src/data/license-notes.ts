@@ -17,3 +17,7 @@ export const AGPL_COPYLEFT_NOTE_ES =
 
 export const AGPL_COPYLEFT_NOTE_EN =
   "AGPL-3.0: a strong copyleft license, with source-sharing obligations for covered modified versions and certain network use, under its terms";
+
+/** Same precision level as the ES/EN versions above — never the oversimplified "AGPL forces you to open-source your code". */
+export const AGPL_COPYLEFT_NOTE_ZH =
+  "AGPL-3.0：一种强著佐权（copyleft）许可证，根据其条款，对特定修改版本和某些网络使用场景负有开放对应源代码的义务，并非笼统地要求公开一切衍生代码";

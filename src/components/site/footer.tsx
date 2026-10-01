@@ -12,6 +12,44 @@ import { GithubIcon } from "@/components/icons/github-icon";
 export function Footer({ locale = "es" }: { locale?: Locale }) {
   const t = getDictionary(locale);
 
+  // Mismo motivo que en header.tsx: ninguna de las columnas de abajo
+  // (categorías, stacks, calculadoras, guía de despliegue, hosting-deals,
+  // promote, how-we-audit) tiene página /zh/... en este piloto. Privacy/
+  // Terms/Affiliate Disclosure SÍ son páginas reales que un visitante
+  // podría necesitar — enlazan a su versión EN con la etiqueta "(EN)"
+  // visible en vez de fabricar una traducción legal que no existe (ver
+  // sección 13 del encargo: EN está bien cuando el idioma queda claro).
+  if (locale === "zh") {
+    return (
+      <footer className="border-t border-slate-200 bg-slate-50">
+        <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+          <p className="text-base font-semibold text-slate-900">{siteConfig.name}</p>
+          <p className="mt-2 max-w-sm text-sm text-slate-600">{t.siteDescription}</p>
+        </div>
+        <div className="border-t border-slate-200 py-6">
+          <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+            <p className="text-xs text-slate-600">© {siteConfig.year} {siteConfig.name}</p>
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-600">
+              <a href={siteConfig.links.github} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 hover:text-emerald-700">
+                <GithubIcon size={14} />
+                GitHub
+              </a>
+              <Link href="/en/privacy" className="hover:text-emerald-700">
+                Privacy <span className="text-[10px] opacity-70">(EN)</span>
+              </Link>
+              <Link href="/en/terms" className="hover:text-emerald-700">
+                Terms <span className="text-[10px] opacity-70">(EN)</span>
+              </Link>
+              <Link href="/en/affiliate-disclosure" className="hover:text-emerald-700">
+                Affiliate Disclosure <span className="text-[10px] opacity-70">(EN)</span>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </footer>
+    );
+  }
+
   return (
     <footer className="border-t border-slate-200 bg-slate-50">
       <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 md:grid-cols-4 lg:px-8">

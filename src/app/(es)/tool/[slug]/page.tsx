@@ -5,6 +5,7 @@ import { tools, getToolBySlug } from "@/data/tools";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { siteConfig } from "@/lib/site-config";
 import { ToolPageContent } from "@/components/pages/tool-page-content";
+import { hasZhTool } from "@/lib/zh-mvp";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -37,7 +38,15 @@ export async function generateMetadata({ params }: PageProps, parent: ResolvingM
     description,
     alternates: {
       canonical: url,
-      languages: { es: url, en: `${siteConfig.url}/en/tool/${tool.slug}`, "x-default": url },
+      // "zh-CN" solo se añade cuando esta ficha es una de las 10 del piloto
+      // (ver lib/zh-mvp.ts) — nunca se genera un hreflang hacia una página
+      // /zh/tool/... que no existe todavía.
+      languages: {
+        es: url,
+        en: `${siteConfig.url}/en/tool/${tool.slug}`,
+        ...(hasZhTool(tool.slug) ? { "zh-CN": `${siteConfig.url}/zh/tool/${tool.slug}` } : {}),
+        "x-default": url,
+      },
     },
     openGraph: { title, description, url, type: "article", images: openGraphImages },
     twitter: { card: "summary_large_image", title, description, images: twitterImages },

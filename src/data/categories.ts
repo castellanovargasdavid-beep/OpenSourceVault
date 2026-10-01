@@ -1,6 +1,7 @@
 import type { ToolCategory } from "@/lib/types";
 import type { Locale } from "@/i18n/config";
 import { categoriesEn } from "./categories.en";
+import { categoriesZh } from "./categories.zh";
 
 export interface CategoryMeta {
   id: ToolCategory;
@@ -152,10 +153,20 @@ export function getCategoryBySlug(slug: string): CategoryMeta | undefined {
   return categories.find((c) => c.slug === slug);
 }
 
-export function getCategoryMetaLocalized(id: ToolCategory, locale: "es" | "en"): CategoryMeta {
+/**
+ * El tercer caso ("zh") solo produce un LABEL/description en chino — nunca
+ * un slug enlazable: este MVP no tiene páginas /zh/categories/..., así que
+ * getCategoryHref() de abajo sigue sin una rama zh a propósito (ver
+ * lib/zh-mvp.ts). Las páginas zh deben mostrar esta etiqueta como texto,
+ * nunca como <Link>.
+ */
+export function getCategoryMetaLocalized(id: ToolCategory, locale: Locale): CategoryMeta {
   const meta = getCategoryMeta(id);
   if (locale === "en") {
     return { ...meta, ...categoriesEn[id] };
+  }
+  if (locale === "zh") {
+    return { ...meta, ...categoriesZh[id] };
   }
   return meta;
 }

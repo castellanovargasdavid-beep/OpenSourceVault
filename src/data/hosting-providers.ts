@@ -1,5 +1,7 @@
 import { affiliateLinks } from "@/lib/site-config";
 import { hostingProvidersEn } from "./hosting-providers.en";
+import { hostingProvidersZh } from "./hosting-providers.zh";
+import type { Locale } from "@/i18n/config";
 
 export interface HostingTier {
   ramMb: number;
@@ -114,9 +116,12 @@ export const hostingProviders: HostingProvider[] = [
   },
 ];
 
-export function getHostingProvidersLocalized(locale: "es" | "en"): HostingProvider[] {
+export function getHostingProvidersLocalized(locale: Locale): HostingProvider[] {
   if (locale === "en") {
     return hostingProviders.map((p) => ({ ...p, ...hostingProvidersEn[p.id] }));
+  }
+  if (locale === "zh") {
+    return hostingProviders.map((p) => ({ ...p, ...hostingProvidersZh[p.id] }));
   }
   return hostingProviders;
 }

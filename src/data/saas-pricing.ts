@@ -4,6 +4,8 @@
  * cambia con frecuencia, así que siempre enlazamos a su web oficial para el
  * precio exacto vigente.
  */
+import type { Locale } from "@/i18n/config";
+
 export interface SaasPricingEntry {
   saasName: string;
   pricePerSeatUsd: number;
@@ -60,7 +62,7 @@ const billingNoteEn: Record<string, string> = {
   Typeform: "Basic plan (account price, not per seat)",
 };
 
-export function getSaasPricingLocalized(name: string, locale: "es" | "en"): SaasPricingEntry | undefined {
+export function getSaasPricingLocalized(name: string, locale: Locale): SaasPricingEntry | undefined {
   const entry = getSaasPricing(name);
   if (!entry) return entry;
   if (locale === "en" && billingNoteEn[name]) {

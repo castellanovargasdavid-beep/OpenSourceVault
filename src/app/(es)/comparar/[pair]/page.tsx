@@ -6,6 +6,7 @@ import { getCompareHref } from "@/lib/routes";
 import { siteConfig } from "@/lib/site-config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { ComparisonPageContent } from "@/components/pages/comparison-page-content";
+import { hasZhCompare } from "@/lib/zh-mvp";
 
 interface PageProps {
   params: Promise<{ pair: string }>;
@@ -35,7 +36,12 @@ export async function generateMetadata({ params }: PageProps, parent: ResolvingM
     description,
     alternates: {
       canonical: url,
-      languages: { es: url, en: `${siteConfig.url}${getCompareHref(comparison.pairSlug, "en")}`, "x-default": url },
+      languages: {
+        es: url,
+        en: `${siteConfig.url}${getCompareHref(comparison.pairSlug, "en")}`,
+        ...(hasZhCompare(comparison.pairSlug) ? { "zh-CN": `${siteConfig.url}${getCompareHref(comparison.pairSlug, "zh")}` } : {}),
+        "x-default": url,
+      },
     },
     openGraph: { title, description, url, type: "article", images: openGraphImages },
     twitter: { card: "summary_large_image", title, description, images: twitterImages },

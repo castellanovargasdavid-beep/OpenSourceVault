@@ -21,6 +21,7 @@ import {
 import { siteConfig } from "@/lib/site-config";
 import { slugify } from "@/lib/utils";
 import { catalogStats } from "@/lib/catalog-stats";
+import { hasZhTool, hasZhCompare } from "@/lib/zh-mvp";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   function entry(
@@ -53,8 +54,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     };
   }
 
+  // La home ("/") se construye aparte (ver homeEntries más abajo) porque
+  // es la única ruta de staticPaths con una página zh-CN real — el resto
+  // de rutas de abajo (stacks, doctor, saas-exit...) no tiene equivalente
+  // en el piloto zh-CN (ver lib/zh-mvp.ts) y entry()/entryEn() las deja
+  // tal cual, solo con es/en/x-default.
   const staticPaths: [string, MetadataRoute.Sitemap[number]["changeFrequency"], number][] = [
-    ["/", "weekly", 1],
     ["/stacks", "weekly", 0.8],
     ["/stacks/builder", "weekly", 0.7],
     ["/doctor", "weekly", 0.8],
@@ -67,19 +72,42 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ["/affiliate-disclosure", "yearly", 0.2],
   ];
 
-  const toolPaths: [string, MetadataRoute.Sitemap[number]["changeFrequency"], number][] = tools.map((tool) => [
-    `/tool/${tool.slug}`,
-    "monthly",
-    0.8,
-  ]);
-
   const stackPaths: [string, MetadataRoute.Sitemap[number]["changeFrequency"], number][] = stacks.map((stack) => [
     `/stacks/${stack.slug}`,
     "weekly",
     0.7,
   ]);
 
-  const allPaths = [...staticPaths, ...toolPaths, ...stackPaths];
+  const allPaths = [...staticPaths, ...stackPaths];
+
+  // Home (ES, EN, y ZH para las 10 fichas del piloto — ver lib/zh-mvp.ts)
+  // comparte las mismas 3 alternates.languages en los 3 (o 2) idiomas, así
+  // que no tiene sentido usar entry()/entryEn() (que generan solo
+  // es/en/x-default) — se construye su propio alternates aquí una vez.
+  const homeAlternates = {
+    languages: { es: siteConfig.url, en: `${siteConfig.url}/en`, "zh-CN": `${siteConfig.url}/zh`, "x-default": siteConfig.url },
+  };
+  const homeEntries: MetadataRoute.Sitemap = [
+    { url: siteConfig.url, changeFrequency: "weekly", priority: 1, alternates: homeAlternates },
+    { url: `${siteConfig.url}/en`, changeFrequency: "weekly", priority: 1, alternates: homeAlternates },
+    { url: `${siteConfig.url}/zh`, changeFrequency: "weekly", priority: 1, alternates: homeAlternates },
+  ];
+
+  // Fichas de herramienta: es/en siempre, zh-CN solo para las 10 del
+  // piloto (hasZhTool) — nunca se genera una entrada ni un alternate hacia
+  // una ficha /zh/tool/... que no existe.
+  const toolEntries: MetadataRoute.Sitemap = tools.flatMap((tool) => {
+    const esUrl = `${siteConfig.url}/tool/${tool.slug}`;
+    const enUrl = `${siteConfig.url}/en/tool/${tool.slug}`;
+    const zhUrl = hasZhTool(tool.slug) ? `${siteConfig.url}/zh/tool/${tool.slug}` : undefined;
+    const alternates = { languages: { es: esUrl, en: enUrl, ...(zhUrl ? { "zh-CN": zhUrl } : {}), "x-default": esUrl } };
+    const entries: MetadataRoute.Sitemap = [
+      { url: esUrl, changeFrequency: "monthly", priority: 0.8, alternates },
+      { url: enUrl, changeFrequency: "monthly", priority: 0.8, alternates },
+    ];
+    if (zhUrl) entries.push({ url: zhUrl, changeFrequency: "monthly", priority: 0.8, alternates });
+    return entries;
+  });
 
   // Categorías, páginas "alternativas a X", comparativas, la guía de
   // despliegue, las guías de migración y la calculadora de ahorro: la URL en
@@ -138,14 +166,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
     entryEn(`/replace/${slug}`, "monthly", 0.8),
   ]);
 
+  // zh-CN solo para las 10 comparativas del piloto (hasZhCompare) — mismo
+  // principio que toolEntries arriba.
   const comparisonEntries: MetadataRoute.Sitemap = getAllComparisonSlugs().flatMap((pair) => {
     const esUrl = `${siteConfig.url}${getCompareHref(pair, "es")}`;
     const enUrl = `${siteConfig.url}${getCompareHref(pair, "en")}`;
-    const alternates = { languages: { es: esUrl, en: enUrl, "x-default": esUrl } };
-    return [
+    const zhUrl = hasZhCompare(pair) ? `${siteConfig.url}${getCompareHref(pair, "zh")}` : undefined;
+    const alternates = { languages: { es: esUrl, en: enUrl, ...(zhUrl ? { "zh-CN": zhUrl } : {}), "x-default": esUrl } };
+    const entries: MetadataRoute.Sitemap = [
       { url: esUrl, changeFrequency: "monthly", priority: 0.7, alternates },
       { url: enUrl, changeFrequency: "monthly", priority: 0.7, alternates },
     ];
+    if (zhUrl) entries.push({ url: zhUrl, changeFrequency: "monthly", priority: 0.7, alternates });
+    return entries;
   });
 
   const migrationGuideEntries: MetadataRoute.Sitemap = tools.flatMap((tool) => {
@@ -194,6 +227,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const toolsExplorerAlternates = { languages: { es: toolsExplorerEsUrl, en: toolsExplorerEnUrl, "x-default": toolsExplorerEsUrl } };
 
   return [
+    ...homeEntries,
+    ...toolEntries,
     ...allPaths.map(([path, freq, priority]) => entry(path, freq, priority)),
     ...allPaths.map(([path, freq, priority]) => entryEn(path, freq, priority)),
     ...categoryEntries,

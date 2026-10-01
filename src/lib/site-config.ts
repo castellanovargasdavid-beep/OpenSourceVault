@@ -3,6 +3,8 @@ export const siteConfig = {
   tagline: "Alternativas Open Source al software que ya usas",
   /** Versión EN — antes duplicada como const local en (en)/layout.tsx y de nuevo (y desincronizada, con "The best...") en (en)/opengraph-image.tsx. */
   enTagline: "Open Source alternatives to the software you already use",
+  /** Versión zh-CN — solo para el piloto AI/LLM/self-hosting (ver lib/zh-mvp.ts), usada en (zh)/layout.tsx. */
+  zhTagline: "AI 与 self-hosting 开源替代方案",
   description:
     "Descubre alternativas de código abierto y auto-hospedables al software SaaS más popular. Compara licencias, mira el docker-compose y despliega en minutos.",
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://www.altfreestack.com",

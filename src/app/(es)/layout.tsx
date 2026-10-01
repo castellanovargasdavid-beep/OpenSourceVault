@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   description: siteConfig.description,
   alternates: {
     canonical: siteConfig.url,
-    languages: { es: siteConfig.url, en: `${siteConfig.url}/en`, "x-default": siteConfig.url },
+    languages: { es: siteConfig.url, en: `${siteConfig.url}/en`, "zh-CN": `${siteConfig.url}/zh`, "x-default": siteConfig.url },
   },
   openGraph: {
     type: "website",

@@ -1,6 +1,7 @@
 import type { OpenSourceTool } from "@/lib/types";
 import { isPublished } from "@/lib/types";
 import { toolsEn } from "./tools.en";
+import { toolsZh } from "./tools.zh";
 import { AGPL_COPYLEFT_NOTE_ES } from "./license-notes";
 import type { Locale } from "@/i18n/config";
 
@@ -8896,11 +8897,30 @@ export function getComingSoonTools() {
   return allTools.filter((t) => !isPublished(t));
 }
 
+/**
+ * zh-CN solo tiene traducción propia para el piloto de 10 herramientas
+ * (ver tools.zh.ts) — para cualquier otra herramienta que aparezca en una
+ * página zh (p.ej. la herramienta secundaria de una comparativa), cae a la
+ * traducción EN existente antes que al español crudo: mezclar inglés es
+ * una degradación aceptada y ya sancionada por el propio encargo; mezclar
+ * español en una página que se presenta como china no lo es.
+ */
 export function getLocalizedTool(tool: OpenSourceTool, locale: Locale): OpenSourceTool {
+  if (locale === "zh") {
+    const zhTranslation = toolsZh[tool.id];
+    if (zhTranslation) return { ...tool, ...zhTranslation };
+    const enFallback = toolsEn[tool.id];
+    return enFallback ? { ...tool, ...enFallback } : tool;
+  }
   if (locale !== "en") return tool;
   const translation = toolsEn[tool.id];
   if (!translation) return tool;
   return { ...tool, ...translation };
+}
+
+/** true si `tool.id` tiene una traducción zh-CN propia (no vía fallback EN) — ver tools.zh.ts. */
+export function hasZhTranslation(toolId: string): boolean {
+  return toolId in toolsZh;
 }
 
 // Nota: toToolCardData()/getLocalizedToolCardData() viven en

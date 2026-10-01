@@ -124,7 +124,7 @@ export function getReleasesFeedUrl(githubUrl: string): string | null {
 }
 
 /** locale es opcional y por defecto "es" para no romper otras llamadas existentes. */
-export function formatRelativeDate(iso: string, locale: "es" | "en" = "es"): string {
+export function formatRelativeDate(iso: string, locale: "es" | "en" | "zh" = "es"): string {
   const date = new Date(iso);
   const days = Math.floor((Date.now() - date.getTime()) / (1000 * 60 * 60 * 24));
 
@@ -136,6 +136,16 @@ export function formatRelativeDate(iso: string, locale: "es" | "en" = "es"): str
     if (months < 12) return `${months} ${months === 1 ? "month" : "months"} ago`;
     const years = Math.floor(months / 12);
     return `${years} ${years === 1 ? "year" : "years"} ago`;
+  }
+
+  if (locale === "zh") {
+    if (days < 1) return "今天";
+    if (days === 1) return "1 天前";
+    if (days < 30) return `${days} 天前`;
+    const months = Math.floor(days / 30);
+    if (months < 12) return `${months} 个月前`;
+    const years = Math.floor(months / 12);
+    return `${years} 年前`;
   }
 
   if (days < 1) return "hoy";

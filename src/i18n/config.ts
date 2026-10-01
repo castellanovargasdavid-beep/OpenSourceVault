@@ -1,3 +1,3 @@
-export type Locale = "es" | "en";
-export const locales: Locale[] = ["es", "en"];
+export type Locale = "es" | "en" | "zh";
+export const locales: Locale[] = ["es", "en", "zh"];
 export const defaultLocale: Locale = "es";

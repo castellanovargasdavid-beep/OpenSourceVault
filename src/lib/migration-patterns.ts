@@ -1,6 +1,7 @@
 import { patternsEn } from "./migration-patterns.en";
 import { pairOverrides, getPairOverrideKey } from "./migration-pair-overrides";
 import { pairOverridesEn } from "./migration-pair-overrides.en";
+import type { Locale } from "@/i18n/config";
 
 export type MigrationPatternId =
   | "notes-docs"
@@ -477,7 +478,7 @@ export function getMigrationPatternContent(id: MigrationPatternId): MigrationPat
 
 export function getMigrationPatternContentLocalized(
   id: MigrationPatternId,
-  locale: "es" | "en"
+  locale: Locale
 ): MigrationPatternContent {
   if (locale === "en") {
     return patternsEn[id];
@@ -496,10 +497,13 @@ export function fillTemplate(text: string, fromName: string, toName: string): st
  * búsquedas del sitio lo tienen — y si no, cae al patrón genérico por
  * categoría (mismo comportamiento que antes de que existieran los overrides).
  */
+// No hay página /zh/guias/migrar todavía (ver lib/zh-mvp.ts) — "zh" cae al
+// mismo contenido que "es" aquí, igual que cualquier locale no-"en" ya
+// hacía antes de que existiera un tercer idioma.
 export function getMigrationContentForPair(
   fromName: string,
   toSlug: string,
-  locale: "es" | "en"
+  locale: Locale
 ): MigrationPatternContent {
   const key = getPairOverrideKey(fromName, toSlug);
   const overrides = locale === "en" ? pairOverridesEn : pairOverrides;

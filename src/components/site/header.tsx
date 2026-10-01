@@ -11,6 +11,39 @@ import { NavDropdown } from "@/components/site/nav-dropdown";
 
 export function Header({ locale = "es" }: { locale?: Locale }) {
   const t = getDictionary(locale);
+
+  // El piloto zh-CN (ver lib/zh-mvp.ts) no tiene página propia para
+  // categorías, stacks, Stack Builder, Doctor Compose, Replace o SaaS
+  // Exit — el nav de abajo enlazaría a rutas /zh/... inexistentes. En vez
+  // de forzar cada href con comprobaciones condicionales, un header propio
+  // y deliberadamente mínimo: logo → /zh, selector de idioma y el único
+  // enlace que sigue siendo válido en cualquier idioma (GitHub, externo).
+  if (locale === "zh") {
+    return (
+      <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/80 backdrop-blur">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+          <Link href="/zh" className="flex items-center gap-2 font-semibold text-slate-900">
+            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-sm">
+              <Boxes size={18} />
+            </span>
+            <span>{siteConfig.name}</span>
+          </Link>
+          <div className="flex items-center gap-3">
+            <LanguageSwitcher locale={locale} />
+            <a
+              href={siteConfig.links.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden h-9 items-center gap-1.5 rounded-lg border border-slate-300 px-3 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 sm:inline-flex"
+            >
+              <GithubIcon size={16} />
+              {t.header.github}
+            </a>
+          </div>
+        </div>
+      </header>
+    );
+  }
   /**
    * Doctor Compose / Reemplaza mi SaaS / Auditoría SaaS agrupadas bajo un
    * desplegable "Herramientas" en escritorio (ver <NavDropdown>) — a

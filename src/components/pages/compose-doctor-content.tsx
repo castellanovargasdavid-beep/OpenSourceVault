@@ -50,10 +50,14 @@ export function ComposeDoctorContent({ locale = "es", t }: { locale?: Locale; t:
   const [copied, setCopied] = React.useState(false);
   const [fixedCopied, setFixedCopied] = React.useState(false);
 
+  // No hay página /zh/doctor todavía (ver lib/zh-mvp.ts) — compose-doctor.ts
+  // se queda deliberadamente en "es"|"en"; "zh" cae a "es" aquí, igual que
+  // cualquier locale no-"en" ya hacía antes de que existiera un tercer idioma.
+  const doctorLocale: "es" | "en" = locale === "en" ? "en" : "es";
   const trimmed = input.trim();
   const kind = trimmed ? detectInputKind(input) : null;
-  const findings = !trimmed ? [] : kind === "yaml" ? analyzeComposeYaml(input, locale) : analyzeErrorMessage(input, locale);
-  const fix = kind === "yaml" && trimmed ? autoFixComposeYaml(input, locale) : null;
+  const findings = !trimmed ? [] : kind === "yaml" ? analyzeComposeYaml(input, doctorLocale) : analyzeErrorMessage(input, doctorLocale);
+  const fix = kind === "yaml" && trimmed ? autoFixComposeYaml(input, doctorLocale) : null;
 
   function handleTryExample() {
     setInput(EXAMPLE_COMPOSE);

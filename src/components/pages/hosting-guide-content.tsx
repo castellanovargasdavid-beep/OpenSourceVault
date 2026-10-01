@@ -1174,9 +1174,14 @@ const providerMeta: Record<HostingProviderId, ProviderMeta> = {
   railway: { name: "Railway", domain: "railway.app", gradient: "from-violet-500 to-violet-600" },
 };
 
+// No hay página /zh/guias/hosting todavía (ver lib/zh-mvp.ts) — la entrada
+// "zh" solo existe para satisfacer el tipo Record<Locale, ...> y nunca se
+// renderiza en la práctica; reutiliza los pasos en inglés en vez de
+// duplicar contenido para un idioma sin página real aquí.
 const guidesByLocale: Record<Locale, Record<HostingProviderId, GuideStep[]>> = {
   es: { digitalocean: digitaloceanEs, vultr: vultrEs, railway: railwayEs },
   en: { digitalocean: digitaloceanEn, vultr: vultrEn, railway: railwayEn },
+  zh: { digitalocean: digitaloceanEn, vultr: vultrEn, railway: railwayEn },
 };
 
 export function getHostingGuideMeta(provider: HostingProviderId) {

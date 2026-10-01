@@ -1,5 +1,6 @@
 import type { OpenSourceTool, ToolCardData } from "@/lib/types";
 import { toolCardShortDescriptionsEn } from "@/data/tool-card-short-descriptions.en";
+import { toolCardShortDescriptionsZh } from "@/data/tool-card-short-descriptions.zh";
 import { resolveToolResourceProfile } from "@/lib/tool-difficulty";
 import { resolveGpuRequirement } from "@/lib/tool-hardware";
 import type { Locale } from "@/i18n/config";
@@ -43,6 +44,12 @@ export function toToolCardData(tool: OpenSourceTool): ToolCardData {
 }
 
 export function getLocalizedToolCardData(card: ToolCardData, locale: Locale): ToolCardData {
+  if (locale === "zh") {
+    const zh = toolCardShortDescriptionsZh[card.id];
+    if (zh) return { ...card, shortDescription: zh };
+    const enFallback = toolCardShortDescriptionsEn[card.id];
+    return enFallback ? { ...card, shortDescription: enFallback } : card;
+  }
   if (locale !== "en") return card;
   const shortDescription = toolCardShortDescriptionsEn[card.id];
   if (!shortDescription) return card;
