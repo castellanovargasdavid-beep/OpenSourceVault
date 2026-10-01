@@ -140,4 +140,213 @@ export const toolSeoEn: Partial<Record<string, ToolSeoOverride>> = {
       },
     ],
   },
+  immich: {
+    metaTitle: "Immich: self-hosted AI photo backup (Google Photos alternative)",
+    metaDescription:
+      "Immich automatically backs up photos and videos from your phone to your own server, with facial recognition and shared albums. AGPL-3.0 license, Docker, optional GPU.",
+    faqs: [
+      {
+        q: "What is Immich?",
+        a: "An open source tool (AGPL-3.0) that automatically backs up photos and videos from your phone to your own server, with facial recognition, smart search, and shared albums — a self-hosted alternative to Google Photos.",
+      },
+      {
+        q: "Does Immich need a GPU?",
+        a: "No, it's optional. It supports optional hardware acceleration for both video transcoding (NVENC, Quick Sync, VAAPI, RKMPP) and facial recognition/smart search (CUDA, OpenVINO, ROCm) — both are enabled separately in Settings; everything still works on CPU without them.",
+      },
+      {
+        q: "How do you deploy Immich with Docker?",
+        a: "With several services: the main server, a machine-learning container, PostgreSQL (with the pgvecto-rs extension for vector search), and Redis. The upload volume should point to a disk with real space for your whole photo library, not the system disk.",
+      },
+    ],
+  },
+  garage: {
+    metaTitle: "Garage: distributed S3 storage for home clusters (open source)",
+    metaDescription:
+      "Garage is S3-compatible object storage built for small, geo-distributed clusters with very low per-node resource use. AGPL-3.0 license, Docker in minutes.",
+    faqs: [
+      {
+        q: "What is Garage?",
+        a: "An open source object storage system (AGPL-3.0), S3 API-compatible, written in Rust and designed to run on several small nodes, even geo-distributed, with high resilience.",
+      },
+      {
+        q: "Is Garage compatible with the Amazon S3 API?",
+        a: "Yes, its API is 100% S3-compatible, so most clients and tools that already speak S3 work against Garage with no code changes.",
+      },
+      {
+        q: "What kind of cluster is Garage built for?",
+        a: "Home or self-hosted clusters of several small nodes with modest hardware, even geographically distributed, with very low resource use per node. Its clustering setup has a somewhat steeper learning curve in exchange.",
+      },
+    ],
+  },
+  wekan: {
+    metaTitle: "Wekan: open source Kanban board under the MIT license (Trello alternative)",
+    metaDescription:
+      "Wekan is an open source Kanban board with swimlanes, checklists, and webhook integrations, MIT licensed. How to deploy it with Docker and what to expect vs. Trello.",
+    faqs: [
+      {
+        q: "What is Wekan?",
+        a: "An open source Kanban board (MIT license) with lists, cards, labels, and checklists, very similar in experience to Trello, with active community support.",
+      },
+      {
+        q: "Wekan vs Trello: what changes?",
+        a: "The experience is very similar (lists, cards, swimlanes), but Wekan's interface is somewhat less polished than Trello's — in exchange, it's free, self-hostable, and under a very permissive MIT license, with no free-SaaS-account limits.",
+      },
+      {
+        q: "How do you deploy Wekan with Docker?",
+        a: "With the official `wekanteam/wekan` image and a MongoDB database — this page's docker-compose includes both services ready to copy.",
+      },
+    ],
+  },
+  saleor: {
+    metaTitle: "Saleor: open source headless GraphQL e-commerce (Shopify Plus alternative)",
+    metaDescription:
+      "Saleor is a headless e-commerce platform with a full GraphQL API and event-driven architecture, built for high-traffic stores. BSD-3-Clause license.",
+    faqs: [
+      {
+        q: "What is Saleor?",
+        a: "A GraphQL-first headless commerce framework (BSD-3-Clause license), with a fully customizable checkout and event-driven architecture (webhooks) — built for large-scale stores as an alternative to Shopify Plus.",
+      },
+      {
+        q: "Saleor vs Shopify Plus: who is each one for?",
+        a: "Saleor is for teams with development capacity who want to control every part of checkout and storefront through its GraphQL API. Shopify Plus is a managed service with no infrastructure to maintain — in exchange for giving up that control and paying the subscription.",
+      },
+      {
+        q: "Is Saleor actually free?",
+        a: "The core is open source (BSD-3-Clause) and self-hosts at no license cost. It's Open-Core: there's an optional paid managed cloud plan, but it isn't required to run it yourself.",
+      },
+    ],
+  },
+  appwrite: {
+    metaTitle: "Appwrite: open source backend-as-a-service (Firebase alternative)",
+    metaDescription:
+      "Appwrite covers auth, databases, storage, and serverless functions with SDKs for every framework. BSD-3-Clause license, verified pinned Docker image.",
+    faqs: [
+      {
+        q: "What is Appwrite?",
+        a: "A backend-as-a-service platform (BSD-3-Clause license) with SDKs for all popular frameworks, covering auth, databases, storage, serverless functions, and messaging — a Firebase alternative focused on developer experience.",
+      },
+      {
+        q: "Appwrite vs PocketBase: which should you pick?",
+        a: "Appwrite is a full BaaS with messaging, multiple function runtimes, and a very complete dashboard, at the cost of a multi-container stack (MariaDB + Redis) that's heavier to audit. PocketBase is a single Go binary with embedded SQLite — much simpler to deploy, built for small projects or MVPs.",
+      },
+      {
+        q: "Is Appwrite's Docker image reliable?",
+        a: "Yes — it's marked `VERIFIED_PINNED` in our deployment audit: a version-pinned, verified image, not a floating tag.",
+      },
+    ],
+  },
+  redash: {
+    metaTitle: "Redash: open source SQL queries and dashboards (Looker alternative)",
+    metaDescription:
+      "Redash connects to your data sources to write SQL, visualize results, and share dashboards. BSD-2-Clause license, Docker deployment in minutes.",
+    faqs: [
+      {
+        q: "What is Redash?",
+        a: "An open source tool (BSD-2-Clause license) that connects to multiple data sources to write SQL queries, visualize them, and share them in dashboards — a lightweight alternative to Looker for data teams.",
+      },
+      {
+        q: "Is Redash still actively developed?",
+        a: "Its development pace has slowed compared to Metabase over the past few years. It's still a solid choice with a very permissive license, but don't expect the release pace of tools with commercial backing.",
+      },
+      {
+        q: "How do you deploy Redash with Docker?",
+        a: "With the official `redash/redash` image plus PostgreSQL and Redis — this page's docker-compose includes all three services ready to copy.",
+      },
+    ],
+  },
+  zammad: {
+    metaTitle: "Zammad: open source ticketing system (self-hostable Zendesk alternative)",
+    metaDescription:
+      "Zammad offers a multichannel ticket inbox, knowledge base, and SLA automations, AGPL-3.0 licensed. What you need to deploy it with Docker.",
+    faqs: [
+      {
+        q: "What is Zammad?",
+        a: "A support ticketing system (AGPL-3.0 license) with a multichannel inbox, built-in knowledge base, and SLA automations — offered as a self-hostable alternative to Zendesk.",
+      },
+      {
+        q: "What do you need to deploy Zammad?",
+        a: "PostgreSQL and Elasticsearch — one more service to maintain than other helpdesks in this catalog, since Zammad depends on Elasticsearch for its search.",
+      },
+      {
+        q: "Zammad vs Zendesk: what changes?",
+        a: "Zammad is free and self-hostable (AGPL-3.0), with a modern interface compared to other open source helpdesks. In exchange for not paying a license, you maintain the infrastructure yourself (including Elasticsearch).",
+      },
+    ],
+  },
+  headscale: {
+    metaTitle: "Headscale: self-hosted coordination server compatible with Tailscale",
+    metaDescription:
+      "Headscale reimplements Tailscale's control plane so you can use its official clients without depending on its commercial service. BSD-3-Clause, WireGuard underneath.",
+    faqs: [
+      {
+        q: "What is Headscale?",
+        a: "An open source implementation (BSD-3-Clause) of Tailscale's coordination server: it builds your own encrypted mesh network with WireGuard using the same official clients, with no dependency on Tailscale Inc.'s commercial control plane.",
+      },
+      {
+        q: "Do I need Headscale's own client, or Tailscale's?",
+        a: "You use the official Tailscale clients on all your devices — Headscale only replaces the coordination server (control plane) they connect to, not the client.",
+      },
+      {
+        q: "Does Headscale support ACLs and exit nodes like the commercial service?",
+        a: "Yes, it supports ACLs, exit nodes, and subnets just like Tailscale Inc. In exchange, it requires editing a YAML config file — not everything is controlled through environment variables alone.",
+      },
+    ],
+  },
+  umami: {
+    metaTitle: "Umami: minimal, privacy-friendly web analytics (Google Analytics alternative)",
+    metaDescription:
+      "Umami is lightweight, privacy-respecting web analytics with a single container and database. MIT license. How it compares to Plausible and Matomo.",
+    faqs: [
+      {
+        q: "What is Umami?",
+        a: "A web analytics tool (MIT license) that's simple, fast, and privacy-respecting, with a single Node.js binary and a database — ideal for anyone who wants minimal operational overhead.",
+      },
+      {
+        q: "Umami vs Plausible vs Matomo: which should you pick?",
+        a: "Umami is the lightest to deploy (a single container plus a database) for basic multi-site analytics. Matomo is the most complete (heatmaps, session recordings, funnels, GA4-level detail) at the cost of more operational complexity. Plausible focuses on data minimization and a very simple, cookie-free dashboard.",
+      },
+      {
+        q: "Does Umami fully replace Google Analytics?",
+        a: "It covers the essentials — multi-site traffic, custom events, its own reporting API — but its reports are less detailed than GA4's or Matomo's, as we note honestly on its page.",
+      },
+    ],
+  },
+  neko: {
+    metaTitle: "Neko (n.eko): streamed shared browser via Docker (open source)",
+    metaDescription:
+      "Neko creates a streamed shared browser room where multiple people watch and control the same virtual browser at once. Apache-2.0 license, one Docker command.",
+    faqs: [
+      {
+        q: "What is Neko (n.eko)?",
+        a: "An open source tool (Apache-2.0) that creates a streamed shared browser room: multiple people watch and control the same virtual browser at once, ideal for watch parties or collaborative browsing.",
+      },
+      {
+        q: "Is Neko a replacement for Zoom?",
+        a: "No. It covers a unique, specific use case Zoom doesn't solve well — a genuinely shared browser, not just screen sharing — but it isn't a general replacement for work video calls, as we note on its page.",
+      },
+      {
+        q: "How do you deploy Neko with Docker?",
+        a: "With the `m1k1o/neko` image in whichever browser variant you prefer (e.g. `m1k1o/neko:firefox`) — a single Docker service, no external database.",
+      },
+    ],
+  },
+  hasura: {
+    metaTitle: "Hasura: instant GraphQL API over PostgreSQL (open source)",
+    metaDescription:
+      "Hasura generates a real-time GraphQL and REST API from your PostgreSQL database, with row-level permissions. Apache-2.0 license, Docker Compose included.",
+    faqs: [
+      {
+        q: "What is Hasura?",
+        a: "An engine (Apache-2.0 license) that instantly generates a real-time GraphQL and REST API from your PostgreSQL database, with granular row-level permissions — an alternative to Firebase or AWS AppSync.",
+      },
+      {
+        q: "Is Hasura actually free?",
+        a: "The engine (Community Edition) is Apache-2.0 and self-hosts for free. It's Open-Core: Hasura Cloud is the paid managed plan, optional and not required to run it yourself.",
+      },
+      {
+        q: "Does Hasura work with NoSQL databases?",
+        a: "It's built primarily for PostgreSQL and a few other relational databases, not NoSQL — already noted honestly on its page.",
+      },
+    ],
+  },
 };

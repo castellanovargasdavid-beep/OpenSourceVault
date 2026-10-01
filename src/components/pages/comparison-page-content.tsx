@@ -170,6 +170,9 @@ export function ComparisonPageContent({ comparison, locale }: { comparison: Tool
           <div key={tool.id} className={cn("rounded-xl border p-6", palette.soft, palette.border)}>
             <h2 className="mb-3 text-lg font-semibold text-slate-900">{tool.name}</h2>
             <p className="mb-4 text-sm text-slate-600">{tool.shortDescription}</p>
+            {tool.notes && (
+              <p className="mb-4 rounded-lg border border-sky-200 bg-sky-50 px-3 py-2 text-xs text-sky-800">ℹ️ {tool.notes}</p>
+            )}
 
             <p className="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-emerald-700">
               <Check size={14} /> {t.comparisonPage.pros}

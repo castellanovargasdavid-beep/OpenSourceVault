@@ -219,6 +219,146 @@ export const pairOverrides: Record<string, MigrationPatternContent> = {
     beforeYouCancel:
       "Antes de cancelar {from}, verifica que el importador trajo los hilos y las reacciones con emoji correctamente en un par de canales de prueba — mmctl sí los soporta, pero conviene confirmarlo con tus propios datos antes de migrar al resto del equipo.",
   },
+
+  // "Confluence→outline" ya está en Top 5 (posición 5.08) — toque quirúrgico
+  // deliberado: el cuerpo (intro/pasos/beforeYouCancel) es IDÉNTICO al
+  // patrón genérico "notes-docs" que esta guía ya usaba, verbatim, sin
+  // reescritura. Solo se añade la capa de title/meta/FAQ — ver el encargo
+  // "no reescritura masiva sin justificar" para páginas ya bien posicionadas.
+  "Confluence→outline": {
+    intro:
+      "Lo más laborioso al migrar notas o documentación no es el texto en sí, sino la estructura (carpetas, enlaces internos, bases de datos) y los permisos de equipo.",
+    steps: [
+      {
+        title: "Exporta cada espacio/página desde {from}",
+        body: "Casi todas las apps de notas ofrecen exportar a Markdown, HTML o PDF desde el menú de cada página o espacio. Exporta primero las páginas raíz y luego las subpáginas para conservar la jerarquía.",
+      },
+      {
+        title: "Importa el contenido en {to}",
+        body: "La mayoría de alternativas open source aceptan importación masiva de Markdown/HTML. Revisa la documentación de {to} para el formato exacto que espera — algunas requieren una estructura de carpetas concreta.",
+      },
+      {
+        title: "Repara los enlaces internos",
+        body: "Los enlaces entre páginas (wikilinks) casi nunca se migran automáticamente entre plataformas distintas. Tras importar, revisa las páginas más enlazadas y corrige las referencias rotas.",
+      },
+      {
+        title: "Vuelve a invitar a tu equipo",
+        body: "Los permisos y miembros del workspace no se exportan. Crea los espacios/equipos en {to} y vuelve a invitar a cada persona con el rol adecuado.",
+      },
+    ],
+    beforeYouCancel:
+      "Antes de cancelar {from}, verifica que el conteo de páginas coincide y que al menos las páginas más visitadas se ven bien formateadas — el Markdown exportado a veces pierde tablas o bloques embebidos.",
+    metaTitle: "Migrar de {from} a {to}: wiki de equipo con búsqueda instantánea ({year})",
+    metaDescription:
+      "Guía paso a paso para migrar de {from} a {to}: qué exporta cada espacio, cómo reparar enlaces internos, y qué revisar antes de cancelar {from}.",
+    faqs: [
+      {
+        q: "¿Qué diferencia a Outline de Confluence?",
+        a: "Outline es una wiki de equipo más rápida y ligera, con edición colaborativa en tiempo real, búsqueda instantánea y una estructura de colecciones más simple que los espacios de Confluence.",
+      },
+      {
+        q: "¿Se migran los permisos de Confluence a Outline?",
+        a: "No automáticamente — los permisos y miembros del workspace no se exportan. Tendrás que recrear los equipos en Outline y volver a invitar a cada persona con el rol adecuado.",
+      },
+      {
+        q: "¿Qué pasa con los enlaces internos entre páginas?",
+        a: "Los enlaces entre páginas (wikilinks) casi nunca se migran automáticamente entre plataformas distintas — después de importar, revisa las páginas más enlazadas y corrige las referencias rotas.",
+      },
+    ],
+  },
+
+  // "Confluence→bookstack" se diferencia deliberadamente de
+  // "Confluence→outline" (mismo SaaS de origen, herramienta distinta) para
+  // evitar canibalización: aquí el eje es la estructura jerárquica en
+  // libros/capítulos/páginas y la licencia MIT, no la búsqueda/colaboración
+  // en tiempo real que vende la guía de Outline.
+  "Confluence→bookstack": {
+    intro:
+      "A diferencia de Outline, {to} organiza el contenido en una jerarquía fija de libros, capítulos y páginas — lo más laborioso al migrar no es el texto, sino decidir cómo mapear los espacios de {from} a esa estructura.",
+    steps: [
+      {
+        title: "Planifica tu jerarquía de libros y capítulos antes de exportar",
+        body: "{to} organiza todo en Libros → Capítulos → Páginas, una jerarquía más rígida que los espacios de {from}. Antes de exportar, decide qué espacio se convierte en qué libro — evita tener que reorganizar todo después de importar.",
+      },
+      {
+        title: "Exporta cada página de {from} a HTML o Markdown",
+        body: "Exporta página por página o espacio completo desde el menú de exportación de {from}. El editor WYSIWYG de {to} importa HTML de forma más fiable que Markdown para contenido con tablas o formato complejo.",
+      },
+      {
+        title: "Crea la estructura de libros en {to} e importa el contenido",
+        body: "Crea primero los libros y capítulos vacíos siguiendo tu plan del paso 1, y después pega o importa el contenido de cada página exportada en su lugar correspondiente.",
+      },
+      {
+        title: "Configura permisos granulares por libro o capítulo",
+        body: "{to} permite permisos granulares a nivel de libro, capítulo o página individual — revisa quién debía tener acceso a cada espacio en {from} y recréalo con ese mismo nivel de detalle.",
+      },
+    ],
+    beforeYouCancel:
+      "Antes de cancelar {from}, verifica que las imágenes y archivos adjuntos se importaron correctamente en cada página — el editor WYSIWYG de {to} los maneja distinto a los macros de adjuntos de {from}.",
+    metaTitle: "Migrar de {from} a {to}: documentación en libros y capítulos ({year})",
+    metaDescription:
+      "Guía paso a paso para migrar de {from} a {to}: cómo planificar tu jerarquía de libros y capítulos, exportar páginas y configurar permisos antes de cancelar {from}.",
+    faqs: [
+      {
+        q: "¿En qué se diferencia BookStack de Outline como alternativa a Confluence?",
+        a: "BookStack organiza el contenido en una jerarquía fija de libros, capítulos y páginas — más simple y predecible que los espacios de Confluence u Outline. Tiene licencia MIT (Outline usa BUSL-1.1, no OSI) y corre sobre PHP/Laravel con MySQL, un stack más ligero.",
+      },
+      {
+        q: "¿BookStack soporta permisos granulares?",
+        a: "Sí, a nivel de libro, capítulo o página individual — útil para replicar quién tenía acceso a qué espacio en Confluence.",
+      },
+      {
+        q: "¿Qué pasa con los adjuntos e imágenes al migrar?",
+        a: "Se importan junto con el contenido HTML de cada página, pero el editor de BookStack los maneja distinto a los macros de adjuntos de Confluence — conviene revisar cada página tras importar, no solo el texto.",
+      },
+    ],
+  },
+
+  "ChatGPT Plus→open-webui": {
+    intro:
+      "A diferencia de otras migraciones, aquí no hay un export de {from} que se pueda re-importar tal cual en {to} — lo que cambia de verdad es dónde corre el modelo y quién ve tus conversaciones, no un archivo de datos.",
+    steps: [
+      {
+        title: "Exporta tu historial de {from} solo como archivo de referencia",
+        body: "Desde Ajustes → Controles de datos → Exportar datos en {from} puedes descargar un .json con tu historial — guárdalo como consulta, porque no hay una vía de re-importarlo directamente en {to}.",
+      },
+      {
+        title: "Despliega {to} junto a un backend que ejecute el modelo",
+        body: "{to} es solo la interfaz de chat: no ejecuta modelos por sí misma. La vía más simple es Ollama en un contenedor aparte (ver el docker-compose de su ficha) — funciona sin GPU, aunque una GPU acelera mucho la respuesta.",
+      },
+      {
+        title: "Descarga al menos un modelo local con Ollama",
+        body: "Ollama necesita que descargues un modelo (por ejemplo Llama o Mistral) antes de poder chatear desde {to} — el tamaño del modelo que elijas determina cuánta RAM/VRAM necesitas, no {to} en sí.",
+      },
+      {
+        title: "O conecta {to} a una API remota compatible con OpenAI",
+        body: "Si no quieres depender de hardware local, {to} también se conecta a cualquier API compatible con OpenAI (incluida la propia OpenAI) — pierdes la privacidad de un modelo 100% local, pero mantienes la misma interfaz con la calidad de un modelo comercial.",
+      },
+      {
+        title: "Recrea tus prompts e instrucciones personalizadas",
+        body: "Las \"custom instructions\" y prompts guardados de {from} no se migran automáticamente — revisa el .json del paso 1 y vuelve a guardarlos en {to}.",
+      },
+    ],
+    beforeYouCancel:
+      "Antes de cancelar {from}, prueba {to} con 3-5 tareas reales que ya resolvías antes — la calidad de respuesta depende por completo del modelo que elijas correr (local o remoto a través de una API), no es un dato fijo de {to}.",
+    metaTitle: "Migrar de {from} a {to}: IA local y privada, paso a paso ({year})",
+    metaDescription:
+      "Guía para migrar de {from} a {to}: cómo desplegarlo con Ollama, correr modelos locales o conectar tu propia API, y qué esperar de la calidad de respuesta.",
+    faqs: [
+      {
+        q: "¿Open WebUI necesita GPU?",
+        a: "No es obligatoria. Open WebUI es solo la interfaz — la inferencia ocurre en Ollama u otro backend. Sin GPU funciona sobre CPU, pero una GPU acelera mucho la velocidad de respuesta.",
+      },
+      {
+        q: "¿Puedo usar Open WebUI sin modelos 100% locales?",
+        a: "Sí. También se conecta a cualquier API compatible con OpenAI (incluida la propia OpenAI), si prefieres la calidad de un modelo comercial sin cambiar de interfaz.",
+      },
+      {
+        q: "¿Qué pierdo frente a ChatGPT Plus?",
+        a: "La calidad de respuesta depende por completo del modelo que elijas correr — un modelo local pequeño no siempre iguala a los modelos comerciales más recientes, aunque conectar Open WebUI a una API comercial acerca mucho esa calidad sin perder la interfaz ni el control de tus prompts.",
+      },
+    ],
+  },
 };
 
 /** Clave de búsqueda en `pairOverrides`/`pairOverridesEn` para un par (SaaS, herramienta) concreto. */

@@ -209,4 +209,134 @@ export const pairOverridesEn: Record<string, MigrationPatternContent> = {
     beforeYouCancel:
       "Before cancelling {from}, verify the importer brought over threads and emoji reactions correctly in a couple of test channels — mmctl does support them, but it's worth confirming with your own data before migrating the rest of the team.",
   },
+
+  "Confluence→outline": {
+    intro:
+      "The hardest part of migrating notes or documentation isn't the text itself — it's the structure (folders, internal links, databases) and team permissions.",
+    steps: [
+      {
+        title: "Export each space/page from {from}",
+        body: "Almost every notes app lets you export to Markdown, HTML or PDF from each page's or space's menu. Export root pages first, then subpages, to preserve the hierarchy.",
+      },
+      {
+        title: "Import the content into {to}",
+        body: "Most open source alternatives accept bulk Markdown/HTML import. Check {to}'s documentation for the exact format it expects — some require a specific folder structure.",
+      },
+      {
+        title: "Fix internal links",
+        body: "Links between pages (wikilinks) almost never migrate automatically between different platforms. After importing, review the most-linked pages and fix broken references.",
+      },
+      {
+        title: "Re-invite your team",
+        body: "Workspace permissions and members aren't exported. Create the spaces/teams in {to} and re-invite each person with the right role.",
+      },
+    ],
+    beforeYouCancel:
+      "Before cancelling {from}, check that the page count matches and that at least your most-visited pages render correctly — exported Markdown sometimes loses tables or embedded blocks.",
+    metaTitle: "Migrate from {from} to {to}: team wiki with instant search ({year})",
+    metaDescription:
+      "Step-by-step guide to migrate from {from} to {to}: what each space exports, how to fix internal links, and what to check before cancelling {from}.",
+    faqs: [
+      {
+        q: "What sets Outline apart from Confluence?",
+        a: "Outline is a faster, lighter team wiki, with real-time collaborative editing, instant search, and a simpler collections structure than Confluence's spaces.",
+      },
+      {
+        q: "Do Confluence permissions carry over to Outline?",
+        a: "Not automatically — workspace permissions and members aren't exported. You'll need to recreate the teams in Outline and re-invite each person with the right role.",
+      },
+      {
+        q: "What happens to internal links between pages?",
+        a: "Links between pages (wikilinks) almost never migrate automatically between different platforms — after importing, review the most-linked pages and fix broken references.",
+      },
+    ],
+  },
+
+  "Confluence→bookstack": {
+    intro:
+      "Unlike Outline, {to} organizes content in a fixed hierarchy of books, chapters, and pages — the hardest part of migrating isn't the text, it's deciding how to map {from}'s spaces onto that structure.",
+    steps: [
+      {
+        title: "Plan your book and chapter hierarchy before exporting",
+        body: "{to} organizes everything as Books → Chapters → Pages, a stricter hierarchy than {from}'s spaces. Before exporting, decide which space becomes which book — this avoids reorganizing everything after import.",
+      },
+      {
+        title: "Export each page from {from} as HTML or Markdown",
+        body: "Export page by page or a full space from {from}'s export menu. {to}'s WYSIWYG editor imports HTML more reliably than Markdown for content with tables or complex formatting.",
+      },
+      {
+        title: "Create the book structure in {to} and import the content",
+        body: "Create the empty books and chapters first, following your plan from step 1, then paste or import each exported page's content into its matching spot.",
+      },
+      {
+        title: "Set granular permissions per book or chapter",
+        body: "{to} supports granular permissions at the book, chapter, or individual page level — review who had access to each space in {from} and recreate it at that same level of detail.",
+      },
+    ],
+    beforeYouCancel:
+      "Before cancelling {from}, verify images and attachments imported correctly on each page — {to}'s WYSIWYG editor handles them differently from {from}'s attachment macros.",
+    metaTitle: "Migrate from {from} to {to}: documentation in books and chapters ({year})",
+    metaDescription:
+      "Step-by-step guide to migrate from {from} to {to}: how to plan your book and chapter hierarchy, export pages, and set permissions before cancelling {from}.",
+    faqs: [
+      {
+        q: "How does BookStack differ from Outline as a Confluence alternative?",
+        a: "BookStack organizes content in a fixed hierarchy of books, chapters, and pages — simpler and more predictable than Confluence's or Outline's spaces. It's MIT licensed (Outline uses BUSL-1.1, not OSI) and runs on PHP/Laravel with MySQL, a lighter stack.",
+      },
+      {
+        q: "Does BookStack support granular permissions?",
+        a: "Yes, at the book, chapter, or individual page level — useful for replicating who had access to which space in Confluence.",
+      },
+      {
+        q: "What happens to attachments and images when migrating?",
+        a: "They import along with each page's HTML content, but BookStack's editor handles them differently from Confluence's attachment macros — it's worth reviewing each page after import, not just the text.",
+      },
+    ],
+  },
+
+  "ChatGPT Plus→open-webui": {
+    intro:
+      "Unlike other migrations, there's no {from} export you can re-import into {to} as-is — what actually changes is where the model runs and who sees your conversations, not a data file.",
+    steps: [
+      {
+        title: "Export your {from} history as a reference file only",
+        body: "From Settings → Data Controls → Export Data in {from} you can download a .json of your history — keep it for reference, since there's no way to re-import it directly into {to}.",
+      },
+      {
+        title: "Deploy {to} alongside a backend that runs the model",
+        body: "{to} is just the chat interface: it doesn't run models on its own. The simplest path is Ollama in a separate container (see the docker-compose on its page) — it works without a GPU, though a GPU speeds up responses significantly.",
+      },
+      {
+        title: "Download at least one local model with Ollama",
+        body: "Ollama needs you to pull a model (for example Llama or Mistral) before you can chat from {to} — the model size you pick determines how much RAM/VRAM you need, not {to} itself.",
+      },
+      {
+        title: "Or connect {to} to a remote OpenAI-compatible API",
+        body: "If you don't want to depend on local hardware, {to} also connects to any OpenAI-compatible API (including OpenAI itself) — you lose the privacy of a fully local model, but keep the same interface with commercial-model quality.",
+      },
+      {
+        title: "Recreate your saved prompts and custom instructions",
+        body: "{from}'s custom instructions and saved prompts don't migrate automatically — check the .json from step 1 and save them again in {to}.",
+      },
+    ],
+    beforeYouCancel:
+      "Before cancelling {from}, test {to} with 3-5 real tasks you used to solve with it — response quality depends entirely on the model you choose to run (local or remote via an API), it isn't a fixed property of {to}.",
+    metaTitle: "Migrate from {from} to {to}: local, private AI, step by step ({year})",
+    metaDescription:
+      "Guide to migrate from {from} to {to}: how to deploy it with Ollama, run local models or connect your own API, and what to expect from response quality.",
+    faqs: [
+      {
+        q: "Does Open WebUI need a GPU?",
+        a: "It's not required. Open WebUI is just the interface — inference happens in Ollama or another backend. It works on CPU without a GPU, but a GPU speeds up response time significantly.",
+      },
+      {
+        q: "Can I use Open WebUI without fully local models?",
+        a: "Yes. It also connects to any OpenAI-compatible API (including OpenAI itself), if you prefer commercial-model quality without changing interfaces.",
+      },
+      {
+        q: "What do I lose compared to ChatGPT Plus?",
+        a: "Response quality depends entirely on the model you choose to run — a small local model won't always match the latest commercial models, though connecting Open WebUI to a commercial API closes that gap a lot without losing the interface or control over your prompts.",
+      },
+    ],
+  },
 };
