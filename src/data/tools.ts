@@ -92,7 +92,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   plane-app:
-    image: makeplane/plane-app:latest
+    image: makeplane/plane-aio-community:v1.4.2
     restart: unless-stopped
     ports:
       - "3000:3000"
@@ -1106,7 +1106,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   open-webui:
-    image: ghcr.io/open-webui/open-webui:main
+    image: openwebui/open-webui:0.11.4
     restart: unless-stopped
     ports:
       - "3000:8080"
@@ -1117,7 +1117,7 @@ services:
     depends_on:
       - ollama
   ollama:
-    image: ollama/ollama:latest
+    image: ollama/ollama:0.35.0
     restart: unless-stopped
     volumes:
       - ollama_data:/root/.ollama
@@ -1210,6 +1210,21 @@ volumes:
     language: "TypeScript",
     platforms: ["Web", "Desktop (Mac/Win/Linux)"],
     fossModel: "FOSS",
+    // Deliberadamente SIN dockerStatus: ninguno de los 4 valores de
+    // DockerImageStatus describe bien este caso (no es que el registro haya
+    // archivado o movido una imagen real — "hardcoreeng/huly" nunca existió
+    // como imagen única). Se deja marcado como mutable/no verificado en
+    // deployment-audit a propósito, para que siga apareciendo como
+    // pendiente en vez de silenciarlo con una categoría que no aplica.
+    // `hardcoreeng/huly` nunca existió como imagen única en Docker Hub — se
+    // verificó un 404 a nivel de repositorio, no solo del tag. Huly real se
+    // despliega como ~10 microservicios independientes (account, transactor,
+    // front, workspace, collaborator, etc., ver hardcoreeng/* en Docker Hub)
+    // orquestados por el instalador oficial huly-selfhost, no por un único
+    // docker-compose de un servicio + Mongo. No reconstruimos esa topología
+    // a ciegas: lo decimos y enlazamos a la vía oficial.
+    notes:
+      "Este docker-compose de un solo contenedor no corresponde a cómo se despliega Huly de verdad: la imagen hardcoreeng/huly no existe, y el proyecto real son ~10 microservicios independientes orquestados por el instalador oficial. Usa huly-selfhost (github.com/hcengineering/huly-selfhost) para un despliegue que funcione — no reescribimos esa topología aquí sin poder verificarla servicio por servicio.",
     dockerCompose: `version: "3.9"
 services:
   huly:
@@ -1233,7 +1248,10 @@ volumes:
     features: ["Issues y proyectos estilo Linear", "Chat y canales de equipo", "Documentos colaborativos"],
     techStack: ["Rust", "React", "MongoDB"],
     pros: ["Sustituye tres SaaS distintos con un solo despliegue"],
-    cons: ["Proyecto joven, ecosistema de integraciones aún reducido"],
+    cons: [
+      "Proyecto joven, ecosistema de integraciones aún reducido",
+      "El docker-compose de este catálogo no es desplegable tal cual (ver nota arriba) — usa el instalador oficial huly-selfhost",
+    ],
     tags: ["docker-ready"],
   },
   {
@@ -1490,7 +1508,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   openproject:
-    image: openproject/openproject:latest
+    image: openproject/openproject:17.9.0
     restart: unless-stopped
     ports:
       - "8080:80"
@@ -1993,10 +2011,12 @@ volumes:
     language: "Python",
     platforms: ["Web"],
     fossModel: "FOSS",
+    notes:
+      "apache/superset dejó de publicar releases con tag semántico después de 5.0.0 (septiembre 2025): desde entonces el registro solo recibe tags de commit SHA generados por CI. 5.0.0 sigue siendo la última versión estable publicada con un tag fijo y verificable — más reciente que eso implica fijar un commit concreto en vez de una versión.",
     dockerCompose: `version: "3.9"
 services:
   superset:
-    image: apache/superset:latest
+    image: apache/superset:5.0.0
     restart: unless-stopped
     ports:
       - "8088:8088"
@@ -2010,7 +2030,10 @@ volumes:
     features: ["Decenas de tipos de gráficos", "Editor SQL con autocompletado", "Alertas y reportes programados"],
     techStack: ["Python", "Flask", "React"],
     pros: ["Licencia Apache-2.0 sin restricciones de uso comercial"],
-    cons: ["Configuración inicial de producción más laboriosa (Redis/Celery recomendados)"],
+    cons: [
+      "Configuración inicial de producción más laboriosa (Redis/Celery recomendados)",
+      "La última versión con tag semántico estable es 5.0.0 (ver nota arriba)",
+    ],
     tags: ["docker-ready", "permissive-license"],
   },
   {
@@ -2033,7 +2056,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   redash:
-    image: redash/redash:latest
+    image: redash/redash:26.9.0
     restart: unless-stopped
     ports:
       - "5000:5000"
@@ -2171,7 +2194,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   goatcounter:
-    image: ghcr.io/arp242/goatcounter:latest
+    image: arp242/goatcounter:2.7.0
     restart: unless-stopped
     ports:
       - "8080:8080"
@@ -2204,6 +2227,13 @@ volumes:
     language: "Go",
     platforms: ["Web"],
     fossModel: "OpenCore",
+    // `openreplay/openreplay-quickstart` no existe en Docker Hub (404 a
+    // nivel de repositorio) — el despliegue real de OpenReplay usa varios
+    // servicios con versión gestionada por su instalador oficial
+    // (postgres/clickhouse/valkey/minio + los propios servicios de la app,
+    // ver scripts/docker-compose en su repo), no una sola imagen "quickstart".
+    notes:
+      "No existe una imagen openreplay/openreplay-quickstart descargable — el despliegue real de OpenReplay usa varios servicios (Postgres, ClickHouse, Valkey, almacenamiento de objetos y los propios servicios de la app) gestionados por su instalador oficial, no un contenedor único. Sigue la guía oficial de self-hosting de OpenReplay para un despliegue que funcione.",
     dockerCompose: `# OpenReplay recomienda su instalador oficial para producción
 # (varios microservicios). Este es un punto de partida simplificado.
 version: "3.9"
@@ -2241,6 +2271,12 @@ volumes:
     language: "Go",
     platforms: ["Web"],
     fossModel: "OpenCore",
+    // `highlight/highlight-backend` no existe en Docker Hub (404 a nivel de
+    // repositorio) — el despliegue oficial de Highlight se hace clonando su
+    // repo con submódulos y construyendo la imagen en local
+    // (`docker compose up -d --build`), no descargando una imagen publicada.
+    notes:
+      "No existe una imagen highlight/highlight-backend descargable: el despliegue oficial de Highlight requiere clonar su repositorio con submódulos y construir la imagen en tu propio servidor (docker compose up -d --build), no descargar una imagen ya publicada. Sigue la guía oficial de self-hosting de Highlight.",
     dockerCompose: `# Highlight recomienda docker-compose oficial con varios servicios.
 # Este es un punto de partida simplificado del backend principal.
 version: "3.9"
@@ -2287,6 +2323,14 @@ volumes:
     language: "TypeScript (Next.js)",
     platforms: ["Web"],
     fossModel: "FOSS",
+    // `ghcr.io/openpanel-dev/openpanel` no es descargable públicamente (403
+    // ya al pedir el token) — OpenPanel real se despliega como 3 servicios
+    // separados (dashboard/api/worker, ver lindesvard/openpanel-* en Docker
+    // Hub, la cuenta personal del mantenedor), no un único contenedor. No
+    // reescribimos esa topología de 3 servicios a ciegas sin verificar cada
+    // variable de entorno.
+    notes:
+      "Este docker-compose de un solo contenedor no corresponde al despliegue real de OpenPanel: la imagen ghcr.io/openpanel-dev/openpanel no es descargable públicamente. El proyecto real son 3 servicios independientes (dashboard, api, worker — ver lindesvard/openpanel-* en Docker Hub). No reescribimos esa topología aquí sin poder verificar cada variable de entorno — revisa la documentación oficial de self-hosting de OpenPanel.",
     dockerCompose: `version: "3.9"
 services:
   openpanel:
@@ -2321,7 +2365,10 @@ volumes:
     features: ["Eventos y embudos de producto", "Perfiles de usuario unificados", "Dashboard moderno y rápido"],
     techStack: ["Next.js", "PostgreSQL", "ClickHouse"],
     pros: ["Combina analítica web y de producto en una sola herramienta"],
-    cons: ["Proyecto joven, comunidad todavía pequeña"],
+    cons: [
+      "Proyecto joven, comunidad todavía pequeña",
+      "El docker-compose de este catálogo no es desplegable tal cual (ver nota arriba) — el despliegue real son 3 servicios independientes",
+    ],
     tags: ["docker-ready"],
   },
 
@@ -2478,7 +2525,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   portainer:
-    image: portainer/portainer-ce:latest
+    image: portainer/portainer-ce:2.45.1
     restart: unless-stopped
     ports:
       - "9443:9443"
@@ -2564,6 +2611,13 @@ volumes:
     language: "Node.js",
     platforms: ["Web"],
     fossModel: "OpenCore",
+    // Strapi no construye ninguna imagen oficial — lo dice su propia
+    // documentación: `strapi/strapi` es una cortesía comunitaria que nunca
+    // se actualizó para v4/v5 y ya no existe en Docker Hub (404 a nivel de
+    // repositorio). La vía oficial es generar tu propio Dockerfile con
+    // `create-strapi-app`, no descargar una imagen publicada.
+    notes:
+      "Strapi no publica ninguna imagen Docker oficial — su propia documentación lo dice explícitamente. strapi/strapi fue una imagen de cortesía comunitaria que nunca se actualizó para v4/v5 y ya no existe en Docker Hub. La vía recomendada es generar tu propio Dockerfile con create-strapi-app siguiendo la guía oficial de Docker de Strapi.",
     dockerCompose: `version: "3.9"
 services:
   strapi:
@@ -2739,7 +2793,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   typesense:
-    image: typesense/typesense:latest
+    image: typesense/typesense:30.2
     restart: unless-stopped
     ports:
       - "8108:8108"
@@ -2774,6 +2828,13 @@ volumes:
     language: "TypeScript (NestJS)",
     platforms: ["Web"],
     fossModel: "OpenCore",
+    // novuhq/novu-api no existe — ni en Docker Hub ni en el registro real
+    // (ghcr.io/novuhq/novu/api, /worker, /ws, /dashboard). El despliegue
+    // real de Novu son ~4 servicios separados, publicados solo con tags de
+    // commit SHA (sin versión semántica estable), vía el script oficial
+    // setup.sh — no un único contenedor "novu".
+    notes:
+      "novuhq/novu-api no existe como imagen publicada. El despliegue real de Novu usa varios servicios independientes (ghcr.io/novuhq/novu/api, /worker, /ws, /dashboard), publicados solo con tags de commit SHA — sin una versión estable a la que fijar. La vía oficial es el script setup.sh del repo de Novu, que genera el docker-compose multi-servicio correcto.",
     dockerCompose: `version: "3.9"
 services:
   novu:
@@ -2801,7 +2862,10 @@ volumes:
     features: ["Email, SMS, push e in-app en una API", "Editor visual de flujos de notificación", "Centro de notificaciones embebible"],
     techStack: ["NestJS", "MongoDB", "Redis"],
     pros: ["Unifica todos los canales de notificación en un solo lugar"],
-    cons: ["Aún necesitas conectar tus propios proveedores de envío (SMTP, SMS)"],
+    cons: [
+      "Aún necesitas conectar tus propios proveedores de envío (SMTP, SMS)",
+      "El docker-compose de este catálogo no es real (ver nota arriba) — usa el script setup.sh oficial de Novu",
+    ],
     tags: ["docker-ready", "permissive-license"],
   },
   {
@@ -2824,7 +2888,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   windmill:
-    image: ghcr.io/windmill-labs/windmill:latest
+    image: ghcr.io/windmill-labs/windmill:1.84.1
     restart: unless-stopped
     ports:
       - "8000:8000"
@@ -3013,7 +3077,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   uptime-kuma:
-    image: louislam/uptime-kuma:latest
+    image: louislam/uptime-kuma:2.5.5
     restart: unless-stopped
     ports:
       - "3001:3001" # put a reverse proxy (Caddy/Nginx/Traefik) with HTTPS in front of this port, pointed at your domain
@@ -3135,6 +3199,13 @@ volumes:
     language: "PHP",
     platforms: ["Web"],
     fossModel: "FOSS",
+    // bitnami/suitecrm quedó vacío en Docker Hub: Broadcom movió este tipo de
+    // imágenes gratuitas a bitnamilegacy/* (archivo congelado, sin parches de
+    // seguridad, clavado en SuiteCRM 8.1.2) y dejó las actualizadas detrás de
+    // una suscripción de pago ("Bitnami Secure Images"). SuiteCRM en sí nunca
+    // publicó una imagen oficial propia.
+    notes:
+      "bitnami/suitecrm ya no existe en Docker Hub: Broadcom retiró estas imágenes gratuitas a bitnamilegacy/suitecrm, un archivo congelado sin parches de seguridad y clavado en una versión antigua (8.1.2) mientras SuiteCRM va ya por la 8.9.x. SuiteCRM nunca publicó su propia imagen Docker oficial. Para producción, la vía soportada sigue siendo una instalación LAMP tradicional según la guía oficial de SuiteCRM.",
     dockerCompose: `version: "3.9"
 services:
   suitecrm:
@@ -3164,7 +3235,10 @@ volumes:
     features: ["Módulos de ventas, marketing y soporte", "Flujos de trabajo (workflows) visuales", "Amplio ecosistema de extensiones"],
     techStack: ["PHP", "MySQL"],
     pros: ["Muy completo para procesos comerciales complejos"],
-    cons: ["Interfaz y stack técnico se sienten algo más antiguos"],
+    cons: [
+      "Interfaz y stack técnico se sienten algo más antiguos",
+      "No hay imagen Docker oficial mantenida (ver nota arriba) — bitnami/suitecrm fue retirada",
+    ],
     tags: ["docker-ready"],
   },
   {
@@ -3184,10 +3258,13 @@ volumes:
     language: "PHP (Laravel)",
     platforms: ["Web"],
     fossModel: "FOSS",
+    // `krayin/laravel-crm` nunca existió en Docker Hub (ese es el nombre
+    // del repo de GitHub, no de la imagen) — la imagen real, mantenida por
+    // Webkul, es `webkul/krayin` (verificada contra el registro).
     dockerCompose: `version: "3.9"
 services:
   krayin:
-    image: krayin/laravel-crm:latest
+    image: webkul/krayin:2.2.0
     restart: unless-stopped
     ports:
       - "8000:8000"
@@ -3234,6 +3311,12 @@ volumes:
     language: "PHP (Laravel)",
     platforms: ["Web"],
     fossModel: "FOSS",
+    // `monica/monica` no existe en Docker Hub — la imagen oficial real es
+    // `monicahq/monicahq`, pero su última versión publicada es v2.19.0, de
+    // agosto de 2020 (verificado contra el registro): seis años sin
+    // actualizarse. No fijamos esa versión como si fuera segura recomendarla.
+    notes:
+      "monica/monica no existe en Docker Hub. La imagen oficial real (monicahq/monicahq) lleva desde agosto de 2020 sin publicar una versión nueva — seis años de antigüedad. No la recomendamos sin más contexto: revisa si el proyecto sigue activo antes de auto-hospedar tus datos personales ahí.",
     dockerCompose: `version: "3.9"
 services:
   monica:
@@ -3431,10 +3514,12 @@ volumes:
     language: "PHP (Laravel)",
     platforms: ["Web"],
     fossModel: "OpenCore",
+    // tiredofit/freescout se retiró de Docker Hub — el propio mantenedor
+    // migró a nfrastack/freescout (verificado contra el registro real).
     dockerCompose: `version: "3.9"
 services:
   freescout:
-    image: tiredofit/freescout:latest
+    image: nfrastack/freescout:2.2.14
     restart: unless-stopped
     ports:
       - "8080:80"
@@ -3442,7 +3527,7 @@ services:
       - DB_HOST=freescout-db
       - DB_NAME=freescout
       - DB_USER=freescout
-      - DB_PASS=freescout
+      - DB_PASS=change-me-mysql-password # must match MYSQL_PASSWORD below
     depends_on:
       - freescout-db
   freescout-db:
@@ -3481,6 +3566,13 @@ volumes:
     language: "PHP",
     platforms: ["Web"],
     fossModel: "FOSS",
+    // `yetiforce/yetiforce` no existe en Docker Hub (404 a nivel de
+    // repositorio). No encontramos una imagen oficial de YetiForceCompany
+    // publicada de forma pública y verificable — solo imágenes de terceros
+    // sin procedencia clara, que no recomendamos para un CRM con datos
+    // sensibles sin poder auditarlas primero.
+    notes:
+      "No encontramos una imagen Docker oficial de YetiForce publicada de forma pública y verificable — yetiforce/yetiforce no existe en Docker Hub. Solo hay imágenes de terceros sin procedencia clara, que no recomendamos para un CRM con datos sensibles sin auditarlas primero. Revisa la guía oficial de instalación de YetiForce para un despliegue verificado.",
     dockerCompose: `version: "3.9"
 services:
   yetiforce:
@@ -3539,7 +3631,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   ollama:
-    image: ollama/ollama:latest
+    image: ollama/ollama:0.35.0
     restart: unless-stopped
     ports:
       - "11434:11434"
@@ -3578,7 +3670,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   localai:
-    image: localai/localai:latest
+    image: localai/localai:v3.12.1
     restart: unless-stopped
     ports:
       - "8080:8080"
@@ -3686,7 +3778,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   anythingllm:
-    image: mintplexlabs/anythingllm:latest
+    image: mintplexlabs/anythingllm:1.16.2
     restart: unless-stopped
     ports:
       - "3001:3001"
@@ -3724,7 +3816,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   flowise:
-    image: flowiseai/flowise:latest
+    image: flowiseai/flowise:3.1.4
     restart: unless-stopped
     ports:
       - "3000:3000"
@@ -3797,7 +3889,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   dify-api:
-    image: langgenius/dify-api:latest
+    image: langgenius/dify-api:1.17.1
     restart: unless-stopped
     ports:
       - "5001:5001"
@@ -3891,10 +3983,13 @@ volumes:
     language: "Python",
     platforms: ["Web", "Desktop (Mac/Win/Linux)"],
     fossModel: "FOSS",
+    // yanwk/comfyui-boot no publica tags semver — solo variantes de build
+    // (backend CUDA/XPU) con fecha incluida. Fijamos la build CUDA 12.6 más
+    // reciente verificada en el registro (2026-09-30) en vez de "latest".
     dockerCompose: `version: "3.9"
 services:
   comfyui:
-    image: yanwk/comfyui-boot:latest
+    image: yanwk/comfyui-boot:cu126-megapak-20260930
     restart: unless-stopped
     ports:
       - "8188:8188"
@@ -3933,6 +4028,10 @@ volumes:
     language: "Python",
     platforms: ["Web", "Desktop (Mac/Win/Linux)"],
     fossModel: "OpenCore",
+    // ghcr.io/invoke-ai/invokeai ya no publica tags semánticos estables —
+    // solo tags de commit SHA (sha-xxxxxxx-{cpu,cuda,amd}) y "latest". No hay
+    // ninguna versión fija a la que apuntar hoy.
+    dockerStatus: "LATEST_ONLY",
     dockerCompose: `version: "3.9"
 services:
   invokeai:
@@ -3975,6 +4074,9 @@ volumes:
     language: "TypeScript (Remix)",
     platforms: ["Web"],
     fossModel: "FOSS",
+    // ghcr.io/stackblitz-labs/bolt.diy solo publica tags de commit SHA
+    // (sha-xxxxxxx) y "latest" — no hay releases semánticos estables.
+    dockerStatus: "LATEST_ONLY",
     dockerCompose: `version: "3.9"
 services:
   bolt-diy:
@@ -4013,7 +4115,7 @@ volumes: {}
     dockerCompose: `version: "3.9"
 services:
   rasa:
-    image: rasa/rasa:latest
+    image: rasa/rasa:3.6.21
     restart: unless-stopped
     ports:
       - "5005:5005"
@@ -4135,6 +4237,11 @@ volumes:
     language: "Python",
     platforms: ["Web"],
     fossModel: "FOSS",
+    // oobabooga/text-generation-webui no publica imagen oficial; esta
+    // imagen comunitaria (atinoda) solo ofrece tags de variante de backend
+    // (default/cpu/nvidia/rocm), nunca un tag de versión — no hay nada
+    // estable a lo que fijar.
+    dockerStatus: "LATEST_ONLY",
     dockerCompose: `version: "3.9"
 services:
   text-generation-webui:
@@ -4215,7 +4322,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   perplexica:
-    image: itzcrazykns1337/perplexica:latest
+    image: itzcrazykns1337/perplexica:v1.12.0
     restart: unless-stopped
     ports:
       - "3000:3000"
@@ -4257,7 +4364,7 @@ volumes: {}
     dockerCompose: `version: "3.9"
 services:
   seafile:
-    image: seafileltd/seafile-mc:latest
+    image: seafileltd/seafile-mc:13.0.28
     restart: unless-stopped
     ports:
       - "80:80"
@@ -4377,7 +4484,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   garage:
-    image: dxflrs/garage:latest
+    image: dxflrs/garage:v2.4.1
     restart: unless-stopped
     ports:
       - "3900:3900"
@@ -4412,10 +4519,16 @@ volumes:
     language: "Go",
     platforms: ["Web"],
     fossModel: "FOSS",
+    // chrislusf/seaweedfs ya no publica tags de versión nuevos en Docker Hub
+    // (el último fue 3.99, octubre 2025) — las actualizaciones recientes del
+    // registro son solo firmas cosign (.sig) sobre builds internas, no tags
+    // consumibles con una versión. 3.99 sigue siendo la última fijable real.
+    notes:
+      "chrislusf/seaweedfs no ha publicado un tag de versión nuevo en Docker Hub desde 3.99 (octubre 2025) — la actividad reciente del registro son solo firmas cosign, no versiones nuevas consumibles. 3.99 es la última versión real a la que se puede fijar hoy.",
     dockerCompose: `version: "3.9"
 services:
   seaweedfs:
-    image: chrislusf/seaweedfs:latest
+    image: chrislusf/seaweedfs:3.99
     restart: unless-stopped
     ports:
       - "9333:9333"
@@ -4430,7 +4543,10 @@ volumes:
     features: ["Optimizado para archivos pequeños a gran escala", "Capa de compatibilidad S3 incluida", "Replicación y erasure coding configurables"],
     techStack: ["Go"],
     pros: ["Rendimiento excelente con volúmenes masivos de archivos pequeños"],
-    cons: ["Documentación menos pulida que MinIO para empezar"],
+    cons: [
+      "Documentación menos pulida que MinIO para empezar",
+      "Sin tags de versión nuevos desde 3.99 en Docker Hub (ver nota arriba)",
+    ],
     tags: ["docker-ready", "permissive-license"],
   },
   {
@@ -4511,10 +4627,13 @@ volumes:
     platforms: ["Web"],
     fossModel: "OpenCore",
     storageGb: 10,
+    // photoprism/photoprism no publica tags semver estables — solo builds
+    // fechadas (YYMMDD) por variante. Fijamos la build CE más reciente
+    // verificada en el registro (2026-09-19) en vez de "latest".
     dockerCompose: `version: "3.9"
 services:
   photoprism:
-    image: photoprism/photoprism:latest
+    image: photoprism/photoprism:260919-ce
     restart: unless-stopped
     ports:
       - "2342:2342"
@@ -4551,6 +4670,10 @@ volumes:
     language: "Go",
     platforms: ["Web"],
     fossModel: "OpenCore",
+    // machines/filestash solo publica "latest" y tags de commit git
+    // esporádicos — no hay un esquema de versión semántica estable al que
+    // fijar.
+    dockerStatus: "LATEST_ONLY",
     dockerCompose: `version: "3.9"
 services:
   filestash:
@@ -4662,6 +4785,12 @@ volumes:
     language: "Node.js",
     platforms: ["Web"],
     fossModel: "FOSS",
+    // Medusa no publica ninguna imagen Docker oficial — su propia
+    // documentación lo dice: "Medusa does not provide official support for
+    // Docker". `medusajs/medusa` no existe en Docker Hub. La vía soportada
+    // es `create-medusa-app` o construir tu propio Dockerfile.
+    notes:
+      "Medusa no publica ninguna imagen Docker oficial — su propia documentación lo dice explícitamente. medusajs/medusa no existe en Docker Hub. La vía oficial soportada es create-medusa-app o construir tu propio Dockerfile con Postgres y Redis, siguiendo la guía oficial de Medusa.",
     dockerCompose: `version: "3.9"
 services:
   medusa:
@@ -4768,6 +4897,12 @@ volumes:
     language: "TypeScript (NestJS)",
     platforms: ["Web"],
     fossModel: "OpenCore",
+    // vendureio/server no existe en Docker Hub — Vendure no publica ninguna
+    // imagen Docker oficial. Su propia documentación (docs.vendure.io/guides/
+    // deployment/using-docker) explica cómo construir tu propio Dockerfile a
+    // partir del proyecto generado por @vendure/create.
+    notes:
+      "Vendure no publica ninguna imagen Docker oficial — vendureio/server no existe en Docker Hub. La vía documentada es generar tu proyecto con @vendure/create y construir tu propio Dockerfile siguiendo la guía oficial de despliegue con Docker.",
     dockerCompose: `version: "3.9"
 services:
   vendure:
@@ -4798,7 +4933,10 @@ volumes:
     features: ["Sistema de plugins en TypeScript", "API GraphQL autogenerada", "Multi-tienda y multi-canal de venta"],
     techStack: ["TypeScript", "NestJS", "PostgreSQL"],
     pros: ["Experiencia de desarrollador muy cuidada (TypeScript end-to-end)"],
-    cons: ["Ecosistema de plugins más pequeño que Shopify App Store"],
+    cons: [
+      "Ecosistema de plugins más pequeño que Shopify App Store",
+      "No hay imagen Docker oficial (ver nota arriba) — hay que generar el proyecto con @vendure/create",
+    ],
     tags: ["docker-ready", "1-click-deploy", "permissive-license"],
   },
   {
@@ -4821,7 +4959,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   bagisto:
-    image: webkul/bagisto:latest
+    image: webkul/bagisto:2.4.12
     restart: unless-stopped
     ports:
       - "8080:8080"
@@ -4918,6 +5056,14 @@ volumes:
     language: "PHP (Symfony)",
     platforms: ["Web"],
     fossModel: "OpenCore",
+    // `ghcr.io/sylius/sylius` no existe como paquete público (403 incluso
+    // al pedir el token, no solo al pedir el manifiesto) — Sylius es un
+    // framework pensado para construir TU aplicación encima, no un backend
+    // SaaS-en-una-caja: su artefacto oficial real es la imagen base
+    // ghcr.io/sylius/sylius-php (PHP-FPM), que necesita tu propio código de
+    // tienda + nginx delante, no un "sylius:latest" todo-en-uno.
+    notes:
+      "No existe una imagen oficial todo-en-uno \"sylius:latest\": Sylius es un framework para construir tu tienda encima (como Symfony), y su artefacto real es la imagen base de PHP-FPM ghcr.io/sylius/sylius-php, que necesita tu propio código de aplicación y un servidor web delante. Este docker-compose no es desplegable tal cual — sigue la guía oficial de instalación de Sylius para generar tu propio proyecto.",
     dockerCompose: `version: "3.9"
 services:
   sylius:
@@ -4945,7 +5091,10 @@ volumes:
     features: ["Arquitectura Symfony extensible", "Soporta tiendas B2B y B2C", "API REST completa"],
     techStack: ["PHP", "Symfony", "MySQL"],
     pros: ["Máxima flexibilidad para lógica de negocio compleja"],
-    cons: ["Requiere experiencia sólida en Symfony para sacarle partido"],
+    cons: [
+      "Requiere experiencia sólida en Symfony para sacarle partido",
+      "No hay imagen todo-en-uno oficial (ver nota arriba) — hay que generar el proyecto siguiendo la guía de instalación",
+    ],
     tags: ["docker-ready", "permissive-license"],
   },
   {
@@ -5000,10 +5149,18 @@ volumes:
     language: "PHP",
     platforms: ["Web"],
     fossModel: "OpenCore",
+    // markoshust/magento-nginx es solo el contenedor nginx del kit de
+    // desarrollo docker-magento (de Mark Shust) — sus tags son versiones de
+    // nginx, no de Magento, y la última, 1.28, se actualizó en 2026-05.
+    // Pero este compose de un solo contenedor nunca fue una instalación
+    // real de Magento: falta PHP-FPM con el código de la app, Elasticsearch/
+    // OpenSearch (obligatorio desde Magento 2.4) y Redis.
+    notes:
+      "Este docker-compose está incompleto para un despliegue real: markoshust/magento-nginx es solo el proxy nginx del kit de desarrollo docker-magento, sin el contenedor PHP-FPM con el código de Magento, sin Elasticsearch/OpenSearch (obligatorio desde Magento 2.4) y sin Redis. Sigue la guía oficial de Adobe Commerce/Magento Open Source o el proyecto docker-magento completo para un stack que funcione de verdad.",
     dockerCompose: `version: "3.9"
 services:
   magento:
-    image: markoshust/magento-nginx:latest
+    image: markoshust/magento-nginx:1.28
     restart: unless-stopped
     ports:
       - "8080:8080"
@@ -5025,7 +5182,10 @@ volumes:
     features: ["Catálogos masivos con atributos complejos", "Multi-tienda y multi-idioma nativo", "Ecosistema de extensiones muy amplio"],
     techStack: ["PHP", "MySQL", "Elasticsearch"],
     pros: ["El más potente para catálogos B2B/B2C muy grandes"],
-    cons: ["Requisitos de servidor considerablemente más altos"],
+    cons: [
+      "Requisitos de servidor considerablemente más altos",
+      "El docker-compose de este catálogo está incompleto (ver nota arriba) — necesita PHP-FPM, Elasticsearch/OpenSearch y Redis además de lo mostrado",
+    ],
     tags: ["docker-ready"],
   },
   {
@@ -5147,6 +5307,8 @@ services:
     language: "Java",
     platforms: ["Web"],
     fossModel: "FOSS",
+    notes:
+      "BigBlueButton no se instala con un docker-compose de un solo contenedor: bigbluebutton/bbb-install no es una imagen Docker real (bbb-install.sh es un script bash), y la instalación de producción soportada oficialmente usa ese script sobre Ubuntu. Existe un despliegue Docker completo mantenido por la comunidad (bigbluebutton/docker en GitHub) que genera su propio docker-compose multi-contenedor, pero no es este de un solo servicio.",
     dockerCompose: `# BigBlueButton requiere su instalador oficial (bbb-install.sh) sobre
 # Ubuntu para producción; no es un docker-compose de un solo comando.
 version: "3.9"
@@ -5258,10 +5420,17 @@ volumes: {}
     language: "Go",
     platforms: ["Web"],
     fossModel: "FOSS",
+    // dscheirer/galene no existe en Docker Hub. El proyecto Galène (jech/galene)
+    // no publica ninguna imagen Docker oficial — solo el binario Go. Usamos
+    // byteonabeach/galene, una imagen de terceros bien mantenida que reconstruye
+    // dinámicamente la última versión estable (1.0, agosto 2025) desde el
+    // repo oficial, pero sigue sin ser oficial del proyecto.
+    notes:
+      "El proyecto Galène no publica ninguna imagen Docker oficial, solo el binario en Go — dscheirer/galene no existe en Docker Hub. Usamos byteonabeach/galene, una imagen de terceros que reconstruye la versión estable oficial (1.0), pero no está mantenida por el propio proyecto Galène: revisa su Dockerfile antes de confiar en ella en producción.",
     dockerCompose: `version: "3.9"
 services:
   galene:
-    image: dscheirer/galene:latest
+    image: byteonabeach/galene:1.0.0
     restart: unless-stopped
     ports:
       - "8443:8443"
@@ -5273,7 +5442,10 @@ volumes:
     features: ["Extremadamente ligero (un solo binario en Go)", "Soporta cientos de participantes por sala", "Grabación local de sesiones"],
     techStack: ["Go", "WebRTC"],
     pros: ["Corre en servidores muy modestos comparado con Jitsi/BBB"],
-    cons: ["Interfaz más básica, menos features que Zoom"],
+    cons: [
+      "Interfaz más básica, menos features que Zoom",
+      "No hay imagen Docker oficial del proyecto (ver nota arriba) — la usada aquí es de un mantenedor externo",
+    ],
     tags: ["docker-ready", "1-click-deploy", "permissive-license"],
   },
   {
@@ -5293,6 +5465,13 @@ volumes:
     language: "C++",
     platforms: ["Desktop (Mac/Win/Linux)", "Mobile (iOS/Android)"],
     fossModel: "FOSS",
+    // savoirfairelinux/jami-daemon no existe en Docker Hub. Jami es P2P: no
+    // hay "servidor" que auto-hospedar en el sentido tradicional — el daemon
+    // es la pieza que corren las apps de escritorio/móvil, y solo se
+    // construye en Docker para casos headless/bots, siguiendo el Dockerfile
+    // del propio repo (no hay imagen pre-construida oficial publicada).
+    notes:
+      "Jami es una red P2P sin servidor central: no hay nada equivalente a 'instalar Jami en tu VPS' como con las demás herramientas de esta categoría. savoirfairelinux/jami-daemon no existe como imagen publicada en Docker Hub — el daemon headless se construye desde el Dockerfile del propio repositorio, normalmente para bots o automatización, no para sustituir las apps de escritorio/móvil.",
     dockerCompose: `version: "3.9"
 services:
   jami-daemon:
@@ -5307,11 +5486,10 @@ volumes:
     features: ["Comunicación 100% P2P, sin servidor central", "Video, voz, mensajería y compartir pantalla", "Apps para escritorio y móvil"],
     techStack: ["C++", "QML"],
     pros: ["Ningún servidor (ni siquiera propio) puede ver tus llamadas"],
-    cons: ["No pensado para webinars o reuniones masivas de empresa"],
-    // `dockerCompose` es un docker-compose.yml real de un solo servicio, sin
-    // ningún matiz de instalador externo (a diferencia de bigbluebutton, que
-    // sí lo tiene) — le faltaba la etiqueta que ya llevan las otras 143
-    // herramientas publicadas cuyo despliegue es realmente "compose".
+    cons: [
+      "No pensado para webinars o reuniones masivas de empresa",
+      "No existe una imagen Docker oficial publicada (ver nota arriba) — hay que construirla desde el Dockerfile del repo",
+    ],
     tags: ["docker-ready"],
   },
   {
@@ -6749,7 +6927,7 @@ volumes:
     fossModel: "FOSS",
     dockerCompose: `services:
   wg-easy:
-    image: ghcr.io/wg-easy/wg-easy:latest
+    image: ghcr.io/wg-easy/wg-easy:15.4.0
     restart: unless-stopped
     environment:
       WG_HOST: vpn.yourdomain.com # CHANGE THIS TO YOUR DOMAIN
@@ -6895,7 +7073,7 @@ volumes:
     fossModel: "FOSS",
     dockerCompose: `services:
   joplin-server:
-    image: joplin/server:latest
+    image: joplin/server:3.7.2
     restart: unless-stopped
     ports:
       - "22300:22300"
@@ -6988,7 +7166,7 @@ cd /var/discourse
     fossModel: "FOSS",
     dockerCompose: `services:
   erpnext:
-    image: frappe/erpnext:latest
+    image: frappe/erpnext:v15.121.6
     restart: unless-stopped
     ports:
       - "8080:8080"

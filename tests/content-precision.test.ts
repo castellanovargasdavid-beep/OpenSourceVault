@@ -126,19 +126,23 @@ test("published tools with a dockerCompose never use a bare :latest tag unless e
     }
   }
   // Documented, time-boxed exception list (see the remediation report) —
-  // registries unreachable from CI, repos genuinely gone from their
-  // registry, or no safe non-floating version tag could be confirmed.
-  // Shrinking this list is encouraged; growing it should fail CI.
+  // each one verified individually against the real registry, never
+  // guessed. Shrinking this list is encouraged; growing it should fail CI.
   const KNOWN_EXCEPTIONS = new Set([
-    "plane", "open-webui", "huly", "openproject", "apache-superset", "redash",
-    "goatcounter", "openreplay", "highlight", "openpanel", "portainer", "strapi",
-    "typesense", "novu", "windmill", "uptime-kuma", "suitecrm", "krayin-crm",
-    "monica", "freescout", "yetiforce-crm", "ollama", "localai", "anythingllm",
-    "flowise", "dify", "comfyui", "invokeai", "bolt-diy", "rasa",
-    "text-generation-webui", "perplexica", "seafile", "garage", "seaweedfs",
-    "photoprism", "filestash", "medusa", "vendure", "bagisto", "sylius",
-    "magento-open-source", "bigbluebutton", "galene", "jami", "supertokens",
-    "forgejo", "wg-easy", "joplin", "erpnext",
+    // No official all-in-one image exists at all — the project is either
+    // several independent services, a framework with no all-in-one image,
+    // or requires building from source. A `notes` field on the tool
+    // explains the real deployment path; faking a pinned tag here would be
+    // worse than disclosing the gap honestly.
+    "huly", "openreplay", "highlight", "openpanel", "strapi", "novu",
+    "suitecrm", "monica", "yetiforce-crm", "medusa", "vendure", "sylius",
+    "jami",
+    // BigBlueButton: bbb-install isn't a Docker image at all (it's a bash
+    // installer script) — see its `notes` field.
+    "bigbluebutton",
+    // Registry unreachable from this sandbox's egress policy — could not be
+    // verified either way (registry.supertokens.io, codeberg.org).
+    "supertokens", "forgejo",
   ]);
   const unexpected = offenders.filter((id) => !KNOWN_EXCEPTIONS.has(id));
   assert.deepEqual(unexpected, [], `new, undocumented :latest tag(s) found: ${unexpected.join(", ")}`);

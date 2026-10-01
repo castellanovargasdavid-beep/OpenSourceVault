@@ -259,9 +259,14 @@ export const toolsEn: Record<string, ToolTranslation> = {
     description:
       "Huly is an all-in-one platform that combines project management, team chat and documents, designed as a joint replacement for Linear, Notion and Slack in a single self-hostable app.",
     shortDescription: "Projects + chat + docs in one, an alternative to Linear/Notion/Slack.",
+    notes:
+      "This single-container docker-compose doesn't match how Huly is actually deployed: the hardcoreeng/huly image doesn't exist, and the real project is ~10 independent microservices orchestrated by the official installer. Use huly-selfhost (github.com/hcengineering/huly-selfhost) for a deployment that actually works — we aren't rewriting that topology here without being able to verify it service by service.",
     features: ["Linear-style issues and projects", "Team chat and channels", "Collaborative documents"],
     pros: ["Replaces three different SaaS tools with a single deployment"],
-    cons: ["Young project, integration ecosystem still limited"],
+    cons: [
+      "Young project, integration ecosystem still limited",
+      "This catalog's docker-compose isn't deployable as-is (see note above) — use the official huly-selfhost installer",
+    ],
   },
   outline: {
     description:
@@ -395,9 +400,14 @@ export const toolsEn: Record<string, ToolTranslation> = {
     description:
       "Apache Superset is a data exploration and visualization platform with dozens of chart types and a built-in SQL editor, built to replace Tableau or Power BI at scale.",
     shortDescription: "Large-scale BI and data visualization, an alternative to Tableau/Power BI.",
+    notes:
+      "apache/superset stopped publishing semantically tagged releases after 5.0.0 (September 2025): since then the registry only receives CI-generated commit-SHA tags. 5.0.0 remains the last stable release published under a fixed, verifiable tag — anything newer means pinning a specific commit rather than a version.",
     features: ["Dozens of chart types", "SQL editor with autocomplete", "Scheduled alerts and reports"],
     pros: ["Apache-2.0 license with no commercial-use restrictions"],
-    cons: ["Production setup is more involved (Redis/Celery recommended)"],
+    cons: [
+      "Production setup is more involved (Redis/Celery recommended)",
+      "The last stable semantically tagged release is 5.0.0 (see note above)",
+    ],
   },
   redash: {
     description:
@@ -435,6 +445,8 @@ export const toolsEn: Record<string, ToolTranslation> = {
     description:
       "OpenReplay records user sessions for replay, along with heatmaps and performance metrics, as a self-hostable alternative to LogRocket and FullStory.",
     shortDescription: "Session recording and heatmaps, an alternative to LogRocket.",
+    notes:
+      "There's no pullable openreplay/openreplay-quickstart image — OpenReplay's real deployment uses several services (Postgres, ClickHouse, Valkey, object storage, and the app's own services) managed by its official installer, not a single container. Follow OpenReplay's official self-hosting guide for a deployment that actually works.",
     features: ["Session recording and replay", "Heatmaps and performance metrics", "Console error capture"],
     pros: ["No limit on recorded sessions when self-hosted"],
     cons: ["Real production installation requires several microservices"],
@@ -443,6 +455,8 @@ export const toolsEn: Record<string, ToolTranslation> = {
     description:
       "Highlight combines session recording, error monitoring and backend logs on a single platform, as a self-hostable full-stack alternative to LogRocket.",
     shortDescription: "Sessions, errors and logs in one platform, an alternative to LogRocket.",
+    notes:
+      "There's no pullable highlight/highlight-backend image: Highlight's official deployment requires cloning its repo with submodules and building the image on your own server (docker compose up -d --build), not pulling a published image. Follow Highlight's official self-hosting guide.",
     features: ["Full-stack session replay", "Frontend and backend error monitoring", "Centralized logs"],
     pros: ["Unifies frontend and backend in a single tool"],
     cons: ["Production stack has several services to maintain"],
@@ -451,9 +465,14 @@ export const toolsEn: Record<string, ToolTranslation> = {
     description:
       "OpenPanel combines web and product analytics (events, funnels, user profiles) in a modern dashboard, as a recent, self-hostable alternative to Mixpanel and Amplitude.",
     shortDescription: "Web + product analytics in a modern dashboard, an alternative to Mixpanel.",
+    notes:
+      "This single-container docker-compose doesn't match OpenPanel's real deployment: the ghcr.io/openpanel-dev/openpanel image isn't publicly pullable. The real project is 3 independent services (dashboard, api, worker — see lindesvard/openpanel-* on Docker Hub). We aren't rewriting that topology here without being able to verify each environment variable — check OpenPanel's official self-hosting docs.",
     features: ["Product events and funnels", "Unified user profiles", "Modern, fast dashboard"],
     pros: ["Combines web and product analytics in a single tool"],
-    cons: ["Young project, still small community"],
+    cons: [
+      "Young project, still small community",
+      "This catalog's docker-compose isn't deployable as-is (see note above) — the real deployment is 3 independent services",
+    ],
   },
   gitea: {
     description:
@@ -499,6 +518,8 @@ export const toolsEn: Record<string, ToolTranslation> = {
     description:
       "Strapi is the most popular open source headless CMS built on Node.js, with fully customizable content types and a REST/GraphQL API ready to consume from any frontend.",
     shortDescription: "The most popular open source headless CMS, an alternative to Contentful.",
+    notes:
+      "Strapi doesn't publish any official Docker image — their own docs say so explicitly. strapi/strapi was a community courtesy image that was never updated for v4/v5 and no longer exists on Docker Hub. The recommended path is generating your own Dockerfile with create-strapi-app, following Strapi's official Docker guide.",
     features: ["100% customizable content types", "REST and GraphQL API", "Plugin marketplace"],
     pros: ["MIT license and the largest headless JS CMS community"],
     cons: ["Major version migrations need care"],
@@ -539,9 +560,14 @@ export const toolsEn: Record<string, ToolTranslation> = {
     description:
       "Novu is a notification infrastructure that unifies email, SMS, push and in-app notifications in a single API with templates and visual workflows, as a self-hostable alternative to OneSignal.",
     shortDescription: "Multichannel notification infrastructure, an alternative to OneSignal.",
+    notes:
+      "novuhq/novu-api doesn't exist as a published image. Novu's real deployment uses several independent services (ghcr.io/novuhq/novu/api, /worker, /ws, /dashboard), published only with commit-SHA tags — no stable version to pin to. The official path is Novu's repo setup.sh script, which generates the correct multi-service docker-compose.",
     features: ["Email, SMS, push and in-app in one API", "Visual notification workflow editor", "Embeddable notification center"],
     pros: ["Unifies every notification channel in one place"],
-    cons: ["You still need to connect your own delivery providers (SMTP, SMS)"],
+    cons: [
+      "You still need to connect your own delivery providers (SMTP, SMS)",
+      "This catalog's docker-compose isn't real (see note above) — use Novu's official setup.sh script",
+    ],
   },
   windmill: {
     description:
@@ -603,9 +629,11 @@ export const toolsEn: Record<string, ToolTranslation> = {
     description:
       "SuiteCRM is a mature enterprise CRM with integrated sales, marketing and support, born as a fork of SugarCRM Community, built to replace Salesforce in large organizations.",
     shortDescription: "Complete enterprise CRM, a mature alternative to Salesforce.",
+    notes:
+      "bitnami/suitecrm no longer exists on Docker Hub: Broadcom retired these free images to bitnamilegacy/suitecrm, a frozen archive with no security patches, stuck on an old version (8.1.2) while SuiteCRM itself is already at 8.9.x. SuiteCRM never published its own official Docker image. For production, the supported path remains a traditional LAMP install following SuiteCRM's official guide.",
     features: ["Sales, marketing and support modules", "Visual workflows", "Broad extension ecosystem"],
     pros: ["Very complete for complex sales processes"],
-    cons: ["Interface and tech stack feel somewhat dated"],
+    cons: ["Interface and tech stack feel somewhat dated", "No officially maintained Docker image (see note above) — bitnami/suitecrm was retired"],
   },
   "krayin-crm": {
     description:
@@ -619,6 +647,8 @@ export const toolsEn: Record<string, ToolTranslation> = {
     description:
       "Monica is a personal CRM for keeping track of your relationships: contacts, birthday reminders, conversation notes and important interactions with friends and family.",
     shortDescription: "Personal CRM for your relationships, an alternative to Clay.",
+    notes:
+      "monica/monica doesn't exist on Docker Hub. The real official image (monicahq/monicahq) hasn't published a new version since August 2020 — six years old. We don't recommend it without more context: check whether the project is still active before self-hosting your personal data there.",
     features: ["Reminders for important dates", "Conversation and interaction notes", "Gift and activity tracking"],
     pros: ["Built for personal relationships, not just B2B sales"],
     cons: ["Doesn't replace a B2B sales CRM with a commercial pipeline"],
@@ -659,6 +689,8 @@ export const toolsEn: Record<string, ToolTranslation> = {
     description:
       "YetiForce is a very complete open source CRM with 50+ modules (sales, projects, inventory, support) integrated into one platform, as a free alternative to Salesforce.",
     shortDescription: "CRM with 50+ integrated modules, a free alternative to Salesforce.",
+    notes:
+      "We couldn't find an official, publicly verifiable YetiForce Docker image — yetiforce/yetiforce doesn't exist on Docker Hub. Only third-party images with unclear provenance exist, which we don't recommend for a CRM holding sensitive data without auditing them first. Check YetiForce's official installation guide for a verified deployment.",
     features: ["50+ integrated modules", "Project and inventory management included", "100% free, no paid editions"],
     pros: ["Completely free, no hidden Enterprise version"],
     cons: ["So many modules can be overwhelming during initial setup"],
@@ -851,9 +883,11 @@ export const toolsEn: Record<string, ToolTranslation> = {
     description:
       "SeaweedFS is a distributed file system optimized to serve billions of small files quickly, with an included S3 compatibility layer.",
     shortDescription: "Distributed storage for millions of files, an alternative to Amazon S3.",
+    notes:
+      "chrislusf/seaweedfs hasn't published a new version tag on Docker Hub since 3.99 (October 2025) — recent registry activity is only cosign signatures, not new consumable releases. 3.99 is the latest real version you can pin to today.",
     features: ["Optimized for small files at scale", "Included S3 compatibility layer", "Configurable replication and erasure coding"],
     pros: ["Excellent performance with massive volumes of small files"],
-    cons: ["Less polished documentation than MinIO to get started"],
+    cons: ["Less polished documentation than MinIO to get started", "No new version tags since 3.99 on Docker Hub (see note above)"],
   },
   immich: {
     description:
@@ -901,9 +935,11 @@ export const toolsEn: Record<string, ToolTranslation> = {
     description:
       "Medusa is a headless commerce platform in Node.js with fully code-customizable order, inventory and pricing modules, built as a developer-focused alternative to Shopify.",
     shortDescription: "Headless ecommerce in Node.js, an alternative to Shopify for developers.",
+    notes:
+      "Medusa doesn't publish any official Docker image — their own documentation says so explicitly. medusajs/medusa doesn't exist on Docker Hub. The officially supported path is create-medusa-app or building your own Dockerfile with Postgres and Redis, following Medusa's official guide.",
     features: ["Customizable order, inventory and pricing modules", "REST API and admin panel included", "Native multi-region and multi-currency"],
     pros: ["No commission per sale, unlike Shopify"],
-    cons: ["Requires development skills to fully customize"],
+    cons: ["Requires development skills to fully customize", "No official Docker image (see note above) — build your own via create-medusa-app"],
   },
   saleor: {
     description:
@@ -917,9 +953,11 @@ export const toolsEn: Record<string, ToolTranslation> = {
     description:
       "Vendure is a headless commerce framework in TypeScript with a very flexible plugin system, built for developers who want to extend every part of their store as code.",
     shortDescription: "TypeScript ecommerce framework, an alternative to Shopify for devs.",
+    notes:
+      "Vendure doesn't publish any official Docker image — vendureio/server doesn't exist on Docker Hub. The documented path is generating your project with @vendure/create and building your own Dockerfile following the official Docker deployment guide.",
     features: ["TypeScript plugin system", "Auto-generated GraphQL API", "Multi-store and multi-channel selling"],
     pros: ["Carefully crafted developer experience (TypeScript end-to-end)"],
-    cons: ["Smaller plugin ecosystem than the Shopify App Store"],
+    cons: ["Smaller plugin ecosystem than the Shopify App Store", "No official Docker image (see note above) — generate the project via @vendure/create"],
   },
   bagisto: {
     description:
@@ -941,9 +979,14 @@ export const toolsEn: Record<string, ToolTranslation> = {
     description:
       "Sylius is an ecommerce framework built on Symfony, aimed at developers who need maximum flexibility for complex B2B or B2C stores.",
     shortDescription: "Symfony ecommerce framework, a flexible alternative to Shopify.",
+    notes:
+      "There's no official all-in-one \"sylius:latest\" image: Sylius is a framework to build your store on top of (like Symfony), and its real artifact is the ghcr.io/sylius/sylius-php base image, which needs your own application code and a web server in front of it. This docker-compose isn't deployable as-is — follow Sylius's official installation guide to generate your own project.",
     features: ["Extensible Symfony architecture", "Supports B2B and B2C stores", "Complete REST API"],
     pros: ["Maximum flexibility for complex business logic"],
-    cons: ["Requires solid Symfony experience to get the most out of it"],
+    cons: [
+      "Requires solid Symfony experience to get the most out of it",
+      "No official all-in-one image (see note above) — you need to generate the project following the install guide",
+    ],
   },
   shopware: {
     description:
@@ -957,9 +1000,14 @@ export const toolsEn: Record<string, ToolTranslation> = {
     description:
       "Magento Open Source (Adobe Commerce Community Edition) is one of the most powerful, customizable ecommerce platforms, used for huge catalogs, as an alternative to Shopify Plus.",
     shortDescription: "Highly customizable enterprise ecommerce, an alternative to Shopify Plus.",
+    notes:
+      "This docker-compose is incomplete for a real deployment: markoshust/magento-nginx is only the nginx proxy from the docker-magento development kit, with no PHP-FPM container holding Magento's actual code, no Elasticsearch/OpenSearch (required since Magento 2.4) and no Redis. Follow Adobe Commerce/Magento Open Source's official guide or the full docker-magento project for a stack that actually works.",
     features: ["Massive catalogs with complex attributes", "Native multi-store and multi-language", "Very wide extension ecosystem"],
     pros: ["The most powerful option for very large B2B/B2C catalogs"],
-    cons: ["Considerably higher server requirements"],
+    cons: [
+      "Considerably higher server requirements",
+      "This catalog's docker-compose is incomplete (see note above) — it needs PHP-FPM, Elasticsearch/OpenSearch and Redis beyond what's shown",
+    ],
   },
   woocommerce: {
     description:
@@ -981,6 +1029,8 @@ export const toolsEn: Record<string, ToolTranslation> = {
     description:
       "BigBlueButton is an education-focused video conferencing platform, with a collaborative whiteboard, breakout rooms and built-in polls, as an alternative to Zoom for educational institutions.",
     shortDescription: "Education-focused video conferencing, an alternative to Zoom.",
+    notes:
+      "BigBlueButton isn't installed with a single-container docker-compose: bigbluebutton/bbb-install isn't a real Docker image (bbb-install.sh is a bash script), and the officially supported production install uses that script on Ubuntu. A full, community-maintained Docker deployment exists (bigbluebutton/docker on GitHub) that generates its own multi-container docker-compose, but it isn't this single-service one.",
     features: ["Multi-user collaborative whiteboard", "Breakout rooms", "Polls and class recording"],
     pros: ["The most complete option for educational use cases"],
     cons: ["Production installation is more complex than a simple docker-compose"],
@@ -1005,17 +1055,21 @@ export const toolsEn: Record<string, ToolTranslation> = {
     description:
       "Galène is an extremely lightweight SFU video conferencing server, able to run on modest hardware and support hundreds of participants, ideal for self-hosted classes or large meetings.",
     shortDescription: "Ultra-lightweight video conferencing server, an alternative to Zoom on modest hardware.",
+    notes:
+      "The Galène project doesn't publish any official Docker image, only the Go binary — dscheirer/galene doesn't exist on Docker Hub. We use byteonabeach/galene, a third-party image that rebuilds the official stable release (1.0), but it isn't maintained by the Galène project itself: review its Dockerfile before trusting it in production.",
     features: ["Extremely lightweight (a single Go binary)", "Supports hundreds of participants per room", "Local session recording"],
     pros: ["Runs on much more modest servers than Jitsi/BBB"],
-    cons: ["More basic interface, fewer features than Zoom"],
+    cons: ["More basic interface, fewer features than Zoom", "No official Docker image from the project (see note above) — the one used here is from an external maintainer"],
   },
   jami: {
     description:
       "Jami offers fully decentralized (P2P) video calls, messaging and voice calls, with no central server intermediating your communications, as a private alternative to Skype.",
     shortDescription: "100% P2P video calls and chat with no central server, an alternative to Skype.",
+    notes:
+      "Jami is a P2P network with no central server: there's nothing equivalent to 'installing Jami on your VPS' like the other tools in this category. savoirfairelinux/jami-daemon doesn't exist as a published image on Docker Hub — the headless daemon is built from the repo's own Dockerfile, typically for bots or automation, not as a replacement for the desktop/mobile apps.",
     features: ["100% P2P communication, no central server", "Video, voice, messaging and screen sharing", "Desktop and mobile apps"],
     pros: ["No server (not even your own) can see your calls"],
-    cons: ["Not built for webinars or massive company-wide meetings"],
+    cons: ["Not built for webinars or massive company-wide meetings", "No official published Docker image (see note above) — it must be built from the repo's Dockerfile"],
   },
   neko: {
     description:
