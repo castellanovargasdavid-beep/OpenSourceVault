@@ -5,6 +5,7 @@ import { getAllComparisonSlugs, getComparisonBySlug } from "@/lib/comparisons";
 import { getCompareHref } from "@/lib/routes";
 import { siteConfig } from "@/lib/site-config";
 import { getDictionary } from "@/i18n/get-dictionary";
+import { getCompareSeo } from "@/data/compare-seo";
 import { ComparisonPageContent } from "@/components/pages/comparison-page-content";
 import { hasZhCompare } from "@/lib/zh-mvp";
 
@@ -26,8 +27,9 @@ export async function generateMetadata({ params }: PageProps, parent: ResolvingM
 
   const { toolA, toolB } = comparison;
   const t = getDictionary("es");
-  const title = t.comparisonPage.metaTitle(toolA.name, toolB.name, siteConfig.year);
-  const description = t.comparisonPage.metaDescription(toolA.name, toolB.name);
+  const seo = getCompareSeo(comparison.pairSlug, "es");
+  const title = seo?.metaTitle ?? t.comparisonPage.metaTitle(toolA.name, toolB.name, siteConfig.year);
+  const description = seo?.metaDescription ?? t.comparisonPage.metaDescription(toolA.name, toolB.name);
   const url = `${siteConfig.url}/comparar/${comparison.pairSlug}`;
 
   const { openGraphImages, twitterImages } = await inheritedSocialImages(parent);

@@ -1433,7 +1433,7 @@ services:
 volumes:
   vikunja_data:
 `,
-    features: ["Vistas Lista, Kanban y Gantt", "Tareas recurrentes y recordatorios", "API REST y apps móviles"],
+    features: ["Vistas Lista, Kanban, Gantt y Tabla", "Tareas recurrentes y recordatorios", "API REST y apps móviles"],
     techStack: ["Go", "Vue.js"],
     pros: ["Muy ligero, corre bien hasta con SQLite"],
     cons: ["Menos integraciones de terceros que Asana"],
@@ -4893,7 +4893,11 @@ volumes:
     websiteUrl: "https://www.vendure.io",
     githubUrl: "https://github.com/vendure-ecommerce/vendure",
     starsCount: 6000,
-    license: "MIT",
+    // Vendure pasó de MIT a GPL-3.0 en la v3.0 (ver vendure.io/blog/
+    // license-change-announcement) — v2.3 fue la última release bajo MIT.
+    // El "OpenCore" sigue siendo correcto: el core es GPLv3 real, con un
+    // plan comercial (VCL) para quien necesite términos distintos a GPL.
+    license: "GPL-3.0",
     database: "PostgreSQL",
     language: "TypeScript (NestJS)",
     platforms: ["Web"],
@@ -4938,7 +4942,7 @@ volumes:
       "Ecosistema de plugins más pequeño que Shopify App Store",
       "No hay imagen Docker oficial (ver nota arriba) — hay que generar el proyecto con @vendure/create",
     ],
-    tags: ["docker-ready", "1-click-deploy", "permissive-license"],
+    tags: ["docker-ready", "1-click-deploy"],
   },
   {
     id: "bagisto",

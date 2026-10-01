@@ -2,6 +2,7 @@ import type { Metadata, ResolvingMetadata } from "next";
 import { inheritedSocialImages } from "@/lib/metadata";
 import { notFound } from "next/navigation";
 import { tools, getToolBySlug } from "@/data/tools";
+import { getToolSeo } from "@/data/tool-seo";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { siteConfig } from "@/lib/site-config";
 import { ToolPageContent } from "@/components/pages/tool-page-content";
@@ -28,8 +29,12 @@ export async function generateMetadata({ params }: PageProps, parent: ResolvingM
 
   const t = getDictionary("es");
   const mainSaas = tool.replaces[0];
-  const title = t.toolPage.metaTitle(tool.name, mainSaas, siteConfig.year, tool.fossModel);
-  const description = tool.shortDescription;
+  // Las fichas con señal real en Search Console (ver SEO_CHANGELOG.md) tienen
+  // su propio title/description curado en tool-seo.ts — el resto sigue
+  // usando la plantilla genérica, sin cambios.
+  const seo = getToolSeo(tool.id, "es");
+  const title = seo?.metaTitle ?? t.toolPage.metaTitle(tool.name, mainSaas, siteConfig.year, tool.fossModel);
+  const description = seo?.metaDescription ?? tool.shortDescription;
   const url = `${siteConfig.url}/tool/${tool.slug}`;
 
   const { openGraphImages, twitterImages } = await inheritedSocialImages(parent);

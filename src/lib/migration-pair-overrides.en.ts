@@ -87,6 +87,69 @@ export const pairOverridesEn: Record<string, MigrationPatternContent> = {
     ],
     beforeYouCancel:
       "Before cancelling {from}, rotate the passwords for your most critical accounts (primary email, banking, your own domain) already from {to} — not because the export itself is insecure, but to confirm the authentication flow with your new vault works end to end before relying on it alone. Previous password version history for each item in {from} isn't exported — if you need it, it only exists while the account is still active.",
+    metaTitle: "Migrate from {from} to {to}: export your .1pux vault safely ({year})",
+    metaDescription:
+      "Step-by-step guide to migrate from {from} to {to}: export your vault as .1pux, deploy it with Bitwarden, and securely delete the file when you're done.",
+    faqs: [
+      {
+        q: "What client do I use to access Vaultwarden?",
+        a: "Vaultwarden has no UI of its own: use the official Bitwarden clients (browser, desktop, mobile) pointed at your server's URL, the same way you would with Bitwarden Cloud.",
+      },
+      {
+        q: "Why is SIGNUPS_ALLOWED disabled by default?",
+        a: "For security: in production you don't want anyone with the URL to be able to create an account on your server. Enable it only temporarily to create your first user, then disable it again.",
+      },
+      {
+        q: "Is the exported .1pux file safe?",
+        a: "No, the exported file is unencrypted. Do the export and import on a trusted computer off public networks, and securely delete it (not just move it to the trash) as soon as you confirm the import succeeded.",
+      },
+    ],
+  },
+
+  "Notion→affine": {
+    intro:
+      "Notion's Markdown export carries the text over fine, but relational databases arrive as flat CSV — and {to} adds something {from} doesn't have natively: an infinite whiteboard on the same canvas as your documents.",
+    steps: [
+      {
+        title: "Before exporting: audit which databases use relations",
+        body: "In {from}, check which databases have \"Relation\" or \"Rollup\" columns — they'll lose the connection on export. Note which tables are related to each other, since the exported CSV doesn't show it explicitly.",
+      },
+      {
+        title: "Export the full workspace from {from}",
+        body: "Go to Settings & members → Settings → Export content → \"Export all workspace content\", choose Markdown & CSV format, and include attachments. {from} generates a .zip with one folder per top-level page.",
+      },
+      {
+        title: "Deploy {to} via Docker Compose",
+        body: "{to} needs PostgreSQL and Redis (see its docker-compose.yml). Before importing anything, start the stack and confirm the web/desktop client connects correctly to your server.",
+      },
+      {
+        title: "Import the Markdown .zip into {to}",
+        body: "With the workspace already open in {to}, import the exported .zip. Text and page hierarchy are rebuilt, but each database .csv comes in as a new table without the relations reconstructed.",
+      },
+      {
+        title: "Rebuild relations and explore the whiteboard",
+        body: "Using the list from step 1, manually recreate each relation between databases in {to}. Then try the built-in infinite whiteboard — it's the feature {from} doesn't offer natively, and the most common reason to migrate, not a conversion of existing content.",
+      },
+    ],
+    beforeYouCancel:
+      "Before cancelling {from}, compare the number of top-level pages between both spaces and confirm images and attachments imported correctly. {to}'s official self-host still evolves quickly between versions — review the changelog before each update and keep a recent backup of the Postgres volume.",
+    metaTitle: "Migrate from {from} to {to}: docs and whiteboard in one canvas ({year})",
+    metaDescription:
+      "Step-by-step guide to migrate from {from} to {to}: what Markdown export carries over, how to rebuild relations, and what to expect from self-hosting before cancelling {from}.",
+    faqs: [
+      {
+        q: "Can I import my Notion databases with relations into AFFiNE?",
+        a: "Not automatically. The exported CSV arrives as a flat table without relation or rollup columns — you'll need to manually recreate those connections in AFFiNE after importing.",
+      },
+      {
+        q: "What does AFFiNE offer that Notion doesn't?",
+        a: "An infinite whiteboard built into the same canvas as your documents, for diagrams or visual brainstorming without leaving the app — Notion has no native equivalent.",
+      },
+      {
+        q: "Is it stable enough for a production team?",
+        a: "AFFiNE's official self-host still evolves quickly between versions. It's a solid choice for personal use or small teams that don't depend on a long-term stable API or integration; take frequent backups of the Postgres volume.",
+      },
+    ],
   },
 
   "Google Photos→immich": {

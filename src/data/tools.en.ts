@@ -296,7 +296,7 @@ export const toolsEn: Record<string, ToolTranslation> = {
     description:
       "Vikunja is an open source task manager with lists, Kanban, Gantt and reminders, designed as a lightweight alternative to Todoist and Asana for small teams.",
     shortDescription: "Task and project manager, an alternative to Todoist and Asana.",
-    features: ["List, Kanban and Gantt views", "Recurring tasks and reminders", "REST API and mobile apps"],
+    features: ["List, Kanban, Gantt and Table views", "Recurring tasks and reminders", "REST API and mobile apps"],
     pros: ["Very lightweight, runs fine even on SQLite"],
     cons: ["Fewer third-party integrations than Asana"],
   },

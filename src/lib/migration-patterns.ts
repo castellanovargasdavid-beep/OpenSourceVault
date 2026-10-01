@@ -25,10 +25,26 @@ export interface MigrationStep {
   body: string;
 }
 
+export interface MigrationFaqEntry {
+  q: string;
+  a: string;
+}
+
 export interface MigrationPatternContent {
   intro: string;
   steps: MigrationStep[];
   beforeYouCancel: string;
+  /**
+   * Overrides SEO opcionales — solo los pares con contenido curado en
+   * migration-pair-overrides.ts los definen. Sin ellos, generateMetadata cae
+   * al título/descripción genéricos de t.migrationGuidePage (comportamiento
+   * sin cambios para el resto de guías). Usan los mismos tokens {from}/{to}
+   * que el resto del contenido del par, más {year} (ver fillTemplate).
+   */
+  metaTitle?: string;
+  metaDescription?: string;
+  /** FAQ real y específica del par, mostrada con schema FAQPage cuando existe. */
+  faqs?: MigrationFaqEntry[];
 }
 
 /** Los textos usan {from} y {to} como tokens a sustituir en tiempo de render. */
@@ -486,8 +502,10 @@ export function getMigrationPatternContentLocalized(
   return patterns[id];
 }
 
-export function fillTemplate(text: string, fromName: string, toName: string): string {
-  return text.replaceAll("{from}", fromName).replaceAll("{to}", toName);
+export function fillTemplate(text: string, fromName: string, toName: string, year?: number): string {
+  let result = text.replaceAll("{from}", fromName).replaceAll("{to}", toName);
+  if (year !== undefined) result = result.replaceAll("{year}", String(year));
+  return result;
 }
 
 /**

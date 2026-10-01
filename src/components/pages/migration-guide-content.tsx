@@ -112,6 +112,36 @@ export function MigrationGuideContent({
       <p className="mt-6 flex items-center gap-1.5 text-xs text-slate-600">
         <Clock size={12} /> {t.migrationGuidePage.footerNote(fromName)}
       </p>
+
+      {content.faqs && content.faqs.length > 0 && (
+        <section className="mt-10">
+          <JsonLd
+            data={{
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              mainEntity: content.faqs.map(({ q, a }) => ({
+                "@type": "Question",
+                name: fillTemplate(q, fromName, tool.name),
+                acceptedAnswer: { "@type": "Answer", text: fillTemplate(a, fromName, tool.name) },
+              })),
+            }}
+          />
+          <h2 className="mb-4 text-xl font-semibold text-slate-900">{t.alternativaPage.faqTitle}</h2>
+          <div className="divide-y divide-slate-200 rounded-xl border border-slate-200 bg-white">
+            {content.faqs.map(({ q, a }) => (
+              <details key={q} className="group p-4 open:pb-4 [&:not(:first-of-type)]:pt-4">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-sm font-semibold text-slate-900 marker:content-none">
+                  {fillTemplate(q, fromName, tool.name)}
+                  <span aria-hidden className="shrink-0 text-slate-400 transition-transform group-open:rotate-45">
+                    +
+                  </span>
+                </summary>
+                <p className="mt-2 text-sm text-slate-600">{fillTemplate(a, fromName, tool.name)}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }

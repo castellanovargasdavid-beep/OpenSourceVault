@@ -621,6 +621,9 @@ const en: Dictionary = {
     cons: "Things to consider",
     viewFullProfile: (name: string) => `View ${name}'s full profile`,
     features: "Key features",
+    stackBuilderCtaTitle: "Already know which one you prefer?",
+    stackBuilderCtaSubtitle: "Add it to your Stack Builder and generate a ready-to-deploy docker-compose.yml alongside the rest of your stack.",
+    stackBuilderCtaButton: "Go to Stack Builder",
   },
   deployGuidePage: {
     metaTitle: (year: number) => `How to deploy any open source tool with Docker in ${year}`,

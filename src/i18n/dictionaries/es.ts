@@ -650,6 +650,9 @@ const es = {
     cons: "A tener en cuenta",
     viewFullProfile: (name: string) => `Ver ficha completa de ${name}`,
     features: "Funcionalidades principales",
+    stackBuilderCtaTitle: "¿Ya sabes cuál prefieres?",
+    stackBuilderCtaSubtitle: "Añádela a tu Stack Builder y genera un docker-compose.yml listo para desplegar junto al resto de tu stack.",
+    stackBuilderCtaButton: "Ir a Stack Builder",
   },
   deployGuidePage: {
     metaTitle: (year: number) => `Cómo desplegar cualquier herramienta open source con Docker en ${year}`,

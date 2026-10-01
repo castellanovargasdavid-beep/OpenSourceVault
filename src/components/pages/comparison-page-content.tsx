@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Check, X, Star, ArrowRight } from "lucide-react";
 import type { ToolComparison } from "@/lib/comparisons";
 import { getLocalizedTool } from "@/data/tools";
+import { getCompareSeo } from "@/data/compare-seo";
 import { getCategoryMetaLocalized } from "@/data/categories";
 import { categoryColors } from "@/lib/category-colors";
 import { LogoImage } from "@/components/site/logo-image";
@@ -32,6 +33,7 @@ export function ComparisonPageContent({ comparison, locale }: { comparison: Tool
   const paletteA = categoryColors[toolA.category];
   const paletteB = categoryColors[toolB.category];
   const popularity = starWinner(toolA, toolB);
+  const seo = getCompareSeo(comparison.pairSlug, locale);
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
@@ -44,6 +46,19 @@ export function ComparisonPageContent({ comparison, locale }: { comparison: Tool
           },
         ])}
       />
+      {seo?.faqs && seo.faqs.length > 0 && (
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: seo.faqs.map(({ q, a }) => ({
+              "@type": "Question",
+              name: q,
+              acceptedAnswer: { "@type": "Answer", text: a },
+            })),
+          }}
+        />
+      )}
 
       <nav className="mb-6 text-sm text-slate-600">
         <Link href={localeHref("/", locale)} className="hover:text-emerald-700">
@@ -79,6 +94,12 @@ export function ComparisonPageContent({ comparison, locale }: { comparison: Tool
         <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-600">
           {t.comparisonPage.subtitle(comparison.sharedSaas.join(", "))}
         </p>
+        {seo?.tldr && (
+          <p className="mx-auto mt-5 max-w-2xl rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-left text-sm text-emerald-900">
+            <span className="font-semibold">{locale === "es" ? "Resumen rápido: " : "Quick answer: "}</span>
+            {seo.tldr}
+          </p>
+        )}
       </header>
 
       <section className="mb-10 overflow-x-auto">
@@ -210,6 +231,33 @@ export function ComparisonPageContent({ comparison, locale }: { comparison: Tool
           </div>
         </div>
       </section>
+
+      <div className="mt-10 rounded-xl border border-emerald-200 bg-emerald-50 p-6 text-center">
+        <p className="font-semibold text-slate-900">{t.comparisonPage.stackBuilderCtaTitle}</p>
+        <p className="mt-1 text-sm text-slate-600">{t.comparisonPage.stackBuilderCtaSubtitle}</p>
+        <Link href={localeHref("/stacks/builder", locale)} className={cn(buttonVariants({ size: "lg" }), "mt-4 gap-1.5")}>
+          {t.comparisonPage.stackBuilderCtaButton} <ArrowRight size={16} />
+        </Link>
+      </div>
+
+      {seo?.faqs && seo.faqs.length > 0 && (
+        <section className="mt-10">
+          <h2 className="mb-4 text-xl font-semibold text-slate-900">{t.alternativaPage.faqTitle}</h2>
+          <div className="divide-y divide-slate-200 rounded-xl border border-slate-200 bg-white">
+            {seo.faqs.map(({ q, a }) => (
+              <details key={q} className="group p-4 open:pb-4 [&:not(:first-of-type)]:pt-4">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-sm font-semibold text-slate-900 marker:content-none">
+                  {q}
+                  <span aria-hidden className="shrink-0 text-slate-400 transition-transform group-open:rotate-45">
+                    +
+                  </span>
+                </summary>
+                <p className="mt-2 text-sm text-slate-600">{a}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }

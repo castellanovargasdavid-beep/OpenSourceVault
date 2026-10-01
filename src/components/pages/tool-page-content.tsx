@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { GitFork, ExternalLink, Check, X, ArrowRight, PlayCircle, Database, Code2, MonitorSmartphone, TriangleAlert, ChevronDown, Star, GraduationCap } from "lucide-react";
 import { getLocalizedTool } from "@/data/tools";
+import { getToolSeo } from "@/data/tool-seo";
 import { getHostingProvidersLocalized } from "@/data/hosting-providers";
 import { getCategoryMetaLocalized, getCategoryHref } from "@/data/categories";
 import { getStacksForTool, getLocalizedStack } from "@/data/stacks";
@@ -81,6 +82,7 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
   const comparison = getToolComparison(tool, locale);
   const licenseVerification = verifyLicense(tool.license, liveStats?.licenseSpdxId);
   const repoHealthStatus = liveStats ? getRepoHealthStatus(liveStats.updatedAt) : null;
+  const seoFaqs = getToolSeo(tool.id, locale)?.faqs ?? [];
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
@@ -109,6 +111,19 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
           { name: tool.name, url: `${siteConfig.url}${localeHref(`/tool/${tool.slug}`, locale)}` },
         ])}
       />
+      {seoFaqs.length > 0 && (
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: seoFaqs.map(({ q, a }) => ({
+              "@type": "Question",
+              name: q,
+              acceptedAnswer: { "@type": "Answer", text: a },
+            })),
+          }}
+        />
+      )}
 
       <nav className="mb-6 text-sm text-slate-600">
         <Link href={localeHref("/", locale)} className="hover:text-emerald-700">
@@ -423,6 +438,25 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
               ))}
             </ul>
           </section>
+
+          {seoFaqs.length > 0 && (
+            <section>
+              <h2 className="mb-4 text-xl font-semibold text-slate-900">{t.alternativaPage.faqTitle}</h2>
+              <div className="divide-y divide-slate-200 rounded-xl border border-slate-200 bg-white">
+                {seoFaqs.map(({ q, a }) => (
+                  <details key={q} className="group p-4 open:pb-4 [&:not(:first-of-type)]:pt-4">
+                    <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-sm font-semibold text-slate-900 marker:content-none">
+                      {q}
+                      <span aria-hidden className="shrink-0 text-slate-400 transition-transform group-open:rotate-45">
+                        +
+                      </span>
+                    </summary>
+                    <p className="mt-2 text-sm text-slate-600">{a}</p>
+                  </details>
+                ))}
+              </div>
+            </section>
+          )}
 
           {ogImageUrl && (
             <section>

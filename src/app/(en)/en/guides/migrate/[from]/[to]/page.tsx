@@ -5,6 +5,7 @@ import { tools, getToolBySlug } from "@/data/tools";
 import { siteConfig } from "@/lib/site-config";
 import { slugify } from "@/lib/utils";
 import { getDictionary } from "@/i18n/get-dictionary";
+import { getMigrationContentForPair, fillTemplate } from "@/lib/migration-patterns";
 import { MigrationGuideContent } from "@/components/pages/migration-guide-content";
 
 interface PageProps {
@@ -35,8 +36,13 @@ export async function generateMetadata({ params }: PageProps, parent: ResolvingM
   const { tool, fromName } = resolved;
 
   const t = getDictionary("en");
-  const title = t.migrationGuidePage.metaTitle(fromName, tool.name, siteConfig.year);
-  const description = t.migrationGuidePage.metaDescription(fromName, tool.name);
+  const content = getMigrationContentForPair(fromName, tool.slug, "en");
+  const title = content.metaTitle
+    ? fillTemplate(content.metaTitle, fromName, tool.name, siteConfig.year)
+    : t.migrationGuidePage.metaTitle(fromName, tool.name, siteConfig.year);
+  const description = content.metaDescription
+    ? fillTemplate(content.metaDescription, fromName, tool.name, siteConfig.year)
+    : t.migrationGuidePage.metaDescription(fromName, tool.name);
   const url = `${siteConfig.url}/en/guides/migrate/${from}/${to}`;
 
   const { openGraphImages, twitterImages } = await inheritedSocialImages(parent);

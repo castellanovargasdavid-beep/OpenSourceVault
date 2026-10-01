@@ -196,6 +196,9 @@ const zhOverrides: Pick<
     cons: "需要注意",
     viewFullProfile: (name: string) => `查看 ${name} 的完整详情`,
     features: "主要功能",
+    stackBuilderCtaTitle: "已经知道选哪个了吗？",
+    stackBuilderCtaSubtitle: "把它加入 Stack Builder，和你的其他工具一起生成可直接部署的 docker-compose.yml。",
+    stackBuilderCtaButton: "前往 Stack Builder",
   },
   hostingTier: {
     title: "💡 这套 stack 推荐的服务器配置",

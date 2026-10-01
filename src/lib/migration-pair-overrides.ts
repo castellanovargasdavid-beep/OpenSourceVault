@@ -41,6 +41,52 @@ export const pairOverrides: Record<string, MigrationPatternContent> = {
       "Antes de cancelar {from}, compara el número de páginas de nivel superior entre ambos espacios y abre al menos una base de datos con relaciones para confirmar que no falta ningún registro — los rollups y fórmulas no se recrean solos, tendrás que rehacerlos si los necesitas.",
   },
 
+  "Notion→affine": {
+    intro:
+      "La exportación de Notion en Markdown trae bien el texto, pero las bases de datos relacionales llegan como CSV plano — y {to} añade algo que {from} no tiene de forma nativa: una pizarra infinita en el mismo lienzo que tus documentos.",
+    steps: [
+      {
+        title: "Antes de exportar: audita qué bases de datos usan relaciones",
+        body: "En {from}, revisa qué bases de datos tienen columnas \"Relation\" o \"Rollup\" — perderán la conexión al exportar. Anota qué tablas están relacionadas entre sí, porque el CSV exportado no lo indica de forma explícita.",
+      },
+      {
+        title: "Exporta el workspace completo desde {from}",
+        body: "Ve a Ajustes y miembros → Ajustes → Exportar contenido → \"Exportar todo el espacio de trabajo\", elige formato Markdown & CSV e incluye los adjuntos. {from} genera un .zip con una carpeta por página de nivel superior.",
+      },
+      {
+        title: "Despliega {to} vía Docker Compose",
+        body: "{to} necesita PostgreSQL y Redis (ver el docker-compose.yml de su ficha). Antes de importar nada, arranca el stack y confirma que el cliente web/escritorio se conecta correctamente a tu servidor.",
+      },
+      {
+        title: "Importa el .zip de Markdown en {to}",
+        body: "Con el workspace ya abierto en {to}, importa el .zip exportado. El texto y la jerarquía de páginas se reconstruyen, pero cada .csv de base de datos entra como una tabla nueva sin las relaciones reconstruidas.",
+      },
+      {
+        title: "Reconstruye relaciones y explora el whiteboard",
+        body: "Usando la lista del paso 1, vuelve a crear a mano cada relación entre bases de datos en {to}. Después, prueba la pizarra infinita integrada — es la función que {from} no ofrece nativamente y el motivo más común para migrar, no una conversión de contenido existente.",
+      },
+    ],
+    beforeYouCancel:
+      "Antes de cancelar {from}, compara el número de páginas de nivel superior entre ambos espacios y confirma que las imágenes y adjuntos se importaron. El self-host oficial de {to} todavía evoluciona rápido entre versiones — revisa el changelog antes de cada actualización y mantén un backup reciente del volumen de Postgres.",
+    metaTitle: "Migrar de {from} a {to}: documentos y pizarra en un solo lienzo ({year})",
+    metaDescription:
+      "Guía paso a paso para migrar de {from} a {to}: qué exporta Markdown, cómo reconstruir relaciones y qué esperar del self-host antes de cancelar {from}.",
+    faqs: [
+      {
+        q: "¿Puedo importar mis bases de datos de Notion con relaciones a AFFiNE?",
+        a: "No automáticamente. El CSV exportado llega como tabla plana sin las columnas de relación ni rollup — tendrás que recrear esas conexiones a mano en AFFiNE después de importar.",
+      },
+      {
+        q: "¿Qué ofrece AFFiNE que Notion no tiene?",
+        a: "Una pizarra (whiteboard) infinita integrada en el mismo lienzo que los documentos, para diagramas o lluvia de ideas visual sin salir de la app — Notion no tiene un equivalente nativo.",
+      },
+      {
+        q: "¿Es estable para un equipo en producción?",
+        a: "El self-host oficial de AFFiNE todavía evoluciona rápido entre versiones. Es una buena opción para uso personal o equipos pequeños que no dependen de una API o integración estable a largo plazo; haz backups frecuentes del volumen de Postgres.",
+      },
+    ],
+  },
+
   "Google Analytics→plausible": {
     intro:
       "A diferencia de otras migraciones de analítica, aquí sí existe una vía real de importar el histórico — pero solo cubre métricas agregadas (visitas, páginas, fuentes), no el detalle a nivel de sesión ni los perfiles demográficos de Google Signals.",
@@ -97,6 +143,23 @@ export const pairOverrides: Record<string, MigrationPatternContent> = {
     ],
     beforeYouCancel:
       "Antes de cancelar {from}, rota las contraseñas de tus cuentas más críticas (email principal, banca, el propio dominio) ya desde {to} — no porque el export en sí sea inseguro, sino para confirmar que el flujo de autenticación con tu nueva bóveda funciona de extremo a extremo antes de depender solo de ella. El historial de versiones anteriores de cada contraseña en {from} no se exporta — si lo necesitas, solo existe mientras la cuenta siga activa.",
+    metaTitle: "Migrar de {from} a {to}: exporta tu bóveda .1pux de forma segura ({year})",
+    metaDescription:
+      "Guía paso a paso para migrar de {from} a {to}: exporta tu bóveda en formato .1pux, despliégala con Bitwarden y bórrala de forma segura al terminar.",
+    faqs: [
+      {
+        q: "¿Qué cliente uso para acceder a Vaultwarden?",
+        a: "Vaultwarden no tiene interfaz propia: usa los clientes oficiales de Bitwarden (navegador, escritorio, móvil) apuntando a la URL de tu servidor, igual que harías con Bitwarden Cloud.",
+      },
+      {
+        q: "¿Por qué SIGNUPS_ALLOWED está desactivado por defecto?",
+        a: "Por seguridad: en producción no quieres que cualquiera con la URL pueda crearse una cuenta en tu servidor. Actívalo solo temporalmente para crear tu primer usuario y vuelve a desactivarlo después.",
+      },
+      {
+        q: "¿Es seguro el archivo .1pux exportado?",
+        a: "No, el archivo exportado está sin cifrar. Haz la exportación e importación en un ordenador de confianza sin conexión a redes públicas, y bórralo de forma segura (no solo a la papelera) en cuanto confirmes que la importación fue correcta.",
+      },
+    ],
   },
 
   "Google Photos→immich": {
