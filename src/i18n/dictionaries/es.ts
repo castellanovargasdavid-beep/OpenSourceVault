@@ -46,14 +46,26 @@ const es = {
   },
   hero: {
     badge: (count: number) => `+${count} alternativas open source auditadas`,
-    titlePrefix: "Deja de pagar por",
-    titleSuffix: "Auto-hospeda lo que ya usas.",
+    // El H1 era 100% "sustituye SaaS" (prefix + nombre de SaaS rotando +
+    // suffix), sin ninguna mención a "stack" — el posicionamiento real del
+    // producto ahora es "construye tu stack self-hosted", con el catálogo/
+    // comparativas como la infraestructura que lo alimenta, no al revés.
+    // h1Suffix se combina con el verbo que ya rota en heroFloating.journey*
+    // (Descubre/Compara/Construye/Despliega) en vez de duplicar esas 4
+    // palabras aquí — una sola fuente para el texto del flujo y para la
+    // palabra dinámica del H1.
+    h1Suffix: "tu stack self-hosted.",
     subtitle:
-      "Encuentra alternativas de código abierto a Notion, Slack, Airtable, Google Analytics y decenas de herramientas más — con licencia, docker-compose y guía de despliegue incluidos.",
+      "Compara herramientas open source por licencia, RAM y forma de despliegue, y construye un stack self-hosted real para sustituir Notion, Slack, Airtable, Google Analytics y decenas de SaaS más.",
     statTools: "herramientas",
     statSaas: "SaaS cubiertos",
     statCategories: "categorías",
-    statLicenseCost: "costo de licencia",
+    // Antes "costo de licencia" junto a la cifra "$0" podía leerse como "esto
+    // cuesta $0 en total" — el propio stack sigue teniendo coste de VPS,
+    // backups, tiempo de mantenimiento, etc. (ver el disclaimer ya existente
+    // en savingsCalculator). "en licencias" acota la cifra a lo que de
+    // verdad mide sin alargar la etiqueta del stat.
+    statLicenseCost: "en licencias",
     replacesLabel: "Sustituye herramientas como",
     ctaExplore: "Explorar alternativas",
     ctaBuildStack: "Construye tu stack",

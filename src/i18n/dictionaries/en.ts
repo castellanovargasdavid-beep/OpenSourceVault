@@ -48,14 +48,13 @@ const en: Dictionary = {
   },
   hero: {
     badge: (count: number) => `+${count} vetted open source alternatives`,
-    titlePrefix: "Stop paying for",
-    titleSuffix: "Self-host what you already use.",
+    h1Suffix: "your self-hosted stack.",
     subtitle:
-      "Find open source alternatives to Notion, Slack, Airtable, Google Analytics and dozens more tools — with license, docker-compose and deployment guide included.",
+      "Compare open source tools by license, RAM and deployment method, and build a real self-hosted stack to replace Notion, Slack, Airtable, Google Analytics and dozens more SaaS tools.",
     statTools: "tools",
     statSaas: "SaaS covered",
     statCategories: "categories",
-    statLicenseCost: "license cost",
+    statLicenseCost: "in license fees",
     replacesLabel: "Replaces tools like",
     ctaExplore: "Explore alternatives",
     ctaBuildStack: "Build your stack",

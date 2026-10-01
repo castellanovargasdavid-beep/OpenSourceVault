@@ -1,9 +1,11 @@
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { SearchBar } from "@/components/site/search-bar";
 import { RotatingExamples } from "@/components/site/rotating-examples";
 import { AnimatedCounter } from "@/components/site/animated-counter";
 import { LogoImage } from "@/components/site/logo-image";
 import { FloatingHero } from "@/components/site/floating-hero";
+import { HeroCtaLink } from "@/components/site/hero-cta-link";
 import { getSaasDomain } from "@/lib/saas-domains";
 import { getHeroFloatingData } from "@/lib/hero-floating-data";
 import { catalogStats } from "@/lib/catalog-stats";
@@ -29,6 +31,15 @@ const showcaseSaas = [
 export function Hero({ tools, locale = "es" }: { tools: ToolCardData[]; locale?: Locale }) {
   const t = getDictionary(locale);
   const floatingData = getHeroFloatingData(tools);
+  // Mismas 4 palabras que ya alimentan el flujo Descubre→Compara→Construye→
+  // Despliega de abajo (heroFloating.journey*) — una sola fuente para el
+  // texto del flujo y para la palabra dinámica del H1, en vez de mantener
+  // dos listas que podrían desincronizarse. "Construye" es el índice 2:
+  // es lo que se pinta en el servidor/primer paint (Stack Builder como
+  // producto principal, visible incluso sin JS o para un crawler), y la
+  // rotación sigue el orden narrativo normal del funnel a partir de ahí.
+  const journeySteps = [t.heroFloating.journeyDiscover, t.heroFloating.journeyCompare, t.heroFloating.journeyBuild, t.heroFloating.journeyDeploy];
+  const HIGHLIGHTED_STEP_INDEX = 2;
 
   return (
     <section className="relative overflow-hidden border-b border-slate-200">
@@ -48,46 +59,51 @@ export function Hero({ tools, locale = "es" }: { tools: ToolCardData[]; locale?:
             {t.hero.badge(catalogStats.totalTools)}
           </Link>
           <h1 className="mt-6 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
-            {t.hero.titlePrefix}{" "}
             <RotatingExamples
-              examples={showcaseSaas}
+              examples={journeySteps}
+              startIndex={HIGHLIGHTED_STEP_INDEX}
               className="bg-gradient-to-r from-emerald-600 via-teal-600 to-blue-600 bg-clip-text text-transparent"
-            />
-            .
-            <br />
-            {t.hero.titleSuffix}
+            />{" "}
+            {t.hero.h1Suffix}
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-600">{t.hero.subtitle}</p>
 
           <ol className="mt-6 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-[11px] font-semibold uppercase tracking-wide text-slate-600">
-            {[t.heroFloating.journeyDiscover, t.heroFloating.journeyCompare, t.heroFloating.journeyBuild, t.heroFloating.journeyDeploy].map(
-              (step, i, all) => (
-                <li key={step} className="flex items-center gap-2">
-                  <span className={i === 0 ? "text-emerald-600" : undefined}>{step}</span>
-                  {i < all.length - 1 && (
-                    <span aria-hidden className="text-slate-300">
-                      →
-                    </span>
-                  )}
-                </li>
-              )
-            )}
+            {journeySteps.map((step, i, all) => (
+              <li key={step} className="flex items-center gap-2">
+                <span className={i === HIGHLIGHTED_STEP_INDEX ? "text-emerald-600" : undefined}>{step}</span>
+                {i < all.length - 1 && (
+                  <span aria-hidden className="text-slate-300">
+                    →
+                  </span>
+                )}
+              </li>
+            ))}
           </ol>
 
           <div className="mx-auto mt-6 max-w-2xl">
             <SearchBar tools={tools} locale={locale} t={t.searchBar} />
           </div>
 
+          {/* Stack Builder es el CTA primario: el producto ya no se presenta
+              como un directorio de alternativas, sino como la herramienta
+              para construir y desplegar un stack self-hosted — el catálogo/
+              comparativas pasan a ser la infraestructura que lo alimenta.
+              Explorar alternativas sigue siendo un camino completo (SEO,
+              usuarios que ya saben qué SaaS quieren sustituir, entrada
+              directa al catálogo), solo que ya no es el primero. */}
           <div className="mx-auto mt-6 flex flex-wrap items-center justify-center gap-3">
-            <Link
-              href={getToolsExplorerHref(locale)}
-              className={cn(buttonVariants({ size: "lg" }), "bg-gradient-to-r from-emerald-600 to-teal-600 hover:opacity-90")}
+            <HeroCtaLink
+              href={localeHref("/stacks/builder", locale)}
+              cta="build_stack"
+              className={cn(buttonVariants({ size: "lg" }), "gap-1.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:opacity-90")}
             >
-              {t.hero.ctaExplore}
-            </Link>
-            <Link href={localeHref("/stacks/builder", locale)} className={cn(buttonVariants({ variant: "outline", size: "lg" }))}>
               {t.hero.ctaBuildStack}
-            </Link>
+              <ArrowRight size={16} aria-hidden />
+            </HeroCtaLink>
+            <HeroCtaLink href={getToolsExplorerHref(locale)} cta="explore_alternatives" className={cn(buttonVariants({ variant: "outline", size: "lg" }))}>
+              {t.hero.ctaExplore}
+            </HeroCtaLink>
           </div>
 
           <div className="mx-auto mt-10 flex max-w-xl flex-wrap items-center justify-center gap-x-10 gap-y-4">

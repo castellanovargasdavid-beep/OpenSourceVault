@@ -19,6 +19,7 @@ export type ReplaceAnalyticsEvent =
   | { name: "alternative_view"; saasSlug: string }
   | { name: "replace_view"; saasSlug: string }
   | { name: "stack_builder_opened" }
+  | { name: "hero_cta_click"; cta: "build_stack" | "explore_alternatives" }
   | { name: "stack_created"; toolCount: number }
   | { name: "compose_downloaded"; toolCount: number }
   | { name: "calculator_used"; calculator: "cost" | "savings" }
