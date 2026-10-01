@@ -199,6 +199,7 @@ export function ToolCard({
               addLabel={stackBuilderT.addButton}
               addedLabel={stackBuilderT.addedButton}
               compact
+              placement="tool_card"
             />
           </div>
         ) : (

@@ -285,7 +285,7 @@ export function SaasExitContent({
         {checkedItems.length > 0 && (
           <>
             <HardwareFitPanel totalMinRamMb={totalMinRamMb} gpuRequiredToolNames={[]} t={hardwareT} />
-            <HostingTierRecommendation totalMinRamMb={totalMinRamMb} locale={locale} t={hostingTierT} />
+            <HostingTierRecommendation totalMinRamMb={totalMinRamMb} locale={locale} t={hostingTierT} placement="saas_exit" />
           </>
         )}
 

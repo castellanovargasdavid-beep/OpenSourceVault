@@ -67,6 +67,7 @@ export function ReplaceEntryCard({
           addLabel={dict.stackBuilder.addButton}
           addedLabel={dict.stackBuilder.addedButton}
           compact
+          placement="tool_card"
           onAdd={() => trackReplaceEvent({ name: "alternative_selected", saasSlug, toolSlug: entry.tool.slug })}
         />
       </div>

@@ -11,6 +11,27 @@ import { track } from "@vercel/analytics";
  * mínimas que tiene sentido registrar (slugs/recuentos/nombre de
  * proveedor, nunca texto libre ni nada personal).
  */
+/**
+ * `placement` identifica desde qué superficie se disparó un evento (Fase 15
+ * del PRD de CRO: "qué CTA, en qué página, para qué herramienta... produjo
+ * el clic") — mismo string reutilizado en eventos de stack/hosting/deploy
+ * para poder cruzarlos sin depender de la URL (que ya captura `page`/`locale`
+ * por su cuenta en Vercel Analytics).
+ */
+export type AnalyticsPlacement =
+  | "home"
+  | "tool_page"
+  | "tool_card"
+  | "stack_builder"
+  | "stack_builder_search"
+  | "stack_result"
+  | "curated_stack"
+  | "hosting_comparison"
+  | "cost_calculator"
+  | "savings_calculator"
+  | "saas_exit"
+  | "deployment_guide";
+
 export type ReplaceAnalyticsEvent =
   | { name: "replace_started" }
   | { name: "saas_selected"; saasSlug: string }
@@ -23,7 +44,20 @@ export type ReplaceAnalyticsEvent =
   | { name: "stack_created"; toolCount: number }
   | { name: "compose_downloaded"; toolCount: number }
   | { name: "calculator_used"; calculator: "cost" | "savings" }
-  | { name: "hosting_click"; provider: string };
+  | { name: "hosting_click"; provider: string; placement?: AnalyticsPlacement }
+  // --- Añadidos para el funnel Descubrir→Entender→Comparar→Calcular→
+  // Construir→Coste→Infraestructura→Desplegar→Guardar/Compartir (ver
+  // FUNNEL_ANALYTICS.md). Nunca texto libre ni PII: solo slugs/recuentos/
+  // nombres de proveedor/placement, igual que los eventos ya existentes.
+  | { name: "tool_add_to_stack"; toolSlug: string; placement: AnalyticsPlacement }
+  | { name: "stack_shared"; toolCount: number }
+  | { name: "stack_import_viewed"; toolCount: number }
+  | { name: "stack_import_saved"; toolCount: number }
+  | { name: "hosting_view"; providers: string; placement: AnalyticsPlacement }
+  | { name: "deploy_click"; placement: AnalyticsPlacement; toolCount: number }
+  | { name: "copy_docker_compose"; placement: AnalyticsPlacement; toolCount: number }
+  | { name: "calculator_completed"; calculator: "cost" | "savings"; destination: "stack_builder" | "saas_exit" | "alternative" }
+  | { name: "search_submit"; resultCount: number; placement: AnalyticsPlacement };
 
 export function trackReplaceEvent(event: ReplaceAnalyticsEvent): void {
   try {

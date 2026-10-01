@@ -144,6 +144,13 @@ export function StackBuilderContent({
   const selectedTools = displayedSlugs.map((slug) => toolsBySlug.get(slug)).filter((x): x is ToolCardData => x !== undefined);
   const sharedNotFoundCount = isPreviewingShared ? sharedSlugs!.length - selectedTools.length : 0;
 
+  const importViewedRef = React.useRef(false);
+  React.useEffect(() => {
+    if (!isPreviewingShared || importViewedRef.current) return;
+    importViewedRef.current = true;
+    trackReplaceEvent({ name: "stack_import_viewed", toolCount: selectedTools.length });
+  }, [isPreviewingShared, selectedTools.length]);
+
   const selectedProfiles = React.useMemo(
     () => displayedSlugs.map((slug) => profiles[slug]).filter((p): p is StackToolProfile => p !== undefined),
     [displayedSlugs, profiles]
@@ -235,6 +242,7 @@ export function StackBuilderContent({
     if (!displayYaml) return;
     try {
       await navigator.clipboard.writeText(displayYaml);
+      trackReplaceEvent({ name: "copy_docker_compose", placement: "stack_builder", toolCount: selectedTools.length });
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
@@ -243,6 +251,7 @@ export function StackBuilderContent({
   }
 
   async function handleShare() {
+    trackReplaceEvent({ name: "stack_shared", toolCount: builder.activeStack.toolSlugs.length });
     const url = `${window.location.origin}${pathname}?tools=${encodeURIComponent(builder.activeStack.toolSlugs.join(","))}`;
     try {
       await navigator.clipboard.writeText(url);
@@ -255,6 +264,7 @@ export function StackBuilderContent({
 
   function handleSaveShared() {
     if (!sharedSlugs) return;
+    trackReplaceEvent({ name: "stack_import_saved", toolCount: sharedSlugs.length });
     builder.replaceActiveStackTools(sharedSlugs);
     setPreviewDismissed(true);
     router.replace(pathname);
@@ -267,7 +277,10 @@ export function StackBuilderContent({
 
   function handleNewProject() {
     const name = window.prompt(t.newProjectPrompt);
-    if (name && name.trim()) builder.createStack(name.trim());
+    if (name && name.trim()) {
+      builder.createStack(name.trim());
+      trackReplaceEvent({ name: "stack_created", toolCount: 0 });
+    }
   }
 
   function handleRenameProject() {
@@ -368,7 +381,13 @@ export function StackBuilderContent({
                             <span className="truncate text-sm font-medium text-slate-900">{tool.name}</span>
                             <span className="shrink-0 text-xs text-slate-500">{formatMinRam(tool.minRamMb, tool.isEstimated)}</span>
                           </span>
-                          <AddToStackButton toolSlug={tool.slug} addLabel={t.addButton} addedLabel={t.addedButton} compact />
+                          <AddToStackButton
+                            toolSlug={tool.slug}
+                            addLabel={t.addButton}
+                            addedLabel={t.addedButton}
+                            compact
+                            placement="stack_builder_search"
+                          />
                         </li>
                       ))}
                     </ul>
@@ -537,7 +556,13 @@ export function StackBuilderContent({
           )}
 
           {selectedTools.length > 0 && (
-            <OneCommandDeployBlock deployApiPath={deployApiPath} commandPreview={displayedSlugsKey} t={t} />
+            <OneCommandDeployBlock
+              deployApiPath={deployApiPath}
+              commandPreview={displayedSlugsKey}
+              placement="stack_builder"
+              toolCount={selectedTools.length}
+              t={t}
+            />
           )}
         </div>
 
@@ -661,7 +686,7 @@ export function StackBuilderContent({
               </div>
 
               <HardwareFitPanel totalMinRamMb={aggregate.totalApplicationRamMb} gpuRequiredToolNames={gpuRequiredToolNames} t={hardwareT} />
-              <HostingTierRecommendation totalMinRamMb={aggregate.totalApplicationRamMb} locale={locale} t={hostingTierT} />
+              <HostingTierRecommendation totalMinRamMb={aggregate.totalApplicationRamMb} locale={locale} t={hostingTierT} placement="stack_result" />
               <Link href={getCostCalculatorHref(locale)} className="block text-center text-xs font-medium text-slate-500 hover:text-emerald-700">
                 {t.costCalculatorLink}
               </Link>

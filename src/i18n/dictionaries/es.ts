@@ -43,6 +43,7 @@ const es = {
     terminos: "Términos de uso",
     divulgacionAfiliados: "Divulgación de afiliados",
     comoAuditamos: "Cómo auditamos",
+    apiDataset: "Dataset del catálogo (JSON)",
   },
   hero: {
     badge: (count: number) => `+${count} alternativas open source auditadas`,
@@ -208,6 +209,8 @@ const es = {
     // ahora dice explícitamente "VPS", y el disclaimer enumera el resto.
     selfHostedPerYear: "VPS auto-hospedado al año",
     selfHostedNote: (provider: string) => `1 servidor en ${provider}, usuarios ilimitados`,
+    estimateBadge: "Estimado",
+    verifiedBadge: "Precio de lista",
     estimatedSavings: "Ahorro estimado",
     lessPerYear: (pct: number) => `${pct}% menos al año`,
     disclaimer: (billingNote: string, saasName: string) =>
@@ -1041,6 +1044,8 @@ const es = {
     selfHostedLabel: "Self-hosted (VPS)",
     selfHostedExceedsNote: "Ningún plan estándar de los proveedores de abajo llega a esa RAM — necesitas un servidor dedicado o una configuración a medida.",
     saasCostLabel: "SaaS (por usuario × usuarios)",
+    estimateBadge: "Estimado",
+    userInputBadge: "Tu dato",
     savingsLabel: "Ahorro estimado",
     savingsPerMonth: "/mes",
     disclaimer:

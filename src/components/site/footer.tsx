@@ -43,6 +43,9 @@ export function Footer({ locale = "es" }: { locale?: Locale }) {
               <Link href="/en/affiliate-disclosure" className="hover:text-emerald-700">
                 Affiliate Disclosure <span className="text-[10px] opacity-70">(EN)</span>
               </Link>
+              <a href="/api/catalog" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-700">
+                Catalog dataset (JSON)
+              </a>
             </div>
           </div>
         </div>
@@ -138,6 +141,9 @@ export function Footer({ locale = "es" }: { locale?: Locale }) {
             <Link href={localeHref("/affiliate-disclosure", locale)} className="hover:text-emerald-700">
               {t.footer.divulgacionAfiliados}
             </Link>
+            <a href="/api/catalog" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-700">
+              {t.footer.apiDataset}
+            </a>
             <Link href={getHowWeAuditHref(locale)} className="hover:text-emerald-700">
               {t.footer.comoAuditamos}
             </Link>

@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { Rocket, Copy, Check, ExternalLink } from "lucide-react";
+import { trackReplaceEvent, type AnalyticsPlacement } from "@/lib/analytics";
 import type { Dictionary } from "@/i18n/dictionaries/es";
 
 /**
@@ -13,12 +14,17 @@ import type { Dictionary } from "@/i18n/dictionaries/es";
 export function OneCommandDeployBlock({
   deployApiPath,
   commandPreview,
+  placement,
+  toolCount,
   t,
 }: {
   /** Ruta relativa real, ej. "/api/deploy?stack=n8n&locale=es". */
   deployApiPath: string;
   /** Texto corto mostrado dentro del comando de ejemplo (slugs separados por coma). */
   commandPreview: string;
+  placement: AnalyticsPlacement;
+  /** Nº de herramientas que incluye este despliegue (1 en una ficha individual). */
+  toolCount: number;
   t: Dictionary["stackBuilder"];
 }) {
   const [copied, setCopied] = React.useState(false);
@@ -32,6 +38,7 @@ export function OneCommandDeployBlock({
     const command = `curl -sSL "${url}" -o deploy.sh && cat deploy.sh && bash deploy.sh`;
     try {
       await navigator.clipboard.writeText(command);
+      trackReplaceEvent({ name: "deploy_click", placement, toolCount });
       setCopied(true);
       setTimeout(() => setCopied(false), 2500);
     } catch {

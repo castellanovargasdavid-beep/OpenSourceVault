@@ -9,6 +9,10 @@ import { StackBuilderContent } from "@/components/pages/stack-builder-content";
 
 const t = getDictionary("en");
 
+// Same reasoning as the ES page: the canonical below already protects any
+// `?tools=` shared-stack variant without needing to read `searchParams` in
+// metadata (which would turn this static page into a per-request dynamic
+// one — see DATA_QUALITY_AUDIT.md for why that trade-off was declined).
 export const metadata: Metadata = {
   title: t.stackBuilder.metaTitle,
   description: t.stackBuilder.metaDescription,

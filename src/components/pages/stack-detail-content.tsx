@@ -102,7 +102,7 @@ function StackToolProfile({ tool: rawTool, locale }: { tool: OpenSourceTool; loc
             locale={locale}
             trigger={t.howToDeploy.trigger}
           />
-          <DockerComposeBlock code={tool.dockerCompose} t={t.dockerBlock} />
+          <DockerComposeBlock code={tool.dockerCompose} t={t.dockerBlock} placement="curated_stack" />
         </>
       )}
 

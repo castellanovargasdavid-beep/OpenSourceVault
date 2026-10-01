@@ -176,7 +176,12 @@ export function CostCalculator({ locale = "es" }: { locale?: Locale }) {
             <div className="flex items-start gap-2.5">
               <Server size={18} className="mt-0.5 shrink-0 text-slate-400" />
               <div>
-                <p className="text-xs uppercase tracking-wide text-slate-400">{t.selfHostedLabel}</p>
+                <p className="flex items-center gap-1.5 text-xs uppercase tracking-wide text-slate-400">
+                  {t.selfHostedLabel}
+                  <span className="rounded-full bg-slate-700 px-1.5 py-0.5 text-[10px] font-medium normal-case tracking-normal text-slate-300">
+                    {t.estimateBadge}
+                  </span>
+                </p>
                 {selfHostedMonthly !== undefined ? (
                   <p className="mt-0.5 text-xl font-bold">{formatUsd(selfHostedMonthly, locale)}</p>
                 ) : (
@@ -187,7 +192,12 @@ export function CostCalculator({ locale = "es" }: { locale?: Locale }) {
             <div className="flex items-start gap-2.5">
               <DollarSign size={18} className="mt-0.5 shrink-0 text-slate-400" />
               <div>
-                <p className="text-xs uppercase tracking-wide text-slate-400">{t.saasCostLabel}</p>
+                <p className="flex items-center gap-1.5 text-xs uppercase tracking-wide text-slate-400">
+                  {t.saasCostLabel}
+                  <span className="rounded-full bg-slate-700 px-1.5 py-0.5 text-[10px] font-medium normal-case tracking-normal text-slate-300">
+                    {t.userInputBadge}
+                  </span>
+                </p>
                 <p className="mt-0.5 text-xl font-bold">{formatUsd(saasMonthly, locale)}</p>
               </div>
             </div>
@@ -209,16 +219,21 @@ export function CostCalculator({ locale = "es" }: { locale?: Locale }) {
           <p className="mt-4 border-t border-slate-700 pt-4 text-xs text-slate-400">{t.disclaimer}</p>
         </div>
 
-        <HostingTierRecommendation totalMinRamMb={ramMb} locale={locale} t={hostingTierT} />
+        <HostingTierRecommendation totalMinRamMb={ramMb} locale={locale} t={hostingTierT} placement="cost_calculator" />
 
         <div className="rounded-xl border border-slate-200 p-5">
           <p className="mb-3 text-sm font-semibold text-slate-900">{t.ctaSaasExitTitle}</p>
           <div className="flex flex-col gap-2">
-            <Link href={localeHref("/saas-exit", locale)} className={cn(buttonVariants({ size: "sm" }), "w-full justify-center gap-1.5")}>
+            <Link
+              href={localeHref("/saas-exit", locale)}
+              onClick={() => trackReplaceEvent({ name: "calculator_completed", calculator: "cost", destination: "saas_exit" })}
+              className={cn(buttonVariants({ size: "sm" }), "w-full justify-center gap-1.5")}
+            >
               <Receipt size={14} /> {t.ctaSaasExit}
             </Link>
             <Link
               href={localeHref("/stacks/builder", locale)}
+              onClick={() => trackReplaceEvent({ name: "calculator_completed", calculator: "cost", destination: "stack_builder" })}
               className={cn(buttonVariants({ variant: "outline", size: "sm" }), "w-full justify-center gap-1.5")}
             >
               <Rocket size={14} /> {t.ctaStackBuilder}

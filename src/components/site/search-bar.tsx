@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Search, ArrowRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { getCategoryMetaLocalized } from "@/data/categories";
+import { trackReplaceEvent } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 import { localeHref } from "@/lib/locale-href";
 import type { Locale } from "@/i18n/config";
@@ -71,7 +72,13 @@ export function SearchBar({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Un solo evento `search_submit` para "la búsqueda terminó en una
+  // herramienta elegida", disparado tanto al pulsar Enter como al hacer clic
+  // en un resultado del desplegable — no se instrumenta cada pulsación de
+  // tecla (sería ruido, no señal: ver Fase 33 del PRD de CRO, "no añadir JS
+  // innecesario").
   function goToTool(slug: string) {
+    trackReplaceEvent({ name: "search_submit", resultCount: matches.length, placement: "home" });
     setOpen(false);
     router.push(localeHref(`/tool/${slug}`, locale));
   }

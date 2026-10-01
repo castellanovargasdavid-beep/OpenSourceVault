@@ -101,8 +101,11 @@ export function SavingsCalculator({ locale = "es" }: { locale?: Locale }) {
 
       <div className="mt-8 grid gap-4 sm:grid-cols-3">
         <div className="rounded-xl border border-slate-200 bg-slate-50 p-5 text-center">
-          <p className="text-xs font-medium uppercase tracking-wide text-slate-600">
+          <p className="flex items-center justify-center gap-1.5 text-xs font-medium uppercase tracking-wide text-slate-600">
             {t.perYear(saasName)}
+            <span className="rounded-full bg-slate-200 px-1.5 py-0.5 text-[10px] font-medium normal-case tracking-normal text-slate-600">
+              {t.verifiedBadge}
+            </span>
           </p>
           <p className="mt-1 text-2xl font-bold text-slate-900">{formatUsd(saasAnnualCost, locale)}</p>
           <p className="mt-1 text-xs text-slate-600">
@@ -110,8 +113,11 @@ export function SavingsCalculator({ locale = "es" }: { locale?: Locale }) {
           </p>
         </div>
         <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-5 text-center">
-          <p className="text-xs font-medium uppercase tracking-wide text-emerald-700">
+          <p className="flex items-center justify-center gap-1.5 text-xs font-medium uppercase tracking-wide text-emerald-700">
             {t.selfHostedPerYear}
+            <span className="rounded-full bg-emerald-200 px-1.5 py-0.5 text-[10px] font-medium normal-case tracking-normal text-emerald-800">
+              {t.estimateBadge}
+            </span>
           </p>
           <p className="mt-1 text-2xl font-bold text-emerald-700">
             {formatUsd(selfHostAnnualCost, locale)}
@@ -133,6 +139,7 @@ export function SavingsCalculator({ locale = "es" }: { locale?: Locale }) {
 
       <Link
         href={getAlternativeHref(saasName, locale)}
+        onClick={() => trackReplaceEvent({ name: "calculator_completed", calculator: "savings", destination: "alternative" })}
         className={cn(buttonVariants({ size: "lg" }), "mt-6 w-full justify-center gap-1.5 sm:w-auto")}
       >
         {t.cta(saasName)} <ArrowRight size={16} />

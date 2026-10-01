@@ -4,6 +4,7 @@ import * as React from "react";
 import { Check, Copy, Wand2, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { isComposeFile } from "@/lib/deploy-guide";
+import { trackReplaceEvent, type AnalyticsPlacement } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 import type { Dictionary } from "@/i18n/dictionaries/es";
 
@@ -24,7 +25,16 @@ function randomizeSecrets(code: string): string {
   });
 }
 
-export function DockerComposeBlock({ code, t }: { code: string; t: Dictionary["dockerBlock"] }) {
+export function DockerComposeBlock({
+  code,
+  t,
+  placement = "tool_page",
+}: {
+  code: string;
+  t: Dictionary["dockerBlock"];
+  /** Qué superficie renderiza este bloque — por defecto la ficha de herramienta, el uso más común. */
+  placement?: AnalyticsPlacement;
+}) {
   const [displayCode, setDisplayCode] = React.useState(code);
   const [copied, setCopied] = React.useState(false);
   const [copyError, setCopyError] = React.useState(false);
@@ -40,6 +50,7 @@ export function DockerComposeBlock({ code, t }: { code: string; t: Dictionary["d
   async function handleCopy() {
     try {
       await navigator.clipboard.writeText(displayCode);
+      trackReplaceEvent({ name: "copy_docker_compose", placement, toolCount: 1 });
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {

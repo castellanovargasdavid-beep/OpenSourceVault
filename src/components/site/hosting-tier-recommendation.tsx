@@ -4,7 +4,9 @@ import { matchHostingTiers, classifyHostingCategory } from "@/lib/hosting-tier";
 import { formatMinRam } from "@/lib/tool-difficulty";
 import { LogoImage } from "@/components/site/logo-image";
 import { AffiliateLink } from "@/components/site/affiliate-link";
+import { ViewTracker } from "@/components/site/view-tracker";
 import { cn } from "@/lib/utils";
+import type { AnalyticsPlacement } from "@/lib/analytics";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries/es";
 
@@ -25,10 +27,12 @@ export function HostingTierRecommendation({
   totalMinRamMb,
   locale = "es",
   t,
+  placement,
 }: {
   totalMinRamMb: number;
   locale?: Locale;
   t: Dictionary["hostingTier"];
+  placement: AnalyticsPlacement;
 }) {
   const providers = getHostingProvidersLocalized(locale);
   const matches = matchHostingTiers(providers, totalMinRamMb);
@@ -41,6 +45,9 @@ export function HostingTierRecommendation({
 
   return (
     <div className="rounded-xl border border-slate-200 p-6">
+      {hasAffiliateLink && (
+        <ViewTracker event={{ name: "hosting_view", providers: matches.map((m) => m.provider.id).join(","), placement }} />
+      )}
       <p className="mb-3 text-sm font-semibold text-slate-900">{t.title}</p>
 
       <div className={cn("mb-4 rounded-lg border px-3 py-2.5 text-sm", CATEGORY_STYLE[category])}>
@@ -62,6 +69,7 @@ export function HostingTierRecommendation({
                 <AffiliateLink
                   href={provider.affiliateUrl}
                   provider={provider.id}
+                  placement={placement}
                   className="mt-2.5 flex items-center justify-center gap-1.5 rounded-lg bg-slate-900 px-3 py-2 text-xs font-medium text-white transition-opacity hover:opacity-90"
                 >
                   {provider.ctaLabel} <ExternalLink size={11} className="shrink-0" />

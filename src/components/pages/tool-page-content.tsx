@@ -216,7 +216,12 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
         </div>
 
         <div className="mt-4">
-          <AddToStackButton toolSlug={tool.slug} addLabel={t.stackBuilder.addButton} addedLabel={t.stackBuilder.addedButton} />
+          <AddToStackButton
+            toolSlug={tool.slug}
+            addLabel={t.stackBuilder.addButton}
+            addedLabel={t.stackBuilder.addedButton}
+            placement="tool_page"
+          />
         </div>
 
         <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-slate-600">
@@ -343,7 +348,13 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
                   <DockerComposeBlock code={tool.dockerCompose} t={t.dockerBlock} />
                   {isComposeFile(tool.dockerCompose) && (
                     <div className="mt-4">
-                      <OneCommandDeployBlock deployApiPath={`/api/deploy?stack=${tool.slug}&locale=${locale}`} commandPreview={tool.slug} t={t.stackBuilder} />
+                      <OneCommandDeployBlock
+                        deployApiPath={`/api/deploy?stack=${tool.slug}&locale=${locale}`}
+                        commandPreview={tool.slug}
+                        placement="tool_page"
+                        toolCount={1}
+                        t={t.stackBuilder}
+                      />
                     </div>
                   )}
                   <p className="mt-2 text-xs text-slate-600">
@@ -540,7 +551,7 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
           <HardwareFitPanel totalMinRamMb={minRamMb} gpuRequiredToolNames={gpuRequired ? [tool.name] : []} t={t.hardwareFit} />
           <UpdateCheckerCard feedUrl={releasesFeedUrl} locale={locale} />
           <div className="space-y-2">
-            <HostingTierRecommendation totalMinRamMb={minRamMb} locale={locale} t={t.hostingTier} />
+            <HostingTierRecommendation totalMinRamMb={minRamMb} locale={locale} t={t.hostingTier} placement="tool_page" />
             <p className="flex flex-wrap items-center gap-x-3 gap-y-1 px-1 text-xs text-slate-500">
               <span>{t.toolPage.hostingGuidesRowLabel}</span>
               {hostingProviders.map((provider) => (

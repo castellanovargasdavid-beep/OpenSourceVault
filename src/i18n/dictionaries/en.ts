@@ -45,6 +45,7 @@ const en: Dictionary = {
     terminos: "Terms of use",
     divulgacionAfiliados: "Affiliate disclosure",
     comoAuditamos: "How we audit",
+    apiDataset: "Catalog dataset (JSON)",
   },
   hero: {
     badge: (count: number) => `+${count} vetted open source alternatives`,
@@ -196,6 +197,8 @@ const en: Dictionary = {
     // now says "VPS" explicitly, and the disclaimer spells out the rest.
     selfHostedPerYear: "Self-hosted VPS per year",
     selfHostedNote: (provider: string) => `1 server on ${provider}, unlimited users`,
+    estimateBadge: "Estimate",
+    verifiedBadge: "List price",
     estimatedSavings: "Estimated savings",
     lessPerYear: (pct: number) => `${pct}% less per year`,
     disclaimer: (billingNote: string, saasName: string) =>
@@ -1011,6 +1014,8 @@ const en: Dictionary = {
     selfHostedLabel: "Self-hosted (VPS)",
     selfHostedExceedsNote: "None of the standard plans from the providers below reach that much RAM — you'd need a dedicated server or a custom setup.",
     saasCostLabel: "SaaS (per user × users)",
+    estimateBadge: "Estimate",
+    userInputBadge: "Your input",
     savingsLabel: "Estimated savings",
     savingsPerMonth: "/mo",
     disclaimer:

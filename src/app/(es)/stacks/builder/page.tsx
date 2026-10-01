@@ -9,6 +9,14 @@ import { StackBuilderContent } from "@/components/pages/stack-builder-content";
 
 const t = getDictionary("es");
 
+// `?tools=a,b,c` (stack compartido, ver handleShare en stack-builder-
+// content.tsx) nunca debe competir en el índice con esta URL limpia. El
+// canonical de abajo ya resuelve eso — fijo, sin leer `searchParams` — sin
+// necesitar convertir esta página de estática a dinámica por request solo
+// para añadir un `robots: noindex` explícito y redundante con el canonical.
+// (Se consideró y se descartó — ver DATA_QUALITY_AUDIT.md — porque el coste
+// en Core Web Vitals de perder el prerender estático no se justifica frente
+// a una protección que el canonical ya da.)
 export const metadata: Metadata = {
   title: t.stackBuilder.metaTitle,
   description: t.stackBuilder.metaDescription,

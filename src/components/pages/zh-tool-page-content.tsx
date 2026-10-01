@@ -364,7 +364,7 @@ export async function ZhToolPageContent({ tool: rawTool }: { tool: OpenSourceToo
         </div>
 
         <aside className="min-w-0 space-y-6 lg:sticky lg:top-24 lg:self-start">
-          <HostingTierRecommendation totalMinRamMb={minRamMb} locale="zh" t={t.hostingTier} />
+          <HostingTierRecommendation totalMinRamMb={minRamMb} locale="zh" t={t.hostingTier} placement="tool_page" />
 
           {relatedTools.length > 0 && (
             <div className="rounded-xl border border-slate-200 p-6">

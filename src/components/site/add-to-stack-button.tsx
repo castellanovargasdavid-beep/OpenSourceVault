@@ -2,6 +2,7 @@
 
 import { Plus, Check } from "lucide-react";
 import { useStackBuilder } from "@/lib/stack-builder-store";
+import { trackReplaceEvent, type AnalyticsPlacement } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
 /**
@@ -9,6 +10,15 @@ import { cn } from "@/lib/utils";
  * icono) y en la ficha de la herramienta (modo completo, con texto).
  * Alterna la pertenencia al stack ACTIVO del usuario (localStorage, sin
  * registro) — ver src/lib/stack-builder-store.tsx.
+ *
+ * `placement` es un string serializable (no una función) a propósito: varios
+ * de los sitios donde se usa este botón son Server Components (tool-page-
+ * content.tsx, tool-card.tsx), que no pueden pasar un callback de evento a
+ * través del límite RSC — el propio componente dispara `tool_add_to_stack`
+ * internamente usando ese string, igual que `AffiliateLink` hace con
+ * `hosting_click`. `onAdd` sigue existiendo como extra opcional para los
+ * sitios que YA son Client Component (ej. ReplaceEntryCard, que además
+ * quiere disparar su propio `alternative_selected` más específico).
  */
 export function AddToStackButton({
   toolSlug,
@@ -16,6 +26,7 @@ export function AddToStackButton({
   addedLabel,
   compact = false,
   className,
+  placement,
   onAdd,
 }: {
   toolSlug: string;
@@ -23,7 +34,8 @@ export function AddToStackButton({
   addedLabel: string;
   compact?: boolean;
   className?: string;
-  /** Se dispara solo al pasar de "no está en el stack" a "añadido" — nunca al quitarlo. Opcional, para analítica (ver trackReplaceEvent) sin acoplar este componente genérico a ningún flujo concreto. */
+  placement: AnalyticsPlacement;
+  /** Extra opcional (solo viable desde otro Client Component) — ver nota arriba. */
   onAdd?: () => void;
 }) {
   const { hydrated, isInActiveStack, toggleTool } = useStackBuilder();
@@ -39,7 +51,11 @@ export function AddToStackButton({
       onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();
-        if (!inStack) onAdd?.();
+        // Se dispara solo al pasar de "no está en el stack" a "añadido" — nunca al quitarlo.
+        if (!inStack) {
+          trackReplaceEvent({ name: "tool_add_to_stack", toolSlug, placement });
+          onAdd?.();
+        }
         toggleTool(toolSlug);
       }}
       className={cn(
