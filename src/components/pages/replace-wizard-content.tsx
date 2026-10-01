@@ -81,7 +81,7 @@ export function ReplaceWizardContent({
   const toolCount = builder.hydrated ? builder.activeStack.toolSlugs.length : 0;
 
   function handleBuildStack() {
-    trackReplaceEvent({ name: "stack_created", toolCount });
+    trackReplaceEvent({ name: "stack_created", toolCount, placement: "replace_wizard" });
   }
 
   return (

@@ -33,12 +33,21 @@ export function Hero({ tools, locale = "es" }: { tools: ToolCardData[]; locale?:
   const floatingData = getHeroFloatingData(tools);
   // Mismas 4 palabras que ya alimentan el flujo Descubre→Compara→Construye→
   // Despliega de abajo (heroFloating.journey*) — una sola fuente para el
-  // texto del flujo y para la palabra dinámica del H1, en vez de mantener
-  // dos listas que podrían desincronizarse. "Construye" es el índice 2:
+  // texto del flujo estático, en vez de mantener dos listas que podrían
+  // desincronizarse en número de pasos u orden. "Construye" es el índice 2:
   // es lo que se pinta en el servidor/primer paint (Stack Builder como
   // producto principal, visible incluso sin JS o para un crawler), y la
   // rotación sigue el orden narrativo normal del funnel a partir de ahí.
   const journeySteps = [t.heroFloating.journeyDiscover, t.heroFloating.journeyCompare, t.heroFloating.journeyBuild, t.heroFloating.journeyDeploy];
+  // El H1 ya no rota una sola palabra + un sufijo fijo concatenado (eso
+  // duplicaba "stack" en los estados Construye/Despliega: "Construye tu
+  // stack tu stack self-hosted." no es una frase). Rota una frase completa
+  // de 2 palabras por estado — mismo concepto/orden que journeySteps, pero
+  // cada una ya es gramatical por sí sola — y h1Suffix pasa a ser una
+  // segunda línea fija independiente (ver el render de abajo), repetida
+  // como refuerzo de posicionamiento tras cualquier frase, nunca como
+  // continuación gramatical de ella.
+  const h1Phrases = [t.hero.h1PhraseDiscover, t.hero.h1PhraseCompare, t.hero.h1PhraseBuild, t.hero.h1PhraseDeploy];
   const HIGHLIGHTED_STEP_INDEX = 2;
 
   return (
@@ -60,11 +69,11 @@ export function Hero({ tools, locale = "es" }: { tools: ToolCardData[]; locale?:
           </Link>
           <h1 className="mt-6 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
             <RotatingExamples
-              examples={journeySteps}
+              examples={h1Phrases}
               startIndex={HIGHLIGHTED_STEP_INDEX}
-              className="bg-gradient-to-r from-emerald-600 via-teal-600 to-blue-600 bg-clip-text text-transparent"
-            />{" "}
-            {t.hero.h1Suffix}
+              className="block bg-gradient-to-r from-emerald-600 via-teal-600 to-blue-600 bg-clip-text text-transparent"
+            />
+            <span className="block">{t.hero.h1Suffix}</span>
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-600">{t.hero.subtitle}</p>
 

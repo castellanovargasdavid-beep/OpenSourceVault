@@ -6,26 +6,42 @@ import { catalogStats } from "../src/lib/catalog-stats";
 
 /**
  * Regresión del rediseño del hero (Stack Builder como producto principal,
- * ver el encargo "AUDITORÍA COMPLETA + REDISEÑO QUIRÚRGICO de la homepage").
+ * ver el encargo "AUDITORÍA COMPLETA + REDISEÑO QUIRÚRGICO de la homepage",
+ * y la iteración posterior "frase de 2 palabras + segunda línea fija").
  * No testea layout/CSS — eso se verificó a mano contra el HTML generado —
  * sino el contrato de contenido que un cambio futuro podría romper sin
- * querer: el H1 sigue siendo gramatical en los 4 estados de la palabra
+ * querer: el H1 sigue siendo gramatical en los 4 estados de la frase
  * dinámica, ambos locales están sincronizados, y la jerarquía de CTAs no
  * vuelve a invertirse en silencio.
  */
 
-function buildH1(verb: string, suffix: string): string {
-  return `${verb} ${suffix}`;
+function h1PhrasesOf(dict: typeof es | typeof en): string[] {
+  return [dict.hero.h1PhraseDiscover, dict.hero.h1PhraseCompare, dict.hero.h1PhraseBuild, dict.hero.h1PhraseDeploy];
 }
 
-test("H1 is grammatical in all 4 rotating states, in both locales", () => {
+test("each H1 phrase is a complete, grammatical sentence on its own, in both locales", () => {
   for (const [locale, dict] of [["es", es], ["en", en]] as const) {
-    const verbs = [dict.heroFloating.journeyDiscover, dict.heroFloating.journeyCompare, dict.heroFloating.journeyBuild, dict.heroFloating.journeyDeploy];
-    for (const verb of verbs) {
-      const sentence = buildH1(verb, dict.hero.h1Suffix);
-      assert.ok(sentence.length > 10, `${locale}: "${sentence}" looks too short to be a real sentence`);
-      assert.ok(/^[A-Z]/.test(sentence), `${locale}: "${sentence}" should start with a capitalized verb`);
-      assert.ok(sentence.endsWith("."), `${locale}: "${sentence}" should end with a period`);
+    for (const phrase of h1PhrasesOf(dict)) {
+      assert.ok(phrase.length > 10, `${locale}: "${phrase}" looks too short to be a real sentence`);
+      assert.ok(/^[A-Z]/.test(phrase), `${locale}: "${phrase}" should start with a capital letter`);
+      assert.ok(phrase.endsWith("."), `${locale}: "${phrase}" should end with a period`);
+    }
+  }
+});
+
+test("H1 phrases don't duplicate h1Suffix's wording — they're two independent lines, not one concatenated sentence", () => {
+  // Regresión directa: la versión anterior concatenaba "{verbo} {suffix}" en
+  // una sola frase, lo que para Construye/Despliega producía "Construye tu
+  // stack tu stack self-hosted." — ya no se concatenan (ver hero.tsx), pero
+  // este test blinda contra que alguien reintroduzca esa concatenación sin
+  // darse cuenta de la duplicación que causaba.
+  for (const dict of [es, en]) {
+    const suffixWords = dict.hero.h1Suffix.replace(/\.$/, "").toLowerCase();
+    for (const phrase of h1PhrasesOf(dict)) {
+      assert.ok(
+        !phrase.toLowerCase().includes(suffixWords),
+        `"${phrase}" should not already contain the full h1Suffix text ("${dict.hero.h1Suffix}") — they're rendered as two separate lines, concatenating them would duplicate wording`
+      );
     }
   }
 });
@@ -54,11 +70,38 @@ test("subtitle keeps the SEO-relevant keywords (open source, self-hosted, SaaS) 
   assert.match(en.hero.subtitle, /build/i);
 });
 
-test("the journey flow (Discover->Compare->Build->Deploy) is the single source for both the H1 word and the static flow row — never two drifting lists", () => {
+test("the journey flow (Discover->Compare->Build->Deploy) stays in sync between the static flow row and the H1 phrases — same order, same count, never drifting", () => {
+  // Ya no son literalmente la misma lista (heroFloating.journey* son
+  // palabras sueltas para la fila estática; hero.h1Phrase* son frases
+  // completas para el H1 rotativo — necesario para que cada estado del H1
+  // sea una oración legible por sí sola, ver hero.tsx) — pero deben seguir
+  // representando los mismos 4 pasos, en el mismo orden, o un cambio futuro
+  // podría desincronizarlos sin que nadie lo note.
   for (const dict of [es, en]) {
     const steps = [dict.heroFloating.journeyDiscover, dict.heroFloating.journeyCompare, dict.heroFloating.journeyBuild, dict.heroFloating.journeyDeploy];
+    const phrases = h1PhrasesOf(dict);
     assert.equal(steps.length, 4);
     assert.equal(new Set(steps).size, 4, "the 4 journey steps must be distinct words");
+    assert.equal(phrases.length, steps.length, "H1 phrases and journey steps must have the same number of states");
+    assert.equal(new Set(phrases).size, 4, "the 4 H1 phrases must be distinct sentences");
+    steps.forEach((verb, i) => {
+      assert.ok(
+        phrases[i].toLowerCase().startsWith(verb.toLowerCase()),
+        `H1 phrase "${phrases[i]}" should start with the same verb as journey step "${verb}" (position ${i}) — they must stay conceptually in sync`
+      );
+    });
+  }
+});
+
+test("H1 phrases are reasonably similar in length across the 4 states — avoids the rotating line wrapping differently (visible height jump) between states", () => {
+  for (const dict of [es, en]) {
+    const lengths = h1PhrasesOf(dict).map((p) => p.length);
+    const shortest = Math.min(...lengths);
+    const longest = Math.max(...lengths);
+    assert.ok(
+      longest - shortest <= 8,
+      `H1 phrase lengths vary too much (${shortest}-${longest} chars) — risks a layout shift as the rotation wraps differently per state: ${JSON.stringify(h1PhrasesOf(dict))}`
+    );
   }
 });
 

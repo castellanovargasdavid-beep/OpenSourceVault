@@ -46,7 +46,7 @@ export function HostingTierRecommendation({
   return (
     <div className="rounded-xl border border-slate-200 p-6">
       {hasAffiliateLink && (
-        <ViewTracker event={{ name: "hosting_view", providers: matches.map((m) => m.provider.id).join(","), placement }} />
+        <ViewTracker event={{ name: "hosting_view", providers: matches.map((m) => m.provider.id).join(","), placement }} viewport />
       )}
       <p className="mb-3 text-sm font-semibold text-slate-900">{t.title}</p>
 

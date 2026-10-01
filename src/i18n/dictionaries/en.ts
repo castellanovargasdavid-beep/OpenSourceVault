@@ -49,6 +49,15 @@ const en: Dictionary = {
   },
   hero: {
     badge: (count: number) => `+${count} vetted open source alternatives`,
+    // See the long comment on the ES version of these keys — same reasoning,
+    // natural English phrasing rather than a literal translation (e.g.
+    // "Compare the tools" reads better than a literal "Compare tools", and
+    // keeps a similar length to the other 3 phrases so the rotating line
+    // doesn't wrap differently between states).
+    h1PhraseDiscover: "Discover alternatives.",
+    h1PhraseCompare: "Compare the tools.",
+    h1PhraseBuild: "Build your stack.",
+    h1PhraseDeploy: "Deploy your stack.",
     h1Suffix: "your self-hosted stack.",
     subtitle:
       "Compare open source tools by license, RAM and deployment method, and build a real self-hosted stack to replace Notion, Slack, Airtable, Google Analytics and dozens more SaaS tools.",

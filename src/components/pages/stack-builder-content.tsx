@@ -279,7 +279,7 @@ export function StackBuilderContent({
     const name = window.prompt(t.newProjectPrompt);
     if (name && name.trim()) {
       builder.createStack(name.trim());
-      trackReplaceEvent({ name: "stack_created", toolCount: 0 });
+      trackReplaceEvent({ name: "stack_created", toolCount: 0, placement: "stack_builder" });
     }
   }
 

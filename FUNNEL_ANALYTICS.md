@@ -6,26 +6,83 @@ abstraction in `src/lib/analytics.ts`, backed by `@vercel/analytics` (already
 mounted in both locale layouts — no new provider added). No PII is ever sent:
 only slugs, counts, provider ids, and `placement` strings.
 
-## North Star Metric
+## North Star Metric — revised 2026-10-01
 
-**Qualified Stack Actions / 1,000 organic visitors**
+**The previous version of this section was mathematically wrong** and has
+been replaced. It defined the metric as a *sum of raw event counts*
+(`tool_add_to_stack` + `stack_created` + `hosting_view` + `stack_shared`)
+divided by visitor count — but a single visitor can fire several of those
+events in one session (e.g., add 4 tools to a stack = 4
+`tool_add_to_stack` events from 1 person), so the numerator silently counted
+the same visitor multiple times. That's a volume metric, not a per-visitor
+rate, and labeling it "per 1,000 visitors" implied a conversion percentage
+it didn't actually measure.
 
-A Qualified Stack Action is any of: `tool_add_to_stack`, `stack_created`,
-`calculator_completed` (destination `stack_builder`), `hosting_view`,
-`stack_shared`. Computed as:
+### The conceptual definition we're keeping
 
-```
-(count of events in {tool_add_to_stack, stack_created, hosting_view, stack_shared}
- from sessions whose first touch was organic search)
- / (organic visitor sessions / 1000)
-```
+> **High-intent stack visitor** = a visitor who, during a session, performs
+> at least one high-intent action related to building/deploying a stack.
 
-This repo doesn't run its own analytics warehouse — the computation above is
-meant to be run against the Vercel Analytics export (or whatever BI tool
-consumes it) once enough volume exists, not inside this codebase. What this
-task delivers is the instrumentation, not a dashboard (per the PRD: "No
-necesitamos un dashboard complejo si la infraestructura actual no lo
-permite... pero la instrumentación debe quedar preparada").
+A visitor who adds 5 tools counts once, not 5 times — that's the whole point
+of fixing this.
+
+### The qualifying event set ("High-Intent Stack Action")
+
+`tool_add_to_stack`, `stack_created` (either `placement`), `stack_shared`,
+`stack_import_saved`, `calculator_completed` (destination `stack_builder`),
+`deploy_click`, `copy_docker_compose`.
+
+**`hosting_view` was deliberately excluded from this set.** Viewing a
+hosting recommendation is exposure, not an action the PRD's own definition
+asks for ("realiza... una acción") — it belongs in the funnel as a
+mid-funnel checkpoint, not as a qualifying action in the North Star.
+
+### The honest limitation
+
+**This repo cannot currently compute "visitors" or "sessions" as a
+de-duplicated unit at all.** `trackReplaceEvent()` sends named events with
+small properties (slugs, counts, placement) — it does not attach any
+anonymous visitor/session identifier, and none exists anywhere else in this
+codebase to borrow (the Stack Builder's `localStorage` key stores stack
+*contents*, not an analytics identity). Vercel Web Analytics does report an
+aggregate "Visitors" number in its own dashboard for standard page views,
+but that is a platform-level stat we can reference, not something this
+code computes, and it has no way to tell us which specific visitors also
+fired a given custom event. Without a per-visitor/session ID attached to
+every event — new analytics architecture, explicitly out of scope for this
+iteration — **"at least one qualifying action per unique visitor" cannot be
+computed today without either fabricating it or adding that
+instrumentation.** We are not doing either.
+
+### What we CAN compute reliably, today, with zero new instrumentation
+
+1. **High-Intent Action Volume** — the raw count of events in the
+   qualifying set above, over any period. A real, trendable number: if it
+   goes up week over week, more of this behavior is happening. It does
+   **not** tell you how many distinct people that represents.
+2. **Funnel stage ratios** — e.g. `hosting_click` ÷ `hosting_view` (now a
+   real viewport-based impression — see below) as a click-through rate on
+   the hosting recommendation; `stack_import_saved` ÷ `stack_import_viewed`
+   as a shared-stack adoption rate. These are valid because both sides of
+   each ratio are counting the same kind of unit (events), not mixing
+   events against visitors.
+3. **High-Intent Action Intensity** (optional, approximate) — High-Intent
+   Action Volume ÷ total Visitors for the same period, read directly off
+   the Vercel Analytics dashboard (a real number, not computed by this
+   code). This is a traffic-normalized intensity figure, explicitly **not**
+   a "% of visitors who converted" — document it that way wherever it's
+   reported, since the numerator can include multiple events per visitor
+   while the denominator counts each visitor once.
+
+### Recommended next step (not implemented here — out of scope)
+
+If a true unique-visitor conversion rate is wanted later, the minimal
+addition would be a single anonymous, non-PII id (e.g. a random UUID in
+`localStorage`, generated once, sent as an extra property on every
+`trackReplaceEvent` call) so qualifying events can be de-duplicated by
+visitor downstream. That's a deliberate architecture change and was not
+made in this iteration per explicit instruction to avoid new analytics
+architecture.
 
 ## Full event taxonomy (`src/lib/analytics.ts`)
 
@@ -39,7 +96,7 @@ permite... pero la instrumentación debe quedar preparada").
 | `replace_view` | `saasSlug` | Replace-guide page mount | yes |
 | `stack_builder_opened` | — | Stack Builder page mount | yes |
 | `hero_cta_click` | `cta: "build_stack" \| "explore_alternatives"` | Home hero | yes |
-| `stack_created` | `toolCount` | Replace wizard completion; **now also** Stack Builder "new project" | yes (extended) |
+| `stack_created` | `toolCount`, `placement: "replace_wizard" \| "stack_builder"` | Replace wizard completion; Stack Builder "new project" | yes (now disambiguated — see below) |
 | `compose_downloaded` | `toolCount` | Stack Builder "Download" button | yes |
 | `calculator_used` | `calculator: "cost" \| "savings"` | Calculator mount (= "started") | yes |
 | `hosting_click` | `provider`, `placement?` | `AffiliateLink` click (= the affiliate-click signal) | yes (now carries `placement`) |
@@ -47,7 +104,7 @@ permite... pero la instrumentación debe quedar preparada").
 | `stack_shared` | `toolCount` | Stack Builder "Share" button | **new** |
 | `stack_import_viewed` | `toolCount` | Shared-stack `?tools=` preview banner shown | **new** |
 | `stack_import_saved` | `toolCount` | Shared-stack preview → "Save to my stack" | **new** |
-| `hosting_view` | `providers` (comma-joined ids), `placement` | `HostingTierRecommendation` mount, any surface | **new** |
+| `hosting_view` | `providers` (comma-joined ids), `placement` | `HostingTierRecommendation`, **real viewport entry** (IntersectionObserver, threshold 0.4) — not mount | yes (semantics corrected — see below) |
 | `deploy_click` | `placement`, `toolCount` | 1-Command Deploy copy button | **new** |
 | `copy_docker_compose` | `placement`, `toolCount` | `DockerComposeBlock` / Stack Builder compose copy | **new** |
 | `calculator_completed` | `calculator`, `destination: "stack_builder" \| "saas_exit" \| "alternative"` | Calculator's own destination CTA click | **new** |
@@ -57,7 +114,46 @@ permite... pero la instrumentación debe quedar preparada").
 `tool_card`, `stack_builder`, `stack_builder_search`, `stack_result`,
 `curated_stack`, `hosting_comparison` *(reserved, not yet rendered anywhere —
 see Not Implemented)*, `cost_calculator`, `savings_calculator`, `saas_exit`,
-`deployment_guide` *(reserved, see Not Implemented)*.
+`deployment_guide` *(reserved, see Not Implemented)*, `replace_wizard` *(new
+— see below)*.
+
+## Corrections made in this iteration (2026-10-01)
+
+A funnel-analytics review (no new architecture, pure correctness pass)
+found two real issues in the previous implementation:
+
+1. **`hosting_view` fired on mount, not on real exposure.** It lived inside
+   `HostingTierRecommendation`, rendered in a sidebar (tool pages, Stack
+   Builder result) that's often below the fold — on mobile, sidebars in
+   this layout stack *after* the main content, so the event fired the
+   instant the page loaded, long before any user had scrolled anywhere near
+   it. Fixed by giving `ViewTracker` an opt-in `viewport` mode
+   (IntersectionObserver, threshold 0.4 — same pattern and threshold
+   already used by `animated-counter.tsx`, no new library) that only fires
+   once the element genuinely enters the viewport. The other three
+   `ViewTracker` usages (`tool_view`, `alternative_view`, `replace_view`)
+   were deliberately left on the default mount-based path — those
+   legitimately represent "this page loaded in a real browser," the
+   standard pageview concept, not "did the user scroll to see this."
+   `hosting_view` keeps its name (a "view" that only fires on real viewport
+   entry is now an accurate use of the word — no rename needed).
+2. **`stack_created` conflated two unrelated actions.** It fired both when
+   someone finished the SaaS-replacement wizard (`toolCount` = however many
+   tools they picked) and when someone clicked "new project" inside Stack
+   Builder (`toolCount` hardcoded to `0`, since a new project starts
+   empty) — with no property to tell the two apart downstream. Fixed by
+   adding a required `placement: "replace_wizard" | "stack_builder"` to the
+   event.
+
+Everything else in the 10 funnel events explicitly reviewed this iteration
+(`tool_add_to_stack`, `hosting_view`, `stack_created`, `stack_shared`,
+`stack_import_viewed`, `stack_import_saved`, `copy_docker_compose`,
+`deploy_click`, `search_submit`, `calculator_completed`) was checked for
+duplicate/double firing, locale-independence (none of these components read
+or branch on `locale` before tracking — ES/EN/zh all go through the exact
+same `trackReplaceEvent()` call), and PII — all already correct, left
+untouched. See the "North Star Metric" section above for the third,
+larger correction (the metric's math itself).
 
 ## Funnel 1 — Discover → Build → Deploy
 

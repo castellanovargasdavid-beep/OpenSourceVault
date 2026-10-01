@@ -51,10 +51,22 @@ const es = {
     // suffix), sin ninguna mención a "stack" — el posicionamiento real del
     // producto ahora es "construye tu stack self-hosted", con el catálogo/
     // comparativas como la infraestructura que lo alimenta, no al revés.
-    // h1Suffix se combina con el verbo que ya rota en heroFloating.journey*
-    // (Descubre/Compara/Construye/Despliega) en vez de duplicar esas 4
-    // palabras aquí — una sola fuente para el texto del flujo y para la
-    // palabra dinámica del H1.
+    //
+    // h1Phrase* son frases COMPLETAS de 2 palabras (verbo + objeto), en el
+    // mismo orden/concepto que heroFloating.journey* (Descubre→Compara→
+    // Construye→Despliega) — no sustituyen esa lista (sigue siendo la única
+    // fuente para la fila estática del flujo debajo), es una elaboración
+    // paralela para el H1, que necesita una frase legible por sí sola en
+    // vez de una sola palabra. "Construye tu stack."/"Despliega tu stack."
+    // ya mencionan "stack" por sí mismas — concatenar h1Suffix después (como
+    // antes) duplicaría la palabra para esos 2 de los 4 estados, así que
+    // h1Suffix pasó de "sufijo pegado a la palabra" a segunda línea fija e
+    // independiente del hero (ver hero.tsx) — se repite tras cada frase
+    // como refuerzo de posicionamiento, nunca como continuación gramatical.
+    h1PhraseDiscover: "Descubre alternativas.",
+    h1PhraseCompare: "Compara herramientas.",
+    h1PhraseBuild: "Construye tu stack.",
+    h1PhraseDeploy: "Despliega tu stack.",
     h1Suffix: "tu stack self-hosted.",
     subtitle:
       "Compara herramientas open source por licencia, RAM y forma de despliegue, y construye un stack self-hosted real para sustituir Notion, Slack, Airtable, Google Analytics y decenas de SaaS más.",

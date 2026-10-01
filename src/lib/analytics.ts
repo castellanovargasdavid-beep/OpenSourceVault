@@ -30,7 +30,8 @@ export type AnalyticsPlacement =
   | "cost_calculator"
   | "savings_calculator"
   | "saas_exit"
-  | "deployment_guide";
+  | "deployment_guide"
+  | "replace_wizard";
 
 export type ReplaceAnalyticsEvent =
   | { name: "replace_started" }
@@ -41,7 +42,12 @@ export type ReplaceAnalyticsEvent =
   | { name: "replace_view"; saasSlug: string }
   | { name: "stack_builder_opened" }
   | { name: "hero_cta_click"; cta: "build_stack" | "explore_alternatives" }
-  | { name: "stack_created"; toolCount: number }
+  // `placement` distingue las dos acciones MUY distintas que comparten este
+  // nombre: completar el wizard de reemplazo de SaaS (toolCount = nº de
+  // herramientas ya elegidas) vs. crear un proyecto nuevo y vacío dentro del
+  // Stack Builder (toolCount siempre 0 ahí) — antes eran indistinguibles en
+  // los datos.
+  | { name: "stack_created"; toolCount: number; placement: Extract<AnalyticsPlacement, "replace_wizard" | "stack_builder"> }
   | { name: "compose_downloaded"; toolCount: number }
   | { name: "calculator_used"; calculator: "cost" | "savings" }
   | { name: "hosting_click"; provider: string; placement?: AnalyticsPlacement }
