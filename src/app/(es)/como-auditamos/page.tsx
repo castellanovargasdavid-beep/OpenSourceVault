@@ -118,11 +118,11 @@ export default function ComoAuditamosPage() {
             Igual de importante que lo anterior — para que &quot;auditado&quot; no se convierta en una
             promesa vacía:
           </p>
-          <ul className="list-disc space-y-1 pl-5">
-            <li>No hemos desplegado en producción real las {totalTools} herramientas del catálogo nosotros mismos.</li>
-            <li>No auditamos el código fuente en busca de vulnerabilidades de seguridad.</li>
-            <li>No garantizamos que un docker-compose.yml funcione sin ajustes en cualquier entorno o versión de Docker.</li>
-            <li>No aceptamos pagos de los proyectos listados a cambio de aparecer o de una valoración más favorable.</li>
+          <ul className="space-y-1 pl-5">
+            <li>✕ No hemos desplegado en producción real las {totalTools} herramientas del catálogo nosotros mismos.</li>
+            <li>✕ No auditamos el código fuente en busca de vulnerabilidades de seguridad.</li>
+            <li>✕ No garantizamos que un docker-compose.yml funcione sin ajustes en cualquier entorno o versión de Docker.</li>
+            <li>✕ No aceptamos pagos de los proyectos listados a cambio de aparecer o de una valoración más favorable.</li>
           </ul>
         </section>
 

@@ -17,7 +17,6 @@ function fakeTool(overrides: Partial<OpenSourceTool> = {}): OpenSourceTool {
     githubUrl: "https://github.com/fake/fake",
     license: "MIT",
     dockerCompose: "services:\n  app:\n    image: fake:1.0.0\n",
-    affiliateLinks: { digitalOceanUrl: "", vultrUrl: "", railwayUrl: "" },
     features: [],
     techStack: [],
     pros: [],

@@ -76,7 +76,9 @@ export function DiscoveryStrip({ locale = "es" }: { locale?: Locale }) {
         </div>
 
         <div id="destacadas" className="mt-8 flex items-center justify-between gap-4">
-          <p className="text-sm font-medium text-slate-500">{t.discoveryStrip.toolsLabel}</p>
+          <p className="text-sm font-medium text-slate-500" title={t.discoveryStrip.featuredCriteria}>
+            {t.discoveryStrip.toolsLabel}
+          </p>
           <Link href={getToolsExplorerHref(locale)} className="text-sm font-medium text-emerald-700 hover:text-emerald-800">
             {t.discoveryStrip.viewAllTools}
           </Link>

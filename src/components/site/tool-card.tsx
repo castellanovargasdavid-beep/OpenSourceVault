@@ -145,8 +145,8 @@ export function ToolCard({
             <GitFork size={14} /> {tool.license}
           </span>
           {tool.starsCount && (
-            <span className="inline-flex items-center gap-1">
-              <Star size={14} className="text-amber-500" /> {formatStars(tool.starsCount)}
+            <span className="inline-flex items-center gap-1" title={t.starsSnapshotCaption}>
+              <Star size={14} className="text-amber-500" /> ~{formatStars(tool.starsCount)}
             </span>
           )}
           {tool.fossModel && (

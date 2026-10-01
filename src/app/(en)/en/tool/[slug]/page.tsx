@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: PageProps, parent: ResolvingM
 
   const t = getDictionary("en");
   const mainSaas = tool.replaces[0];
-  const title = t.toolPage.metaTitle(tool.name, mainSaas, siteConfig.year);
+  const title = t.toolPage.metaTitle(tool.name, mainSaas, siteConfig.year, tool.fossModel);
   const description = tool.shortDescription;
   const url = `${siteConfig.url}/en/tool/${tool.slug}`;
 

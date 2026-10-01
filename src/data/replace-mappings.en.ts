@@ -55,7 +55,7 @@ export const replaceMappingContentEn: Record<string, ReplaceMappingContent> = {
   "Airtable→nocodb": {
     fit: "good",
     useCase: "Can replace Airtable for smart spreadsheets with Grid, Kanban, Gallery and Form views, on top of a real SQL database.",
-    limitation: "Somewhat steeper learning curve than Airtable, and its AGPL-3.0 license requires you to release your code if you modify and offer it as a service.",
+    limitation: "Somewhat steeper learning curve than Airtable, and its AGPL-3.0 license: check the implications if you offer it as a service to others.",
   },
   "Airtable→baserow": {
     fit: "good",

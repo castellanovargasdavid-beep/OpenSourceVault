@@ -25,7 +25,6 @@ function makeTool(overrides: Partial<OpenSourceTool> & { dockerCompose: string }
     websiteUrl: "https://example.com",
     githubUrl: "https://github.com/example/example",
     license: "MIT",
-    affiliateLinks: { digitalOceanUrl: "", vultrUrl: "", railwayUrl: "" },
     features: [],
     techStack: [],
     pros: [],

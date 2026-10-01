@@ -1,15 +1,16 @@
 import Link from "next/link";
-import { GitFork, ExternalLink, Check, X, ArrowRight, PlayCircle, Database, Code2, MonitorSmartphone, TriangleAlert, ChevronDown, Star } from "lucide-react";
+import { GitFork, ExternalLink, Check, X, ArrowRight, PlayCircle, Database, Code2, MonitorSmartphone, TriangleAlert, ChevronDown, Star, GraduationCap } from "lucide-react";
 import { getLocalizedTool } from "@/data/tools";
+import { getHostingProvidersLocalized } from "@/data/hosting-providers";
 import { getCategoryMetaLocalized, getCategoryHref } from "@/data/categories";
 import { getStacksForTool, getLocalizedStack } from "@/data/stacks";
 import { getAlternativeHref } from "@/lib/alternatives";
 import { getReplaceMapping } from "@/lib/replace";
-import { getMigrationGuideHref, getDeployGuideHref, getCompareHref } from "@/lib/routes";
+import { getMigrationGuideHref, getDeployGuideHref, getCompareHref, getHostingGuideHref } from "@/lib/routes";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { AddToStackButton } from "@/components/site/add-to-stack-button";
-import { AffiliateHostingWidget } from "@/components/site/affiliate-hosting-widget";
+import { HostingTierRecommendation } from "@/components/site/hosting-tier-recommendation";
 import { DockerComposeBlock } from "@/components/site/docker-compose-block";
 import { OneClickDeploy } from "@/components/site/one-click-deploy";
 import { OneCommandDeployBlock } from "@/components/site/one-command-deploy-block";
@@ -70,6 +71,7 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
   const releasesFeedUrl = getReleasesFeedUrl(tool.githubUrl);
   const ogImageUrl = await getOgImageUrl(tool.websiteUrl);
   const { difficulty, minRamMb, isEstimated } = resolveToolResourceProfile(tool);
+  const hostingProviders = getHostingProvidersLocalized(locale);
   const difficultyStyle = difficultyMeta[difficulty];
   const difficultyLabel =
     difficulty === "beginner" ? t.difficulty.beginnerBadge : difficulty === "intermediate" ? t.difficulty.intermediateBadge : t.difficulty.advancedBadge;
@@ -175,7 +177,7 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
           )}
         </div>
         <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-          {t.toolPage.h1(tool.name, tool.replaces[0], siteConfig.year)}
+          {t.toolPage.h1(tool.name, tool.replaces[0], siteConfig.year, tool.fossModel)}
         </h1>
         <p className="mt-4 max-w-3xl text-lg text-slate-600">{tool.description}</p>
         {tool.fossModel && tool.fossModel !== "FOSS" && (
@@ -503,7 +505,22 @@ export async function ToolPageContent({ tool: rawTool, locale }: { tool: OpenSou
         <aside className="min-w-0 space-y-6 lg:sticky lg:top-24 lg:self-start">
           <HardwareFitPanel totalMinRamMb={minRamMb} gpuRequiredToolNames={gpuRequired ? [tool.name] : []} t={t.hardwareFit} />
           <UpdateCheckerCard feedUrl={releasesFeedUrl} locale={locale} />
-          <AffiliateHostingWidget tool={tool} locale={locale} />
+          <div className="space-y-2">
+            <HostingTierRecommendation totalMinRamMb={minRamMb} locale={locale} t={t.hostingTier} />
+            <p className="flex flex-wrap items-center gap-x-3 gap-y-1 px-1 text-xs text-slate-500">
+              <span>{t.toolPage.hostingGuidesRowLabel}</span>
+              {hostingProviders.map((provider) => (
+                <Link
+                  key={provider.id}
+                  href={getHostingGuideHref(provider.id, locale)}
+                  className="inline-flex items-center gap-1 font-medium text-emerald-700 hover:underline"
+                >
+                  <GraduationCap size={12} />
+                  {provider.name}
+                </Link>
+              ))}
+            </p>
+          </div>
 
           {featuredStacks.length > 0 && (
             <div className="rounded-xl border border-slate-200 p-6">

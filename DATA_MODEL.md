@@ -23,7 +23,6 @@ before editing `tools.ts` by hand, or before running
 | `license` | `string` | yes | The *actual* license text, e.g. `"MIT"`, `"AGPL-3.0"`, `"Sustainable Use License (Fair-code)"` — not a generic "open source". This is prose for display; [`fossModel`](#fossmodel-taxonomy) is the machine-readable classification of what it means. |
 | `dockerCompose` | `string` | yes | The real deployment snippet. Usually a `docker-compose.yml`; for tools without one, the project's own install script (`curl \| bash`, etc.) with a comment explaining what it does — see [`/contribuir`](src/app/(es)/contribuir/page.tsx) for the full expectations here. |
 | `oneClickDeploy` | `{ platform, url }[]` | no | Only for platforms with a verifiable official 1-click template (Railway/Coolify/Render/Elestio/Portainer). |
-| `affiliateLinks` | `{ digitalOceanUrl, vultrUrl, railwayUrl }` | yes | Filled globally, not per tool — leave as the shared `affiliateLinks` constant when adding a tool. |
 | `features` / `techStack` / `pros` / `cons` | `string[]` | yes | `cons` should never be empty — a tool with no listed drawback reads as unreviewed, not as perfect. |
 | `tags` | [`ToolTag[]`](#toolTag) | yes | Can be `[]`. |
 | `database` | `string` | no | e.g. `"PostgreSQL"`, `"SQLite"`, `"None / File-based"`. |

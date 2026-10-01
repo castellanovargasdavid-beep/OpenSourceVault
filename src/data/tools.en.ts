@@ -32,7 +32,7 @@ export const toolsEn: Record<string, ToolTranslation> = {
     ],
     cons: [
       "Plugin ecosystem still smaller than Notion's",
-      "AGPL-3.0 requires releasing your code if you modify and offer it as a service",
+      "AGPL-3.0 license: check the implications if you offer it as a service to others",
     ],
   },
   plane: {
@@ -83,7 +83,7 @@ export const toolsEn: Record<string, ToolTranslation> = {
       "Runs on real databases, not a proprietary format",
       "No artificial row limits",
     ],
-    cons: ["Somewhat steeper learning curve than Airtable", "AGPL-3.0"],
+    cons: ["Somewhat steeper learning curve than Airtable", "AGPL-3.0 license: check the implications if you offer it as a service to others"],
   },
   baserow: {
     description:
@@ -103,11 +103,11 @@ export const toolsEn: Record<string, ToolTranslation> = {
   },
   plausible: {
     description:
-      "Plausible is a lightweight, privacy-focused web analytics tool: no cookies, native GDPR/CCPA compliance, and a much simpler dashboard than Google Analytics.",
+      "Plausible is a lightweight, privacy-focused web analytics tool: no cookies and no personal identifiers stored, which makes GDPR/CCPA compliance easier, and a much simpler dashboard than Google Analytics.",
     shortDescription: "Cookie-free web analytics, an alternative to Google Analytics.",
     features: [
       "Under-1KB script, doesn't slow down your site",
-      "No cookies or consent banner needed",
+      "No cookies or personal identifiers stored (check your jurisdiction and the rest of your stack to confirm whether you still need a consent banner)",
       "Single-page dashboard",
       "Imports historical data from Google Analytics",
     ],

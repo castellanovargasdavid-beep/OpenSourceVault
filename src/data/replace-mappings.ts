@@ -109,7 +109,7 @@ export const replaceMappingContent: Record<string, ReplaceMappingContent> = {
     fit: "good",
     useCase:
       "Puede sustituir a Airtable para hojas de cálculo inteligentes con vistas Grid, Kanban, Galería y Formulario, sobre una base de datos SQL real.",
-    limitation: "Curva de aprendizaje algo mayor que Airtable, y su licencia AGPL-3.0 obliga a liberar el código si modificas y ofreces el servicio.",
+    limitation: "Curva de aprendizaje algo mayor que Airtable, y su licencia AGPL-3.0: revisa implicaciones si ofreces el servicio a terceros.",
   },
   "Airtable→baserow": {
     fit: "good",

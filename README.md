@@ -92,7 +92,6 @@ The easiest, most useful contribution is **adding a tool that isn't in the catal
      githubUrl: "https://github.com/org/repo",
      license: "MIT", // the real SPDX-ish license, not just "open source"
      dockerCompose: `version: "3.8"\nservices:\n  app:\n    image: org/tool:latest\n    ports:\n      - "8080:8080"\n`,
-     affiliateLinks: { digitalOceanUrl: "", vultrUrl: "", railwayUrl: "" }, // leave empty, filled globally
      features: ["Key feature one", "Key feature two"],
      techStack: ["Node.js", "PostgreSQL"],
      pros: ["Genuinely good thing about it"],

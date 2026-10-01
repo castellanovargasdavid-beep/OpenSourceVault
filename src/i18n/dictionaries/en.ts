@@ -1,5 +1,19 @@
 import type { Dictionary } from "./es";
 
+/** "Open Source" alone on an Open-Core/Fair-code/Source-available tool's title was imprecise — see the note next to toolPage.metaTitle/h1. */
+function titleLicenseWordEn(fossModel?: "FOSS" | "OpenCore" | "FairCode" | "SourceAvailable"): string {
+  switch (fossModel) {
+    case "OpenCore":
+      return "Open-Core";
+    case "FairCode":
+      return "Fair-code";
+    case "SourceAvailable":
+      return "Source-available";
+    default:
+      return "Open Source";
+  }
+}
+
 const en: Dictionary = {
   siteDescription:
     "Discover open source, self-hostable alternatives to the most popular SaaS software. Compare licenses, check the docker-compose and deploy in minutes.",
@@ -65,6 +79,13 @@ const en: Dictionary = {
   discoveryStrip: {
     title: "Not sure what you're looking for? Explore a few options",
     toolsLabel: "Featured & recently added",
+    // Same criteria already explained on /affiliate-disclosure ("Editorial
+    // independence") — an external audit flagged that "featured" with no
+    // explanation can read as picking winners with no stated criteria. It's
+    // not an algorithm: it's manual editorial curation, so the text says
+    // exactly that instead of pretending there's a formula.
+    featuredCriteria:
+      "Manual editorial pick — not a scoring algorithm. We consider project maturity, active community, and ease of deployment.",
     viewAllTools: "View the full catalog →",
   },
   toolExplorer: {
@@ -137,6 +158,13 @@ const en: Dictionary = {
     fossModelOpenCore: "Open-Core",
     fossModelFairCode: "Fair-code",
     fossModelSourceAvailable: "Source-available",
+    // tool.starsCount is a static value from tools.ts (never refreshed from
+    // this card) — different from the live number the tool's own page
+    // fetches (see liveStats in tool-page-content.tsx). An external audit
+    // caught exactly that gap (77k on the tool page vs 59k on the catalog
+    // for the same tool) and flagged it as a "freshness" issue. The "~" and
+    // tooltip make it honest instead of hiding it.
+    starsSnapshotCaption: "GitHub stars as of our last check — may have grown since. For the live number, open the tool's page.",
   },
   difficulty: {
     filterLabel: "Filter by resources needed",
@@ -152,16 +180,6 @@ const en: Dictionary = {
     ramBadgePrefix: "Min. RAM",
     ramEstimatedNote: " (estimated from its docker-compose, not measured in production)",
     storageBadgePrefix: "Recommended storage:",
-  },
-  affiliateWidget: {
-    title: (name: string) => `Deploy ${name} in minutes`,
-    subtitlePrefix: "Use the",
-    subtitleSuffix: "below on any of these self-hosting providers.",
-    digitalOcean: "Deploy on DigitalOcean",
-    digitalOceanCredit: "$5 in free credit",
-    vultr: "Deploy on Vultr",
-    railway: "Deploy on Railway",
-    disclaimer: "Affiliate links: if you sign up through them we may earn a commission at no extra cost to you.",
   },
   savingsCalculator: {
     saasLabel: "SaaS tool",
@@ -316,8 +334,17 @@ const en: Dictionary = {
     // as alternatives to Notion) each claimed to be THE best at the same
     // time, a contradiction visible by comparing any two pages for the same
     // replaced tool. Same note applies to alternativaPage.metaTitle.
-    metaTitle: (tool: string, saas: string, year: number) => `${tool}: Open Source alternative to ${saas} in ${year}`,
-    h1: (tool: string, saas: string, year: number) => `${tool}: Open Source alternative to ${saas} in ${year}`,
+    metaTitle: (tool: string, saas: string, year: number, fossModel?: "FOSS" | "OpenCore" | "FairCode" | "SourceAvailable") =>
+      `${tool}: ${titleLicenseWordEn(fossModel)} alternative to ${saas} in ${year}`,
+    h1: (tool: string, saas: string, year: number, fossModel?: "FOSS" | "OpenCore" | "FairCode" | "SourceAvailable") =>
+      `${tool}: ${titleLicenseWordEn(fossModel)} alternative to ${saas} in ${year}`,
+    // Replaces the old AffiliateHostingWidget (same generic affiliate button
+    // on all 196 pages, unrelated to each tool's real RAM) — an external
+    // audit asked for exactly "what will this actually cost me?" instead of
+    // a bare affiliate link. We now reuse HostingTierRecommendation (already
+    // used in Stack Builder/SaaS Exit) with THIS tool's real RAM, keeping
+    // the step-by-step guide links the old widget also had, below it.
+    hostingGuidesRowLabel: "Step-by-step guides:",
     license: "License",
     stars: "stars",
     estimated: "(estimated)",

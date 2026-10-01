@@ -6,8 +6,8 @@ import type { Locale } from "@/i18n/config";
 
 /**
  * Reduce una OpenSourceTool completa a solo los campos que ToolCard
- * necesita — sin dockerCompose, features, pros, cons, techStack ni
- * affiliateLinks. Úsala en cualquier vista de listado justo antes de
+ * necesita — sin dockerCompose, features, pros, cons ni techStack. Úsala
+ * en cualquier vista de listado justo antes de
  * pasarle la herramienta a <ToolCard>, para no cruzar esos campos pesados
  * hacia el cliente en cada tarjeta.
  *

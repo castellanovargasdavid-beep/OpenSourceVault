@@ -1,3 +1,17 @@
+/** "Open Source" a secas en el título de una ficha Open-Core/Fair-code/Source-available era impreciso — ver nota junto a toolPage.metaTitle/h1. */
+function titleLicenseWordEs(fossModel?: "FOSS" | "OpenCore" | "FairCode" | "SourceAvailable"): string {
+  switch (fossModel) {
+    case "OpenCore":
+      return "Open-Core";
+    case "FairCode":
+      return "Fair-code";
+    case "SourceAvailable":
+      return "Source-available";
+    default:
+      return "Open Source";
+  }
+}
+
 const es = {
   siteDescription:
     "Descubre alternativas de código abierto y auto-hospedables al software SaaS más popular. Compara licencias, mira el docker-compose y despliega en minutos.",
@@ -63,6 +77,13 @@ const es = {
   discoveryStrip: {
     title: "¿No sabes qué buscas? Explora algunas opciones",
     toolsLabel: "Destacadas y recién añadidas",
+    // Mismo criterio que ya se explica en /affiliate-disclosure
+    // ("Independencia editorial") — una auditoría externa señaló que
+    // "destacada" sin explicación puede leerse como que elegimos ganadores
+    // sin criterio. No es un algoritmo: es una curación editorial manual,
+    // así que el texto lo dice tal cual, sin fingir una fórmula que no existe.
+    featuredCriteria:
+      "Selección editorial manual — no un algoritmo de puntuación. Consideramos madurez del proyecto, comunidad activa y facilidad de despliegue.",
     viewAllTools: "Ver todo el catálogo →",
   },
   toolExplorer: {
@@ -135,6 +156,14 @@ const es = {
     fossModelOpenCore: "Open-Core",
     fossModelFairCode: "Fair-code",
     fossModelSourceAvailable: "Source-available",
+    // tool.starsCount es un valor estático de tools.ts (nunca se refresca
+    // desde esta tarjeta) — distinto del número en vivo que sí consulta la
+    // ficha de la herramienta (ver liveStats en tool-page-content.tsx). Una
+    // auditoría externa detectó justo esa discrepancia (77k en la ficha vs
+    // 59k en el catálogo para la misma herramienta) y la señaló como un
+    // problema de "freshness". El "~" y el tooltip lo hacen honesto en vez
+    // de ocultarlo.
+    starsSnapshotCaption: "Estrellas de GitHub en nuestra última comprobación — puede haber crecido desde entonces. Para el número en vivo, entra en la ficha.",
   },
   difficulty: {
     filterLabel: "Filtrar por recursos necesarios",
@@ -150,16 +179,6 @@ const es = {
     ramBadgePrefix: "RAM mín.",
     ramEstimatedNote: " (estimado a partir de su docker-compose, no medido en producción)",
     storageBadgePrefix: "Almacenamiento recomendado:",
-  },
-  affiliateWidget: {
-    title: (name: string) => `Despliega ${name} en minutos`,
-    subtitlePrefix: "Usa el",
-    subtitleSuffix: "de abajo en cualquiera de estos proveedores auto-hospedados.",
-    digitalOcean: "Desplegar en DigitalOcean",
-    digitalOceanCredit: "$5 de crédito gratis",
-    vultr: "Desplegar en Vultr",
-    railway: "Desplegar en Railway",
-    disclaimer: "Enlaces de afiliado: si compras a través de ellos podemos recibir una comisión sin coste extra para ti.",
   },
   savingsCalculator: {
     saasLabel: "Herramienta SaaS",
@@ -314,8 +333,24 @@ const es = {
     // como alternativa a Notion) afirmaban cada una ser "LA mejor" al mismo
     // tiempo, una contradicción detectable comparando dos fichas cualquiera
     // del mismo reemplazo. Ver nota igual en alternativaPage.metaTitle.
-    metaTitle: (tool: string, saas: string, year: number) => `${tool}: alternativa Open Source a ${saas} en ${year}`,
-    h1: (tool: string, saas: string, year: number) => `${tool}: alternativa Open Source a ${saas} en ${year}`,
+    // "Open Source" a secas en el título de TODAS las fichas, incluidas las
+    // que son Open-Core/Fair-code/Source-available (licencia no-OSI), era
+    // impreciso — justo la misma falta de matiz que ya distinguimos en el
+    // cuerpo de la ficha (ver fossModelCaption) y en /como-auditamos. Con
+    // `fossModel` ausente (herramientas sin clasificar) se mantiene el
+    // "Open Source" genérico, nunca un modelo que no hemos verificado.
+    metaTitle: (tool: string, saas: string, year: number, fossModel?: "FOSS" | "OpenCore" | "FairCode" | "SourceAvailable") =>
+      `${tool}: alternativa ${titleLicenseWordEs(fossModel)} a ${saas} en ${year}`,
+    h1: (tool: string, saas: string, year: number, fossModel?: "FOSS" | "OpenCore" | "FairCode" | "SourceAvailable") =>
+      `${tool}: alternativa ${titleLicenseWordEs(fossModel)} a ${saas} en ${year}`,
+    // Sustituye al antiguo AffiliateHostingWidget (mismo botón genérico de
+    // afiliado para las 196 fichas, sin relación con la RAM real de cada
+    // herramienta) — una auditoría externa pedía precisamente "¿cuánto me
+    // costará realmente?" en vez de un enlace de afiliado desnudo. Ahora
+    // reutilizamos HostingTierRecommendation (ya usado en Stack Builder/SaaS
+    // Exit) con la RAM real de ESTA herramienta, y mantenemos debajo los
+    // enlaces a las guías paso a paso que el widget anterior sí incluía.
+    hostingGuidesRowLabel: "Guías paso a paso:",
     license: "Licencia",
     stars: "estrellas",
     estimated: "(estimado)",

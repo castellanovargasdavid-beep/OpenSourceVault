@@ -95,11 +95,6 @@ export interface OpenSourceTool {
   dockerCompose: string;
   /** Plantillas de despliegue en 1 clic verificadas (Railway/Coolify/Render/Elestio/Portainer). */
   oneClickDeploy?: OneClickDeployTarget[];
-  affiliateLinks: {
-    digitalOceanUrl: string;
-    vultrUrl: string;
-    railwayUrl: string;
-  };
   features: string[];
   techStack: string[];
   pros: string[];
@@ -159,7 +154,7 @@ export interface OpenSourceTool {
 /**
  * Proyección ligera de OpenSourceTool con solo los campos que una tarjeta de
  * listado (ToolCard) necesita para renderizarse — sin dockerCompose,
- * features, pros, cons, techStack, affiliateLinks, githubUrl, etc. Úsala en
+ * features, pros, cons, techStack, githubUrl, etc. Úsala en
  * cualquier vista de listado (portada, categorías, alternativas,
  * destacadas) para no cruzar esos campos pesados hacia el cliente en cada
  * tarjeta. Ver toToolCardData() en src/lib/tool-card-data.ts.

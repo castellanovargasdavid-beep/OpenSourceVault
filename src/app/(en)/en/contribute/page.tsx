@@ -105,7 +105,6 @@ export default function ContributePage() {
               script there instead with a comment explaining what it does.
             </li>
             <li>
-              <code className="rounded bg-slate-100 px-1.5 py-0.5 text-sm text-slate-800">affiliateLinks</code>,{" "}
               <code className="rounded bg-slate-100 px-1.5 py-0.5 text-sm text-slate-800">features</code>,{" "}
               <code className="rounded bg-slate-100 px-1.5 py-0.5 text-sm text-slate-800">techStack</code>,{" "}
               <code className="rounded bg-slate-100 px-1.5 py-0.5 text-sm text-slate-800">pros</code>,{" "}

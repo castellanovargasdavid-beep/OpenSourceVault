@@ -1,6 +1,5 @@
 import type { OpenSourceTool } from "@/lib/types";
 import { isPublished } from "@/lib/types";
-import { affiliateLinks } from "@/lib/site-config";
 import { toolsEn } from "./tools.en";
 import type { Locale } from "@/i18n/config";
 
@@ -53,7 +52,6 @@ services:
 volumes:
   appflowy_pg_data:
 `,
-    affiliateLinks,
     features: [
       "Editor de bloques tipo Notion con bases de datos",
       "Modo local-first, funciona sin conexión",
@@ -68,7 +66,7 @@ volumes:
     ],
     cons: [
       "Ecosistema de plugins aún más pequeño que Notion",
-      "AGPL-3.0 obliga a liberar el código si modificas y ofreces el servicio",
+      "Licencia AGPL-3.0: revisa implicaciones si ofreces el servicio a terceros",
     ],
     tags: ["docker-ready", "1-click-deploy"],
     featured: true,
@@ -119,7 +117,6 @@ services:
 volumes:
   plane_pg_data:
 `,
-    affiliateLinks,
     features: [
       "Ciclos (sprints), módulos y hojas de ruta",
       "Vistas Kanban, lista, calendario y Gantt",
@@ -167,7 +164,6 @@ services:
 volumes:
   focalboard_data:
 `,
-    affiliateLinks,
     features: [
       "Tableros Kanban, tabla, galería y calendario",
       "Plantillas listas para usar",
@@ -225,7 +221,6 @@ volumes:
   nocodb_data:
   nocodb_pg_data:
 `,
-    affiliateLinks,
     features: [
       "Vistas Grid, Kanban, Galería y Formulario",
       "API REST y GraphQL autogeneradas",
@@ -237,7 +232,7 @@ volumes:
       "Funciona sobre bases de datos reales, no un formato propietario",
       "Sin límites de filas artificiales",
     ],
-    cons: ["Curva de aprendizaje algo mayor que Airtable", "AGPL-3.0"],
+    cons: ["Curva de aprendizaje algo mayor que Airtable", "Licencia AGPL-3.0: revisa implicaciones si ofreces el servicio a terceros"],
     tags: ["docker-ready", "1-click-deploy"],
   },
   {
@@ -272,7 +267,6 @@ services:
 volumes:
   baserow_data:
 `,
-    affiliateLinks,
     features: [
       "Interfaz drag-and-drop muy similar a Airtable",
       "Vistas Grid, Kanban, Calendario y Galería",
@@ -294,7 +288,7 @@ volumes:
     replaces: ["Google Analytics"],
     category: "Analytics",
     description:
-      "Plausible es una analítica web ligera y centrada en la privacidad: no usa cookies, cumple GDPR/CCPA de forma nativa y ofrece un dashboard mucho más simple que Google Analytics.",
+      "Plausible es una analítica web ligera y centrada en la privacidad: no usa cookies ni almacena identificadores personales, lo que facilita cumplir con GDPR/CCPA, y ofrece un dashboard mucho más simple que Google Analytics.",
     shortDescription: "Analítica web sin cookies, alternativa a Google Analytics.",
     websiteUrl: "https://plausible.io",
     githubUrl: "https://github.com/plausible/analytics",
@@ -336,10 +330,9 @@ volumes:
   plausible_pg_data:
   plausible_ch_data:
 `,
-    affiliateLinks,
     features: [
       "Script de menos de 1KB, no ralentiza tu sitio",
-      "Sin cookies ni banner de consentimiento necesario",
+      "No usa cookies ni almacena identificadores personales (revisa tu jurisdicción y el resto de tu stack para confirmar si aun así necesitas un banner de consentimiento)",
       "Dashboard de una sola pantalla",
       "Importa histórico desde Google Analytics",
     ],
@@ -396,7 +389,6 @@ services:
 volumes:
   umami_pg_data:
 `,
-    affiliateLinks,
     features: [
       "Multi-sitio desde un único dashboard",
       "Eventos personalizados",
@@ -454,7 +446,6 @@ volumes:
   matomo_data:
   matomo_db_data:
 `,
-    affiliateLinks,
     features: [
       "Heatmaps y grabación de sesiones (plugin oficial)",
       "Embudos y segmentos avanzados",
@@ -514,7 +505,6 @@ services:
 volumes:
   posthog_pg_data:
 `,
-    affiliateLinks,
     features: [
       "Session replay y heatmaps",
       "Feature flags y experimentos A/B",
@@ -572,7 +562,6 @@ services:
 volumes:
   calcom_pg_data:
 `,
-    affiliateLinks,
     features: [
       "Páginas de reserva personalizadas",
       "Sincronización con Google/Outlook Calendar",
@@ -622,7 +611,6 @@ services:
 volumes:
   rocketchat_mongo_data:
 `,
-    affiliateLinks,
     features: [
       "Canales, hilos y videollamadas nativas",
       "Bridging con Matrix, Slack y WhatsApp",
@@ -677,7 +665,6 @@ volumes:
   mattermost_data:
   mattermost_pg_data:
 `,
-    affiliateLinks,
     features: [
       "Playbooks para gestión de incidentes",
       "Integraciones nativas con CI/CD",
@@ -730,7 +717,6 @@ services:
 volumes:
   twenty_pg_data:
 `,
-    affiliateLinks,
     features: [
       "Campos y objetos 100% personalizables",
       "Vistas tipo tabla y Kanban de pipeline",
@@ -790,7 +776,6 @@ services:
 volumes:
   chatwoot_pg_data:
 `,
-    affiliateLinks,
     features: [
       "Bandeja compartida multicanal (web, email, WhatsApp, Instagram)",
       "Chatbots y respuestas automáticas",
@@ -845,7 +830,6 @@ services:
 volumes:
   supabase_db_data:
 `,
-    affiliateLinks,
     features: [
       "Base de datos PostgreSQL completa (no un subconjunto)",
       "Auth con OAuth, magic links y RLS",
@@ -908,7 +892,6 @@ services:
 volumes:
   appwrite_mariadb_data:
 `,
-    affiliateLinks,
     features: [
       "SDKs para Flutter, Swift, Android, Web y más",
       "Funciones serverless en múltiples runtimes",
@@ -953,7 +936,6 @@ services:
 volumes:
   minio_data:
 `,
-    affiliateLinks,
     features: [
       "API 100% compatible con S3",
       "Cifrado en reposo y versionado de objetos",
@@ -1013,7 +995,6 @@ volumes:
   nextcloud_data:
   nextcloud_db_data:
 `,
-    affiliateLinks,
     features: [
       "Sincronización de archivos multiplataforma",
       "Edición colaborativa de documentos (Collabora/OnlyOffice)",
@@ -1075,7 +1056,6 @@ volumes:
   n8n_data:
   n8n_pg_data:
 `,
-    affiliateLinks,
     features: [
       "Editor visual de flujos con más de 400 nodos",
       "Nodos de código JavaScript y Python cuando lo necesites",
@@ -1130,7 +1110,6 @@ volumes:
   open_webui_data:
   ollama_data:
 `,
-    affiliateLinks,
     features: [
       "Compatible con Ollama y cualquier API tipo OpenAI",
       "RAG con tus propios documentos",
@@ -1187,7 +1166,6 @@ services:
 volumes:
   langfuse_pg_data:
 `,
-    affiliateLinks,
     features: [
       "Trazas detalladas de cada llamada a tu LLM",
       "Gestión de prompts con versionado",
@@ -1237,7 +1215,6 @@ services:
 volumes:
   huly_mongo_data:
 `,
-    affiliateLinks,
     features: ["Issues y proyectos estilo Linear", "Chat y canales de equipo", "Documentos colaborativos"],
     techStack: ["Rust", "React", "MongoDB"],
     pros: ["Sustituye tres SaaS distintos con un solo despliegue"],
@@ -1291,7 +1268,6 @@ services:
 volumes:
   outline_pg_data:
 `,
-    affiliateLinks,
     features: ["Edición colaborativa en tiempo real", "Búsqueda instantánea", "Colecciones y permisos por equipo"],
     techStack: ["Node.js", "React", "PostgreSQL", "Redis"],
     pros: ["Interfaz muy pulida, adopción rápida por el equipo"],
@@ -1342,7 +1318,6 @@ services:
 volumes:
   bookstack_db_data:
 `,
-    affiliateLinks,
     features: ["Estructura en libros, capítulos y páginas", "Editor WYSIWYG o Markdown", "Permisos granulares por rol"],
     techStack: ["PHP", "Laravel", "MySQL"],
     pros: ["Licencia MIT", "Muy ligero comparado con Confluence"],
@@ -1386,7 +1361,6 @@ services:
 volumes:
   wekan_mongo_data:
 `,
-    affiliateLinks,
     features: ["Tableros Kanban con etiquetas y checklists", "Swimlanes y vistas múltiples", "Integraciones vía webhooks"],
     techStack: ["Meteor", "MongoDB"],
     pros: ["Licencia MIT muy permisiva", "Curva de adopción mínima"],
@@ -1425,7 +1399,6 @@ services:
 volumes:
   vikunja_data:
 `,
-    affiliateLinks,
     features: ["Vistas Lista, Kanban y Gantt", "Tareas recurrentes y recordatorios", "API REST y apps móviles"],
     techStack: ["Go", "Vue.js"],
     pros: ["Muy ligero, corre bien hasta con SQLite"],
@@ -1476,7 +1449,6 @@ services:
 volumes:
   taiga_pg_data:
 `,
-    affiliateLinks,
     features: ["Scrum y Kanban en el mismo proyecto", "Backlog e historias de usuario", "Epics y sprints"],
     techStack: ["Django", "AngularJS", "PostgreSQL"],
     pros: ["Curva de aprendizaje mucho menor que Jira"],
@@ -1514,7 +1486,6 @@ services:
 volumes:
   openproject_data:
 `,
-    affiliateLinks,
     features: ["Diagramas de Gantt interactivos", "Backlogs ágiles y sprints", "Hoja de tiempos y presupuestos"],
     techStack: ["Ruby on Rails", "PostgreSQL"],
     pros: ["El más completo para gestión de proyectos tradicional + ágil"],
@@ -1550,7 +1521,6 @@ services:
 volumes:
   trilium_data:
 `,
-    affiliateLinks,
     features: ["Notas jerárquicas ilimitadas", "Cifrado de notas sensibles", "Scripting y automatizaciones propias"],
     techStack: ["Node.js", "SQLite"],
     pros: ["Excelente para bases de conocimiento personales enormes"],
@@ -1603,7 +1573,6 @@ services:
 volumes:
   docmost_pg_data:
 `,
-    affiliateLinks,
     features: ["Espacios y permisos por equipo", "Edición colaborativa en tiempo real", "Comentarios y versionado de páginas"],
     techStack: ["NestJS", "React", "PostgreSQL"],
     pros: ["Crecimiento muy rápido de comunidad y features"],
@@ -1655,7 +1624,6 @@ services:
 volumes:
   affine_pg_data:
 `,
-    affiliateLinks,
     features: ["Documentos y bases de datos tipo Notion", "Pizarra/whiteboard infinita integrada", "Modo local-first"],
     techStack: ["Rust", "TypeScript", "PostgreSQL"],
     pros: ["Combina notas y whiteboard, algo que Notion no ofrece nativamente"],
@@ -1702,7 +1670,6 @@ services:
 volumes:
   zulip_data:
 `,
-    affiliateLinks,
     features: ["Hilos por tema dentro de cada canal", "Búsqueda potente en todo el historial", "Apps nativas multiplataforma"],
     techStack: ["Python", "Django", "PostgreSQL"],
     pros: ["Mucho menos ruido que Slack en canales muy activos"],
@@ -1753,7 +1720,6 @@ services:
 volumes:
   etherpad_pg_data:
 `,
-    affiliateLinks,
     features: ["Edición colaborativa en tiempo real", "Historial de revisiones", "Plugins de la comunidad"],
     techStack: ["Node.js", "PostgreSQL"],
     pros: ["Extremadamente ligero y rápido de desplegar"],
@@ -1804,7 +1770,6 @@ services:
 volumes:
   wikijs_pg_data:
 `,
-    affiliateLinks,
     features: ["Editor Markdown y visual", "Historial de cambios tipo Git", "Múltiples proveedores de autenticación"],
     techStack: ["Node.js", "Vue.js", "PostgreSQL"],
     pros: ["Muy configurable en autenticación y almacenamiento"],
@@ -1852,7 +1817,6 @@ services:
 volumes:
   rallly_pg_data:
 `,
-    affiliateLinks,
     features: ["Encuestas de fecha sin necesidad de cuenta", "Recordatorios automáticos por email", "Integración de calendario"],
     techStack: ["Next.js", "PostgreSQL"],
     pros: ["Los votantes no necesitan registrarse"],
@@ -1890,7 +1854,6 @@ volumes:
   cryptpad_data:
   cryptpad_blob:
 `,
-    affiliateLinks,
     features: ["Documentos, hojas y presentaciones colaborativas", "Cifrado de extremo a extremo", "Formularios y kanban integrados"],
     techStack: ["Node.js", "JavaScript"],
     pros: ["El servidor nunca ve el contenido en claro"],
@@ -1938,7 +1901,6 @@ services:
 volumes:
   fider_pg_data:
 `,
-    affiliateLinks,
     features: ["Tablero público de ideas con votos", "Estados de roadmap personalizables", "Notificaciones por email a votantes"],
     techStack: ["Go", "TypeScript", "PostgreSQL"],
     pros: ["Muy simple de desplegar y mantener"],
@@ -1993,7 +1955,6 @@ services:
 volumes:
   metabase_pg_data:
 `,
-    affiliateLinks,
     features: ["Consultas visuales sin SQL", "Dashboards y alertas programadas", "Se conecta a la mayoría de bases de datos SQL"],
     techStack: ["Clojure", "PostgreSQL"],
     pros: ["Curva de aprendizaje muy baja para equipos no técnicos"],
@@ -2031,7 +1992,6 @@ services:
 volumes:
   superset_data:
 `,
-    affiliateLinks,
     features: ["Decenas de tipos de gráficos", "Editor SQL con autocompletado", "Alertas y reportes programados"],
     techStack: ["Python", "Flask", "React"],
     pros: ["Licencia Apache-2.0 sin restricciones de uso comercial"],
@@ -2084,7 +2044,6 @@ services:
 volumes:
   redash_pg_data:
 `,
-    affiliateLinks,
     features: ["Consultas SQL reutilizables", "Dashboards compartibles con filtros", "Alertas basadas en consultas"],
     techStack: ["Python", "Flask", "PostgreSQL", "Redis"],
     pros: ["Licencia BSD muy permisiva"],
@@ -2127,7 +2086,6 @@ services:
 volumes:
   countly_mongo_data:
 `,
-    affiliateLinks,
     features: ["Embudos y retención de usuarios", "Analítica de apps móviles nativas", "Segmentación de usuarios"],
     techStack: ["Node.js", "MongoDB"],
     pros: ["Fuerte soporte para SDKs móviles nativos"],
@@ -2172,7 +2130,6 @@ services:
 volumes:
   ackee_mongo_data:
 `,
-    affiliateLinks,
     features: ["Dashboard minimalista de visitas", "Eventos personalizados", "Sin cookies de rastreo"],
     techStack: ["Node.js", "MongoDB"],
     pros: ["Licencia MIT y footprint muy pequeño"],
@@ -2209,7 +2166,6 @@ services:
 volumes:
   goatcounter_data:
 `,
-    affiliateLinks,
     features: ["Un solo binario, sin dependencias externas", "Dashboard simple de visitas y referrers", "Sin cookies ni huella digital"],
     techStack: ["Go", "SQLite"],
     pros: ["El despliegue más ligero de toda la categoría"],
@@ -2247,7 +2203,6 @@ services:
 volumes:
   openreplay_data:
 `,
-    affiliateLinks,
     features: ["Grabación y reproducción de sesiones", "Heatmaps y métricas de rendimiento", "Captura de errores de consola"],
     techStack: ["Go", "React", "PostgreSQL", "ClickHouse"],
     pros: ["Sin límite de sesiones grabadas al auto-hospedarlo"],
@@ -2294,7 +2249,6 @@ services:
 volumes:
   highlight_pg_data:
 `,
-    affiliateLinks,
     features: ["Session replay full-stack", "Monitoreo de errores frontend y backend", "Logs centralizados"],
     techStack: ["Go", "TypeScript", "PostgreSQL", "ClickHouse"],
     pros: ["Unifica frontend y backend en una sola herramienta"],
@@ -2349,7 +2303,6 @@ volumes:
   openpanel_pg_data:
   openpanel_ch_data:
 `,
-    affiliateLinks,
     features: ["Eventos y embudos de producto", "Perfiles de usuario unificados", "Dashboard moderno y rápido"],
     techStack: ["Next.js", "PostgreSQL", "ClickHouse"],
     pros: ["Combina analítica web y de producto en una sola herramienta"],
@@ -2406,7 +2359,6 @@ volumes:
   gitea_data:
   gitea_pg_data:
 `,
-    affiliateLinks,
     features: ["Issues, PRs y wiki integrados", "Gitea Actions compatible con GitHub Actions", "Muy bajo consumo de recursos"],
     techStack: ["Go", "PostgreSQL"],
     pros: ["Corre perfectamente en un VPS de 1GB de RAM"],
@@ -2449,7 +2401,6 @@ volumes:
   gitlab_config:
   gitlab_data:
 `,
-    affiliateLinks,
     features: ["CI/CD integrado sin herramientas externas", "Registro de contenedores propio", "Gestión de issues y epics"],
     techStack: ["Ruby on Rails", "PostgreSQL", "Redis"],
     pros: ["Todo el ciclo DevOps en una sola plataforma"],
@@ -2486,7 +2437,6 @@ services:
 volumes:
   jenkins_data:
 `,
-    affiliateLinks,
     features: ["Miles de plugins de la comunidad", "Pipelines como código (Jenkinsfile)", "Soporte para cualquier lenguaje o runner"],
     techStack: ["Java"],
     pros: ["El ecosistema de plugins más grande de CI/CD"],
@@ -2523,7 +2473,6 @@ services:
 volumes:
   portainer_data:
 `,
-    affiliateLinks,
     features: ["Gestión visual de contenedores y stacks", "Soporta Docker, Swarm y Kubernetes", "Control de acceso por equipos"],
     techStack: ["Go", "Angular"],
     pros: ["Reduce muchísimo la fricción de administrar Docker por SSH"],
@@ -2577,7 +2526,6 @@ services:
 volumes:
   directus_pg_data:
 `,
-    affiliateLinks,
     features: ["API REST y GraphQL autogeneradas", "Panel de administración configurable", "Se conecta a bases de datos SQL existentes"],
     techStack: ["Node.js", "Vue.js", "PostgreSQL"],
     pros: ["No bloquea tus datos en un formato propietario"],
@@ -2631,7 +2579,6 @@ volumes:
   strapi_data:
   strapi_pg_data:
 `,
-    affiliateLinks,
     features: ["Tipos de contenido 100% personalizables", "API REST y GraphQL", "Marketplace de plugins"],
     techStack: ["Node.js", "React", "PostgreSQL"],
     pros: ["Licencia MIT y la comunidad más grande de CMS headless JS"],
@@ -2667,7 +2614,6 @@ services:
 volumes:
   pocketbase_data:
 `,
-    affiliateLinks,
     features: ["Auth, storage y base de datos en un binario", "API en tiempo real vía WebSockets", "Panel de administración incluido"],
     techStack: ["Go", "SQLite"],
     pros: ["El despliegue más simple de toda la categoría backend-as-a-service"],
@@ -2715,7 +2661,6 @@ services:
 volumes:
   hasura_pg_data:
 `,
-    affiliateLinks,
     features: ["GraphQL y REST instantáneos sobre PostgreSQL", "Suscripciones en tiempo real", "Permisos a nivel de fila"],
     techStack: ["Haskell", "PostgreSQL"],
     pros: ["No requiere escribir resolvers manualmente"],
@@ -2753,7 +2698,6 @@ services:
 volumes:
   meilisearch_data:
 `,
-    affiliateLinks,
     features: ["Búsqueda tolerante a errores tipográficos", "Resultados en menos de 50ms", "Filtros, sinónimos y geobúsqueda"],
     techStack: ["Rust"],
     pros: ["Extremadamente rápido de instalar y sin costo por búsquedas"],
@@ -2792,7 +2736,6 @@ services:
 volumes:
   typesense_data:
 `,
-    affiliateLinks,
     features: ["Búsqueda federada entre múltiples colecciones", "Geosearch y filtros facetados", "Alta disponibilidad con clustering"],
     techStack: ["C++"],
     pros: ["Documentación y DX muy cuidadas"],
@@ -2840,7 +2783,6 @@ services:
 volumes:
   novu_mongo_data:
 `,
-    affiliateLinks,
     features: ["Email, SMS, push e in-app en una API", "Editor visual de flujos de notificación", "Centro de notificaciones embebible"],
     techStack: ["NestJS", "MongoDB", "Redis"],
     pros: ["Unifica todos los canales de notificación en un solo lugar"],
@@ -2887,7 +2829,6 @@ services:
 volumes:
   windmill_pg_data:
 `,
-    affiliateLinks,
     features: ["Scripts en Python, TypeScript y Go", "Paneles internos autogenerados", "Flujos y triggers programados"],
     techStack: ["Rust", "TypeScript", "PostgreSQL"],
     pros: ["Ejecuta código real, no solo low-code visual"],
@@ -2934,7 +2875,6 @@ services:
 volumes:
   unleash_pg_data:
 `,
-    affiliateLinks,
     features: ["Rollouts graduales y segmentación", "SDKs para +20 lenguajes", "Estrategias de activación personalizadas"],
     techStack: ["Node.js", "PostgreSQL"],
     pros: ["Sin cobro por número de flags o usuarios evaluados"],
@@ -2984,7 +2924,6 @@ services:
 volumes:
   listmonk_pg_data:
 `,
-    affiliateLinks,
     features: ["Listas y segmentación de suscriptores", "Plantillas de campaña con estadísticas", "Alto rendimiento de envío"],
     techStack: ["Go", "Vue.js", "PostgreSQL"],
     pros: ["Sin límites artificiales de suscriptores ni envíos"],
@@ -3033,7 +2972,6 @@ services:
 volumes:
   documenso_pg_data:
 `,
-    affiliateLinks,
     features: ["Flujos de firma con múltiples firmantes", "Plantillas de documentos reutilizables", "Verificación criptográfica de firmas"],
     techStack: ["Next.js", "PostgreSQL"],
     pros: ["Sin coste por documento firmado al auto-hospedarlo"],
@@ -3069,7 +3007,6 @@ services:
 volumes:
   uptime_kuma_data:
 `,
-    affiliateLinks,
     features: ["Monitoreo HTTP(s), TCP, DNS y más", "Notificaciones a +90 servicios", "Páginas de estado públicas"],
     techStack: ["Node.js", "Vue.js", "SQLite"],
     pros: ["Uno de los proyectos self-hosted más queridos por la comunidad"],
@@ -3109,7 +3046,6 @@ services:
 volumes:
   grafana_data:
 `,
-    affiliateLinks,
     features: ["Dashboards conectados a decenas de fuentes de datos", "Alertas multicanal", "Explorador de logs y trazas"],
     techStack: ["Go", "React"],
     pros: ["El estándar de la industria en dashboards de observabilidad"],
@@ -3161,7 +3097,6 @@ services:
 volumes:
   espocrm_db_data:
 `,
-    affiliateLinks,
     features: ["Editor visual de entidades personalizadas", "Automatización de flujos de ventas", "Gestión de leads y oportunidades"],
     techStack: ["PHP", "MySQL"],
     pros: ["Muy personalizable sin escribir código"],
@@ -3211,7 +3146,6 @@ services:
 volumes:
   suitecrm_db_data:
 `,
-    affiliateLinks,
     features: ["Módulos de ventas, marketing y soporte", "Flujos de trabajo (workflows) visuales", "Amplio ecosistema de extensiones"],
     techStack: ["PHP", "MySQL"],
     pros: ["Muy completo para procesos comerciales complejos"],
@@ -3262,7 +3196,6 @@ services:
 volumes:
   krayin_db_data:
 `,
-    affiliateLinks,
     features: ["Pipeline visual de ventas", "Correo integrado por lead", "Extensible con paquetes Laravel"],
     techStack: ["PHP", "Laravel", "MySQL"],
     pros: ["Licencia MIT y stack Laravel muy conocido"],
@@ -3314,7 +3247,6 @@ services:
 volumes:
   monica_db_data:
 `,
-    affiliateLinks,
     features: ["Recordatorios de fechas importantes", "Notas de conversaciones e interacciones", "Registro de regalos y actividades"],
     techStack: ["PHP", "Laravel", "MySQL"],
     pros: ["Pensado para relaciones personales, no solo ventas B2B"],
@@ -3363,7 +3295,6 @@ services:
 volumes:
   odoo_pg_data:
 `,
-    affiliateLinks,
     features: ["CRM, ventas e inventario integrados", "Cientos de módulos oficiales y de terceros", "Automatizaciones entre módulos"],
     techStack: ["Python", "PostgreSQL"],
     pros: ["Cubre mucho más que CRM: ERP completo si lo necesitas"],
@@ -3414,7 +3345,6 @@ services:
 volumes:
   mautic_db_data:
 `,
-    affiliateLinks,
     features: ["Campañas de automatización visuales", "Landing pages y formularios", "Scoring y segmentación de leads"],
     techStack: ["PHP", "Symfony", "MySQL"],
     pros: ["Sin coste por número de contactos, a diferencia de HubSpot"],
@@ -3463,7 +3393,6 @@ services:
 volumes:
   zammad_pg_data:
 `,
-    affiliateLinks,
     features: ["Bandeja de tickets multicanal", "Base de conocimiento integrada", "Automatizaciones y SLAs"],
     techStack: ["Ruby on Rails", "PostgreSQL", "Elasticsearch"],
     pros: ["Interfaz moderna comparada con otros helpdesks open source"],
@@ -3514,7 +3443,6 @@ services:
 volumes:
   freescout_db_data:
 `,
-    affiliateLinks,
     features: ["Múltiples bandejas compartidas", "Notas privadas entre agentes", "Módulos gratuitos y de pago de la comunidad"],
     techStack: ["PHP", "Laravel", "MySQL"],
     pros: ["Muy ligero comparado con Zendesk o Help Scout"],
@@ -3565,7 +3493,6 @@ services:
 volumes:
   yetiforce_db_data:
 `,
-    affiliateLinks,
     features: ["Más de 50 módulos integrados", "Gestión de proyectos e inventario incluida", "100% gratuito, sin ediciones de pago"],
     techStack: ["PHP", "MySQL"],
     pros: ["Totalmente gratuito, sin versión Enterprise oculta"],
@@ -3606,7 +3533,6 @@ services:
 volumes:
   ollama_data:
 `,
-    affiliateLinks,
     features: ["Descarga modelos con un solo comando", "API compatible con múltiples clientes", "Soporte GPU y CPU"],
     techStack: ["Go", "Llama.cpp"],
     pros: ["Tus datos nunca salen de tu servidor"],
@@ -3646,7 +3572,6 @@ services:
 volumes:
   localai_models:
 `,
-    affiliateLinks,
     features: ["API compatible con el SDK de OpenAI", "Chat, imágenes, embeddings y audio", "Corre modelos GGUF, GGML y más"],
     techStack: ["Go", "C++"],
     pros: ["Migración casi directa desde código que ya usa la API de OpenAI"],
@@ -3684,7 +3609,6 @@ services:
 volumes:
   khoj_data:
 `,
-    affiliateLinks,
     features: ["Búsqueda semántica sobre tus notas y documentos", "Chat con tus propios PDFs y markdown", "Integración con Obsidian y Notion"],
     techStack: ["Python", "Django"],
     pros: ["Combina tus propios datos con modelos locales o remotos"],
@@ -3721,7 +3645,6 @@ services:
 volumes:
   vllm_cache:
 `,
-    affiliateLinks,
     features: ["Throughput muy superior gracias a PagedAttention", "API compatible con OpenAI", "Soporta decenas de arquitecturas de modelos"],
     techStack: ["Python", "CUDA"],
     pros: ["Pensado específicamente para servir LLMs en producción a escala"],
@@ -3757,7 +3680,6 @@ services:
 volumes:
   anythingllm_data:
 `,
-    affiliateLinks,
     features: ["RAG sobre tus propios documentos", "Multiusuario con permisos por workspace", "Compatible con Ollama, OpenAI y más proveedores"],
     techStack: ["Node.js", "React", "SQLite"],
     pros: ["Funciona tanto con modelos locales como con APIs externas"],
@@ -3796,7 +3718,6 @@ services:
 volumes:
   flowise_data:
 `,
-    affiliateLinks,
     features: ["Editor visual drag-and-drop de flujos de IA", "Soporta agentes, herramientas y memoria", "API y widget embebible"],
     techStack: ["Node.js", "React"],
     pros: ["No requiere saber programar para construir agentes básicos"],
@@ -3832,7 +3753,6 @@ services:
 volumes:
   langflow_data:
 `,
-    affiliateLinks,
     features: ["Basado en el ecosistema LangChain", "Flujos exportables como API REST", "Soporta múltiples proveedores de LLM y vectores"],
     techStack: ["Python", "React"],
     pros: ["Aprovecha directamente el ecosistema de integraciones de LangChain"],
@@ -3889,7 +3809,6 @@ services:
 volumes:
   dify_pg_data:
 `,
-    affiliateLinks,
     features: ["Editor visual de agentes y flujos de IA", "Observabilidad y logs de cada conversación", "Multi-modelo: OpenAI, Anthropic, locales"],
     techStack: ["Python", "Next.js", "PostgreSQL"],
     pros: ["Reduce mucho el código necesario para lanzar un producto de IA"],
@@ -3934,7 +3853,6 @@ services:
 volumes:
   sd_webui_models:
 `,
-    affiliateLinks,
     features: ["Miles de extensiones de la comunidad", "Soporte para LoRAs y modelos personalizados", "Control total de parámetros de generación"],
     techStack: ["Python", "PyTorch"],
     pros: ["Sin límite de imágenes generadas ni suscripción mensual"],
@@ -3977,7 +3895,6 @@ services:
 volumes:
   comfyui_data:
 `,
-    affiliateLinks,
     features: ["Pipelines de generación por nodos", "Flujos de trabajo reproducibles y compartibles", "Soporta ControlNet, LoRAs y modelos custom"],
     techStack: ["Python", "PyTorch"],
     pros: ["Máximo control sobre cada paso del pipeline de generación"],
@@ -4020,7 +3937,6 @@ services:
 volumes:
   invokeai_data:
 `,
-    affiliateLinks,
     features: ["Lienzo unificado con inpainting/outpainting", "Gestión visual de modelos y LoRAs", "Interfaz pensada para artistas, no solo devs"],
     techStack: ["Python", "React", "PyTorch"],
     pros: ["La interfaz más amigable para no técnicos entre las opciones locales"],
@@ -4056,7 +3972,6 @@ services:
       - OPENAI_API_KEY=
 volumes: {}
 `,
-    affiliateLinks,
     features: ["Genera y ejecuta apps completas desde un prompt", "Conecta el proveedor de IA que prefieras", "Editor de código integrado en el navegador"],
     techStack: ["Remix", "TypeScript"],
     pros: ["Eliges tú qué proveedor de IA usar (o uno local)"],
@@ -4093,7 +4008,6 @@ services:
 volumes:
   rasa_data:
 `,
-    affiliateLinks,
     features: ["Control total del modelo de NLU", "Flujos de diálogo como código versionable", "Integraciones con Slack, web, WhatsApp y más"],
     techStack: ["Python"],
     pros: ["Máximo control técnico sobre el comportamiento del bot"],
@@ -4141,7 +4055,6 @@ services:
 volumes:
   typebot_pg_data:
 `,
-    affiliateLinks,
     features: ["Editor visual de flujos conversacionales", "Bloques de IA integrados (OpenAI y otros)", "Widget embebible en cualquier web"],
     techStack: ["Next.js", "PostgreSQL"],
     pros: ["Combina la UX de Typeform con lógica conversacional e IA"],
@@ -4184,7 +4097,6 @@ services:
 volumes:
   librechat_mongo_data:
 `,
-    affiliateLinks,
     features: ["Conecta OpenAI, Anthropic, Google y modelos locales", "Multiusuario con historial de conversaciones", "Plugins y búsqueda web integrada"],
     techStack: ["Node.js", "React", "MongoDB"],
     pros: ["Cambia de proveedor de IA sin cambiar de interfaz"],
@@ -4227,7 +4139,6 @@ services:
 volumes:
   tgw_models:
 `,
-    affiliateLinks,
     features: ["Soporta múltiples backends (llama.cpp, ExLlama, Transformers)", "Extensiones de la comunidad", "API compatible con OpenAI"],
     techStack: ["Python", "PyTorch"],
     pros: ["Muy flexible para experimentar con distintos formatos de modelo"],
@@ -4263,7 +4174,6 @@ services:
 volumes:
   privategpt_data:
 `,
-    affiliateLinks,
     features: ["Preguntas y respuestas sobre tus PDFs y documentos", "100% offline, sin llamadas a APIs externas", "API REST propia para integrarlo"],
     techStack: ["Python", "LlamaIndex"],
     pros: ["Ideal para datos sensibles que no pueden salir de tu red"],
@@ -4303,7 +4213,6 @@ services:
     restart: unless-stopped
 volumes: {}
 `,
-    affiliateLinks,
     features: ["Respuestas con fuentes citadas como Perplexity", "Usa SearXNG para búsqueda web privada", "Conecta con modelos locales o en la nube"],
     techStack: ["Next.js", "SearXNG"],
     pros: ["Búsqueda web sin depender de la API de ningún buscador comercial"],
@@ -4352,7 +4261,6 @@ services:
 volumes:
   seafile_db_data:
 `,
-    affiliateLinks,
     features: ["Cifrado de extremo a extremo opcional por biblioteca", "Control de versiones eficiente en espacio", "Clientes de sincronización para todos los SO"],
     techStack: ["C", "Python", "MySQL"],
     pros: ["Rendimiento de sincronización notablemente superior con muchos archivos"],
@@ -4390,7 +4298,6 @@ services:
 volumes:
   owncloud_data:
 `,
-    affiliateLinks,
     features: ["Sincronización de archivos multiplataforma", "Compartición con enlaces y permisos", "Arquitectura moderna (Infinite Scale)"],
     techStack: ["Go"],
     pros: ["Nueva arquitectura Infinite Scale muy ligera"],
@@ -4430,7 +4337,6 @@ volumes:
   syncthing_config:
   syncthing_data:
 `,
-    affiliateLinks,
     features: ["Sincronización P2P sin servidor central", "Cifrado de extremo a extremo por diseño", "Control de versiones de archivos"],
     techStack: ["Go"],
     pros: ["No depende de ningún servidor en la nube de terceros"],
@@ -4468,7 +4374,6 @@ volumes:
   garage_meta:
   garage_data:
 `,
-    affiliateLinks,
     features: ["API 100% compatible con S3", "Pensado para clusters geo-distribuidos", "Muy bajo consumo de recursos por nodo"],
     techStack: ["Rust"],
     pros: ["Excelente para clusters caseros con hardware modesto"],
@@ -4507,7 +4412,6 @@ services:
 volumes:
   seaweedfs_data:
 `,
-    affiliateLinks,
     features: ["Optimizado para archivos pequeños a gran escala", "Capa de compatibilidad S3 incluida", "Replicación y erasure coding configurables"],
     techStack: ["Go"],
     pros: ["Rendimiento excelente con volúmenes masivos de archivos pequeños"],
@@ -4567,7 +4471,6 @@ volumes:
   immich_uploads:
   immich_pg_data:
 `,
-    affiliateLinks,
     features: ["Backup automático desde apps móviles", "Reconocimiento facial y búsqueda por objetos", "Álbumes compartidos y timeline familiar"],
     techStack: ["NestJS", "Flutter", "PostgreSQL"],
     pros: ["La app móvil rivaliza en calidad con Google Photos"],
@@ -4610,7 +4513,6 @@ volumes:
   photoprism_originals:
   photoprism_storage:
 `,
-    affiliateLinks,
     features: ["Etiquetado automático de fotos por IA", "Búsqueda semántica y por ubicación", "Los archivos originales quedan intactos"],
     techStack: ["Go", "TensorFlow"],
     pros: ["Nunca modifica ni mueve tus archivos originales"],
@@ -4646,7 +4548,6 @@ services:
 volumes:
   filestash_data:
 `,
-    affiliateLinks,
     features: ["Se conecta a S3, FTP, SFTP, WebDAV y más", "Editor de archivos y vista previa integrada", "Autenticación SSO configurable"],
     techStack: ["Go", "React"],
     pros: ["Una sola interfaz para múltiples backends de almacenamiento existentes"],
@@ -4684,7 +4585,6 @@ services:
 volumes:
   pydio_data:
 `,
-    affiliateLinks,
     features: ["Flujos de trabajo de aprobación de archivos", "Auditoría detallada de accesos", "Control de versiones y papelera"],
     techStack: ["Go", "React"],
     pros: ["Pensado para cumplimiento y gobernanza empresarial estricta"],
@@ -4722,7 +4622,6 @@ services:
 volumes:
   searxng_data:
 `,
-    affiliateLinks,
     features: ["Agrega resultados de +70 motores de búsqueda", "Sin perfiles ni historial de búsquedas", "Totalmente personalizable por categorías"],
     techStack: ["Python", "Flask"],
     pros: ["Cero rastreo publicitario de tus búsquedas"],
@@ -4778,7 +4677,6 @@ services:
 volumes:
   medusa_pg_data:
 `,
-    affiliateLinks,
     features: ["Módulos de pedidos, inventario y precios personalizables", "API REST y admin panel incluidos", "Multi-región y multi-moneda nativo"],
     techStack: ["Node.js", "PostgreSQL", "Redis"],
     pros: ["Sin comisión por venta, a diferencia de Shopify"],
@@ -4832,7 +4730,6 @@ services:
 volumes:
   saleor_pg_data:
 `,
-    affiliateLinks,
     features: ["API GraphQL completa", "Checkout totalmente personalizable", "Arquitectura orientada a eventos (webhooks)"],
     techStack: ["Python", "Django", "GraphQL", "PostgreSQL"],
     pros: ["Pensado desde el diseño para tiendas de tráfico muy alto"],
@@ -4883,7 +4780,6 @@ services:
 volumes:
   vendure_pg_data:
 `,
-    affiliateLinks,
     features: ["Sistema de plugins en TypeScript", "API GraphQL autogenerada", "Multi-tienda y multi-canal de venta"],
     techStack: ["TypeScript", "NestJS", "PostgreSQL"],
     pros: ["Experiencia de desarrollador muy cuidada (TypeScript end-to-end)"],
@@ -4934,7 +4830,6 @@ services:
 volumes:
   bagisto_db_data:
 `,
-    affiliateLinks,
     features: ["Multi-tienda y multi-idioma", "Marketplace de extensiones", "Panel de administración en Vue.js"],
     techStack: ["PHP", "Laravel", "Vue.js", "MySQL"],
     pros: ["100% gratuito, sin ediciones de pago ocultas"],
@@ -4985,7 +4880,6 @@ services:
 volumes:
   prestashop_db_data:
 `,
-    affiliateLinks,
     features: ["Miles de módulos y plantillas", "Gestión multi-tienda", "Fuerte adopción en el mercado europeo"],
     techStack: ["PHP", "Symfony", "MySQL"],
     pros: ["Ecosistema maduro con muchos años de desarrollo"],
@@ -5033,7 +4927,6 @@ services:
 volumes:
   sylius_db_data:
 `,
-    affiliateLinks,
     features: ["Arquitectura Symfony extensible", "Soporta tiendas B2B y B2C", "API REST completa"],
     techStack: ["PHP", "Symfony", "MySQL"],
     pros: ["Máxima flexibilidad para lógica de negocio compleja"],
@@ -5069,7 +4962,6 @@ services:
 volumes:
   shopware_data:
 `,
-    affiliateLinks,
     features: ["Editor visual de tienda (Shopping Experiences)", "API-first con administración desacoplada", "Marketplace de extensiones"],
     techStack: ["PHP", "Symfony", "Vue.js", "MySQL"],
     pros: ["Editor visual muy potente para landing pages de producto"],
@@ -5115,7 +5007,6 @@ services:
 volumes:
   magento_db_data:
 `,
-    affiliateLinks,
     features: ["Catálogos masivos con atributos complejos", "Multi-tienda y multi-idioma nativo", "Ecosistema de extensiones muy amplio"],
     techStack: ["PHP", "MySQL", "Elasticsearch"],
     pros: ["El más potente para catálogos B2B/B2C muy grandes"],
@@ -5169,7 +5060,6 @@ volumes:
   woocommerce_data:
   woocommerce_db_data:
 `,
-    affiliateLinks,
     features: ["El ecosistema de plugins más grande del mundo", "Se integra con cualquier tema de WordPress", "Miles de pasarelas de pago soportadas"],
     techStack: ["PHP", "WordPress", "MySQL"],
     pros: ["Ideal si tu sitio ya corre sobre WordPress"],
@@ -5218,7 +5108,6 @@ services:
     ports:
       - "10000:10000/udp"
 `,
-    affiliateLinks,
     features: ["Sin límite de tiempo ni participantes", "No requiere cuenta para unirse", "Grabación y streaming a YouTube"],
     techStack: ["React", "WebRTC", "XMPP"],
     pros: ["Gratis y sin límites artificiales de la versión SaaS"],
@@ -5258,7 +5147,6 @@ services:
 volumes:
   bbb_data:
 `,
-    affiliateLinks,
     features: ["Pizarra colaborativa multiusuario", "Salas de grupo (breakout rooms)", "Encuestas y grabación de clases"],
     techStack: ["Java", "HTML5", "WebRTC"],
     pros: ["El más completo para casos de uso educativos"],
@@ -5297,7 +5185,6 @@ services:
 volumes:
   livekit_data:
 `,
-    affiliateLinks,
     features: ["SDKs para web, móvil y backend", "Escalable a miles de participantes", "Grabación y streaming compuesto"],
     techStack: ["Go", "WebRTC"],
     pros: ["Pensado para integrarse dentro de tu propio producto"],
@@ -5333,7 +5220,6 @@ services:
       - OPENVIDU_DOMAIN_OR_PUBLIC_IP=localhost # CHANGE THIS TO YOUR DOMAIN
 volumes: {}
 `,
-    affiliateLinks,
     features: ["SDKs de alto nivel para web y móvil", "Grabación de sesiones incluida", "Despliegue con un solo contenedor para empezar"],
     techStack: ["Java", "WebRTC"],
     pros: ["Más rápido de integrar que construir sobre WebRTC puro"],
@@ -5369,7 +5255,6 @@ services:
 volumes:
   galene_data:
 `,
-    affiliateLinks,
     features: ["Extremadamente ligero (un solo binario en Go)", "Soporta cientos de participantes por sala", "Grabación local de sesiones"],
     techStack: ["Go", "WebRTC"],
     pros: ["Corre en servidores muy modestos comparado con Jitsi/BBB"],
@@ -5404,7 +5289,6 @@ services:
 volumes:
   jami_data:
 `,
-    affiliateLinks,
     features: ["Comunicación 100% P2P, sin servidor central", "Video, voz, mensajería y compartir pantalla", "Apps para escritorio y móvil"],
     techStack: ["C++", "QML"],
     pros: ["Ningún servidor (ni siquiera propio) puede ver tus llamadas"],
@@ -5446,7 +5330,6 @@ services:
       - NEKO_PASSWORD_ADMIN=change-me-admin
     shm_size: "2gb"
 `,
-    affiliateLinks,
     features: ["Navegador compartido en tiempo real", "Chat de voz y texto integrado", "Ideal para watch parties o soporte técnico remoto"],
     techStack: ["Go", "WebRTC", "GStreamer"],
     pros: ["Caso de uso único que Zoom no cubre bien (navegador compartido real)"],
@@ -5488,7 +5371,6 @@ services:
 volumes:
   vaultwarden_data:
 `,
-    affiliateLinks,
     features: ["Compatible con todos los clientes oficiales de Bitwarden", "Uso de recursos mínimo (ideal para VPS pequeños)", "Panel de administración propio"],
     techStack: ["Rust", "SQLite"],
     pros: ["El gestor de contraseñas auto-hospedado más ligero y popular"],
@@ -5527,7 +5409,6 @@ services:
 volumes:
   bitwarden_data:
 `,
-    affiliateLinks,
     features: ["Organizaciones y grupos empresariales", "Informes de seguridad y SSO", "Todas las funciones de la versión cloud oficial"],
     techStack: [".NET", "SQL Server"],
     pros: ["Es el servidor oficial, con soporte directo de Bitwarden"],
@@ -5577,7 +5458,6 @@ services:
 volumes:
   passbolt_db_data:
 `,
-    affiliateLinks,
     features: ["Cifrado OpenPGP de extremo a extremo", "Permisos granulares por carpeta y grupo", "Auditoría completa de accesos"],
     techStack: ["PHP", "CakePHP", "MySQL"],
     pros: ["Pensado específicamente para el control de acceso en equipos"],
@@ -5626,7 +5506,6 @@ services:
 volumes:
   psono_pg_data:
 `,
-    affiliateLinks,
     features: ["Gestión de secretos y claves de API además de contraseñas", "Cifrado de extremo a extremo", "Extensiones para todos los navegadores"],
     techStack: ["Python", "Django", "PostgreSQL"],
     pros: ["Cubre también secretos de infraestructura, no solo contraseñas personales"],
@@ -5659,7 +5538,6 @@ services:
       - "8080:80"
 volumes: {}
 `,
-    affiliateLinks,
     features: ["Compatible con bóvedas .kdbx de KeePass", "Se conecta a Dropbox, Google Drive o WebDAV propio", "Funciona offline como PWA"],
     techStack: ["JavaScript", "Electron"],
     pros: ["Aprovecha el formato KeePass, muy auditado y maduro"],
@@ -5693,7 +5571,6 @@ volumes: {}
     ports:
       - "8080:8080"
 `,
-    affiliateLinks,
     features: ["SSO y federación LDAP/Active Directory", "Login social (Google, GitHub...)", "Gestión de roles y permisos granular"],
     techStack: ["Java", "Quarkus"],
     pros: ["El más maduro y probado en entornos empresariales"],
@@ -5738,7 +5615,6 @@ volumes: {}
 volumes:
   database: {}
 `,
-    affiliateLinks,
     features: ["Editor visual de flujos de autenticación", "Proxy de aplicaciones sin cambiar código", "MFA y políticas de acceso condicional"],
     techStack: ["Python", "Go", "PostgreSQL"],
     pros: ["Interfaz mucho más moderna que la competencia open source"],
@@ -5761,7 +5637,7 @@ volumes:
     fossModel: "FOSS",
     dockerCompose: `services:
   kratos:
-    image: oryd/kratos:latest
+    image: oryd/kratos:v26.2.0
     command: serve -c /etc/config/kratos/kratos.yml --dev
     environment:
       DSN: postgres://kratos:change-me@postgres:5432/kratos?sslmode=disable
@@ -5777,7 +5653,6 @@ volumes:
       POSTGRES_PASSWORD: change-me
       POSTGRES_DB: kratos
 `,
-    affiliateLinks,
     features: ["100% API-first, sin UI impuesta", "Kratos (usuarios) + Hydra (OAuth2/OIDC) por separado", "Escala horizontalmente sin estado en la app"],
     techStack: ["Go", "PostgreSQL"],
     pros: ["Máxima flexibilidad para construir tu propio frontend de login"],
@@ -5802,7 +5677,7 @@ volumes:
     fossModel: "FOSS",
     dockerCompose: `services:
   zitadel:
-    image: ghcr.io/zitadel/zitadel:latest
+    image: ghcr.io/zitadel/zitadel:v4.19.3
     command: start-from-init --masterkey "change-me-32-char-master-key!!" --tlsMode disabled
     environment:
       ZITADEL_DATABASE_POSTGRES_HOST: db
@@ -5814,7 +5689,6 @@ volumes:
     environment:
       POSTGRES_PASSWORD: change-me
 `,
-    affiliateLinks,
     features: ["Multi-tenancy nativo (organizaciones)", "SSO, MFA y gestión de proyectos por org", "API gRPC y REST completas"],
     techStack: ["Go", "PostgreSQL"],
     pros: ["Pensado desde cero para SaaS multi-cliente"],
@@ -5851,7 +5725,6 @@ volumes:
       POSTGRES_PASSWORD: change-me
       POSTGRES_DB: supertokens
 `,
-    affiliateLinks,
     features: ["SDKs oficiales para React, Next.js, Node, Python...", "Gestión de sesiones segura por defecto", "Login social y passwordless incluidos"],
     techStack: ["Java", "PostgreSQL"],
     pros: ["Integración muy rápida gracias a los SDKs"],
@@ -5876,7 +5749,7 @@ volumes:
     fossModel: "FOSS",
     dockerCompose: `services:
   logto:
-    image: svhd/logto:latest
+    image: svhd/logto:1.44.0
     entrypoint: ["sh", "-c", "npm run cli db seed -- --swe && npm start"]
     environment:
       TRUST_PROXY_HEADER: "1"
@@ -5889,7 +5762,6 @@ volumes:
     environment:
       POSTGRES_PASSWORD: change-me
 `,
-    affiliateLinks,
     features: ["Panel de administración muy cuidado", "Multi-tenant y organizaciones incluidas", "Login social y personalización de marca"],
     techStack: ["Node.js", "PostgreSQL"],
     pros: ["La experiencia de uso más cercana a un producto SaaS pulido"],
@@ -5922,7 +5794,6 @@ curl -fsSL https://cdn.coollabs.io/coolify/install.sh -o coolify-install.sh
 cat coolify-install.sh   # revísalo antes de continuar
 bash coolify-install.sh
 `,
-    affiliateLinks,
     features: ["Deploy desde Git con un clic (como Vercel)", "Bases de datos gestionadas con un clic", "Gestiona múltiples servidores desde un panel"],
     techStack: ["PHP", "Laravel", "Docker"],
     pros: ["La alternativa open source más pulida a Vercel/Heroku"],
@@ -5945,7 +5816,7 @@ bash coolify-install.sh
     fossModel: "OpenCore",
     dockerCompose: `services:
   captain:
-    image: caprover/caprover:latest
+    image: caprover/caprover:1.15.4
     ports:
       - "80:80"
       - "443:443"
@@ -5956,7 +5827,6 @@ bash coolify-install.sh
 volumes:
   captain-data: {}
 `,
-    affiliateLinks,
     features: ["Marketplace de apps de un clic", "HTTPS automático vía Let's Encrypt", "Panel web propio, ligero en recursos"],
     techStack: ["Node.js", "Docker Swarm"],
     pros: ["Muy ligero, funciona bien en un VPS de 1-2GB de RAM"],
@@ -5985,7 +5855,6 @@ volumes:
 wget -NP . https://dokku.com/install/v0.35.15/bootstrap.sh
 sudo DOKKU_TAG=v0.35.15 bash bootstrap.sh
 `,
-    affiliateLinks,
     features: ["Despliegue con git push, igual que Heroku", "Soporta buildpacks y Dockerfiles", "Cientos de plugins de la comunidad"],
     techStack: ["Bash", "Docker"],
     pros: ["El más simple y minimalista de todo el grupo PaaS"],
@@ -6016,7 +5885,6 @@ curl -fsSL https://get.casaos.io -o casaos-install.sh
 cat casaos-install.sh   # revísalo antes de continuar
 sudo bash casaos-install.sh
 `,
-    affiliateLinks,
     features: ["App Store de un clic con decenas de apps self-hosted", "Gestor de archivos web integrado", "Pensado para Raspberry Pi y mini-PCs"],
     techStack: ["Go", "Vue.js"],
     pros: ["La forma más sencilla de convertir un Pi en un NAS personal"],
@@ -6047,7 +5915,6 @@ sudo bash casaos-install.sh
 git clone https://github.com/getsentry/self-hosted.git
 cd self-hosted && ./install.sh
 `,
-    affiliateLinks,
     features: ["Agrupación inteligente de errores repetidos", "Trazas de rendimiento (performance monitoring)", "SDKs oficiales para todos los lenguajes principales"],
     techStack: ["Python", "ClickHouse", "Kafka"],
     pros: ["Es el producto original, sin recortes de funciones"],
@@ -6077,7 +5944,7 @@ cd self-hosted && ./install.sh
   redis:
     image: redis:alpine
   web:
-    image: glitchtip/glitchtip:latest
+    image: glitchtip/glitchtip:6.2.6
     environment:
       DATABASE_URL: "postgres://postgres:change-me@postgres:5432/glitchtip"
       SECRET_KEY: "change-me-super-secret"
@@ -6086,14 +5953,13 @@ cd self-hosted && ./install.sh
     ports:
       - "8000:8000"
   worker:
-    image: glitchtip/glitchtip:latest
+    image: glitchtip/glitchtip:6.2.6
     command: ./bin/run-celery-with-beat.sh
     environment:
       DATABASE_URL: "postgres://postgres:change-me@postgres:5432/glitchtip"
       SECRET_KEY: "change-me-super-secret"
       REDIS_URL: "redis://redis:6379/0"
 `,
-    affiliateLinks,
     features: ["Compatible con el SDK de Sentry sin cambios", "Mucho más ligero que Sentry self-hosted", "Notificaciones por email/Slack"],
     techStack: ["Django", "PostgreSQL", "Celery"],
     pros: ["El equilibrio ideal entre ligero y compatible con Sentry"],
@@ -6121,7 +5987,6 @@ cd self-hosted && ./install.sh
 git clone -b main https://github.com/SigNoz/signoz.git
 cd signoz/deploy && ./install.sh
 `,
-    affiliateLinks,
     features: ["Basado 100% en OpenTelemetry (estándar abierto)", "Métricas, trazas y logs en un solo panel", "Alertas configurables"],
     techStack: ["Go", "ClickHouse", "OpenTelemetry"],
     pros: ["Estándar OpenTelemetry evita atarte a un SDK propietario"],
@@ -6146,7 +6011,7 @@ cd signoz/deploy && ./install.sh
     fossModel: "FOSS",
     dockerCompose: `services:
   beszel:
-    image: henrygd/beszel:latest
+    image: henrygd/beszel:0.20.0
     ports:
       - "8090:8090"
     volumes:
@@ -6154,7 +6019,6 @@ cd signoz/deploy && ./install.sh
 volumes:
   beszel_data: {}
 `,
-    affiliateLinks,
     features: ["Un solo binario/contenedor, sin dependencias", "Agentes ligeros por servidor monitorizado", "Historial de uso de CPU/RAM/disco/red"],
     techStack: ["Go", "SQLite"],
     pros: ["El setup más rápido de todo el grupo de monitoreo"],
@@ -6181,7 +6045,7 @@ volumes:
     fossModel: "OpenCore",
     dockerCompose: `services:
   budibase:
-    image: budibase/budibase:latest
+    image: budibase/budibase:v3.47.0
     environment:
       BUDIBASE_ADMIN_USER_EMAIL: admin@example.com
       BUDIBASE_ADMIN_USER_PASSWORD: change-me-super-secret
@@ -6193,7 +6057,6 @@ volumes:
 volumes:
   budibase_data: {}
 `,
-    affiliateLinks,
     features: ["Editor visual drag-and-drop", "Conecta Postgres, MongoDB, MySQL, APIs REST", "Automatizaciones tipo Zapier incluidas"],
     techStack: ["Node.js", "Svelte", "CouchDB"],
     pros: ["Muy rápido para prototipar paneles internos"],
@@ -6218,7 +6081,7 @@ volumes:
     fossModel: "OpenCore",
     dockerCompose: `services:
   appsmith:
-    image: appsmith/appsmith-ce:latest
+    image: appsmith/appsmith-ce:v2.4.3
     ports:
       - "8080:80"
       - "8443:443"
@@ -6227,7 +6090,6 @@ volumes:
 volumes:
   appsmith_data: {}
 `,
-    affiliateLinks,
     features: ["Editor visual muy similar a Retool", "JS embebido en cualquier campo", "Conecta más de 25 fuentes de datos distintas"],
     techStack: ["Java", "React", "MongoDB"],
     pros: ["La curva de aprendizaje más suave si ya conoces Retool"],
@@ -6261,7 +6123,6 @@ volumes:
       - ./trainingData:/usr/share/tessdata
       - ./extraConfigs:/configs
 `,
-    affiliateLinks,
     features: ["Más de 50 operaciones sobre PDF distintas", "OCR integrado (Tesseract)", "Firma digital y protección con contraseña"],
     techStack: ["Java", "Spring Boot"],
     pros: ["Tus documentos nunca salen de tu propio servidor"],
@@ -6298,7 +6159,6 @@ volumes:
 volumes:
   forgejo_data: {}
 `,
-    affiliateLinks,
     features: ["Forgejo Actions, compatible con sintaxis de GitHub Actions", "Muy ligero, un solo binario", "Gobernanza 100% comunitaria, sin empresa detrás"],
     techStack: ["Go", "SQLite/PostgreSQL"],
     pros: ["Alternativa a Gitea para quien prefiere un proyecto sin respaldo corporativo"],
@@ -6321,7 +6181,7 @@ volumes:
     fossModel: "OpenCore",
     dockerCompose: `services:
   infisical:
-    image: infisical/infisical:latest
+    image: infisical/infisical:v0.165.16
     environment:
       ENCRYPTION_KEY: change-me-32-char-key
       AUTH_SECRET: change-me-super-secret
@@ -6338,7 +6198,6 @@ volumes:
   redis:
     image: redis:alpine
 `,
-    affiliateLinks,
     features: ["CLI para inyectar secretos en cualquier proceso", "Integración nativa con CI/CD (GitHub Actions, etc.)", "Historial de versiones y rollback de secretos"],
     techStack: ["Node.js", "PostgreSQL", "Redis"],
     pros: ["Mucho más rápido de poner en marcha que HashiCorp Vault"],
@@ -6369,7 +6228,6 @@ volumes:
 git clone https://github.com/dubinc/dub.git
 cd dub && pnpm install && pnpm build
 `,
-    affiliateLinks,
     features: ["Analíticas de clics en tiempo real", "Dominios personalizados propios", "API para generar enlaces programáticamente"],
     techStack: ["Next.js", "PostgreSQL", "Redis"],
     pros: ["La interfaz y analíticas más modernas del grupo de acortadores open source"],
@@ -6407,7 +6265,6 @@ cd dub && pnpm install && pnpm build
       POSTGRES_PASSWORD: change-me
       POSTGRES_DB: formbricks
 `,
-    affiliateLinks,
     features: ["Encuestas in-app dirigidas por segmento de usuario", "Formularios embebibles en cualquier web", "Plantillas para NPS, PMF y más"],
     techStack: ["Next.js", "PostgreSQL"],
     pros: ["Pensado específicamente para research de producto, no solo formularios genéricos"],
@@ -6448,7 +6305,6 @@ cd dub && pnpm install && pnpm build
       MYSQL_ROOT_PASSWORD: change-me
       MYSQL_DATABASE: ghost
 `,
-    affiliateLinks,
     features: ["Membresías y suscripciones de pago integradas", "Editor moderno tipo Notion", "Newsletters por email nativas"],
     techStack: ["Node.js", "MySQL"],
     pros: ["El más maduro y usado en producción de todo este lote"],
@@ -6507,7 +6363,6 @@ volumes:
   ninja_data:
   ninja_db_data:
 `,
-    affiliateLinks,
     features: [
       "Facturas, presupuestos y gastos recurrentes",
       "Portal de cliente para pagos online",
@@ -6571,7 +6426,6 @@ volumes:
 volumes:
   activepieces_pg_data:
 `,
-    affiliateLinks,
     features: [
       "Más de 200 integraciones (piezas) listas para usar",
       "Constructor de flujos visual sin código",
@@ -6631,7 +6485,6 @@ volumes:
 volumes:
   shlink_db_data:
 `,
-    affiliateLinks,
     features: [
       "API REST completa para integraciones propias",
       "Analíticas de clics por enlace y por dominio",
@@ -6679,7 +6532,6 @@ volumes:
   jellyfin_config:
   jellyfin_cache:
 `,
-    affiliateLinks,
     features: [
       "Streaming de video, música y fotos a cualquier dispositivo",
       "Transcodificación por hardware (GPU)",
@@ -6737,7 +6589,6 @@ volumes:
   linkwarden_data:
   linkwarden_pg_data:
 `,
-    affiliateLinks,
     features: [
       "Guarda enlaces, capturas y archivos PDF de cada página",
       "Organización por colecciones y etiquetas colaborativas",
@@ -6797,7 +6648,6 @@ volumes:
 volumes:
   wallabag_db_data:
 `,
-    affiliateLinks,
     features: [
       "Guarda artículos para leer después, sin conexión",
       "Extrae el contenido limpio, sin anuncios ni distracciones",
@@ -6844,7 +6694,6 @@ services:
 volumes:
   headscale_data:
 `,
-    affiliateLinks,
     features: [
       "Compatible con los clientes oficiales de Tailscale en todos los dispositivos",
       "Red mallada (mesh VPN) cifrada con WireGuard bajo el capó",
@@ -6896,7 +6745,6 @@ volumes:
 volumes:
   wg_easy_data:
 `,
-    affiliateLinks,
     features: [
       "Panel web para crear y gestionar clientes WireGuard con códigos QR",
       "Estadísticas de tráfico en tiempo real por dispositivo",
@@ -6948,7 +6796,6 @@ volumes:
   pihole_data:
   pihole_dnsmasq:
 `,
-    affiliateLinks,
     features: [
       "Bloquea anuncios y rastreadores a nivel de red para todos tus dispositivos",
       "Panel web con estadísticas de consultas DNS en tiempo real",
@@ -6996,7 +6843,6 @@ volumes:
   adguard_work:
   adguard_conf:
 `,
-    affiliateLinks,
     features: [
       "Bloqueo de anuncios y rastreadores a nivel de DNS para toda la red",
       "Soporta DNS-over-HTTPS y DNS-over-TLS de forma nativa",
@@ -7051,7 +6897,6 @@ volumes:
 volumes:
   joplin_pg_data:
 `,
-    affiliateLinks,
     features: [
       "Notas Markdown con cifrado de extremo a extremo opcional",
       "Apps nativas para escritorio, móvil y web, todas sincronizadas",
@@ -7088,7 +6933,6 @@ git clone https://github.com/discourse/discourse_docker.git /var/discourse
 cd /var/discourse
 ./discourse-setup
 `,
-    affiliateLinks,
     features: [
       "Foros con hilos, categorías y etiquetas ilimitadas",
       "Moderación con confianza progresiva de la comunidad",
@@ -7149,7 +6993,6 @@ volumes:
   erpnext_sites:
   erpnext_db_data:
 `,
-    affiliateLinks,
     features: [
       "Contabilidad, inventario, CRM y RR. HH. en una sola suite",
       "Fabricación y control de calidad integrados",
@@ -7206,7 +7049,6 @@ volumes:
 volumes:
   dolibarr_db_data:
 `,
-    affiliateLinks,
     features: [
       "Facturación, contabilidad y gestión de stock integradas",
       "CRM y gestión de proyectos incluidos",
@@ -7242,7 +7084,6 @@ curl -sSL https://dokploy.com/install.sh -o dokploy-install.sh
 cat dokploy-install.sh   # revísalo antes de continuar
 sh dokploy-install.sh
 `,
-    affiliateLinks,
     features: [
       "Despliega apps, bases de datos y servicios Docker con un flujo tipo Heroku",
       "Integración nativa con Traefik para dominios y HTTPS automático",
@@ -7291,7 +7132,6 @@ sh dokploy-install.sh
 volumes:
   radarr_config: {}
 `,
-    affiliateLinks,
     features: ["Búsqueda y descarga automática de películas nuevas", "Renombrado y organización de archivos", "Se integra con Jellyfin, Plex y Prowlarr"],
     techStack: ["C#", ".NET", "SQLite"],
     pros: ["El estándar de facto para automatizar una biblioteca de películas", "Comunidad enorme, muchísimas guías disponibles"],
@@ -7334,7 +7174,6 @@ volumes:
 volumes:
   sonarr_config: {}
 `,
-    affiliateLinks,
     features: ["Sigue series y descarga episodios nuevos automáticamente", "Gestión de calidad y de listas de espera", "Se integra con Jellyfin, Plex y Prowlarr"],
     techStack: ["C#", ".NET", "SQLite"],
     pros: ["Mismo motor probado que Radarr, ya con años en producción", "Muy activo, actualizaciones frecuentes"],
@@ -7375,7 +7214,6 @@ volumes:
 volumes:
   prowlarr_config: {}
 `,
-    affiliateLinks,
     features: ["Sincroniza indexadores con todas tus apps *arr a la vez", "Soporta trackers públicos y privados", "Estadísticas de uso de cada indexador"],
     techStack: ["C#", ".NET", "SQLite"],
     pros: ["Evita configurar cada indexador app por app", "Del mismo equipo que Radarr/Sonarr, misma calidad e integración"],
@@ -7432,7 +7270,6 @@ volumes:
   data: {}
   media: {}
 `,
-    affiliateLinks,
     features: ["OCR automático con reconocimiento de texto e idioma", "Etiquetado y correspondencia automática por reglas", "Carpeta de 'consumo' para escanear y olvidar"],
     techStack: ["Python", "Django", "PostgreSQL", "Redis"],
     pros: ["Convierte años de papeleo físico en algo buscable en segundos", "Comunidad muy activa, integra bien con escáneres de red"],
@@ -7470,7 +7307,6 @@ volumes:
 volumes:
   ha_config: {}
 `,
-    affiliateLinks,
     features: ["Compatible con miles de marcas e integraciones (Zigbee, Z-Wave, Matter...)", "Automatizaciones locales, sin depender de la nube del fabricante", "App móvil oficial con geolocalización"],
     techStack: ["Python", "SQLite"],
     pros: ["El proyecto de automatización del hogar más grande y activo que existe", "Nada de tus datos de sensores sale de tu red si no quieres"],
@@ -7510,7 +7346,6 @@ volumes:
 volumes:
   overseerr_config: {}
 `,
-    affiliateLinks,
     features: ["Interfaz de peticiones simple para toda la familia", "Se conecta directamente con Radarr/Sonarr", "Gestión de permisos por usuario"],
     techStack: ["TypeScript", "Next.js", "SQLite"],
     pros: ["La pieza que falta para que tu 'Arr Stack' lo use gente no técnica", "Interfaz muy pulida, se siente como una app comercial"],
@@ -7551,7 +7386,6 @@ volumes:
       - "8554:8554" # RTSP restream
     restart: unless-stopped
 `,
-    affiliateLinks,
     features: ["Detección de objetos por IA (personas, coches, animales...)", "Grabación continua o solo por eventos", "Notificaciones con recorte del objeto detectado"],
     techStack: ["Python", "SQLite"],
     pros: ["Sin cuota mensual de nube, a diferencia de Ring/Nest/Arlo", "El detector de objetos evita falsas alarmas por ramas o sombras"],
@@ -7587,7 +7421,6 @@ volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro # opcional, para detectar contenedores automáticamente
     restart: unless-stopped
 `,
-    affiliateLinks,
     features: ["Más de 100 integraciones con widgets de estado en vivo", "Detecta contenedores Docker automáticamente", "Totalmente configurable por YAML, sin base de datos"],
     techStack: ["TypeScript", "Next.js"],
     pros: ["Muy rápido de montar como página de inicio de tu navegador", "Comunidad y catálogo de integraciones enorme"],
@@ -7627,7 +7460,6 @@ volumes:
 volumes:
   mealie_data: {}
 `,
-    affiliateLinks,
     features: ["Importa recetas automáticamente pegando la URL de cualquier web", "Planificador de menú semanal con arrastrar y soltar", "Genera la lista de la compra a partir del menú"],
     techStack: ["Python", "Vue.js"],
     pros: ["Interfaz limpia y fácil de usar a diario", "App pensada para toda la familia, no solo para quien la instaló"],
@@ -7667,7 +7499,6 @@ volumes:
 volumes:
   navidrome_data: {}
 `,
-    affiliateLinks,
     features: ["Compatible con apps Subsonic/Airsonic existentes (iOS/Android)", "Escaneo automático de tu biblioteca de música", "Streaming con transcodificación al vuelo"],
     techStack: ["Go", "SQLite"],
     pros: ["Muy ligero — corre bien en un Raspberry Pi", "Interfaz web moderna, no se siente como un proyecto abandonado"],
@@ -7708,7 +7539,6 @@ volumes:
   abs_config: {}
   abs_metadata: {}
 `,
-    affiliateLinks,
     features: ["Sincroniza el progreso de escucha entre dispositivos", "Descarga automática de podcasts nuevos", "Apps nativas para iOS y Android"],
     techStack: ["Node.js", "SQLite"],
     pros: ["Interfaz y apps móviles muy pulidas para un proyecto FOSS", "Soporta tanto audiolibros propios como podcasts"],
@@ -7762,7 +7592,6 @@ volumes:
   firefly_db: {}
   firefly_upload: {}
 `,
-    affiliateLinks,
     features: ["Presupuestos, facturas recurrentes y reglas automáticas", "Importación de movimientos bancarios (CSV, Nordigen/GoCardless)", "Informes y gráficas de gasto por categoría"],
     techStack: ["PHP", "Laravel", "MySQL"],
     pros: ["El gestor de finanzas personales self-hosted más completo y maduro", "Nadie más ve tus movimientos bancarios"],
@@ -7795,7 +7624,6 @@ volumes:
       - "8081:80"
     restart: unless-stopped
 `,
-    affiliateLinks,
     features: ["Estilo de dibujo a mano distintivo, muy usado para diagramas técnicos", "Exporta a PNG/SVG con fondo transparente", "Modo colaborativo en tiempo real"],
     techStack: ["TypeScript", "React"],
     pros: ["Uno de los proyectos open source más populares y queridos que existen", "Se integra como plugin en Obsidian, VS Code y otras apps"],
@@ -7827,7 +7655,6 @@ volumes:
 curl -o docker-compose.yaml https://raw.githubusercontent.com/penpot/penpot/main/docker/images/docker-compose.yaml
 docker compose -p penpot up -d
 `,
-    affiliateLinks,
     features: ["Diseño de interfaces y prototipado basado en SVG estándar", "Sistemas de diseño y componentes reutilizables", "Importa archivos de Figma existentes"],
     techStack: ["Clojure", "ClojureScript", "PostgreSQL"],
     pros: ["Respaldado por una empresa (Kaleidos) con desarrollo activo y financiado", "Al usar SVG, tus diseños no quedan atrapados en un formato propietario"],
@@ -7878,7 +7705,6 @@ volumes:
   netdatalib: {}
   netdatacache: {}
 `,
-    affiliateLinks,
     features: ["Miles de métricas por segundo, sin muestreo", "Detecta automáticamente qué está corriendo en el servidor", "Alertas preconfiguradas de fábrica"],
     techStack: ["C"],
     pros: ["Cero configuración para empezar a ver métricas útiles", "El nivel de detalle por segundo es difícil de igualar"],
@@ -7929,7 +7755,6 @@ volumes:
   synapse_db: {}
   synapse_data: {}
 `,
-    affiliateLinks,
     features: ["Federación real entre servidores, como el email", "Cifrado de extremo a extremo integrado", "Compatible con el cliente Element y decenas de otros clientes"],
     techStack: ["Python", "Rust", "PostgreSQL"],
     pros: ["Tu equipo puede chatear con gente de otras organizaciones sin salir del protocolo", "Ningún proveedor central puede leer tus mensajes cifrados ni cerrarte la cuenta"],
@@ -7967,7 +7792,6 @@ volumes:
 volumes:
   kavita_config: {}
 `,
-    affiliateLinks,
     features: ["Lector optimizado para cómics/manga y ebooks en el mismo servidor", "Seguimiento de progreso de lectura por dispositivo", "Escaneo automático de tu biblioteca"],
     techStack: ["C#", ".NET", "SQLite"],
     pros: ["Interfaz de lectura muy pulida, pensada específicamente para cómics", "Desarrollo muy activo con soporte de formatos amplio (CBZ, CBR, EPUB, PDF)"],
@@ -8004,7 +7828,6 @@ volumes:
     environment:
       - TZ=Etc/UTC
 `,
-    affiliateLinks,
     features: ["SSO y 2FA delante de cualquier app, sin tocar su código", "Se integra con Traefik, Nginx y Caddy", "Políticas de acceso granulares por dominio/grupo"],
     techStack: ["Go", "SQLite"],
     pros: ["Mucho más ligero de montar que Keycloak/Authentik si solo necesitas proteger un proxy", "Muy usado junto a stacks de HomeLab existentes"],
@@ -8046,7 +7869,6 @@ volumes:
 volumes:
   cw_config: {}
 `,
-    affiliateLinks,
     features: ["Lector integrado en el navegador (EPUB, PDF, CBR/CBZ)", "Envío directo a Kindle/Kobo por email", "Gestión de metadatos y portadas"],
     techStack: ["Python", "Flask", "SQLite"],
     pros: ["Reutiliza tu biblioteca de Calibre existente sin duplicar archivos", "Muy ligero, corre bien en cualquier NAS o Raspberry Pi"],
@@ -8083,7 +7905,6 @@ volumes:
 volumes:
   actual_data: {}
 `,
-    affiliateLinks,
     features: ["Presupuesto por sobres (envelope budgeting)", "Sincronización cifrada entre todos tus dispositivos", "Importación de bancos vía archivo o API"],
     techStack: ["TypeScript"],
     pros: ["Interfaz muy rápida y pulida, casi idéntica en filosofía a YNAB", "Sin la cuota mensual de YNAB (~$100-150/año)"],
@@ -8124,7 +7945,6 @@ volumes:
   freshrss_data: {}
   freshrss_extensions: {}
 `,
-    affiliateLinks,
     features: ["Multiusuario, cada uno con sus propias fuentes", "Compatible con apps móviles vía API de Google Reader", "Extensiones y filtros personalizados"],
     techStack: ["PHP", "SQLite"],
     pros: ["Muy maduro y estable, con años en producción", "Funciona bien incluso en hardware muy modesto"],
@@ -8163,7 +7983,6 @@ volumes:
 volumes:
   ntfy_cache: {}
 `,
-    affiliateLinks,
     features: ["Envío de notificaciones con un simple curl/HTTP POST", "Apps nativas iOS/Android y también web", "Temas públicos o privados con autenticación"],
     techStack: ["Go"],
     pros: ["Integrarlo en un script cualquiera lleva literalmente una línea de curl", "Sin límite artificial de mensajes ni cuenta obligatoria"],
@@ -8211,7 +8030,6 @@ volumes:
 volumes:
   litellm_db: {}
 `,
-    affiliateLinks,
     features: ["Una sola API compatible con OpenAI para más de 100 proveedores", "Límites de gasto y claves por equipo/proyecto", "Balanceo de carga y fallback entre modelos"],
     techStack: ["Python", "PostgreSQL"],
     pros: ["Evita el vendor lock-in de depender de un solo proveedor de IA", "El núcleo del proxy es gratis; el panel empresarial es la parte de pago"],
@@ -8261,7 +8079,6 @@ volumes:
   karakeep_db: {}
   karakeep_data: {}
 `,
-    affiliateLinks,
     features: ["Etiquetado automático de enlaces y notas con IA", "Búsqueda de texto dentro de capturas de pantalla guardadas", "Extensión de navegador y apps móviles"],
     techStack: ["TypeScript", "PostgreSQL"],
     pros: ["El etiquetado por IA ahorra mucho tiempo de organización manual", "Proyecto muy joven pero con desarrollo muy activo"],
@@ -8308,7 +8125,6 @@ volumes:
 volumes:
   coder_db: {}
 `,
-    affiliateLinks,
     features: ["Entornos de desarrollo reproducibles como código (Terraform)", "Conexión desde el navegador o VS Code/JetBrains local", "Auto-apagado de entornos inactivos para ahorrar recursos"],
     techStack: ["Go", "PostgreSQL"],
     pros: ["Corre en tu propia nube o servidor, sin la factura por hora de Codespaces", "El núcleo es gratis y sin límite de usuarios de la comunidad"],
@@ -8346,7 +8162,6 @@ volumes:
     ports:
       - "3000:3000"
 `,
-    affiliateLinks,
     features: ["Escribe, ejecuta y depura código de forma autónoma en un sandbox", "Puede navegar la web y usar herramientas de terminal", "Compatible con modelos locales o APIs externas (tú eliges el modelo)"],
     techStack: ["Python"],
     pros: ["No dependes de un único proveedor de modelo — eliges cuál usar", "Desarrollo extremadamente activo, uno de los agentes de código open source más seguidos"],
@@ -8385,7 +8200,6 @@ volumes:
 volumes:
   homebox_data: {}
 `,
-    affiliateLinks,
     features: ["Etiquetas QR imprimibles para localizar cualquier objeto", "Seguimiento de garantías y valor de compra", "App web instalable en el móvil (PWA)"],
     techStack: ["Go", "SQLite"],
     pros: ["Muy ligero y rápido de configurar para un inventario doméstico completo", "Gratis frente a apps de inventario con suscripción"],
@@ -8424,7 +8238,6 @@ volumes:
   wallos_db: {}
   wallos_logos: {}
 `,
-    affiliateLinks,
     features: ["Vista de calendario de todos los próximos cobros", "Notificaciones antes de cada renovación", "Gráficas de gasto mensual/anual por categoría"],
     techStack: ["PHP", "SQLite"],
     pros: ["Ayuda a detectar suscripciones olvidadas que sigues pagando", "Muy simple de instalar, sin dependencias pesadas"],
@@ -8461,7 +8274,6 @@ volumes:
 volumes:
   changedetection_data: {}
 `,
-    affiliateLinks,
     features: ["Vigila precios, stock o cualquier texto/CSS de una web", "Notificaciones a decenas de servicios distintos", "Soporta páginas que requieren JavaScript (con navegador headless)"],
     techStack: ["Python"],
     pros: ["Sin límite artificial de cuántas webs vigilas", "Muy usado para cazar bajadas de precio y reposiciones de stock"],
@@ -8494,7 +8306,6 @@ cd firecrawl
 cp apps/api/.env.example .env
 docker compose up -d
 `,
-    affiliateLinks,
     features: ["Convierte cualquier web a Markdown/JSON limpio para LLMs", "Rastreo de sitios completos con control de profundidad", "Renderiza JavaScript vía Playwright integrado"],
     techStack: ["TypeScript", "Redis", "Playwright"],
     pros: ["Ahorra muchísimo tiempo de scraping manual para pipelines de IA/RAG", "El núcleo self-hosted es gratis; solo pagas si usas su API en la nube"],
@@ -8531,7 +8342,6 @@ docker compose up -d
 volumes:
   memos_data: {}
 `,
-    affiliateLinks,
     features: ["Notas rápidas con #hashtags para organizar sobre la marcha", "API abierta y extensible", "Modo privado o público por nota"],
     techStack: ["Go", "SQLite"],
     pros: ["Un solo binario ligero, arranca en segundos", "Ideal para capturar ideas rápido sin fricción"],
@@ -8573,7 +8383,6 @@ volumes:
 volumes:
   speedtest_config: {}
 `,
-    affiliateLinks,
     features: ["Tests programados automáticamente (cada hora, cada día...)", "Gráficas históricas de velocidad de subida/bajada", "Alertas si la velocidad cae por debajo de un umbral"],
     techStack: ["PHP", "Laravel", "SQLite"],
     pros: ["Prueba objetiva y con fecha si tu proveedor no cumple la velocidad contratada", "Muy ligero, corre bien en cualquier NAS"],
@@ -8613,7 +8422,6 @@ volumes:
 volumes:
   pocket_id_data: {}
 `,
-    affiliateLinks,
     features: ["Login solo con passkeys, sin contraseñas que filtrar", "Protocolo OIDC estándar, compatible con la mayoría de apps", "Panel de administración simple, pensado para un solo usuario/familia"],
     techStack: ["Go", "SQLite"],
     pros: ["Mucho más ligero que Keycloak/Authentik si solo necesitas OIDC básico con passkeys", "Elimina el riesgo de contraseñas reutilizadas o débiles"],
@@ -8650,7 +8458,6 @@ volumes:
       - SB_USER=admin:change-me
     restart: unless-stopped
 `,
-    affiliateLinks,
     features: ["Todo se guarda como archivos Markdown planos, sin base de datos", "Lenguaje de consultas en vivo dentro de las propias notas", "Funciona offline como PWA"],
     techStack: ["TypeScript", "Deno"],
     pros: ["Tus notas son archivos de texto normales — nunca quedas atrapado en un formato propietario", "Muy ligero, un solo contenedor sin base de datos"],
@@ -8699,7 +8506,6 @@ volumes:
   kestra_db: {}
   kestra_data: {}
 `,
-    affiliateLinks,
     features: ["Workflows declarativos en YAML con editor visual en vivo", "Cientos de plugins (bases de datos, APIs, IA, cloud...)", "Reintentos, programación cron y triggers por evento"],
     techStack: ["Java", "Kotlin", "PostgreSQL"],
     pros: ["Ni código de infraestructura pesado ni interfaz drag-and-drop limitada — un punto medio cómodo", "Desarrollo muy activo y buena documentación"],
@@ -8742,7 +8548,6 @@ volumes:
 volumes:
   kopia_config: {}
 `,
-    affiliateLinks,
     features: ["Deduplicación y compresión para ahorrar espacio de backup", "Cifrado de extremo a extremo antes de subir nada", "Soporta S3, Backblaze B2, SFTP, disco local y más como destino"],
     techStack: ["Go"],
     pros: ["Tú eliges el destino final — no dependes de un proveedor concreto", "Restaurar snapshots es tan simple como montarlos como un disco"],
@@ -8787,7 +8592,6 @@ volumes:
 volumes:
   ch_data: {}
 `,
-    affiliateLinks,
     features: ["Trazas, métricas y logs unificados en un solo panel", "100% compatible con el estándar OpenTelemetry", "Construido sobre ClickHouse para consultas muy rápidas a gran escala"],
     techStack: ["Go", "ClickHouse"],
     pros: ["Al ser OpenTelemetry nativo, no reescribes instrumentación si cambias de backend", "Rendimiento de consulta muy superior a soluciones basadas en Elasticsearch para este volumen de datos"],
@@ -8824,7 +8628,6 @@ volumes:
 volumes:
   whisper_models: {}
 `,
-    affiliateLinks,
     features: ["API compatible con el endpoint de transcripción de OpenAI", "Usa faster-whisper (CTranslate2) para transcribir más rápido que el Whisper original", "Soporta GPU (imagen aparte) o CPU"],
     techStack: ["Python"],
     pros: ["Nada del audio que transcribes sale de tu servidor", "Sin coste por minuto, a diferencia de la API de OpenAI"],
