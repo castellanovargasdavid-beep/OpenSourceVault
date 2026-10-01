@@ -5,6 +5,8 @@
  * in tools.ts. Missing keys gracefully fall back to the Spanish text via
  * getLocalizedTool().
  */
+import { AGPL_COPYLEFT_NOTE_EN } from "./license-notes";
+
 export interface ToolTranslation {
   description: string;
   shortDescription: string;
@@ -32,7 +34,7 @@ export const toolsEn: Record<string, ToolTranslation> = {
     ],
     cons: [
       "Plugin ecosystem still smaller than Notion's",
-      "AGPL-3.0 license: check the implications if you offer it as a service to others",
+      AGPL_COPYLEFT_NOTE_EN,
     ],
   },
   plane: {
@@ -83,7 +85,7 @@ export const toolsEn: Record<string, ToolTranslation> = {
       "Runs on real databases, not a proprietary format",
       "No artificial row limits",
     ],
-    cons: ["Somewhat steeper learning curve than Airtable", "AGPL-3.0 license: check the implications if you offer it as a service to others"],
+    cons: ["Somewhat steeper learning curve than Airtable", AGPL_COPYLEFT_NOTE_EN],
   },
   baserow: {
     description:
@@ -103,7 +105,7 @@ export const toolsEn: Record<string, ToolTranslation> = {
   },
   plausible: {
     description:
-      "Plausible is a lightweight, privacy-focused web analytics tool: no cookies and no personal identifiers stored, which makes GDPR/CCPA compliance easier, and a much simpler dashboard than Google Analytics.",
+      "Plausible is a lightweight web analytics tool: privacy-focused analytics with a minimal-data approach, no cookies, and no user identifiers by default, with a much simpler dashboard than Google Analytics.",
     shortDescription: "Cookie-free web analytics, an alternative to Google Analytics.",
     features: [
       "Under-1KB script, doesn't slow down your site",
@@ -210,9 +212,14 @@ export const toolsEn: Record<string, ToolTranslation> = {
     description:
       "MinIO is high-performance object storage, 100% compatible with the S3 API, ideal for anyone who wants their own storage infrastructure without changing a line of code in their AWS SDKs.",
     shortDescription: "S3-compatible object storage, self-hosted.",
+    notes:
+      "MinIO's community edition is no longer published as a public Docker image: the official repository was archived and the image was pulled from Docker Hub (and from its quay.io mirror too). The last free version still floating around has an unpatched critical authentication vulnerability. We don't recommend deploying MinIO this way until the project offers an official path again — consider another Amazon S3 alternative from this catalog in the meantime.",
     features: ["100% S3-compatible API", "Encryption at rest and object versioning", "Multi-site replication"],
     pros: ["Drop-in S3 replacement, near-frictionless migration"],
-    cons: ["Real high availability requires several nodes to configure"],
+    cons: [
+      "Real high availability requires several nodes to configure",
+      "Public Docker image pulled (see note above) — not deployable today without an official path",
+    ],
   },
   nextcloud: {
     description:
@@ -1030,6 +1037,8 @@ export const toolsEn: Record<string, ToolTranslation> = {
     description:
       "Bitwarden offers its full official server for self-hosting, with all the features of the cloud version (organizations, SSO, security reports) on your own infrastructure.",
     shortDescription: "Official self-hosted Bitwarden server, a complete alternative to 1Password.",
+    notes:
+      "Bitwarden migrated its official self-hosting image from bitwarden/self-host (Docker Hub) to ghcr.io/bitwarden/lite (a single container). We've updated the image and version, but haven't verified the new container's environment variables one by one — check Bitwarden's official deployment guide before running this in production.",
     features: ["Organizations and enterprise groups", "Security reports and SSO", "All the features of the official cloud version"],
     pros: ["It's the official server, with direct support from Bitwarden"],
     cons: ["Considerably heavier on resources than Vaultwarden"],
@@ -1090,7 +1099,7 @@ export const toolsEn: Record<string, ToolTranslation> = {
     shortDescription: "All-in-one multi-tenant identity, an alternative to Auth0/Okta.",
     features: ["Native multi-tenancy (organizations)", "SSO, MFA and per-org project management", "Full gRPC and REST APIs"],
     pros: ["Built from the ground up for multi-tenant SaaS"],
-    cons: ["Documentation is thinner than Keycloak's for advanced cases", "AGPL-3.0 license: check the implications if you offer it as a service to others"],
+    cons: ["Documentation is thinner than Keycloak's for advanced cases", AGPL_COPYLEFT_NOTE_EN],
   },
   supertokens: {
     description:
@@ -1226,7 +1235,7 @@ export const toolsEn: Record<string, ToolTranslation> = {
     shortDescription: "Surveys and forms with in-app targeting, an alternative to Typeform.",
     features: ["In-app surveys targeted by user segment", "Forms embeddable on any site", "Templates for NPS, PMF and more"],
     pros: ["Built specifically for product research, not just generic forms"],
-    cons: ["AGPL-3.0 license: check the implications if you offer it as a service to others"],
+    cons: [AGPL_COPYLEFT_NOTE_EN],
   },
   ghost: {
     description:
@@ -1276,7 +1285,7 @@ export const toolsEn: Record<string, ToolTranslation> = {
     shortDescription: "Bookmark manager with page archiving, an alternative to Raindrop.io.",
     features: ["Saves links plus screenshots and PDF archives of each page", "Organization via collaborative collections and tags", "Browser extension and mobile apps"],
     pros: ["Archives a full copy of the page, not just the link", "Collections shared with other users"],
-    cons: ["AGPL-3.0 license: check the implications if you offer it as a service to others", "Full page archiving uses significant storage"],
+    cons: [AGPL_COPYLEFT_NOTE_EN, "Full page archiving uses significant storage"],
   },
   wallabag: {
     description:

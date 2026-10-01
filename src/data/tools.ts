@@ -1,6 +1,7 @@
 import type { OpenSourceTool } from "@/lib/types";
 import { isPublished } from "@/lib/types";
 import { toolsEn } from "./tools.en";
+import { AGPL_COPYLEFT_NOTE_ES } from "./license-notes";
 import type { Locale } from "@/i18n/config";
 
 /**
@@ -66,7 +67,7 @@ volumes:
     ],
     cons: [
       "Ecosistema de plugins aún más pequeño que Notion",
-      "Licencia AGPL-3.0: revisa implicaciones si ofreces el servicio a terceros",
+      AGPL_COPYLEFT_NOTE_ES,
     ],
     tags: ["docker-ready", "1-click-deploy"],
     featured: true,
@@ -155,7 +156,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   focalboard:
-    image: mattermost/focalboard:latest
+    image: mattermost/focalboard:7.8.9
     restart: unless-stopped
     ports:
       - "8000:8000"
@@ -232,7 +233,7 @@ volumes:
       "Funciona sobre bases de datos reales, no un formato propietario",
       "Sin límites de filas artificiales",
     ],
-    cons: ["Curva de aprendizaje algo mayor que Airtable", "Licencia AGPL-3.0: revisa implicaciones si ofreces el servicio a terceros"],
+    cons: ["Curva de aprendizaje algo mayor que Airtable", AGPL_COPYLEFT_NOTE_ES],
     tags: ["docker-ready", "1-click-deploy"],
   },
   {
@@ -288,7 +289,7 @@ volumes:
     replaces: ["Google Analytics"],
     category: "Analytics",
     description:
-      "Plausible es una analítica web ligera y centrada en la privacidad: no usa cookies ni almacena identificadores personales, lo que facilita cumplir con GDPR/CCPA, y ofrece un dashboard mucho más simple que Google Analytics.",
+      "Plausible es una analítica web ligera: analítica centrada en la privacidad, con un enfoque de minimización de datos, sin cookies y sin identificadores de usuario por defecto, con un dashboard mucho más simple que Google Analytics.",
     shortDescription: "Analítica web sin cookies, alternativa a Google Analytics.",
     websiteUrl: "https://plausible.io",
     githubUrl: "https://github.com/plausible/analytics",
@@ -338,7 +339,7 @@ volumes:
     ],
     techStack: ["Elixir", "Phoenix", "ClickHouse", "PostgreSQL"],
     pros: [
-      "Cumple privacidad por diseño",
+      "Privacidad por diseño",
       "Muchísimo más simple de leer que GA4",
     ],
     cons: [
@@ -419,7 +420,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   matomo:
-    image: matomo:latest
+    image: matomo:5.14.0
     restart: unless-stopped
     ports:
       - "8080:80"
@@ -479,7 +480,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   posthog:
-    image: posthog/posthog:latest
+    image: posthog/posthog:sha-3175e8adc29b5cbec176021ecf4a3de1f037daa8
     restart: unless-stopped
     ports:
       - "8000:8000"
@@ -593,7 +594,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   rocketchat:
-    image: rocket.chat:latest
+    image: rocket.chat:8.8.1
     restart: unless-stopped
     ports:
       - "3000:3000"
@@ -642,7 +643,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   mattermost:
-    image: mattermost/mattermost-team-edition:latest
+    image: mattermost/mattermost-team-edition:11.11.1
     restart: unless-stopped
     ports:
       - "8065:8065"
@@ -807,7 +808,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   studio:
-    image: supabase/studio:latest
+    image: supabase/studio:2026.09.28-sha-5e59b60
     restart: unless-stopped
     ports:
       - "3000:3000"
@@ -919,6 +920,17 @@ volumes:
     language: "Go",
     platforms: ["Web"],
     fossModel: "OpenCore",
+    dockerStatus: "ARCHIVED_UPSTREAM",
+    // MinIO dejó de publicar imágenes gratuitas de la community edition en
+    // octubre de 2025, archivó su repo open source en febrero de 2026, y
+    // retiró `minio/minio` de Docker Hub el 2026-09-11 — el intento de la
+    // comunidad de usar el mirror en quay.io/minio también se bloqueó 13
+    // días después. No hay hoy una imagen pública que `docker pull` pueda
+    // descargar sin login, y la última release gratuita que sí circula sin
+    // parchear tiene un bypass de autenticación crítico (CVSS 8.8). No
+    // inventamos un tag ni un registro alternativo — avisamos.
+    notes:
+      "La community edition de MinIO ya no se publica como imagen Docker pública: el repositorio oficial se archivó y la imagen se retiró de Docker Hub (y también de su mirror en quay.io). La última versión gratuita que aún circula tiene una vulnerabilidad crítica de autenticación sin parchear. No recomendamos desplegar MinIO así hasta que el proyecto ofrezca una vía oficial de nuevo — considera otra alternativa a Amazon S3 de este catálogo mientras tanto.",
     dockerCompose: `version: "3.9"
 services:
   minio:
@@ -943,7 +955,10 @@ volumes:
     ],
     techStack: ["Go"],
     pros: ["Drop-in replacement de S3, migración casi sin fricción"],
-    cons: ["Configurar alta disponibilidad real requiere varios nodos"],
+    cons: [
+      "Configurar alta disponibilidad real requiere varios nodos",
+      "Imagen Docker pública retirada (ver nota arriba) — no desplegable hoy sin una vía oficial",
+    ],
     tags: ["docker-ready", "1-click-deploy"],
   },
   {
@@ -967,7 +982,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   nextcloud:
-    image: nextcloud:latest
+    image: nextcloud:35.0.1
     restart: unless-stopped
     ports:
       - "8080:80"
@@ -1144,7 +1159,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   langfuse:
-    image: langfuse/langfuse:latest
+    image: langfuse/langfuse:sha-b9f9646
     restart: unless-stopped
     ports:
       - "3000:3000"
@@ -1241,7 +1256,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   outline:
-    image: outlinewiki/outline:latest
+    image: outlinewiki/outline:1.10
     restart: unless-stopped
     ports:
       - "3000:3000"
@@ -1294,7 +1309,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   bookstack:
-    image: lscr.io/linuxserver/bookstack:latest
+    image: lscr.io/linuxserver/bookstack:26.09.1
     restart: unless-stopped
     ports:
       - "6875:80"
@@ -1344,7 +1359,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   wekan:
-    image: wekanteam/wekan:latest
+    image: wekanteam/wekan:v12.12
     restart: unless-stopped
     ports:
       - "8080:8080"
@@ -1387,7 +1402,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   vikunja:
-    image: vikunja/vikunja:latest
+    image: vikunja/vikunja:2.6
     restart: unless-stopped
     ports:
       - "3456:3456"
@@ -1425,7 +1440,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   taiga-back:
-    image: taigaio/taiga-back:latest
+    image: taigaio/taiga-back:6.10.2
     restart: unless-stopped
     ports:
       - "8000:8000"
@@ -1512,7 +1527,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   trilium:
-    image: zadam/trilium:latest
+    image: zadam/trilium:0.63.7
     restart: unless-stopped
     ports:
       - "8080:8080"
@@ -1547,7 +1562,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   docmost:
-    image: docmost/docmost:latest
+    image: docmost/docmost:0.96
     restart: unless-stopped
     ports:
       - "3000:3000"
@@ -1696,7 +1711,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   etherpad:
-    image: etherpad/etherpad:latest
+    image: etherpad/etherpad:3.3
     restart: unless-stopped
     ports:
       - "9001:9001"
@@ -1746,7 +1761,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   wikijs:
-    image: requarks/wiki:latest
+    image: requarks/wiki:2.5
     restart: unless-stopped
     ports:
       - "3000:3000"
@@ -1796,7 +1811,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   rallly:
-    image: lukevella/rallly:latest
+    image: lukevella/rallly:4.15
     restart: unless-stopped
     ports:
       - "3000:3000"
@@ -1843,7 +1858,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   cryptpad:
-    image: cryptpad/cryptpad:latest
+    image: cryptpad/cryptpad:version-2026.5.1
     restart: unless-stopped
     ports:
       - "3000:3000"
@@ -2070,7 +2085,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   countly:
-    image: countly/countly-server:latest
+    image: countly/countly-server:24.05.54
     restart: unless-stopped
     ports:
       - "443:443"
@@ -2112,7 +2127,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   ackee:
-    image: electerious/ackee:latest
+    image: electerious/ackee:3.6.1
     restart: unless-stopped
     ports:
       - "3000:3000"
@@ -2331,7 +2346,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   gitea:
-    image: gitea/gitea:latest
+    image: gitea/gitea:28.0
     restart: unless-stopped
     ports:
       - "3000:3000"
@@ -2386,7 +2401,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   gitlab:
-    image: gitlab/gitlab-ce:latest
+    image: gitlab/gitlab-ce:19.4.1-ce.0
     restart: unless-stopped
     ports:
       - "80:80"
@@ -2605,7 +2620,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   pocketbase:
-    image: ghcr.io/muchobien/pocketbase:latest
+    image: ghcr.io/muchobien/pocketbase:0.40.4
     restart: unless-stopped
     ports:
       - "8090:8090"
@@ -2640,7 +2655,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   hasura:
-    image: hasura/graphql-engine:latest
+    image: hasura/graphql-engine:v2.51.0.cli-migrations-v2.ubuntu
     restart: unless-stopped
     ports:
       - "8080:8080"
@@ -2687,7 +2702,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   meilisearch:
-    image: getmeili/meilisearch:latest
+    image: getmeili/meilisearch:v1.54.3
     restart: unless-stopped
     ports:
       - "7700:7700"
@@ -2855,7 +2870,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   unleash:
-    image: unleashorg/unleash-server:latest
+    image: unleashorg/unleash-server:8.2
     restart: unless-stopped
     ports:
       - "4242:4242"
@@ -2950,7 +2965,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   documenso:
-    image: documenso/documenso:latest
+    image: documenso/documenso:586b1f5cb5df9a4330a9f72b8fb6e80209005696
     restart: unless-stopped
     ports:
       - "3000:3000"
@@ -3035,7 +3050,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   grafana:
-    image: grafana/grafana:latest
+    image: grafana/grafana:13.0-slim
     restart: unless-stopped
     ports:
       - "3000:3000"
@@ -3074,7 +3089,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   espocrm:
-    image: espocrm/espocrm:latest
+    image: espocrm/espocrm:10.0.9
     restart: unless-stopped
     ports:
       - "8080:80"
@@ -3321,7 +3336,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   mautic:
-    image: mautic/mautic:latest
+    image: mautic/mautic:7.2.1-20260923-apache
     restart: unless-stopped
     ports:
       - "8080:80"
@@ -3371,7 +3386,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   zammad:
-    image: zammad/zammad:latest
+    image: zammad/zammad:7.2.0-0021
     restart: unless-stopped
     ports:
       - "8080:8080"
@@ -3598,7 +3613,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   khoj:
-    image: ghcr.io/khoj-ai/khoj:latest
+    image: ghcr.io/khoj-ai/khoj:1.42.10
     restart: unless-stopped
     ports:
       - "42110:42110"
@@ -3635,7 +3650,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   vllm:
-    image: vllm/vllm-openai:latest
+    image: vllm/vllm-openai:v0.30.0
     restart: unless-stopped
     ports:
       - "8000:8000"
@@ -3744,7 +3759,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   langflow:
-    image: langflowai/langflow:latest
+    image: langflowai/langflow:1.12.4
     restart: unless-stopped
     ports:
       - "7860:7860"
@@ -3836,7 +3851,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   sd-webui:
-    image: universonic/stable-diffusion-webui:latest
+    image: universonic/stable-diffusion-webui:sha-55aa46a
     restart: unless-stopped
     ports:
       - "7860:7860"
@@ -4034,7 +4049,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   typebot-builder:
-    image: baptistearno/typebot-builder:latest
+    image: baptistearno/typebot-builder:3.19
     restart: unless-stopped
     ports:
       - "3000:3000"
@@ -4081,7 +4096,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   librechat:
-    image: ghcr.io/danny-avila/librechat:latest
+    image: ghcr.io/danny-avila/librechat:v0.8.7
     restart: unless-stopped
     ports:
       - "3080:3080"
@@ -4165,7 +4180,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   privategpt:
-    image: zylonai/private-gpt:latest
+    image: zylonai/private-gpt:sha-88d7e25
     restart: unless-stopped
     ports:
       - "8001:8001"
@@ -4209,7 +4224,7 @@ services:
     depends_on:
       - perplexica-searxng
   perplexica-searxng:
-    image: searxng/searxng:latest
+    image: searxng/searxng:2026.9.30-a9d990033
     restart: unless-stopped
 volumes: {}
 `,
@@ -4287,7 +4302,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   owncloud:
-    image: owncloud/ocis:latest
+    image: owncloud/ocis:8.2.0-20260830
     restart: unless-stopped
     ports:
       - "9200:9200"
@@ -4324,7 +4339,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   syncthing:
-    image: syncthing/syncthing:latest
+    image: syncthing/syncthing:2.1
     restart: unless-stopped
     ports:
       - "8384:8384"
@@ -4574,7 +4589,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   pydio-cells:
-    image: pydio/cells:latest
+    image: pydio/cells:5.1
     restart: unless-stopped
     ports:
       - "8080:8080"
@@ -4613,7 +4628,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   searxng:
-    image: searxng/searxng:latest
+    image: searxng/searxng:2026.9.30-a9d990033
     restart: unless-stopped
     ports:
       - "8080:8080"
@@ -4704,7 +4719,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   saleor:
-    image: ghcr.io/saleor/saleor:latest
+    image: ghcr.io/saleor/saleor:3.23.37
     restart: unless-stopped
     ports:
       - "8000:8000"
@@ -4856,7 +4871,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   prestashop:
-    image: prestashop/prestashop:latest
+    image: prestashop/prestashop:9.2.0-6.0-classic-8.5-apache
     restart: unless-stopped
     ports:
       - "8080:80"
@@ -4953,7 +4968,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   shopware:
-    image: dockware/play:latest
+    image: dockware/play:6.7.2.2
     restart: unless-stopped
     ports:
       - "80:80"
@@ -5033,7 +5048,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   wordpress:
-    image: wordpress:latest
+    image: wordpress:7.1.2
     restart: unless-stopped
     ports:
       - "8080:80"
@@ -5088,7 +5103,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   jitsi-web:
-    image: jitsi/web:latest
+    image: jitsi/web:web-1.0.9300-1
     restart: unless-stopped
     ports:
       - "8443:443"
@@ -5097,13 +5112,13 @@ services:
     depends_on:
       - jitsi-prosody
   jitsi-prosody:
-    image: jitsi/prosody:latest
+    image: jitsi/prosody:prosody-13.0.6
     restart: unless-stopped
   jitsi-jicofo:
-    image: jitsi/jicofo:latest
+    image: jitsi/jicofo:jicofo-1.0-1184-1
     restart: unless-stopped
   jitsi-jvb:
-    image: jitsi/jvb:latest
+    image: jitsi/jvb:jvb-2.3-297-gcdc92a16b-1
     restart: unless-stopped
     ports:
       - "10000:10000/udp"
@@ -5173,7 +5188,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   livekit:
-    image: livekit/livekit-server:latest
+    image: livekit/livekit-server:v1.13
     restart: unless-stopped
     ports:
       - "7880:7880"
@@ -5211,7 +5226,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   openvidu:
-    image: openvidu/openvidu-server:latest
+    image: openvidu/openvidu-server:3.9.0
     restart: unless-stopped
     ports:
       - "4443:4443"
@@ -5358,7 +5373,7 @@ services:
     dockerCompose: `version: "3.9"
 services:
   vaultwarden:
-    image: vaultwarden/server:latest
+    image: vaultwarden/server:1.37.3-alpine
     restart: unless-stopped
     ports:
       - "8080:80"
@@ -5395,10 +5410,18 @@ volumes:
     language: "C# (.NET)",
     platforms: ["Web", "Desktop (Mac/Win/Linux)", "Mobile (iOS/Android)"],
     fossModel: "OpenCore",
+    // Bitwarden retiró `bitwarden/self-host` (Docker Hub, multi-contenedor)
+    // en favor de `ghcr.io/bitwarden/lite` (un solo contenedor) — verificado
+    // por digest contra la etiqueta real 2026.9.0. Las variables de entorno
+    // del contenedor "lite" no son necesariamente las mismas que las del
+    // self-host antiguo: no las hemos verificado una a una contra la nueva
+    // imagen, así que lo decimos en vez de fingir que sí.
+    notes:
+      "Bitwarden migró su imagen oficial de self-hosting de bitwarden/self-host (Docker Hub) a ghcr.io/bitwarden/lite (un solo contenedor). Hemos actualizado la imagen y la versión, pero no hemos verificado una a una las variables de entorno del nuevo contenedor — revisa la guía oficial de despliegue de Bitwarden antes de arrancarlo en producción.",
     dockerCompose: `version: "3.9"
 services:
   bitwarden:
-    image: bitwarden/self-host:latest
+    image: ghcr.io/bitwarden/lite:2026.9.0
     restart: unless-stopped
     ports:
       - "8080:8080"
@@ -5435,7 +5458,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   passbolt:
-    image: passbolt/passbolt:latest
+    image: passbolt/passbolt:5.16.0-1-ce
     restart: unless-stopped
     ports:
       - "443:443"
@@ -5484,7 +5507,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   psono:
-    image: psono/psono-server:latest
+    image: psono/psono-server:7.4.4
     restart: unless-stopped
     ports:
       - "8080:8080"
@@ -5532,7 +5555,7 @@ volumes:
     dockerCompose: `version: "3.9"
 services:
   keeweb:
-    image: antelle/keeweb:latest
+    image: antelle/keeweb:1.18.7
     restart: unless-stopped
     ports:
       - "8080:80"
@@ -5603,7 +5626,7 @@ volumes: {}
   redis:
     image: redis:alpine
   server:
-    image: ghcr.io/goauthentik/server:latest
+    image: ghcr.io/goauthentik/server:2026.8.3
     command: server
     environment:
       AUTHENTIK_SECRET_KEY: change-me-super-secret
@@ -5692,7 +5715,7 @@ volumes:
     features: ["Multi-tenancy nativo (organizaciones)", "SSO, MFA y gestión de proyectos por org", "API gRPC y REST completas"],
     techStack: ["Go", "PostgreSQL"],
     pros: ["Pensado desde cero para SaaS multi-cliente"],
-    cons: ["Documentación más escueta que Keycloak en casos avanzados", "Licencia AGPL-3.0: revisa implicaciones si ofreces el servicio a terceros"],
+    cons: ["Documentación más escueta que Keycloak en casos avanzados", AGPL_COPYLEFT_NOTE_ES],
     tags: ["docker-ready"],
     status: "scheduled",
     publishDate: "2026-09-21",
@@ -6268,7 +6291,7 @@ cd dub && pnpm install && pnpm build
     features: ["Encuestas in-app dirigidas por segmento de usuario", "Formularios embebibles en cualquier web", "Plantillas para NPS, PMF y más"],
     techStack: ["Next.js", "PostgreSQL"],
     pros: ["Pensado específicamente para research de producto, no solo formularios genéricos"],
-    cons: ["Licencia AGPL-3.0: revisa implicaciones si ofreces el servicio a terceros"],
+    cons: [AGPL_COPYLEFT_NOTE_ES],
     tags: ["docker-ready"],
     status: "scheduled",
     publishDate: "2026-10-06",
@@ -6520,7 +6543,7 @@ volumes:
       "Soporta transcodificación acelerada por hardware (Intel Quick Sync, NVIDIA NVENC, AMD AMF/VAAPI) configurable desde el panel de administración — no es obligatoria, pero reduce muchísimo el uso de CPU al hacer streaming a dispositivos que no soportan el códec original.",
     dockerCompose: `services:
   jellyfin:
-    image: jellyfin/jellyfin:latest
+    image: jellyfin/jellyfin:12.1
     restart: unless-stopped
     ports:
       - "8096:8096"
@@ -6564,7 +6587,7 @@ volumes:
     fossModel: "FOSS",
     dockerCompose: `services:
   linkwarden:
-    image: ghcr.io/linkwarden/linkwarden:latest
+    image: ghcr.io/linkwarden/linkwarden:v2.16.3
     restart: unless-stopped
     ports:
       - "3000:3000"
@@ -6597,7 +6620,7 @@ volumes:
     techStack: ["Next.js", "PostgreSQL"],
     pros: ["Guarda una copia archivada de la página, no solo el enlace", "Colecciones compartidas con otros usuarios"],
     cons: [
-      "Licencia AGPL-3.0: revisa implicaciones si ofreces el servicio a terceros",
+      AGPL_COPYLEFT_NOTE_ES,
       "El archivado completo de páginas consume bastante almacenamiento",
     ],
     tags: ["docker-ready"],
@@ -6683,7 +6706,7 @@ volumes:
 # arrancar:
 services:
   headscale:
-    image: headscale/headscale:latest
+    image: headscale/headscale:0.29.4
     restart: unless-stopped
     command: serve
     ports:
@@ -7022,7 +7045,7 @@ volumes:
     fossModel: "OpenCore",
     dockerCompose: `services:
   dolibarr:
-    image: dolibarr/dolibarr:latest
+    image: dolibarr/dolibarr:24.0.0
     restart: unless-stopped
     ports:
       - "8080:80"

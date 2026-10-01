@@ -109,8 +109,8 @@ export function ComparisonPageContent({ comparison, locale }: { comparison: Tool
               <td className="px-4 py-3 font-medium text-slate-600">{t.comparisonPage.tableStars}</td>
               <td className="px-4 py-3 text-slate-900">
                 {toolA.starsCount ? (
-                  <span className="inline-flex items-center gap-1">
-                    <Star size={14} className="text-amber-500" /> {formatStars(toolA.starsCount)}
+                  <span className="inline-flex items-center gap-1" title={t.toolCard.starsSnapshotCaption}>
+                    <Star size={14} className="text-amber-500" /> ~{formatStars(toolA.starsCount)}
                   </span>
                 ) : (
                   "—"
@@ -118,8 +118,8 @@ export function ComparisonPageContent({ comparison, locale }: { comparison: Tool
               </td>
               <td className="px-4 py-3 text-slate-900">
                 {toolB.starsCount ? (
-                  <span className="inline-flex items-center gap-1">
-                    <Star size={14} className="text-amber-500" /> {formatStars(toolB.starsCount)}
+                  <span className="inline-flex items-center gap-1" title={t.toolCard.starsSnapshotCaption}>
+                    <Star size={14} className="text-amber-500" /> ~{formatStars(toolB.starsCount)}
                   </span>
                 ) : (
                   "—"

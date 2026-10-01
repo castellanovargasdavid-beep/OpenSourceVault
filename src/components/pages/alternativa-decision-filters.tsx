@@ -181,7 +181,13 @@ export function AlternativeDecisionFilters({
                       </span>
                     </td>
                     <td className="px-4 py-3">{dockerReady ? "✅" : "—"}</td>
-                    <td className="px-4 py-3 text-slate-600">{tool.starsCount ? `★ ${tool.starsCount.toLocaleString(locale)}` : "—"}</td>
+                    <td className="px-4 py-3 text-slate-600">
+                      {tool.starsCount ? (
+                        <span title={toolCardT.starsSnapshotCaption}>{`★ ~${tool.starsCount.toLocaleString(locale)}`}</span>
+                      ) : (
+                        "—"
+                      )}
+                    </td>
                   </tr>
                 ))}
               </tbody>

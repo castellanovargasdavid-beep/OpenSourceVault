@@ -13,6 +13,8 @@
  * catálogo (y su validación) vive en src/lib/replace.ts.
  */
 
+import { AGPL_COPYLEFT_NOTE_ES } from "./license-notes";
+
 export type ReplaceFit = "good" | "partial" | "specialized";
 
 export interface ReplaceMappingContent {
@@ -109,7 +111,7 @@ export const replaceMappingContent: Record<string, ReplaceMappingContent> = {
     fit: "good",
     useCase:
       "Puede sustituir a Airtable para hojas de cálculo inteligentes con vistas Grid, Kanban, Galería y Formulario, sobre una base de datos SQL real.",
-    limitation: "Curva de aprendizaje algo mayor que Airtable, y su licencia AGPL-3.0: revisa implicaciones si ofreces el servicio a terceros.",
+    limitation: `Curva de aprendizaje algo mayor que Airtable, y su ${AGPL_COPYLEFT_NOTE_ES}.`,
   },
   "Airtable→baserow": {
     fit: "good",
@@ -177,7 +179,7 @@ export const replaceMappingContent: Record<string, ReplaceMappingContent> = {
   "Google Analytics→plausible": {
     fit: "good",
     useCase:
-      "Puede sustituir a Google Analytics para ver visitas y tráfico del sitio sin cookies ni banner de consentimiento, con histórico importable desde GA.",
+      "Puede sustituir a Google Analytics para ver visitas y tráfico del sitio con un enfoque de minimización de datos, sin cookies y sin identificadores de usuario por defecto, con histórico importable desde GA.",
     limitation: "Necesita ClickHouse, algo más pesado de auto-hospedar, y ofrece menos profundidad de análisis que GA4 para ecommerce complejo.",
   },
   "Google Analytics→umami": {

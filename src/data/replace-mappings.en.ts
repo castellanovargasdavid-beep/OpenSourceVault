@@ -1,4 +1,5 @@
 import type { ReplaceMappingContent } from "./replace-mappings";
+import { AGPL_COPYLEFT_NOTE_EN } from "./license-notes";
 
 /** English translation of replace-mappings.ts. Same keys, same claims — never a looser or stronger equivalence than the Spanish original. */
 export const replaceMappingContentEn: Record<string, ReplaceMappingContent> = {
@@ -55,7 +56,7 @@ export const replaceMappingContentEn: Record<string, ReplaceMappingContent> = {
   "Airtable→nocodb": {
     fit: "good",
     useCase: "Can replace Airtable for smart spreadsheets with Grid, Kanban, Gallery and Form views, on top of a real SQL database.",
-    limitation: "Somewhat steeper learning curve than Airtable, and its AGPL-3.0 license: check the implications if you offer it as a service to others.",
+    limitation: `Somewhat steeper learning curve than Airtable, and its ${AGPL_COPYLEFT_NOTE_EN}.`,
   },
   "Airtable→baserow": {
     fit: "good",
@@ -117,7 +118,8 @@ export const replaceMappingContentEn: Record<string, ReplaceMappingContent> = {
   // --- Google Analytics ---
   "Google Analytics→plausible": {
     fit: "good",
-    useCase: "Can replace Google Analytics for site traffic and visits with no cookies or consent banner, with importable history from GA.",
+    useCase:
+      "Can replace Google Analytics for site traffic and visits with a minimal-data approach, no cookies, and no user identifiers by default, with importable history from GA.",
     limitation: "Needs ClickHouse, somewhat heavier to self-host, and offers less analytical depth than GA4 for complex ecommerce.",
   },
   "Google Analytics→umami": {
